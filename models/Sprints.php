@@ -4,22 +4,23 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "sprints".
- *
+/** 
+ * This is the model class for table "sprints". 
+ * 
  * @property int $sprint_id
+ * @property string $sprint_alias
  * @property string $fecha_desde
  * @property string $fecha_hasta
  * @property int $horas_desarrollo
  * @property string $observaciones
  * @property string $estado
- *
+ * 
  * @property SprintRequerimientos[] $sprintRequerimientos
  * @property Requerimientos[] $requerimientos
  * @property SprintRequerimientosTareas[] $sprintRequerimientosTareas
  * @property SprintUsuarios[] $sprintUsuarios
  * @property Usuarios[] $usuarios
- */
+ */ 
 class Sprints extends \yii\db\ActiveRecord
 {
     /**
@@ -33,32 +34,34 @@ class Sprints extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() 
+    { 
         return [
-            [['fecha_desde', 'fecha_hasta'], 'required'],
-            [['fecha_desde', 'fecha_hasta'], 'date', 'format' => 'php:yy-m-d'],
+            [['sprint_alias', 'fecha_desde', 'fecha_hasta'], 'required'],
+            [['fecha_desde', 'fecha_hasta'], 'safe'],
             [['horas_desarrollo'], 'default', 'value' => null],
             [['horas_desarrollo'], 'integer'],
             [['observaciones'], 'string'],
+            [['sprint_alias'], 'string', 'max' => 60],
             [['estado'], 'string', 'max' => 1],
-        ];
-    }
+        ]; 
+    } 
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
-        return [
+    public function attributeLabels() 
+    { 
+        return [ 
             'sprint_id' => 'Sprint ID',
+            'sprint_alias' => 'Sprint Alias',
             'fecha_desde' => 'Fecha Desde',
             'fecha_hasta' => 'Fecha Hasta',
             'horas_desarrollo' => 'Horas Desarrollo',
             'observaciones' => 'Observaciones',
             'estado' => 'Estado',
-        ];
-    }
+        ]; 
+    } 
 
     /**
      * @return \yii\db\ActiveQuery

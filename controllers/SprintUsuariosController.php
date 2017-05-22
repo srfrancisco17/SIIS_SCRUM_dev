@@ -109,8 +109,8 @@ class SprintUsuariosController extends Controller
         return $this->redirect(['index']);
     }
     
-    public function actionKanban(){
-        return $this->render('kanban');
+    public function actionKanban($sprint_id){
+        return $this->render('kanban',['sprint_id'=>$sprint_id]);
     }
     
     public function actionRespuesta($id, $estado){

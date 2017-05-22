@@ -22,6 +22,9 @@ class SprintUsuarios extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    
+    public $estado1;
+    
     public static function tableName()
     {
         return 'sprint_usuarios';
@@ -72,6 +75,8 @@ class SprintUsuarios extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Sprints::className(), ['sprint_id' => 'sprint_id']);
     }
+    
+
 
     /**
      * @return \yii\db\ActiveQuery

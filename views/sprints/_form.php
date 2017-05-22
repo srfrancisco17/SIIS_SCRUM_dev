@@ -19,6 +19,24 @@ use kartik\field\FieldRange;
     ?>
     
     <div class="row">
+        <div class="col-lg-6">
+            <?= $form->field($model, 'sprint_alias')->textInput()?>
+        </div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'horas_desarrollo')->input('number')?>
+        </div>
+        <div class="col-lg-3">
+            <?php if($model->isNewRecord){
+                $model->estado  = 1;
+              }    
+            ?>
+            <?= $form->field($model, 'estado')->dropDownList(
+                ['1' => 'Activo', '0' => 'Inactivo'],
+                ['prompt'=>'Seleccione Estado']    
+            ) ?>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12">
             <?php
                 echo FieldRange::widget([
@@ -46,21 +64,6 @@ use kartik\field\FieldRange;
             ]);
     
             ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <?= $form->field($model, 'horas_desarrollo')->input('number')?>
-        </div>
-        <div class="col-lg-6">
-            <?php if($model->isNewRecord){
-                $model->estado  = 1;
-              }    
-            ?>
-            <?= $form->field($model, 'estado')->dropDownList(
-                ['1' => 'Activo', '0' => 'Inactivo'],
-                ['prompt'=>'Seleccione Estado']    
-            ) ?>
         </div>
     </div>
     <div class="row">

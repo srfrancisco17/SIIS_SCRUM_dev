@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 <div class="row"> 
 
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-12">
         <div class="sprints-index">
             <!--<h1><?= Html::encode($this->title) ?></h1>-->
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -40,13 +40,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     //'sprint_id',
+                    'sprint_alias',
                     'fecha_desde',
                     'fecha_hasta',
                     'horas_desarrollo',
+                    /*
                     [
                         'attribute' => 'observaciones',
                         'filter'=>FALSE
                     ],
+                     */
                     // 'estado',
                     [
                         'class'=>'kartik\grid\ActionColumn',

@@ -91,11 +91,11 @@ $this->title = FALSE;
         
         $this->registerJs("var form = $('#tareas-form');");
     
-        $consulta = \app\models\SprintRequerimientos::find(['sprint_id'=>'47'])->all();
-        $consulta1 = $consulta[0]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
-        echo '<pre>';
-        print_r($consulta);
-        echo '</pre>';
+        $consulta = \app\models\SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->andWhere(['usuario_asignado'=>'49'])->all();
+        
+        for ($i = 0; $i < count($consulta); $i++) {
+            $consulta1 = $consulta[$i]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
+        
         
         
         
@@ -178,7 +178,7 @@ $this->title = FALSE;
                 
             }
         ?>
-        <?php ActiveForm::end() ?>
+        
         <div class="row">
             <div class="col-lg-3">
                 <div class="box box-default">
@@ -293,7 +293,10 @@ $this->title = FALSE;
     <?php
 
         }
+        
+        }
     ?>    
+    <?php ActiveForm::end() ?>
    
 <?php
 //$items2_options = ['style' => ['background-color' => 'blue', 'color'=>'white', 'width' => '100px', 'height' => '100px']];

@@ -15,13 +15,13 @@ class SprintsSearch extends Sprints
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
-        return [
+    public function rules() 
+    { 
+        return [ 
             [['sprint_id', 'horas_desarrollo'], 'integer'],
-            [['fecha_desde', 'fecha_hasta', 'observaciones', 'estado'], 'safe'],
-        ];
-    }
+            [['sprint_alias', 'fecha_desde', 'fecha_hasta', 'observaciones', 'estado'], 'safe'], 
+        ]; 
+    } 
 
     /**
      * @inheritdoc
@@ -65,7 +65,8 @@ class SprintsSearch extends Sprints
             'horas_desarrollo' => $this->horas_desarrollo,
         ]);
 
-        $query->andFilterWhere(['ilike', 'observaciones', $this->observaciones])
+        $query->andFilterWhere(['ilike', 'sprint_alias', $this->sprint_alias])
+            ->andFilterWhere(['ilike', 'observaciones', $this->observaciones])
             ->andFilterWhere(['ilike', 'estado', $this->estado]);
 
         return $dataProvider;

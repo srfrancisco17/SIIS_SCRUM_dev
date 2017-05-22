@@ -66,7 +66,7 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
      */
     public function getRequerimiento()
     {
-        return $this->hasMany(Requerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
+        return $this->hasOne(Requerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
     
     

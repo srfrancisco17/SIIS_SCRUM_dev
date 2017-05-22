@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'summary'=>'', 
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            //'sprint_id',
+            //'requerimiento_id',
             [
                 'attribute' => 'requerimiento_id',
                 'label' => 'Requerimiento',
@@ -41,10 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => FALSE,
             ],
             [
-                'attribute' => 'requerimiento_id:html',
+                'attribute' => 'requerimiento_id',
                 'label' => 'Descripcion Requerimiento',
                 'value' => 'requerimiento.requerimiento_descripcion',
                 'filter' => FALSE,
+                'format' => 'html',
             ],
             /*
             [
@@ -60,21 +61,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             //'usuario_asignado',
             //'tiempo_desarrollo',
-            [
-                'attribute' => 'estado',
-                'filter' => Html::activeDropDownList($searchModel2, 'estado', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
-                'value' => function ($data) {
-                        //print_r($data);
-                        //Condicionales que me permiten hacer una equivalencia de valores numericos en textos
-                        if($data['estado'] == 0){
-                            return 'Inactivo';
-                        }
-                        if($data['estado'] == 1){
-                            return 'Activo';
-                        }
-                        return 'Null';
-                },
-            ],
             [
                 'class'=>'yii\grid\ActionColumn',
                 'template' => '{requerimientos}',

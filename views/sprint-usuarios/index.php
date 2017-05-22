@@ -21,11 +21,17 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <!--<?= Html::a('Create Sprint Usuarios', ['create'], ['class' => 'btn btn-success']) ?>-->
     </p>
+    
+    <?php
+    
+  
+    
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -56,36 +62,40 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'sprint_id',
+                'contentOptions' => ['style' => 'width:0px;'],
                 'filter'=>FALSE
             ],
             //'sprint_id',
             //'usuario_id',
             //'horas_desarrollo',
             //'observacion:ntext',
-            'sprint.fecha_desde',
-            //'estado',
             [
-                'label' => 'Estado',
-                'attribute' => 'estado',
-                'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
-                'width' => '10px',
-                'value' => function ($data) {
-                    if($data['estado'] == '0'){
-                        return 'Inactivo';
-                    }
-                    if($data['estado'] == '1'){
-                        return 'Activo';
-                    }
-                    //return 'Null';
-                    },
+              'attribute' => 'sprint.fecha_desde', 
+                'contentOptions' => ['style' => 'width:100px;'],
             ],
-
+            [
+                'attribute' => 'sprint_id',
+                'label' => 'Estado',
+                //'value' => 'sprint.estado'
+                'value' => function ($data) {
+                    
+                        if($data['sprint']->estado == 0){
+                            return 'Inactivo';
+                        }
+                        if($data['sprint']->estado == 1){
+                            return 'Activo';
+                        }
+                        return 'Error';
+                    },
+                    'filter' => Html::activeDropDownList($searchModel, 'sprint_id', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
+                    'contentOptions' => ['style' => 'width:100px;'],
+            ],
             [
                 'class'=>'kartik\grid\ActionColumn',
                 'template' => '{requerimientos}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
-                    return Html::a('<span class="fa fa-table"></span>', Url::to(['sprint-usuarios/kanban']), [
+                    return Html::a('<span class="fa fa-table"></span>', Url::to(['sprint-usuarios/kanban','sprint_id'=>$model->sprint_id]), [
                                 'id' => 'activity-index-link2',
                                 'title' => Yii::t('yii', 'Tablero Kanban'),
                     ]);
