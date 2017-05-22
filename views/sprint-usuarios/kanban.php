@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use kartik\sortable\Sortable;
 
+use yii\widgets\ActiveForm;
+
 /* @var $this yii\web\View */
 /* @var $searchModel2 app\models\SprintRequerimientosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -78,16 +80,26 @@ $this->title = FALSE;
         <br>
     </div>
     <?php
+    $form = ActiveForm::begin([
+                'id' => 'tareas-form',
+                'enableAjaxValidation' => true,
+                'enableClientScript' => true,
+                'enableClientValidation' => true,
+    ]);
+    ?>
+    <?php
         
+        $this->registerJs("var form = $('#tareas-form');");
+    
         $consulta = \app\models\SprintRequerimientos::find(['sprint_id'=>'47'])->all();
         $consulta1 = $consulta[0]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
         echo '<pre>';
-        //print_r($consulta1);
+        print_r($consulta);
         echo '</pre>';
         
         
         
-        $requerimientos = \app\models\Requerimientos::find()->with('sprintRequerimientosTareas')->all();
+        //$requerimientos = \app\models\Requerimientos::find()->with('sprintRequerimientosTareas')->all();
         
         foreach ($consulta1 as $objRequerimientos) {
             $items1 = array(); 
@@ -166,7 +178,7 @@ $this->title = FALSE;
                 
             }
         ?>
-    
+        <?php ActiveForm::end() ?>
         <div class="row">
             <div class="col-lg-3">
                 <div class="box box-default">
@@ -191,7 +203,22 @@ $this->title = FALSE;
                         'items'=> $items1,
 
                         'pluginEvents' => [
-                            'sortupdate' => 'function(e,b) { console.log(b.item[0].id); }',
+                            'sortupdate' => 'function(e,b) { 
+                                console.log(b.item[0].id); 
+                             
+                        var1 = b.item[0].id;
+                       
+                                
+                        $.post(
+                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+1,
+                            form.serialize()
+                        ).done(function(result) {
+                            form.parent().html(result.message);
+                            //$.pjax.reload({container:"#tareas-form"}); 
+
+                        });
+                                
+                            }',
                         //'sortupdate' => 'function(e,b) { console.log(b.item[0].getAttribute("data-id")); }', 
                         ],
                         //'options' => ['class' => 'color:red'],
@@ -208,7 +235,22 @@ $this->title = FALSE;
                         'items'=> $items2,
 
                         'pluginEvents' => [
-                            'sortupdate' => 'function(e,b) { console.log(b.item[0].id); }',
+                            'sortupdate' => 'function(e,b) { 
+                                console.log(b.item[0].id); 
+                             
+                        var1 = b.item[0].id;
+                       
+                                
+                        $.post(
+                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+2,
+                            form.serialize()
+                        ).done(function(result) {
+                            form.parent().html(result.message);
+                            //$.pjax.reload({container:"#tareas-form"}); 
+
+                        });
+                                
+                            }',
                         //'sortupdate' => 'function(e,b) { console.log(b.item[0].getAttribute("data-id")); }', 
                         ],
                         //'options' => ['class' => 'color:red'],
@@ -224,7 +266,22 @@ $this->title = FALSE;
                         'items'=> $items3,
 
                         'pluginEvents' => [
-                            'sortupdate' => 'function(e,b) { console.log(b.item[0].id); }',
+                            'sortupdate' => 'function(e,b) { 
+                                console.log(b.item[0].id); 
+                             
+                        var1 = b.item[0].id;
+                       
+                                
+                        $.post(
+                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+3,
+                            form.serialize()
+                        ).done(function(result) {
+                            form.parent().html(result.message);
+                            //$.pjax.reload({container:"#tareas-form"}); 
+
+                        });
+                                
+                            }',
                         //'sortupdate' => 'function(e,b) { console.log(b.item[0].getAttribute("data-id")); }', 
                         ],
                         //'options' => ['class' => 'color:red'],

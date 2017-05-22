@@ -112,6 +112,20 @@ class SprintUsuariosController extends Controller
     public function actionKanban(){
         return $this->render('kanban');
     }
+    
+    public function actionRespuesta($id, $estado){
+       //CAMBIOS (*-*)\_
+        $model = new \app\models\SprintRequerimientosTareas();
+        
+        if (Yii::$app->request->isAjax){
+        
+            $model->actualizarEstadoTareas($id, $estado);
+
+            //$model->refresh();
+            //Yii::$app->response->format = Response::FORMAT_JSON;
+            //return $this->redirect('sprint-usuarios/index');
+        } 
+    }
 
     /**
      * Finds the SprintUsuarios model based on its primary key value.

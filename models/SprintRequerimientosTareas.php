@@ -59,7 +59,6 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
             'tiempo_desarrollo' => 'Tiempo Desarrollo',
         ];
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -74,5 +73,19 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
     public function getSprint()
     {
         return $this->hasOne(Sprints::className(), ['sprint_id' => 'sprint_id']);
+    }
+    
+    public function actualizarEstadoTareas($id, $estado){
+        
+        $conexion = Yii::$app->db;
+           
+        //$usuarios = explode(",",$key);
+            
+            $conexion->createCommand()->update('sprint_requerimientos_tareas', [
+                'estado' => $estado,
+            ],  'tarea_id ='.$id)->execute();         
+        
+        return true;  
+        
     }
 }
