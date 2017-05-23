@@ -57,6 +57,7 @@ class SprintUsuarios extends \yii\db\ActiveRecord
             'horas_desarrollo' => 'Horas Desarrollo',
             'observacion' => 'Observacion',
             'estado' => 'Estado',
+            'sprintName' => 'Sprint Alias',
         ];
     }
 
@@ -122,4 +123,8 @@ class SprintUsuarios extends \yii\db\ActiveRecord
         return true;  
         
     }   
+    
+    public function getSprintName() {
+        return $this->sprint->sprint_alias;
+    }
 }

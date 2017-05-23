@@ -22,10 +22,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index-scrum-master','login','logout','contact','about','index'],
+                'only' => ['index-scrum-master', 'index-developer','login','logout','contact','about','index'],
                 'rules' => [
                     [
-                        'actions' => ['logout','contact'],
+                        'actions' => ['logout','contact', 'index-developer'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

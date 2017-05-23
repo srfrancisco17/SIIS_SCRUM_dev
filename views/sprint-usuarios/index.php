@@ -18,6 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
         background-color: #ff851b;
         border-color: #ddd;
     }
+    /*
+    .kv-expanded-row{
+        background-color: red;
+    }
+    */
+
 </style>
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
@@ -26,13 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <!--<?= Html::a('Create Sprint Usuarios', ['create'], ['class' => 'btn btn-success']) ?>-->
     </p>
-    
-    <?php
-    
-  
-    
-    ?>
-
+   
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -64,6 +64,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'sprint_id',
                 'contentOptions' => ['style' => 'width:0px;'],
                 'filter'=>FALSE
+            ],                              
+            [
+                'attribute' => 'sprintName'
             ],
             //'sprint_id',
             //'usuario_id',
@@ -74,21 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width:100px;'],
             ],
             [
-                'attribute' => 'sprint_id',
-                'label' => 'Estado',
-                //'value' => 'sprint.estado'
-                'value' => function ($data) {
-                    
-                        if($data['sprint']->estado == 0){
-                            return 'Inactivo';
-                        }
-                        if($data['sprint']->estado == 1){
-                            return 'Activo';
-                        }
-                        return 'Error';
-                    },
-                    'filter' => Html::activeDropDownList($searchModel, 'sprint_id', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
-                    'contentOptions' => ['style' => 'width:100px;'],
+                'attribute' => 'estado',
             ],
             [
                 'class'=>'kartik\grid\ActionColumn',

@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Sprints */
 
-$this->title = 'ID Sprint('.$model->sprint_id.')';
+$this->title = '('.$model->sprint_id.') '.$model->sprint_alias;
 $this->params['breadcrumbs'][] = ['label' => 'Sprints', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

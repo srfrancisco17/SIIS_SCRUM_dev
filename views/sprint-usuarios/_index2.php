@@ -22,14 +22,19 @@ background-color: red;
 "
         );
 
-$this->title = 'Sprint Requerimientos';
+$this->title = 'Sprint Usuarios';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-    <?= GridView::widget([
+
+<br>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        
+        <?= GridView::widget([
         'id' => 'sprintRequerimiento-grid',
         'dataProvider' => $dataProvider2,
-        'filterModel' => $searchModel2,
+        //'filterModel' => $searchModel2,
         'summary'=>'', 
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -39,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Requerimiento',
                 'value' => 'requerimiento.requerimiento_titulo',
                 'filter' => FALSE,
+                
             ],
             [
                 'attribute' => 'requerimiento_id',
@@ -46,6 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'requerimiento.requerimiento_descripcion',
                 'filter' => FALSE,
                 'format' => 'html',
+            ],
+            [
+                'attribute' => 'requerimiento_id',
+                'label' => 'Usuario Que Solicita',
+                //'value' => 'requerimiento.usuarioSolicita.nombres',
+                'value' => function($model) { return $model->requerimiento->usuarioSolicita->nombres.' '.$model->requerimiento->usuarioSolicita->apellidos;},
+                'filter' => FALSE,
             ],
             /*
             [
@@ -68,12 +81,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     'requerimientos' => function ($url, $model, $key) {
                     return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['sprint-requerimientos/index2','sprint_id' => $model->sprint_id]), [
                                 'id' => 'activity-index-link2',
-                                'title' => Yii::t('yii', 'Requerimientos'),
+                                'class' => 'btn btn-success',
+                         
+                                'title' => Yii::t('yii', 'Asignar Tareas'),
                     ]);
                 },
                 ]
             ],
         ],
         'pjax' => true,                                                 
-    ]); 
-    ?>            
+    ]);?>     
+        
+    </div>
+</div>
+           

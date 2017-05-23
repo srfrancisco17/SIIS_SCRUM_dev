@@ -12,14 +12,17 @@ use app\models\SprintUsuarios;
  */
 class SprintUsuariosSearch extends SprintUsuarios
 {
+    public $sprintName;
+    
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['sprint_id', 'usuario_id', 'horas_desarrollo'], 'integer'],
-            [['observacion', 'estado'], 'safe'],
+            [['usuario_id', 'horas_desarrollo'], 'integer'],
+            [['sprint_id', 'observacion', 'estado'], 'safe'],
+            [['sprintName'], 'safe'],
         ];
     }
 
@@ -47,7 +50,7 @@ class SprintUsuariosSearch extends SprintUsuarios
         
         if ($sprint_id != FALSE){     
             
-            $query = SprintUsuarios::find()->where(['sprint_id' => $sprint_id]);
+            $query = SprintUsuarios::find()->where(['sprint_usuarios.sprint_id' => $sprint_id]);
                        
         }else{
             $query = SprintUsuarios::find();
@@ -57,9 +60,14 @@ class SprintUsuariosSearch extends SprintUsuarios
             $query = SprintUsuarios::find()->where(['usuario_id' => Yii::$app->user->identity->usuario_id]);
             //$query = SprintUsuarios::find();
         }
+        
+        $query->joinWith('sprint');
+                
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        
+        
 
         $this->load($params);
 
@@ -71,13 +79,18 @@ class SprintUsuariosSearch extends SprintUsuarios
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'sprint_id' => $this->sprint_id,
+            //'sprint_id' => $this->sprint_id,
             'usuario_id' => $this->usuario_id,
             'horas_desarrollo' => $this->horas_desarrollo,
         ]);
 
         $query->andFilterWhere(['ilike', 'observacion', $this->observacion])
             ->andFilterWhere(['ilike', 'estado', $this->estado]);
+            //->andFilterWhere(['ilike', 'sprints.sprint_alias', $this->sprint_id]);
+        
+        $query->joinWith(['sprint' => function ($q) {
+            $q->where('sprints.sprint_alias ILIKE \'%' .$this->sprintName.'%\'');
+        }]);
 
         return $dataProvider;
     }

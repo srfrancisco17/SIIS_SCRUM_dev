@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </style>
 <div class="row"> 
-
     <div class="col-md-12">
         <div class="sprints-index">
             <!--<h1><?= Html::encode($this->title) ?></h1>-->

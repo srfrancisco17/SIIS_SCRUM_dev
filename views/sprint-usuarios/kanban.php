@@ -90,9 +90,7 @@ $this->title = FALSE;
     <?php
         
         $this->registerJs("var form = $('#tareas-form');");
-    
-        $consulta = \app\models\SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->andWhere(['usuario_asignado'=>'49'])->all();
-        
+
         for ($i = 0; $i < count($consulta); $i++) {
             $consulta1 = $consulta[$i]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
         

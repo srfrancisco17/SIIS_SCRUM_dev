@@ -5,9 +5,13 @@ namespace app\controllers;
 use Yii;
 use app\models\SprintUsuarios;
 use app\models\SprintUsuariosSearch;
+use app\models\SprintRequerimientos;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use app\models\Usuarios;
 
 /**
  * SprintUsuariosController implements the CRUD actions for SprintUsuarios model.
@@ -20,6 +24,34 @@ class SprintUsuariosController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index','view','create','update','delete','kanban'],
+                'rules' => [
+                    [
+                        'actions' => ['index','view','create','update','delete','kanban'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    /*
+                    [
+                        'actions' => ['index-scrum-master', 'about','logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $validar_tipousuario = [Usuarios::USUARIO_SCRUM_MASTER];
+                            return Usuarios::tipoUsuarioArreglo($validar_tipousuario) && Usuarios::estaActivo();
+                        }
+                    ],
+                    
+                    */
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -110,7 +142,14 @@ class SprintUsuariosController extends Controller
     }
     
     public function actionKanban($sprint_id){
-        return $this->render('kanban',['sprint_id'=>$sprint_id]);
+        $consulta = SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->andWhere(['usuario_asignado'=>Yii::$app->user->identity->usuario_id])->all();
+
+        //return $this->render('kanban');
+        
+        return $this->render('kanban', [
+            'consulta' => $consulta,
+        ]);
+       
     }
     
     public function actionRespuesta($id, $estado){
