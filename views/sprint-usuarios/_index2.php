@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{requerimientos}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
-                    return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['sprint-requerimientos/index2','sprint_id' => $model->sprint_id]), [
+                    return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['sprint-requerimientos-tareas/index','sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
                                 'id' => 'activity-index-link2',
                                 'class' => 'btn btn-success',
                          
