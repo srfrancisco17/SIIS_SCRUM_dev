@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\SprintRequerimientosTareas;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SprintRequerimientosTareasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -55,19 +56,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\ActionColumn'],
             ],
             ]); ?>
+            
+             <?= Html::a('Create', Url::to(['sprint-requerimientos-tareas/create']),['class' => 'btn btn-success']) ?>
 
         </div>
         <div class="col-lg-6">
-        <?php
-            $model = new SprintRequerimientosTareas();
-        ?>
-        <?php Pjax::begin(); ?>
-            
-        <?= Html::a("Refresh", ['sprint-requerimientos-tareas/create','model' => $model], ['class' => 'btn btn-lg btn-primary']);?>
-            
-        <h1>Current time: <?= $time ?></h1>
-        
-        <?php Pjax::end(); ?>
+           
         </div>
     </div>
 </div>

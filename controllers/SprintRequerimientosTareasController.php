@@ -41,7 +41,6 @@ class SprintRequerimientosTareasController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'time' => date('H:i:s'),
         ]);
     }
 
