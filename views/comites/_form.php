@@ -37,7 +37,7 @@ use kartik\time\TimePicker;
                 'pluginOptions' => [
                     'autoclose'=>true,
                     'format' => 'yyyy-mm-dd'
-                ]
+                ],
             ]);
             ?>
         </div>
