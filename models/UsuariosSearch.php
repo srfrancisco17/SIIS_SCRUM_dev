@@ -50,7 +50,7 @@ class UsuariosSearch extends Usuarios
             $query = Usuarios::find()->where(['not in','usuario_id', $var])->andWhere(['estado'=>'1']);
         }elseif ($var == 2) {
             //Condicion
-            $var2 = SprintUsuarios::findBySql('select usuario_id FROM sprint_usuarios WHERE sprint_id='.$comite_id)->asArray()->all();
+            $var2 = SprintUsuarios::findBySql("select usuario_id FROM sprint_usuarios WHERE sprint_id=".$comite_id." and estado='1'")->asArray()->all();
             $query = Usuarios::find()->where(['not in','usuario_id', $var2])->andWhere(['tipo_usuario' => 2]);
         }
         else{

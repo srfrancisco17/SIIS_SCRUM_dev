@@ -24,15 +24,20 @@ use yii\widgets\ActiveForm;
     ?>
     <div class="row">
         <div class="col-xs-6 col-lg-6">
-            <?php
-                echo $form->field($model, 'requerimiento_id')->dropDownList($model->ListaRequerimientos, ['prompt' => 'Seleccione Uno' ])->label('(*) Requerimiento:');
-            ?>
             
+        <?php
+            if ($model->isNewRecord) {                       
+                echo $form->field($model, 'requerimiento_id')->dropDownList($model->ListaRequerimientos, ['prompt' => 'Seleccione Uno'])->label('(*) Requerimiento:');
+            }else{
+               echo $form->field($model, 'requerimiento_id')->textInput(['value'=> $model->requerimiento->requerimiento_titulo, 'disabled' => true])->label('(*) Requerimiento:');
+            }
+        ?>   
+    
         </div>
         <div class="col-xs-6 col-lg-6">
         <?php
             if (isset($sprint_id)) {                       
-               echo $form->field($model, 'usuario_asignado')->dropDownList(yii\helpers\ArrayHelper::map(app\models\SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->all(), 'usuario_id', 'usuario.nombres'), ['prompt' => 'Seleccione Usuario' ])->label('Desarrollador:');
+               echo $form->field($model, 'usuario_asignado')->dropDownList(yii\helpers\ArrayHelper::map(app\models\SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all(), 'usuario_id', 'usuario.nombres'), ['prompt' => 'Seleccione Usuario' ])->label('Desarrollador:');
             }else{
                echo $form->field($model, 'usuario_asignado')->dropDownList(yii\helpers\ArrayHelper::map(app\models\SprintUsuarios::find()->where(['sprint_id'=>$model->sprint_id])->all(), 'usuario_id', 'usuario.nombres'), ['prompt' => 'Seleccione Usuario' ])->label('Desarrollador:');
             }

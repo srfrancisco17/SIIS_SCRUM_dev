@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use yii\db\Query;
 use Yii;
 
 /**
@@ -94,11 +95,23 @@ class SprintUsuarios extends \yii\db\ActiveRecord
            
         $usuarios = explode(",",$key);
         foreach ($usuarios as $value) {
-            
+            /*
             $conexion->createCommand()->insert('sprint_usuarios', [
                 'sprint_id' => $id,
                 'usuario_id' => $value,
+                'estado' => '1',
             ])->execute();    
+            */
+            $conexion->createCommand(" 
+                UPDATE sprint_usuarios SET sprint_id=".$id.", usuario_id=".$value.", estado='1' WHERE sprint_id=".$id." and usuario_id=".$value.";
+            ")->execute();
+            
+            $conexion->createCommand(" 
+                INSERT INTO sprint_usuarios (sprint_id, usuario_id, estado)
+                    SELECT ".$id.", ".$value.", '1'
+                    WHERE NOT EXISTS (SELECT 1 FROM sprint_usuarios WHERE sprint_id=".$id." and usuario_id=".$value.");
+            ")->execute();
+          
         }     
         
         return true;  
@@ -113,11 +126,15 @@ class SprintUsuarios extends \yii\db\ActiveRecord
         $usuarios = explode(",",$key);
         foreach ($usuarios as $value) {
             
-
+            
+            $conexion->createCommand()->update('sprint_usuarios', ['estado' => '0'], ['sprint_id' => $id, 'usuario_id' => $value])->execute();  
+            
+            /*
             $conexion->createCommand()->delete('sprint_usuarios', [
                 'sprint_id' => $id,
                 'usuario_id' => $value,
-            ])->execute();    
+            ])->execute();   
+            */
         }     
         
         return true;  
