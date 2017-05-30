@@ -39,7 +39,7 @@ use yii\widgets\ActiveForm;
             if (isset($sprint_id)) {                       
                echo $form->field($model, 'usuario_asignado')->dropDownList(yii\helpers\ArrayHelper::map(app\models\SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all(), 'usuario_id', 'usuario.nombres'), ['prompt' => 'Seleccione Usuario' ])->label('Desarrollador:');
             }else{
-               echo $form->field($model, 'usuario_asignado')->dropDownList(yii\helpers\ArrayHelper::map(app\models\SprintUsuarios::find()->where(['sprint_id'=>$model->sprint_id])->all(), 'usuario_id', 'usuario.nombres'), ['prompt' => 'Seleccione Usuario' ])->label('Desarrollador:');
+               echo $form->field($model, 'usuario_asignado')->dropDownList(yii\helpers\ArrayHelper::map(app\models\SprintUsuarios::find()->where(['sprint_id'=>$model->sprint_id])->andWhere(['estado'=>'1'])->all(), 'usuario_id', 'usuario.nombres'), ['prompt' => 'Seleccione Usuario' ])->label('Desarrollador:');
             }
         ?>      
         </div>

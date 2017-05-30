@@ -116,6 +116,5 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         */
         return ArrayHelper::map($opciones, 'usuario_id', 'usuario.nombres');
     }
-
-
+    
 }

@@ -53,7 +53,7 @@ class SprintUsuariosSearch extends SprintUsuarios
             $query = SprintUsuarios::find()->where(['sprint_usuarios.sprint_id' => $sprint_id])->andWhere(['sprint_usuarios.estado'=>'1']);
                        
         }else{
-            $query = SprintUsuarios::find()->where();
+            $query = SprintUsuarios::find();
         }
         
         if(!Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == 2){
