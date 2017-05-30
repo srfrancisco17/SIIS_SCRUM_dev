@@ -352,6 +352,7 @@ HTML;
      * - `{export}`: _string_, which will render the [[export]] menu button content
      */
     public $panelFooterTemplate = <<< HTML
+    
     <div class="kv-panel-pager">
         {pager}
     </div>

@@ -37,10 +37,12 @@ class SprintRequerimientosTareasController extends Controller
     {
         $searchModel = new SprintRequerimientosTareasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $sprint_id, $requerimiento_id);
-
+        
+        $requerimiento = \app\models\Requerimientos::findOne(['requerimiento_id'=>$requerimiento_id]);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'requerimiento' => $requerimiento,
         ]);
     }
 

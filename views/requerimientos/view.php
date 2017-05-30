@@ -10,8 +10,7 @@ $this->title = $model->requerimiento_id.' - '.$model->requerimiento_titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Requerimientos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
- <!--<h1><?= Html::encode($this->title) ?></h1>-->
-
+<!--<h1><?= Html::encode($this->title) ?></h1>-->
 <div class="row">
     <div class="requerimientos-view">
         <div class="col-lg-12">
@@ -19,8 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="box-header with-border">
                   <h3 class="box-title">Requerimiento</h3>
                 </div>
+                
                 <div class="box-body">         
-                     <?= DetailView::widget([
+                    <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
                         'requerimiento_id',
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         //'usuario_solicita',
                         [                      
                         'label' => 'Usuario Que Solicita',
-                        'value' => $model->usuarioSolicita->nombres.$model->usuarioSolicita->apellidos,
+                        'value' => $model->usuarioSolicita->nombres.' '.$model->usuarioSolicita->apellidos,
                         ],
                         [                      
                         'label' => 'Departamento Que Solicita', 

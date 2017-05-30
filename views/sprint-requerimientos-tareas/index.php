@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+//use yii\grid\GridView;
+use kartik\grid\GridView;
+use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 use app\models\SprintRequerimientosTareas;
 use yii\helpers\Url;
@@ -23,17 +25,46 @@ $this->params['breadcrumbs'][] = $this->title;
     -->
     <div class="row">
         <div class="col-lg-12">
-            <?php
-                echo '<pre>';
-                print_r($dataProvider->models[0]->requerimiento->requerimiento_titulo);
-                echo '--------------------------';
-                print_r($dataProvider->models[0]->requerimiento->requerimiento_descripcion);
-                echo '--------------------------';
-                print_r($dataProvider->models[0]->requerimiento->requerimiento_justificacion);
-                echo '--------------------------';
-                print_r($dataProvider->models[0]->requerimiento->observaciones);
-                echo '</pre>';
-            ?>
+            
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Requerimiento</h3>
+                </div>
+                <?php
+                //echo $requerimiento->departamentoSolicita->descripcion;
+                ?>
+                <div class="box-body">         
+                    <?= DetailView::widget([
+                    'model' => $requerimiento,
+                    'attributes' => [
+                        'requerimiento_id',
+                        'comite_id',
+                        'requerimiento_titulo',
+                        'requerimiento_descripcion:html',
+                        'requerimiento_justificacion:html',
+                        //'usuario_solicita',
+                        [                      
+                        'label' => 'Usuario Que Solicita',
+                        'value' => $requerimiento->usuarioSolicita->nombres.' '.$requerimiento->usuarioSolicita->apellidos,
+                        ],
+                        [                      
+                        'label' => 'Departamento Que Solicita', 
+                        'value' => empty($requerimiento->departamentoSolicita->descripcion) ? '' : $requerimiento->departamentoSolicita->descripcion,
+                        ],
+                        'observaciones:html',
+                        'fecha_requerimiento',
+                        //'estado',
+                        [                      
+                        'label' => 'Estado',
+                        'value' => $requerimiento->estado0->descripcion,
+                        ],
+                    ],
+                ]) ?>     
+                </div>
+                <div class="box-footer">
+
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -41,7 +72,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= GridView::widget([
             'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
+            //'filterModel' => $searchModel,
+            'panel' => [
+                'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i> Tareas</h3>',
+                'type' => GridView::TYPE_DEFAULT,
+                'footer' => Html::a('Crear Tarea', Url::to(['sprint-requerimientos-tareas/create']),['class' => 'btn btn-success']),
+                'after' => FALSE,
+                'before' => FALSE,
+            ],
+            'panelFooterTemplate' => '{footer}{pager}{toolbar}',
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
@@ -55,13 +94,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ['class' => 'yii\grid\ActionColumn'],
             ],
+                'toolbar' => FALSE,
             ]); ?>
             
-             <?= Html::a('Create', Url::to(['sprint-requerimientos-tareas/create']),['class' => 'btn btn-success']) ?>
+            
 
         </div>
         <div class="col-lg-6">
-           
+            <div class="box box-solid box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Formulario Para Crear O Actualizar Tareas</h3>
+                </div>
+                <div class="box-body">
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </div>
+            </div>
         </div>
     </div>
 </div>
