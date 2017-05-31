@@ -10,7 +10,13 @@ use yii\widgets\ActiveForm;
 
 <div class="sprint-requerimientos-tareas-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin([
+        'id' => 'tareas-form',
+        'enableAjaxValidation' => true,
+        'enableClientScript' => true,
+        'enableClientValidation' => true,
+        ]); 
+    ?>
 
     <?= $form->field($model, 'sprint_id')->textInput() ?>
 
@@ -29,5 +35,27 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
+    
+    <?php
+        $this->registerJs('
+        // obtener la id del formulario y establecer el manejador de eventos
+            $("form#tareas-form").on("beforeSubmit", function(e) {
+                var form = $(this);
+                $.post(
+                    form.attr("action")+"&submit=true",
+                    form.serialize()
+                )
+                .done(function(result) {
+                    form.parent().html(result.message);
+                    $.pjax.reload({container:"#tareas-grid"});
+                });
+                return false;
+            }).on("submit", function(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                return false;
+            });
+        ');
+    ?>
 
 </div>

@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 /**
  * SprintRequerimientosTareasController implements the CRUD actions for SprintRequerimientosTareas model.
  */
@@ -42,6 +44,8 @@ class SprintRequerimientosTareasController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'sprint_id' =>$sprint_id, 
+            'requerimiento_id' => $requerimiento_id,
             'requerimiento' => $requerimiento,
         ]);
     }
@@ -63,17 +67,35 @@ class SprintRequerimientosTareasController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($sprint_id, $requerimiento_id, $submit = false)
     {
         $model = new SprintRequerimientosTareas();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->tarea_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+       
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
         }
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->sprint_id = $sprint_id;
+            $model->requerimiento_id = $requerimiento_id;
+            
+            if ($model->save()) {
+                $model->refresh();
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return [
+                    'message' => '¡Éxito!',
+                ];
+            } else {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
+        }
+
+        return $this->renderAjax('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -82,17 +104,39 @@ class SprintRequerimientosTareasController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $submit = false)
     {
         $model = $this->findModel($id);
-
+        /*
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->tarea_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
+        } 
+        */
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
         }
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                $model->refresh();
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return [
+                    'message' => '¡Éxito!',
+                ];
+            } else {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
+        }
+
+        return $this->renderAjax('update', [
+            'model' => $model,
+        ]);
     }
 
     /**

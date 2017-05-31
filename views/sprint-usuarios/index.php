@@ -74,10 +74,22 @@ $this->params['breadcrumbs'][] = $this->title;
             //'observacion:ntext',
             [
               'attribute' => 'sprint.fecha_desde', 
-                'contentOptions' => ['style' => 'width:100px;'],
+              'contentOptions' => ['style' => 'width:100px;'],
             ],
             [
                 'attribute' => 'estado',
+                'value' => function ($data) {
+                    
+                        if($data['estado'] == 0){
+                            return 'Inactivo';
+                        }
+                        if($data['estado'] == 1){
+                            return 'Activo';
+                        }
+                        return 'Error';
+                 },
+                'filter'=>FALSE,
+                'contentOptions' => ['style' => 'width:10px;'],
             ],
             [
                 'class'=>'kartik\grid\ActionColumn',

@@ -85,7 +85,7 @@ class SprintUsuariosSearch extends SprintUsuarios
         ]);
 
         $query->andFilterWhere(['ilike', 'observacion', $this->observacion])
-            ->andFilterWhere(['ilike', 'estado', $this->estado]);
+            ->andFilterWhere(['ilike', 'sprints.estado', $this->estado]);
             //->andFilterWhere(['ilike', 'sprints.sprint_alias', $this->sprint_id]);
         
         $query->joinWith(['sprint' => function ($q) {

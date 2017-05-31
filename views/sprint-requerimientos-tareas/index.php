@@ -21,6 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <!--
     <p>
         <?= Html::a('Create Sprint Requerimientos Tareas', ['create'], ['class' => 'btn btn-success']) ?>
+    
+        
     </p>
     -->
     <div class="row">
@@ -69,34 +71,70 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="row">
         <div class="col-lg-6">
+            <?php Pjax::begin(); ?>
+                <?= GridView::widget([
+                'id' => 'tareas-grid',
+                'dataProvider' => $dataProvider,
+                //'filterModel' => $searchModel,
+                'panel' => [
+                    'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i> Tareas</h3>',
+                    'type' => GridView::TYPE_DEFAULT,
+                    'footer' =>Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Tarea', '#', [
+                            'id' => 'activity-index-link',
+                            'class' => 'btn btn-success',
+                            'data-toggle' => 'contenido',
+                            'data-target' => '#contenido',
+                            'data-url' => Url::to(['create','sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]),
+                            'data-pjax' => '0',
+                        ]),
+                    'after' => FALSE,
+                    'before' => FALSE,
+                ],
+                'panelFooterTemplate' => '{footer}{pager}{toolbar}',
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-            <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            //'filterModel' => $searchModel,
-            'panel' => [
-                'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i> Tareas</h3>',
-                'type' => GridView::TYPE_DEFAULT,
-                'footer' => Html::a('Crear Tarea', Url::to(['sprint-requerimientos-tareas/create']),['class' => 'btn btn-success']),
-                'after' => FALSE,
-                'before' => FALSE,
-            ],
-            'panelFooterTemplate' => '{footer}{pager}{toolbar}',
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
+                    //'tarea_id',
+                    //'sprint_id',
+                    //'requerimiento_id',
+                    'tarea_titulo',
+                    'tarea_descripcion:ntext',
+                    // 'estado',
+                    // 'tiempo_desarrollo',
 
-                //'tarea_id',
-                //'sprint_id',
-                //'requerimiento_id',
-                'tarea_titulo',
-                'tarea_descripcion:ntext',
-                // 'estado',
-                // 'tiempo_desarrollo',
-
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{view}{update}{delete}',
+                        'buttons' => [
+                            'update' => function ($url, $model, $key) {
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
+                                            'id' => 'activity-index-link',
+                                            'title' => Yii::t('yii', 'Update'),
+                                            'data-toggle' => 'contenido',
+                                            'data-target' => '#contenido',
+                                            'data-url' => Url::to(['update', 'id' => $model->tarea_id]),
+                                            'data-pjax' => '0',
+                                ]);
+                            },
+                        ],
+                    ],
+                ],
                 'toolbar' => FALSE,
-            ]); ?>
-            
+                ]); ?>
+            <?php Pjax::end(); ?>
+            <?php
+            $this->registerJs(
+                    "$(document).on('click', '#activity-index-link', (function() {
+                            $.get(
+                                $(this).data('url'),
+                                function (data) {
+                                    $('#contenido').html(data);
+                                    $('#sprintrequerimientostareas-tarea_titulo').focus();
+                                }
+                            );
+                        }));"
+            );
+            ?>
             
 
         </div>
@@ -105,7 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="box-header with-border">
                     <h3 class="box-title">Formulario Para Crear O Actualizar Tareas</h3>
                 </div>
-                <div class="box-body">
+                <div id="contenido" class="box-body">
                     <br><br><br><br><br><br><br><br><br><br><br><br><br>
                 </div>
             </div>
