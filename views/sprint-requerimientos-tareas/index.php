@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     [
                         'class' => 'yii\grid\ActionColumn',
-                        'template' => '{view}{update}{delete}',
+                        'template' => '{update}{delete}',
                         'buttons' => [
                             'update' => function ($url, $model, $key) {
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
@@ -140,6 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 function (data) {
                                     $('#contenido').html(data);
                                     $('#sprintrequerimientostareas-tarea_titulo').focus();
+                                    
                                 }
                             );
                         }));"
@@ -148,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
         </div>
         <div class="col-lg-6">
-            <div id="contenido"></div>
+            <div id="contenido" tabindex="1"></div>
         </div>
     </div>
 </div>

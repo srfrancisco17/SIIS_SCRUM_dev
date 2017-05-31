@@ -83,10 +83,13 @@ class SprintRequerimientosTareasController extends Controller
             
             if ($model->save()) {
                 $model->refresh();
+                /*
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
                     'message' => '¡Éxito!',
                 ];
+                */
+                return TRUE;
             } else {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
@@ -124,10 +127,13 @@ class SprintRequerimientosTareasController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 $model->refresh();
+                /*
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
                     'message' => '¡Éxito!',
-                ];
+                ]; 
+                */
+                return TRUE;
             } else {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);

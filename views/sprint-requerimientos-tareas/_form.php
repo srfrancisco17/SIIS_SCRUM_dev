@@ -64,6 +64,7 @@ use yii\widgets\ActiveForm;
             e.preventDefault();
             e.stopImmediatePropagation();
             return false;
+            
         });
     ');
 ?>

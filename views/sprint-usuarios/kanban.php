@@ -39,9 +39,17 @@ $this->title = FALSE;
         position: relative;
         border-radius: 3px;
         background: #ffffff;
-        border-top: 3px solid #d2d6de;
-        margin-bottom: 5px;
+        border-top: 0px;
+        margin-top: 10px;
+        margin-bottom: 10px;
         width: 100%;
+    }
+    
+    .sortable {
+        -moz-user-select: none;
+        padding: 0;
+        border-radius: 4px;
+        border: 0px;
     }
 
     .sortable li.sortable-placeholder {
@@ -52,17 +60,23 @@ $this->title = FALSE;
     }
 
     div.columna-sortable > ul{
-        background-color: white;
+        background-color: none;
         min-height:100px; 
+        margin-top: 10px;
+        margin-bottom: 10px;
         padding-bottom:30px;
     }
 
     .box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
         font-size: 13px;
     }
+    td,th {
+        padding: 10px;
+    }
 </style>  
 
 <div class="kanban">
+     
     <div class="row">
         <div class="col-lg-3">
             <h4 class="text-center">Requerimiento</h4>
@@ -114,7 +128,7 @@ $this->title = FALSE;
                                     <div class="box-header with-border">
                                       <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
-                                        <span class="label label-default">40</span>
+                                        <span class="label label-default">'.$objTareas->tiempo_desarrollo.'</span>
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
@@ -177,7 +191,18 @@ $this->title = FALSE;
             }
         ?>
         
-        <div class="row">
+         <!-- CAMBIAR EL COLOR A LAS ROWS -->
+         <?php
+            if ($i%2==0){
+                  echo '<div class="row" style="background-color: #E2E4EA;">';
+                  //par
+            }else{
+                  echo '<div class="row" style="background-color: #D2D6DE;">';
+                  //impar
+            }
+         ?>
+         <!-- ------------------------------------- -->
+        <!--<div class="row">-->
             <div class="col-lg-3">
                 <div class="box box-default">
                     <div class="box-header with-border">
@@ -303,5 +328,4 @@ $options2 = ['style' => ['background-color' => 'blue', 'min-height' => '100px', 
 // Two connected Sortable lists with custom styles.
 
 ?>
-        </div>
-
+</div>
