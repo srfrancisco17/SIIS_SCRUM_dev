@@ -145,11 +145,11 @@ class SprintRequerimientosTareasController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $sprint_id, $requerimiento_id)
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
     }
 
     /**

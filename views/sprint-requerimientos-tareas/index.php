@@ -116,6 +116,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-pjax' => '0',
                                 ]);
                             },
+                            'delete' => function($url, $model){
+                                return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->tarea_id, 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id], [
+                                    'class' => '',
+                                    'title'=>'Eliminar',
+                                    'data' => [
+                                        'confirm' => '¿Está seguro de eliminar este elemento?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
+                            }
                         ],
                     ],
                 ],
@@ -136,17 +146,9 @@ $this->params['breadcrumbs'][] = $this->title;
             );
             ?>
             
-
         </div>
         <div class="col-lg-6">
-            <div class="box box-solid box-default">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Formulario Para Crear O Actualizar Tareas</h3>
-                </div>
-                <div id="contenido" class="box-body">
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br>
-                </div>
-            </div>
+            <div id="contenido"></div>
         </div>
     </div>
 </div>

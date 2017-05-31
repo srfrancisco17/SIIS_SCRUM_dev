@@ -7,55 +7,63 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\SprintRequerimientosTareas */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
-<div class="sprint-requerimientos-tareas-form">
-
-        <?php $form = ActiveForm::begin([
+<?php   
+    $form = ActiveForm::begin([
         'id' => 'tareas-form',
         'enableAjaxValidation' => true,
         'enableClientScript' => true,
         'enableClientValidation' => true,
-        ]); 
-    ?>
+    ]); 
+?>
+    <div class="box box-solid box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                <?= $model->isNewRecord ? 'Crear Nueva Tarea' : 'Actualizar Tarea' ?>
+            </h3>
+        </div>
+        <div class="box-body">
 
-    <?= $form->field($model, 'sprint_id')->textInput() ?>
+        <div class="row">
+            <div class="col-lg-9">
+                <?= $form->field($model, 'tarea_titulo')->textInput(['maxlength' => true])->label('(*) Titulo') ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'tiempo_desarrollo')->textInput()->label('Horas') ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <?= $form->field($model, 'tarea_descripcion')->textarea(['rows' => 6])->label('Descripcion') ?>   
+            </div>
+        </div>
 
-    <?= $form->field($model, 'requerimiento_id')->textInput() ?>
-
-    <?= $form->field($model, 'tarea_titulo')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'tarea_descripcion')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'estado')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'tiempo_desarrollo')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        </div>
+        <div class="panel-footer">
+            <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
     </div>
 
-    <?php ActiveForm::end(); ?>
-    
-    <?php
-        $this->registerJs('
-        // obtener la id del formulario y establecer el manejador de eventos
-            $("form#tareas-form").on("beforeSubmit", function(e) {
-                var form = $(this);
-                $.post(
-                    form.attr("action")+"&submit=true",
-                    form.serialize()
-                )
-                .done(function(result) {
-                    form.parent().html(result.message);
-                    $.pjax.reload({container:"#tareas-grid"});
-                });
-                return false;
-            }).on("submit", function(e){
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                return false;
-            });
-        ');
-    ?>
+<?php ActiveForm::end(); ?>
 
-</div>
+<?php
+    $this->registerJs('
+    // obtener la id del formulario y establecer el manejador de eventos
+        $("form#tareas-form").on("beforeSubmit", function(e) {
+            var form = $(this);
+            $.post(
+                form.attr("action")+"&submit=true",
+                form.serialize()
+            )
+            .done(function(result) {
+                form.parent().html(result.message);
+                $.pjax.reload({container:"#tareas-grid"});
+
+            });
+            return false;
+        }).on("submit", function(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+        });
+    ');
+?>
