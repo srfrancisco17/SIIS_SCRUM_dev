@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     // 'estado',
                     [
                         'class'=>'kartik\grid\ActionColumn',
-                        'template' => '{view}{update}{delete}{sprints}',
+                        'template' => '{update}{delete}{sprints}{master-kanban}',
                         'buttons' => [
                             'update' => function ($url, $model, $key) {
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
@@ -65,11 +65,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                             },
                             'sprints' => function ($url, $model, $key) {
-                            return Html::a('<span class="glyphicon glyphicon-check"></span>', Url::to(['sprint-requerimientos/index', 'sprint_id' => $model->sprint_id]), [
-                                        'id' => 'activity-index-link2',
-                                        'title' => Yii::t('yii', 'Requerimientos'),
-                            ]);
-                        },
+                                return Html::a('<span class="glyphicon glyphicon-check"></span>', Url::to(['sprint-requerimientos/index', 'sprint_id' => $model->sprint_id]), [
+                                            'id' => 'activity-index-link2',
+                                            'title' => Yii::t('yii', 'Requerimientos'),
+                                ]);
+                            },
+                            'master-kanban' => function ($url, $model, $key) {
+                                return Html::a('<span class="fa fa-table"></span>', Url::to(['sprints/master-kanban', 'sprint_id' => $model->sprint_id]), [
+                                            'id' => 'activity-index-link2',
+                                            'title' => Yii::t('yii', 'kanban'),
+                                ]);
+                            },                                    
                         ]
                     ],
                 ],

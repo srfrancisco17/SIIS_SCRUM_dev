@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Sprints;
+use app\models\SprintRequerimientos;
 use app\models\SprintsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -151,5 +152,15 @@ class SprintsController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    public function actionMasterKanban($sprint_id){
+        
+        $consulta = SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->all();
+        
+        return $this->render('master_kanban', [
+            'consulta' => $consulta,
+        ]);
+       
     }
 }

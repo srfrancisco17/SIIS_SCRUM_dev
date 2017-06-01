@@ -58,11 +58,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <span class="time"></span>
                 <h3 class="timeline-header" style="background: #f9f9f9">Agradecimientos</h3>
                 <div class="timeline-body">
-                    -Jorge Alberto (Desarrollador)<br>
-                    -Juan Pablo Sanchez (Desarrollador)<br>
-                    -Leoardo Rodriguez (Desarrollador)<br>
-                    -Luisa Fernanda Bedoya (Desarrollador)<br>
-                    -Juan (Desarrollador)<br>
+                    - Jorge Alberto (Desarrollador)<br>
+                    - Juan Pablo Sanchez (Desarrollador)<br>
+                    - Harrison Gonzales Parra (Desarrollador)<br>
+                    - Leoardo Rodriguez (Desarrollador)<br>
+                    - Luisa Fernanda Bedoya (Desarrollador)<br>
+                    - Juan (Desarrollador)<br>
                 </div>
             </div>
         </li>
