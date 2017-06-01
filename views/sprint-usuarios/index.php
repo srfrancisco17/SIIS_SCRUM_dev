@@ -9,7 +9,7 @@ use app\models\SprintRequerimientosSearch;
 /* @var $searchModel app\models\SprintUsuariosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Sprint Usuarios';
+$this->title = 'Mis Sprints';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style> 
@@ -26,13 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </style>
 
-    <!--<h1><?= Html::encode($this->title) ?></h1>-->
-    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <!--<?= Html::a('Create Sprint Usuarios', ['create'], ['class' => 'btn btn-success']) ?>-->
-    </p>
-   
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

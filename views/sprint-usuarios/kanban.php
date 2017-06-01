@@ -2,13 +2,14 @@
 
 use yii\helpers\Html;
 use kartik\sortable\Sortable;
-
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel2 app\models\SprintRequerimientosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$this->title = FALSE;
+$this->title = 'Tareas';
+$this->params['breadcrumbs'][] = ['label' => 'Mis Sprints', 'url' => ['sprint-usuarios/index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
     .sortable.grid li {
@@ -53,7 +54,8 @@ $this->title = FALSE;
     }
 
     .sortable li.sortable-placeholder {
-        background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+        /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0);*/
+        background-color: #f0f0f0;
         border: 1px dashed #CCCCCC;
         padding: 16px;
         height: 60px;
@@ -77,17 +79,17 @@ $this->title = FALSE;
 
 <div class="kanban">
      
-    <div class="row">
+    <div class="row" style="background-color: #3c8dbc; color: #f0f0f0;">
         <div class="col-lg-3">
             <h4 class="text-center">Requerimiento</h4>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3" style="border-left: 1px solid;">
             <h4 class="text-center">Pendiente</h4>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3" style="border-left: 1px solid;">
             <h4 class="text-center">En Curso</h4>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3" style="border-left: 1px solid;">
             <h4 class="text-center">Finalizado</h4>
         </div>
         <!--<hr>-->
@@ -204,11 +206,11 @@ $this->title = FALSE;
          <!-- ------------------------------------- -->
         <!--<div class="row">-->
             <div class="col-lg-3">
-                <div class="box box-default">
+                <div class="box box-default collapsed-box">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?=  $objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                         </div>
                     </div>
                     <div class="box-body">

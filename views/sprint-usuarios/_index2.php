@@ -7,26 +7,6 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel2 app\models\SprintRequerimientosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/*
-$this->registerCss(
-        ".table-bordered > thead > tr > th,
-.table-bordered > tbody > tr > th,
-.table-bordered > tfoot > tr > th,
-.table-bordered > thead > tr > td,
-.table-bordered > tbody > tr > td,
-.table-bordered > tfoot > tr > td {
-    border: 1px solid black;
-}
-body{
-background-color: red;
-}
-"
-        );
- * 
- */
-
-$this->title = 'Sprint Usuarios';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 

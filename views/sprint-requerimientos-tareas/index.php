@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'panel' => [
                     'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i> Tareas</h3>',
                     'type' => GridView::TYPE_DEFAULT,
-                    'footer' =>Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Tarea', '#', [
+                    'footer' =>Html::a('<i class="glyphicon glyphicon-plus"></i> Agregar Tarea', '#', [
                             'id' => 'activity-index-link',
                             'class' => 'btn btn-success',
                             'data-toggle' => 'contenido',
@@ -149,7 +149,8 @@ $this->params['breadcrumbs'][] = $this->title;
             
         </div>
         <div class="col-lg-6">
-            <div id="contenido" tabindex="1"></div>
+            <div id="contenido"></div>
         </div>
     </div>
 </div>
+

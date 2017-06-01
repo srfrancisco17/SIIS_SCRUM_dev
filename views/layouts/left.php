@@ -95,6 +95,11 @@
                         'url' => ['sprint-usuarios/index'],
                         'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_DEVELOPER,
                     ],
+                    [
+                        'label' => 'Acerca Del Proyecto',
+                        'icon' => 'info-circle',
+                        'url' => ['site/about'],
+                    ],
                 ],   
             ]
         ) ?>
