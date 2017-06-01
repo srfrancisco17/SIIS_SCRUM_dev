@@ -106,12 +106,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
         
         $this->registerJs("var form = $('#tareas-form');");
-
+       
+        
         for ($i = 0; $i < count($consulta); $i++) {
             $consulta1 = $consulta[$i]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
         
         
-        
+        //echo $consulta[$i]->usuarioAsignado->color;
         
         //$requerimientos = \app\models\Requerimientos::find()->with('sprintRequerimientosTareas')->all();
         
