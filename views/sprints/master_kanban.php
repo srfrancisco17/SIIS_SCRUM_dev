@@ -219,7 +219,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
                     <div class="box-body">
-                        <?=  $objRequerimientos->requerimiento_descripcion ?>
+                        <?=  strip_tags($objRequerimientos->requerimiento_descripcion) ?>
                     </div>
                 </div>
 
