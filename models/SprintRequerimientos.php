@@ -6,19 +6,20 @@ use Yii;
 use yii\helpers\ArrayHelper;
 //use backend\models\SprintUsuarios;
 use app\models\Usuarios;
-/**
- * This is the model class for table "sprint_requerimientos".
- *
- * @property integer $sprint_id
- * @property integer $requerimiento_id
- * @property integer $usuario_asignado
- * @property integer $tiempo_desarrollo
+/** 
+ * This is the model class for table "sprint_requerimientos". 
+ * 
+ * @property int $sprint_id
+ * @property int $requerimiento_id
+ * @property int $usuario_asignado
+ * @property int $tiempo_desarrollo
  * @property string $estado
- *
+ * 
+ * @property EstadosReqSpr $estado0
  * @property Requerimientos $requerimiento
- * @property Sprints $sprint
- * @property Usuarios $usuarioAsignado
- */
+ * @property SprintUsuarios $sprint
+ * @property Sprints $sprint0
+ */ 
 class SprintRequerimientos extends \yii\db\ActiveRecord
 {
     /**
@@ -38,9 +39,10 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sprint_id', 'requerimiento_id'], 'required'],
+            [['sprint_id', 'requerimiento_id', 'estado'], 'required'],
             [['sprint_id', 'requerimiento_id', 'usuario_asignado', 'tiempo_desarrollo'], 'integer'],
-            [['estado'], 'string', 'max' => 1],
+            [['estado'], 'string', 'max' => 2],
+            [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
             [['requerimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id']],
             [['sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sprints::className(), 'targetAttribute' => ['sprint_id' => 'sprint_id']],
             [['usuario_asignado'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_asignado' => 'usuario_id']],
@@ -61,6 +63,14 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         ];
     }
 
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getEstado0() 
+    { 
+        return $this->hasOne(EstadosReqSpr::className(), ['req_spr_id' => 'estado']);
+    }     
+    
     /**
      * @return \yii\db\ActiveQuery
      */

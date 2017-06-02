@@ -3,6 +3,7 @@
 use kartik\helpers\Html;
 use kartik\form\ActiveForm;
 use kartik\field\FieldRange;
+use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Sprints */
 /* @var $form yii\widgets\ActiveForm */
@@ -29,11 +30,10 @@ use kartik\field\FieldRange;
             <?php if($model->isNewRecord){
                 $model->estado  = 1;
               }    
+            
+            echo  $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_sprint'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno' ])->label('Estado');
             ?>
-            <?= $form->field($model, 'estado')->dropDownList(
-                ['1' => 'Activo', '0' => 'Inactivo'],
-                ['prompt'=>'Seleccione Estado']    
-            ) ?>
+            
         </div>
     </div>
     <div class="row">

@@ -20,7 +20,8 @@ use Yii;
  * @property SprintRequerimientosTareas[] $sprintRequerimientosTareas
  * @property SprintUsuarios[] $sprintUsuarios
  * @property Usuarios[] $usuarios
- */ 
+ * @property EstadosReqSpr $estado0
+ */  
 class Sprints extends \yii\db\ActiveRecord
 {
     /**
@@ -37,13 +38,14 @@ class Sprints extends \yii\db\ActiveRecord
     public function rules() 
     { 
         return [
-            [['sprint_alias', 'fecha_desde', 'fecha_hasta'], 'required'],
+            [['fecha_desde', 'fecha_hasta', 'estado'], 'required'],
             [['fecha_desde', 'fecha_hasta'], 'safe'],
             [['horas_desarrollo'], 'default', 'value' => null],
             [['horas_desarrollo'], 'integer'],
             [['observaciones'], 'string'],
             [['sprint_alias'], 'string', 'max' => 60],
-            [['estado'], 'string', 'max' => 1],
+            [['estado'], 'string', 'max' => 2],
+            [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
         ]; 
     } 
 
@@ -102,4 +104,12 @@ class Sprints extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Usuarios::className(), ['usuario_id' => 'usuario_id'])->viaTable('sprint_usuarios', ['sprint_id' => 'sprint_id']);
     }
+    
+    /** 
+    * @return \yii\db\ActiveQuery 
+    */ 
+    public function getEstado0() 
+    { 
+        return $this->hasOne(EstadosReqSpr::className(), ['req_spr_id' => 'estado']);
+    } 
 }

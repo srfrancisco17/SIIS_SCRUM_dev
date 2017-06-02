@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model app\models\SprintRequerimientos */
 /* @var $form yii\widgets\ActiveForm */
@@ -49,13 +50,9 @@ use yii\widgets\ActiveForm;
              <?= $form->field($model, 'tiempo_desarrollo')->textInput() ?>
         </div>
         <div class="col-xs-6 col-lg-6">
-            <?= $form->field($model, 'estado')->dropDownList(
-                ['1' => 'Activo', '0' => 'Inactivo'],
-                ['prompt'=>'Sin Estado']    
-            )->label('Estado:') ?>
+            <?= $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_sprint_req'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno' ])->label('(*) Estado');?>
         </div>
     </div>
-
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
           <?= Html::submitButton($model->isNewRecord ? 'Agregar RQM' : 'Actualizar RQM', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

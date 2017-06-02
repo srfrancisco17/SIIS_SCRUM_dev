@@ -64,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]
                         ],
                     ],
+                    /*
                     [
                         'label' => 'Estado',
                         'attribute' => 'estado',
@@ -71,6 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         'width' => '10px',
                         'filter' => Html::activeDropDownList($searchModel, 'estado', ArrayHelper::map(app\models\RequerimientosEstados::find()->asArray()->all(), 'reqest_id', 'descripcion'),['class'=>'form-control','prompt' => 'Seleccione'])
                     ],
+                    */
+                    'estado',
                     ['class'=>'kartik\grid\ActionColumn'],
                 ],
                 'toolbar' => [

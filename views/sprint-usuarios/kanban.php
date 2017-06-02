@@ -123,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
             foreach ($objRequerimientos->sprintRequerimientosTareas as $objTareas){
                   
                 switch ($objTareas->estado){
-                    case 1: 
+                    case 2: 
                      
                             $items1[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         
                         break;
                         //------------------------------------------------------------
-                        case 2
+                        case 3
                             : 
                      
                             $items2[$objTareas->tarea_id] = [
@@ -168,7 +168,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         
                         break;
                         //----------------------------------------------------------------
-                        case 3: 
+                        case 4: 
                      
                             $items3[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
@@ -236,7 +236,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        
                                 
                         $.post(
-                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+1,
+                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+2,
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);
@@ -268,7 +268,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        
                                 
                         $.post(
-                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+2,
+                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+3,
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);
@@ -299,7 +299,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        
                                 
                         $.post(
-                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+3,
+                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+4,
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);

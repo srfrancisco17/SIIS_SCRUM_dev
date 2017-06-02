@@ -15,12 +15,12 @@ class SprintRequerimientosTareasSearch extends SprintRequerimientosTareas
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
-        return [
+    public function rules() 
+    { 
+        return [ 
             [['tarea_id', 'sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
-            [['tarea_titulo', 'tarea_descripcion', 'estado'], 'safe'],
-        ];
+            [['tarea_titulo', 'tarea_descripcion', 'estado'], 'safe'], 
+        ]; 
     }
 
     /**

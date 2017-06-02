@@ -125,7 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
             foreach ($objRequerimientos->sprintRequerimientosTareas as $objTareas){
                   
                 switch ($objTareas->estado){
-                    case 1: 
+                    case 2: 
                      
                             $items1[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
@@ -147,7 +147,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         
                         break;
                         //------------------------------------------------------------
-                        case 2
+                        case 3
                             : 
                      
                             $items2[$objTareas->tarea_id] = [
@@ -170,7 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         
                         break;
                         //----------------------------------------------------------------
-                        case 3: 
+                        case 4: 
                      
                             $items3[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,

@@ -49,8 +49,9 @@ class Requerimientos extends \yii\db\ActiveRecord
             [['fecha_requerimiento'], 'safe'],
             [['requerimiento_titulo'], 'string', 'max' => 60],
             [['departamento_solicita'], 'string', 'max' => 4],
-            [['departamento_solicita'], 'default', 'value' => NULL],
+            [['departamento_solicita'], 'default', 'value' => NULL],  
             [['estado'], 'string', 'max' => 2],
+            [['estado'], 'default', 'value' => '0'],
             [['comite_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comites::className(), 'targetAttribute' => ['comite_id' => 'comite_id']],
             //[['departamento_solicita'], 'exist', 'skipOnError' => true, 'targetClass' => Departamentos::className(), 'targetAttribute' => ['departamento_solicita' => 'departamento_id']],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => RequerimientosEstados::className(), 'targetAttribute' => ['estado' => 'reqest_id']],
@@ -96,10 +97,10 @@ class Requerimientos extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEstado0()
-    {
-        return $this->hasOne(RequerimientosEstados::className(), ['reqest_id' => 'estado']);
-    }
+    public function getEstado0() 
+    { 
+        return $this->hasOne(EstadosReqSpr::className(), ['req_spr_id' => 'estado']);
+    } 
 
     /**
      * @return \yii\db\ActiveQuery
