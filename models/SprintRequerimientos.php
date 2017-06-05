@@ -39,9 +39,10 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sprint_id', 'requerimiento_id', 'estado'], 'required'],
+            [['sprint_id', 'requerimiento_id'], 'required'],
             [['sprint_id', 'requerimiento_id', 'usuario_asignado', 'tiempo_desarrollo'], 'integer'],
             [['estado'], 'string', 'max' => 2],
+            [['estado'], 'default', 'value' => '2'],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
             [['requerimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id']],
             [['sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sprints::className(), 'targetAttribute' => ['sprint_id' => 'sprint_id']],

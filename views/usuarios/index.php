@@ -88,23 +88,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     'placeholder' => '',
                 ],
             ],
-            
             [
-                    'label' => 'Estado',
-                    'attribute' => 'estado',
-                    'value' => function ($data) {
-                        //print_r($data);
+                'label' => 'Estado',
+                'attribute' => 'estado',
+                'value' => function ($data) {
+                    //print_r($data);
 
-                        if($data['estado'] == 0){
-                            return 'Inactivo';
-                        }
-                        if($data['estado'] == 1){
-                            return 'Activo';
-                        }
-                        return 'Error';
-                    },
-                    'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
-                    'contentOptions' => ['style' => 'width:5px;'],
+                    if($data['estado'] == 0){
+                        return 'Inactivo';
+                    }
+                    if($data['estado'] == 1){
+                        return 'Activo';
+                    }
+                    return 'Error';
+                },
+                'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
+                'contentOptions' => ['style' => 'width:5px;'],
             ],
             // 'descripcion',
             // 'correo',

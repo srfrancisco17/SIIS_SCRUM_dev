@@ -12,6 +12,8 @@ use yii\filters\VerbFilter;
 
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use app\models\Usuarios;
+use yii\filters\AccessControl;
 /**
  * SprintsController implements the CRUD actions for Sprints model.
  */
@@ -23,6 +25,21 @@ class SprintsController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete','master-kanban'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'master-kanban'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $validar_tipousuario = [Usuarios::USUARIO_SCRUM_MASTER];
+                            return Usuarios::tipoUsuarioArreglo($validar_tipousuario) && Usuarios::estaActivo();
+                        }
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -40,6 +57,7 @@ class SprintsController extends Controller
     {
         $searchModel = new SprintsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize=10;
 
         return $this->render('index', [
             'searchModel' => $searchModel,

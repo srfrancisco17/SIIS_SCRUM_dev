@@ -54,7 +54,7 @@ class Requerimientos extends \yii\db\ActiveRecord
             [['estado'], 'default', 'value' => '0'],
             [['comite_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comites::className(), 'targetAttribute' => ['comite_id' => 'comite_id']],
             //[['departamento_solicita'], 'exist', 'skipOnError' => true, 'targetClass' => Departamentos::className(), 'targetAttribute' => ['departamento_solicita' => 'departamento_id']],
-            [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => RequerimientosEstados::className(), 'targetAttribute' => ['estado' => 'reqest_id']],
+            [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
             [['usuario_solicita'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_solicita' => 'usuario_id']],
         ];
     }

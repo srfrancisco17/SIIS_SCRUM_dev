@@ -22,7 +22,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index-scrum-master', 'index-developer','login','logout','contact','index'],
+                'only' => ['index-scrum-master', 'index-developer','login','logout','contact'],
                 'rules' => [
                     [
                         'actions' => ['logout','contact', 'index-developer'],
@@ -76,12 +76,12 @@ class SiteController extends Controller
      * @return string
      */
     
-    /*
+    
     public function actionIndex()
     {
         return $this->render('index');
     }
-    */
+    
     
     public function actionIndexScrumMaster()
     {

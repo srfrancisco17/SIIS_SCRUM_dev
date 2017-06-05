@@ -50,7 +50,11 @@ use yii\helpers\ArrayHelper;
              <?= $form->field($model, 'tiempo_desarrollo')->textInput() ?>
         </div>
         <div class="col-xs-6 col-lg-6">
-            <?= $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_sprint_req'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno' ])->label('(*) Estado');?>
+        <?php
+            if (!$model->isNewRecord){
+                echo $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_sprint_req'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno' ])->label('(*) Estado');
+            }
+        ?>
         </div>
     </div>
     <div class="modal-footer">

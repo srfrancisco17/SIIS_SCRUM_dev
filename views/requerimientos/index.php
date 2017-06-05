@@ -63,17 +63,33 @@ $this->params['breadcrumbs'][] = $this->title;
                             'autoclose'=>true,
                             ]
                         ],
+                        'contentOptions' => ['style' => 'width:200px;'],
                     ],
-                    /*
                     [
                         'label' => 'Estado',
                         'attribute' => 'estado',
-                        'value' => 'estado0.descripcion',
-                        'width' => '10px',
-                        'filter' => Html::activeDropDownList($searchModel, 'estado', ArrayHelper::map(app\models\RequerimientosEstados::find()->asArray()->all(), 'reqest_id', 'descripcion'),['class'=>'form-control','prompt' => 'Seleccione'])
+                        'value' => function ($data) {
+                            //print_r($data);  
+                            switch ($data['estado']) {
+                                case 0:
+                                    return "Inactivo";
+                                case 1:
+                                    return "Activo";
+                                case 2:
+                                    echo "En Espera";
+                                case 3:
+                                    echo "En Progreso";
+                                    break;
+                                case 4:
+                                    echo "Terminado";
+                                    break;
+                                default:
+                                   echo "Error";
+                            }
+                        },
+                        'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo', '2' => 'En Espera', '3' => 'En Progreso', '4' => 'Terminado'],['class'=>'form-control','prompt' => '']),
+                        'contentOptions' => ['style' => 'width:5px;'],
                     ],
-                    */
-                    'estado',
                     ['class'=>'kartik\grid\ActionColumn'],
                 ],
                 'toolbar' => [

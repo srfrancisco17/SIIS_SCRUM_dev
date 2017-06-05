@@ -61,17 +61,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Estado',
                             'attribute' => 'estado',
                             'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
-                            'width' => '10px',
+                            'width' => '20px',
                             'value' => function ($data) {
                             //print_r($data);
                             //Condicionales que me permiten hacer una equivalencia de valores numericos en textos
-                            if($data['estado'] == 0){
-                                return 'Inactivo';
+                            if($data['estado'] == 2){
+                                return 'En Espera';
                             }
-                            if($data['estado'] == 1){
-                                return 'Activo';
+                            if($data['estado'] == 3){
+                                return 'En Progreso';
                             }
-                            return 'Null';
+                            if($data['estado'] == 4){
+                                return 'Terminado';
+                            }
+                            if($data['estado'] == 5){
+                                return 'No Cumplida';
+                            }
+                            return 'Error';
                         },
                         ],
                     [

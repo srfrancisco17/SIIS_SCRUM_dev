@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use app\models\Usuarios;
+use yii\filters\AccessControl;
 /**
  * SprintRequerimientosController implements the CRUD actions for SprintRequerimientos model.
  */
@@ -22,6 +24,21 @@ class SprintRequerimientosController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $validar_tipousuario = [Usuarios::USUARIO_SCRUM_MASTER];
+                            return Usuarios::tipoUsuarioArreglo($validar_tipousuario) && Usuarios::estaActivo();
+                        }
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

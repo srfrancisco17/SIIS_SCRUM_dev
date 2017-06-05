@@ -124,9 +124,24 @@ use kartik\date\DatePicker;
                             ])->label('(*) Fecha Del Requerimiento:'); 
                             ?>
                         </div>
-                         <div class="col-xs-12 col-lg-6">
-
-                            <?= $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_requerimiento'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno' ])->label('(*) Estado Del Requerimiento');?>
+                        <div class="col-xs-12 col-lg-6">
+                        <?php
+                        /*
+                         * Condicion para cargr por defecto el requerimiento en inactivo 
+                        */
+                            if ($model->isNewRecord){
+                                
+                                $arreglo = array('0'=>'Inactivo', '1' => 'Activo');
+                                
+                                echo $form->field($model, 'estado')->dropDownList($arreglo)->label('(*) Estado Del Requerimiento');
+                                
+                            }else{
+                                
+                                echo $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_requerimiento'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno' ])->label('(*) Estado Del Requerimiento');
+                            
+                            }
+                            
+                        ?>
                         </div>                       
                     </div>
                     <div class="row">

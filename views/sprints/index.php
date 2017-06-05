@@ -49,7 +49,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         'filter'=>FALSE
                     ],
                      */
-                    // 'estado',
+                    //'estado',
+                    [
+                        'label' => 'Estado',
+                        'attribute' => 'estado',
+                        'value' => function ($data) {
+                            //print_r($data);  
+                            switch ($data['estado']) {
+                                case 0:
+                                    return "Inactivo";
+                                case 1:
+                                    return "Activo";
+                                case 4:
+                                    echo "Terminado";
+                                    break;
+                                default:
+                                   echo "Error";
+                            }
+                        },
+                        'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo', '4' => 'Terminado'],['class'=>'form-control','prompt' => '']),
+                        'contentOptions' => ['style' => 'width:5px;'],
+                    ],
                     [
                         'class'=>'kartik\grid\ActionColumn',
                         'template' => '{update}{delete}{sprints}{master-kanban}',
