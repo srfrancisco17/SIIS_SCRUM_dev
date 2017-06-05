@@ -60,8 +60,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                             'label' => 'Estado',
                             'attribute' => 'estado',
-                            'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
-                            'width' => '20px',
+                            'filter' => Html::activeDropDownList($searchModel, 'estado', ['2'=>'En Espera', '3'=>'En progreso', '4' => 'Terminado', '5' => 'No Cumplida'],['class'=>'form-control','prompt' => '']),
+                            //'width' => '100px',
                             'value' => function ($data) {
                             //print_r($data);
                             //Condicionales que me permiten hacer una equivalencia de valores numericos en textos
@@ -79,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                             return 'Error';
                         },
+                        'contentOptions' => ['style' => 'width:100px;'],
                         ],
                     [
                         'class'=>'yii\grid\ActionColumn',

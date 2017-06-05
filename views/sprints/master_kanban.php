@@ -208,10 +208,11 @@ $this->params['breadcrumbs'][] = $this->title;
                   echo '<br>';
             }
          ?>
-         <!-- ------------------------------------- -->
+        <!-- ------------------------------------- -->
         <!--<div class="row">-->
             <div class="col-lg-3">
-                <div class="box box-default collapsed-box" style="background-color: <?= $consulta[$i]->usuarioAsignado->color ?>;">
+                
+                <div class="box box-default collapsed-box" style="background-color: <?= empty($consulta[$i]->usuarioAsignado->color) ? '#656565' : $consulta[$i]->usuarioAsignado->color ?>;">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?=  $objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">

@@ -84,13 +84,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <h4 class="text-center">Requerimiento</h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">Pendiente</h4>
+            <h4 class="text-center">En Espera</h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">En Curso</h4>
+            <h4 class="text-center">En Progreso</h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">Finalizado</h4>
+            <h4 class="text-center">Terminado</h4>
         </div>
         <!--<hr>-->
         <br>

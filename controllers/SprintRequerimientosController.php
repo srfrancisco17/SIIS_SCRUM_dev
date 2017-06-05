@@ -114,11 +114,15 @@ public function actionCreate($sprint_id, $submit = false)
         }
 
         if ($model->load(Yii::$app->request->post())) {
+            
+            //Comando Para Cambiar de estado
+            \app\models\Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
+            
             if ($model->save()) {
                 $model->refresh();
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
-                    'message' => '¡Éxito!',
+                    'message' => '¡Éxito ALGO!',
                 ];
             } else {
                 Yii::$app->response->format = Response::FORMAT_JSON;
@@ -176,6 +180,11 @@ public function actionCreate($sprint_id, $submit = false)
     public function actionDelete($sprint_id, $requerimiento_id)
     {
         $this->findModel($sprint_id, $requerimiento_id)->delete();
+        
+        /*
+        *   Comando Para Cambiar de estado
+        */
+        \app\models\Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, '1');
 
         return $this->redirect(['index','sprint_id'=>$sprint_id]);
     }

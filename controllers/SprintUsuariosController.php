@@ -158,12 +158,14 @@ class SprintUsuariosController extends Controller
         $model = new \app\models\SprintRequerimientosTareas();
         
         if (Yii::$app->request->isAjax){
-        
+            
+            /*
+            if ($estado == 2){
+                $sw_var = SprintRequerimientosTareas::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->count();
+            }
+            */
             $model->actualizarEstadoTareas($id, $estado);
 
-            //$model->refresh();
-            //Yii::$app->response->format = Response::FORMAT_JSON;
-            //return $this->redirect('sprint-usuarios/index');
         } 
     }
 

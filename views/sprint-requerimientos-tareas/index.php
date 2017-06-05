@@ -69,6 +69,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
+   
+   
     <div class="row">
         <div class="col-lg-6">
             <?php Pjax::begin(); ?>

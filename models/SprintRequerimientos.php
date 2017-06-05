@@ -99,7 +99,7 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
     
     public static function getListaRequerimientos() {
         
-        $sql = 'Select * From requerimientos where Not requerimiento_id In (Select requerimiento_id From sprint_requerimientos)';
+        $sql = "Select * From requerimientos where Not requerimiento_id In (Select requerimiento_id From sprint_requerimientos)and estado='1' ";
         $query = SprintRequerimientos::findBySql($sql)->asArray()->all();
         //$query = Requerimientos::find()->where(['estado'=>'1'])->all();
         return ArrayHelper::map($query, 'requerimiento_id', 'requerimiento_titulo');
