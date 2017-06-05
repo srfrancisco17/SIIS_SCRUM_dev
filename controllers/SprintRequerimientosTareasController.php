@@ -80,12 +80,7 @@ class SprintRequerimientosTareasController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->sprint_id = $sprint_id;
             $model->requerimiento_id = $requerimiento_id;
-            
-            $sw_var = SprintRequerimientosTareas::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->count();
-            
-            if ($sw_var == '0'){
-                \app\models\Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, '3');
-            }
+
             
             if ($model->save()) {
                 $model->refresh();

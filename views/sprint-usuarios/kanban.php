@@ -115,13 +115,15 @@ $this->params['breadcrumbs'][] = $this->title;
         //echo $consulta[$i]->usuarioAsignado->color;
         
         //$requerimientos = \app\models\Requerimientos::find()->with('sprintRequerimientosTareas')->all();
-        
+          
         foreach ($consulta1 as $objRequerimientos) {
             $items1 = array(); 
             $items2 = array();
             $items3 = array();
+            
+            
             foreach ($objRequerimientos->sprintRequerimientosTareas as $objTareas){
-                  
+                
                 switch ($objTareas->estado){
                     case 2: 
                      
@@ -221,7 +223,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </div>
             <div class="col-lg-3 columna-sortable">
- 
+
                 <?php
                     echo Sortable::widget([
                         'connected' => $objRequerimientos->requerimiento_id.''  ,
@@ -233,10 +235,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 console.log(b.item[0].id); 
                              
                         var1 = b.item[0].id;
-                       
-                                
+                           
                         $.post(
-                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+2,
+                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+2+"&sprint_id="+"'.$objTareas->sprint_id.'"+"&requerimiento_id="+"'.$objTareas->requerimiento_id.'",
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);
@@ -265,10 +266,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 console.log(b.item[0].id); 
                              
                         var1 = b.item[0].id;
-                       
-                                
+                          
                         $.post(
-                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+3,
+                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+3+"&sprint_id="+"'.$objTareas->sprint_id.'"+"&requerimiento_id="+"'.$objTareas->requerimiento_id.'",
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);
@@ -296,10 +296,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 console.log(b.item[0].id); 
                              
                         var1 = b.item[0].id;
-                       
-                                
+                          
                         $.post(
-                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+4,
+                            form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+4+"&sprint_id="+"'.$objTareas->sprint_id.'"+"&requerimiento_id="+"'.$objTareas->requerimiento_id.'",
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);

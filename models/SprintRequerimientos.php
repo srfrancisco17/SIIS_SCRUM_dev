@@ -128,4 +128,25 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         return ArrayHelper::map($opciones, 'usuario_id', 'usuario.nombres');
     }
     
+    public function actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, $estado){
+        
+        $conexion = Yii::$app->db;
+        
+        $conexion->createCommand("UPDATE sprint_requerimientos SET estado=:estado WHERE sprint_id=:sprint_id AND requerimiento_id=:requerimiento_id")
+        ->bindValue(':estado', $estado)
+        ->bindValue(':sprint_id', $sprint_id)
+        ->bindValue(':requerimiento_id', $requerimiento_id)       
+        ->execute();
+        
+        /*
+            $conexion->createCommand()->update('sprint_requerimientos', [
+                'estado' => $estado,
+            ],  'sprint_id ='.$sprint_id, 'requerimiento_id ='.$requerimiento_id)->execute(); 
+        */
+        
+        \app\models\Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, $estado);
+        
+        return true;  
+ 
+    }
 }

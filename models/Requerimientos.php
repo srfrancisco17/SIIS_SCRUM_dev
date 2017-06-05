@@ -134,7 +134,7 @@ class Requerimientos extends \yii\db\ActiveRecord
         return $this->hasMany(SprintRequerimientosTareas::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
     
-        public function actualizarEstadoRequerimientos($requerimiento_id, $estado){
+    public function actualizarEstadoRequerimientos($requerimiento_id, $estado){
         
         $conexion = Yii::$app->db;
            
