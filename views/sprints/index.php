@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         },
                         'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo', '4' => 'Terminado'],['class'=>'form-control','prompt' => '']),
-                        'contentOptions' => ['style' => 'width:5px;'],
+                        'contentOptions' => ['style' => 'width:150px;'],
                     ],
                     [
                         'class'=>'kartik\grid\ActionColumn',

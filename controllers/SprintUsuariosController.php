@@ -166,6 +166,7 @@ class SprintUsuariosController extends Controller
                 $sw_var = \app\models\SprintRequerimientosTareas::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->andWhere(['estado' => '3'])->count();
                 
                 if ($sw_var == 0){
+                    echo 'estoy en pro';
                     \app\models\SprintRequerimientos::actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, '2');
                 }
                 

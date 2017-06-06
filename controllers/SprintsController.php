@@ -56,6 +56,7 @@ class SprintsController extends Controller
     public function actionIndex()
     {
         $searchModel = new SprintsSearch();
+        $searchModel->estado = '1'; 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination->pageSize=10;
 

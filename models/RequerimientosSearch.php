@@ -47,6 +47,7 @@ class RequerimientosSearch extends Requerimientos
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['requerimiento_id'=>SORT_ASC]],
         ]);
 
         $this->load($params);

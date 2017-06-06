@@ -47,6 +47,7 @@ class SprintsSearch extends Sprints
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['sprint_id'=>SORT_ASC]],
         ]);
 
         $this->load($params);

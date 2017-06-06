@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         list-style: none outside none;
         margin: 0px;
         padding: 0px;
-        cursor: normal;
+        cursor: default;
     }
 
     .box {

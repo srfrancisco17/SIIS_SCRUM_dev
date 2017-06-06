@@ -20,8 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="comites-index">
 <section id="introduction">
   <p class="lead">
-    <b>COMITES</b> is a popular open source WebApp template for admin dashboards and control panels.
-    It is a responsive HTML template that is based on the CSS framework Bootstrap 3
+    <b>COMITES</b> un grupo de individuos que trabajan en conjunto para resolver alguna problemática o llevar a cabo un proyecto.
   </p>
 </section>
     

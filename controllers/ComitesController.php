@@ -57,6 +57,7 @@ class ComitesController extends Controller
     {
         
         $searchModel = new ComitesSearch();
+        //$searchModel->estado = '1';
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination->pageSize=10;
         
