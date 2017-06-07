@@ -39,16 +39,14 @@ class SprintRequerimientosSearch extends SprintRequerimientos
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $sprint_id, $var)
+    public function search($params, $sprint_id, $sw_control)
     {
-        
-
         // add conditions that should always apply here
         
-        if(!Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == 2 && $var == 2){
+        if(!Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == 2 && $sw_control == 2){
             $query = SprintRequerimientos::find()->where(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->andWhere(['sprint_id' => $sprint_id]);
             //$query = SprintUsuarios::find();
-        }else if($var == 1){
+        }else if($sw_control == 1){
             $query = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id]);
         }
 

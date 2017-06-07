@@ -46,7 +46,7 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
             [['sprint_id', 'requerimiento_id', 'usuario_asignado', 'tiempo_desarrollo', 'prioridad'], 'integer'],
             [['estado'], 'string', 'max' => 2],
             [['estado'], 'default', 'value' => '2'],
-             [['prioridad'], 'exist', 'skipOnError' => true, 'targetClass' => PrioridadSprintRequerimientos::className(), 'targetAttribute' => ['prioridad' => 'prioridad_id']],
+            [['prioridad'], 'exist', 'skipOnError' => true, 'targetClass' => PrioridadSprintRequerimientos::className(), 'targetAttribute' => ['prioridad' => 'prioridad_id']],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
             [['requerimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id']],
             [['sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sprints::className(), 'targetAttribute' => ['sprint_id' => 'sprint_id']],

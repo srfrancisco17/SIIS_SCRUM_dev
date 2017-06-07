@@ -2,6 +2,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use kartik\depdrop\DepDrop;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\SprintRequerimientos */
 /* @var $form yii\widgets\ActiveForm */

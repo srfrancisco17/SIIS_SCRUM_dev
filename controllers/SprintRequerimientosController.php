@@ -3,7 +3,10 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Requerimientos;
 use app\models\SprintRequerimientos;
+use app\models\SprintUsuariosSearch;
+use app\models\UsuariosSearch;
 use app\models\SprintRequerimientosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -52,37 +55,29 @@ class SprintRequerimientosController extends Controller
      * Lists all SprintRequerimientos models.
      * @return mixed
      */
-    public function actionIndex2($sprint_id){
-        $searchModel = new SprintRequerimientosSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$sprint_id,2);   
-        
-        return $this->render('index2', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            ]);
-    }
     
     public function actionIndex($sprint_id)
     {
-        $searchModel = new SprintRequerimientosSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$sprint_id, 1);
-        $dataProvider->pagination->pageSize=5;
+       
+        $sprintRequerimientosSearchModel = new SprintRequerimientosSearch();
+        $sprintRequerimientosDataProvider = $sprintRequerimientosSearchModel->search(Yii::$app->request->queryParams,$sprint_id, 1);
+        $sprintRequerimientosDataProvider->pagination->pageSize=5;
         
-        $searchModel2 = new \app\models\UsuariosSearch();
-        $dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams,2,$sprint_id);
+        $usuariosSearchModel = new UsuariosSearch();
+        $usuariosDataProvider = $usuariosSearchModel->search(Yii::$app->request->queryParams,2,$sprint_id);
         
-        $searchModel3 = new \app\models\SprintUsuariosSearch();
-        $dataProvider3 = $searchModel3->search(Yii::$app->request->queryParams,$sprint_id);
+        $sprintUsuariosSearchModel = new SprintUsuariosSearch();
+        $sprintUsuariosDataProvider = $sprintUsuariosSearchModel->search(Yii::$app->request->queryParams,$sprint_id);
 
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'sprintRequerimientosSearchModel' => $sprintRequerimientosSearchModel,
+            'sprintRequerimientosDataProvider' => $sprintRequerimientosDataProvider,
             'sprint_id' => $sprint_id,
-            'searchModel2' =>$searchModel2,
-            'dataProvider2' =>$dataProvider2,
-            'searchModel3' =>$searchModel3,
-            'dataProvider3' =>$dataProvider3,
+            //'usuariosSearchModel' =>$usuariosSearchModel,
+            'usuariosDataProvider' =>$usuariosDataProvider,
+            //'sprintUsuariosSearchModel' =>$sprintUsuariosSearchModel,
+            'sprintUsuariosDataProvider' =>$sprintUsuariosDataProvider,
         ]);
     }
 
@@ -104,7 +99,7 @@ class SprintRequerimientosController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-public function actionCreate($sprint_id, $submit = false)
+    public function actionCreate($sprint_id, $submit = false)
     {
         $model = new SprintRequerimientos();
 
@@ -116,7 +111,7 @@ public function actionCreate($sprint_id, $submit = false)
         if ($model->load(Yii::$app->request->post())) {
             
             //Comando Para Cambiar de estado
-            \app\models\Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
+            Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
             
             if ($model->save()) {
                 $model->refresh();
@@ -184,7 +179,7 @@ public function actionCreate($sprint_id, $submit = false)
         /*
         *   Comando Para Cambiar de estado
         */
-        \app\models\Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, '1');
+        Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, '1');
 
         return $this->redirect(['index','sprint_id'=>$sprint_id]);
     }
@@ -206,8 +201,8 @@ public function actionCreate($sprint_id, $submit = false)
         }
     }
     
-    public function actionRespuesta($id, $k){
-       //CAMBIOS (*-*)\_
+    public function actionPeticion1($id, $k){
+
         $model = new \app\models\SprintUsuarios();
         
         if (Yii::$app->request->isAjax){
@@ -220,7 +215,7 @@ public function actionCreate($sprint_id, $submit = false)
         } 
     }
     
-    public function actionRespuesta2($id, $k){
+    public function actionPeticion2($id, $k){
        //CAMBIOS (*-*)\_
         $model = new \app\models\SprintUsuarios();
         

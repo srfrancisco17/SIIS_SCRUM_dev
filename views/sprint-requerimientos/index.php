@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
-
 use yii\widgets\ActiveForm;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SprintRequerimientosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -13,7 +13,19 @@ use yii\widgets\ActiveForm;
 $this->title = 'Sprint Requerimientos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?php
 
+    $consulta = \app\models\Sprints::find()
+            ->select('sprint_id, sprint_alias')
+            ->where(['sprint_id' => $sprint_id])
+            ->one();
+
+
+    $sprint_alias = '<small> Sprint Sin Alias </small>';
+    if (!empty($consulta->sprint_alias)){
+        $sprint_alias = $consulta->sprint_alias;
+    }
+?>
 <div class="row"> 
     <div class="col-md-10">
         <div class="sprint-requerimientos-index">
@@ -26,18 +38,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
             ?>
             <?php ActiveForm::end() ?>
-            <?= GridView::widget([
+            <?=
+            GridView::widget([
                 'id' => 'sprintRequerimiento-grid',
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
+                'dataProvider' => $sprintRequerimientosDataProvider,
+                'filterModel' => $sprintRequerimientosSearchModel,
                 'autoXlFormat' => true,
                 'panel' => [
-                    'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-expand"></i> SPRINT Numero: ('.$sprint_id.')</h3>',
+                    'heading' => '<i class="glyphicon glyphicon-expand"></i> <b> ID:' . $sprint_id . '</b> - '.$sprint_alias,
                     'type' => GridView::TYPE_DEFAULT,
                     'footer' => '',
                 ],
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
+                        ['class' => 'yii\grid\SerialColumn'],
                     //'sprint_id',
                     [
                         'attribute' => 'requerimiento_id',
@@ -45,63 +58,63 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => 'requerimiento.requerimiento_titulo',
                         'filter' => FALSE,
                     ],
-                    [
+                        [
                         'label' => 'Usuario Asignado',
                         'attribute' => 'usuario_asignado',
                         'value' => 'usuarioAsignado.nombres',
                         'filter' => FALSE,
                     ],
-                    [
+                        [
                         'attribute' => 'tiempo_desarrollo',
                         'filter' => FALSE,
                     ],
                     //'usuario_asignado',
                     //'tiempo_desarrollo',
                     'prioridad',
-                    [
-                            'label' => 'Estado',
-                            'attribute' => 'estado',
-                            'filter' => Html::activeDropDownList($searchModel, 'estado', ['2'=>'En Espera', '3'=>'En progreso', '4' => 'Terminado', '5' => 'No Cumplida'],['class'=>'form-control','prompt' => '']),
-                            //'width' => '100px',
-                            'value' => function ($data) {
+                        [
+                        'label' => 'Estado',
+                        'attribute' => 'estado',
+                        'filter' => Html::activeDropDownList($sprintRequerimientosSearchModel, 'estado', ['2' => 'En Espera', '3' => 'En progreso', '4' => 'Terminado', '5' => 'No Cumplida'], ['class' => 'form-control', 'prompt' => '']),
+                        //'width' => '100px',
+                        'value' => function ($data) {
                             //print_r($data);
                             //Condicionales que me permiten hacer una equivalencia de valores numericos en textos
-                            if($data['estado'] == 2){
+                            if ($data['estado'] == 2) {
                                 return 'En Espera';
                             }
-                            if($data['estado'] == 3){
+                            if ($data['estado'] == 3) {
                                 return 'En Progreso';
                             }
-                            if($data['estado'] == 4){
+                            if ($data['estado'] == 4) {
                                 return 'Terminado';
                             }
-                            if($data['estado'] == 5){
+                            if ($data['estado'] == 5) {
                                 return 'No Cumplida';
                             }
                             return 'Error';
                         },
                         'contentOptions' => ['style' => 'width:100px;'],
-                        ],
+                    ],
                     [
-                        'class'=>'yii\grid\ActionColumn',
+                        'class' => 'yii\grid\ActionColumn',
                         'template' => '{update}{delete}{sprints}',
                         'buttons' => [
                             'update' => function ($url, $model, $key) {
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
-                                        'id' => 'activity-index-link',
-                                        'title' => Yii::t('yii', 'Actualizar'),
-                                        'data-toggle' => 'modal',
-                                        'data-target' => '#modal',
-                                        'data-url' => Url::to(['update', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]),
-                                        'data-pjax' => '0',
-                            ]);
+                                            'id' => 'activity-index-link',
+                                            'title' => Yii::t('yii', 'Actualizar'),
+                                            'data-toggle' => 'modal',
+                                            'data-target' => '#modal',
+                                            'data-url' => Url::to(['update', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]),
+                                            'data-pjax' => '0',
+                                ]);
                             },
                         ]
                     ],
                 ],
-                'pjax' => true,                               
+                'pjax' => true,
                 'toolbar' => [
-                    ['content' =>
+                        ['content' =>
                         Html::a('<i class="glyphicon glyphicon-plus"></i> Asociar Requerimiento', '#', [
                             'id' => 'activity-index-link',
                             'class' => 'btn btn-success',
@@ -111,9 +124,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-pjax' => '0',
                         ]),
                     ],
-                ],                  
-            ]); ?>
-            
+                ],
+            ]);
+            ?>
             <!-- -->
             <?php
             $this->registerJs(
@@ -150,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     var form = $('#sprint-usuarios-form');
 
                     $.post(
-                        form.action = 'index.php?r=sprint-requerimientos/respuesta&id='+'$sprint_id'+'&k='+keys,
+                        form.action = 'index.php?r=sprint-requerimientos/peticion1&id='+'$sprint_id'+'&k='+keys,
                         form.serialize()
                     ).done(function(result) {
                         form.parent().html(result.message);
@@ -173,7 +186,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     };
                     
                     $.post(
-                        form.action = 'index.php?r=sprint-requerimientos/respuesta2&id='+'$sprint_id'+'&k='+id_usuarios.toString(),
+                        form.action = 'index.php?r=sprint-requerimientos/peticion2&id='+'$sprint_id'+'&k='+id_usuarios.toString(),
                         form.serialize()
                     ).done(function(result) {
                         form.parent().html(result.message);
@@ -189,7 +202,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 });
             ");
             ?>
-
             <?php
             Modal::begin([
                 'id' => 'modal',
@@ -203,19 +215,19 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div> 
     <div class="row">
-            <div class="col-lg-2">
-        <?php
-                echo Html::a('<span class="badge bg-blue">'.$dataProvider2->getCount().'</span><i class="fa fa-users"></i> Agregar Desarrollador', '#', [
+        <div class="col-lg-2">
+            <?php
+            echo Html::a('<span class="badge bg-blue">' . $usuariosDataProvider->getCount() . '</span><i class="fa fa-users"></i> Agregar Desarrollador', '#', [
                 'id' => 'activity-index-link2',
                 'class' => 'btn btn-app',
                 'data-toggle' => 'modal2',
-                'data-target' => '#modal2',//Aqui!!!
+                'data-target' => '#modal2', //Aqui!!!
                 //'data-url' => Url::to(['listausuarios']),
                 //'data-url' => Url::to(['listausuarios', 'comite_id' => $comite_id ]),
                 'data-pjax' => '0',
             ])
-        ?>
-    </div>
+            ?>
+        </div>
         <style>
             #activity-index-link2{
                 color: #007DC8;
@@ -224,100 +236,104 @@ $this->params['breadcrumbs'][] = $this->title;
                 color: #dd4b39;
             }
         </style>
-    <div class="col-lg-2">
-                <?php
-                echo Html::a('<span class="badge bg-red">'.$dataProvider3->getCount().'</span><i class="fa fa-user-times"></i> Eliminar Desarrollador', '#', [
+        <div class="col-lg-2">
+            <?php
+            echo Html::a('<span class="badge bg-red">' . $sprintUsuariosDataProvider->getCount() . '</span><i class="fa fa-user-times"></i> Eliminar Desarrollador', '#', [
                 'id' => 'activity-index-link3',
                 'class' => 'btn btn-app',
                 'data-toggle' => 'modal3',
-                'data-target' => '#modal3',//Aqui!!!
+                'data-target' => '#modal3', //Aqui!!!
                 //'data-url' => Url::to(['listausuarios']),
                 //'data-url' => Url::to(['listausuarios', 'comite_id' => $comite_id ]),
                 'data-pjax' => '0',
             ])
-        ?>
+            ?>
+        </div>
     </div>
-    </div>
-        <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <!--ASIGNAMOS UN ID A ESTE DIV -->
-          <div class="modal-dialog" id="mdialTamanio">
+    <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!--ASIGNAMOS UN ID A ESTE DIV -->
+        <div class="modal-dialog" id="mdialTamanio">
             <div class="modal-content">
-              <div class="modal-header bg-blue-gradient">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Agregar Desarrolladores</h4>
-              </div>
-              <div class="modal-body2">
-                    <?= GridView::widget([
-                   'id' => 'kv-grid-listausuarios',
-                    'dataProvider' => $dataProvider2,
-                    'filterModel' => FALSE,
-                    'columns' => [
-                        ['attribute' => 'usuario_id', 'width' => '100px','filter' => FALSE],
-                        [
-                            'label' => 'Nombres',
-                            'attribute' => 'nombres',
-                            'filter' => FALSE
+                <div class="modal-header bg-blue-gradient">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Agregar Desarrolladores</h4>
+                </div>
+                <div class="modal-body2">
+                    <?=
+                    GridView::widget([
+                        'id' => 'kv-grid-listausuarios',
+                        'dataProvider' => $usuariosDataProvider,
+                        'filterModel' => FALSE,
+                        'columns' => [
+                                ['attribute' => 'usuario_id', 'width' => '100px', 'filter' => FALSE],
+                                [
+                                'label' => 'Nombres',
+                                'attribute' => 'nombres',
+                                'filter' => FALSE
+                            ],
+                                [
+                                'label' => 'Apellidos',
+                                'attribute' => 'apellidos',
+                                'filter' => FALSE
+                            ],
+                                [
+                                'class' => 'kartik\grid\CheckboxColumn',
+                                'rowSelectedClass' => GridView::TYPE_SUCCESS,
+                            ],
                         ],
-                        [
-                            'label' => 'Apellidos',
-                            'attribute' => 'apellidos',
-                            'filter' => FALSE
-                        ],
-                        [
-                            'class' => 'kartik\grid\CheckboxColumn',
-                            'rowSelectedClass' => GridView::TYPE_SUCCESS,
-                        ],
-                    ],
-                    'pjax' => true,
-                ]) ?>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <input type="submit"  class="btn btn-primary" name="enviar_datos" id="enviar_datos" value="Agregar">
-              </div>
+                        'pjax' => true,
+                    ])
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <input type="submit"  class="btn btn-primary" name="enviar_datos" id="enviar_datos" value="Agregar">
+                </div>
             </div>
-          </div>
+        </div>
     </div>
-<!-- Modal 3 -->
-        <div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <!--ASIGNAMOS UN ID A ESTE DIV -->
-          <div class="modal-dialog" id="mdialTamanio">
+    <!-- Modal 3 -->
+    <div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!--ASIGNAMOS UN ID A ESTE DIV -->
+        <div class="modal-dialog" id="mdialTamanio">
             <div class="modal-content">
-              <div class="modal-header bg-red-gradient">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Eliminar Desarrolladores</h4>
-              </div>
-              <div class="modal-body3">
-                    <?= GridView::widget([
-                    'id' => 'kv-grid3',
-                    'dataProvider' => $dataProvider3,
-                    'filterModel' => FALSE,
-                    'columns' => [
-                        ['attribute' => 'usuario_id', 'width' => '100px','filter' => FALSE],
-                        [
-                            'label' => 'Nombres',
-                            'attribute' => 'usuario.nombres',
-                            'filter' => FALSE
+                <div class="modal-header bg-red-gradient">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Eliminar Desarrolladores</h4>
+                </div>
+                <div class="modal-body3">
+                    <?=
+                    GridView::widget([
+                        'id' => 'kv-grid3',
+                        'dataProvider' => $sprintUsuariosDataProvider,
+                        'filterModel' => FALSE,
+                        'columns' => [
+                                ['attribute' => 'usuario_id', 'width' => '100px', 'filter' => FALSE],
+                                [
+                                'label' => 'Nombres',
+                                'attribute' => 'usuario.nombres',
+                                'filter' => FALSE
+                            ],
+                                [
+                                'label' => 'Apellidos',
+                                'attribute' => 'usuario.apellidos',
+                                'filter' => FALSE
+                            ],
+                                [
+                                'class' => 'kartik\grid\CheckboxColumn',
+                                'rowSelectedClass' => GridView::TYPE_DANGER,
+                            ],
                         ],
-                        [
-                            'label' => 'Apellidos',
-                            'attribute' => 'usuario.apellidos',
-                            'filter' => FALSE
-                        ],
-                        [
-                            'class' => 'kartik\grid\CheckboxColumn',
-                            'rowSelectedClass' => GridView::TYPE_DANGER,
-                        ],
-                    ],
-                    'pjax' => true,
-                ]) ?>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <input type="submit"  class="btn btn-danger" name="enviar_datos2" id="enviar_datos2" value="Eliminar">
-              </div>
+                        'pjax' => true,
+                    ])
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <input type="submit"  class="btn btn-danger" name="enviar_datos2" id="enviar_datos2" value="Eliminar">
+                </div>
             </div>
-          </div>
+        </div>
     </div>
 </div>
 

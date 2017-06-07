@@ -40,15 +40,15 @@ class UsuariosSearch extends Usuarios
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $var = false, $comite_id = false)
+    public function search($params, $sw_control = false, $comite_id = false)
     {
         /*
          * Condicional que 
          */
-        if($var == 1){
-            $var = ComitesAsistentes::findBySql('select usuario_id FROM comites_asistentes WHERE comite_id='.$comite_id)->asArray()->all();
-            $query = Usuarios::find()->where(['not in','usuario_id', $var])->andWhere(['estado'=>'1']);
-        }elseif ($var == 2) {
+        if($sw_control == 1){
+            $comites_asistentes = ComitesAsistentes::findBySql('select usuario_id FROM comites_asistentes WHERE comite_id='.$comite_id)->asArray()->all();
+            $query = Usuarios::find()->where(['not in','usuario_id', $comites_asistentes])->andWhere(['estado'=>'1']);
+        }elseif ($sw_control == 2) {
             //Condicion
             $var2 = SprintUsuarios::findBySql("select usuario_id FROM sprint_usuarios WHERE sprint_id=".$comite_id." and estado='1'")->asArray()->all();
             $query = Usuarios::find()->where(['not in','usuario_id', $var2])->andWhere(['tipo_usuario' => 2]);
