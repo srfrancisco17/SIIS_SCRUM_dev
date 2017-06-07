@@ -14,7 +14,9 @@ use app\models\Usuarios;
  * @property int $usuario_asignado
  * @property int $tiempo_desarrollo
  * @property string $estado
+ * @property int $prioridad
  * 
+ * @property PrioridadSprintRequerimientos $prioridad0
  * @property EstadosReqSpr $estado0
  * @property Requerimientos $requerimiento
  * @property SprintUsuarios $sprint
@@ -40,9 +42,11 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
     {
         return [
             [['sprint_id', 'requerimiento_id'], 'required'],
-            [['sprint_id', 'requerimiento_id', 'usuario_asignado', 'tiempo_desarrollo'], 'integer'],
+            [['prioridad'], 'default', 'value' => null],
+            [['sprint_id', 'requerimiento_id', 'usuario_asignado', 'tiempo_desarrollo', 'prioridad'], 'integer'],
             [['estado'], 'string', 'max' => 2],
             [['estado'], 'default', 'value' => '2'],
+             [['prioridad'], 'exist', 'skipOnError' => true, 'targetClass' => PrioridadSprintRequerimientos::className(), 'targetAttribute' => ['prioridad' => 'prioridad_id']],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
             [['requerimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id']],
             [['sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sprints::className(), 'targetAttribute' => ['sprint_id' => 'sprint_id']],
@@ -61,8 +65,17 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
             'usuario_asignado' => 'Usuario Asignado',
             'tiempo_desarrollo' => 'Tiempo Desarrollo',
             'estado' => 'Estado',
+            'prioridad' => 'Prioridad',
         ];
     }
+    
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getPrioridad0() 
+    { 
+        return $this->hasOne(PrioridadSprintRequerimientos::className(), ['prioridad_id' => 'prioridad']);
+    }     
 
     /** 
      * @return \yii\db\ActiveQuery 

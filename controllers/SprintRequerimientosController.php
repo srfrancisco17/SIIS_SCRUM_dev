@@ -236,4 +236,23 @@ public function actionCreate($sprint_id, $submit = false)
         } 
     }
     
+    public function actionLists($sprint_id, $usuario_id)
+    {
+        
+        $sql = "Select * From prioridad_sprint_requerimientos where Not prioridad_id In (SELECT CASE WHEN prioridad is NULL THEN 99 ELSE prioridad END  from sprint_requerimientos where sprint_id = ".$sprint_id." and usuario_asignado = ".$usuario_id.")";
+        $countPrioridad = \app\models\PrioridadSprintRequerimientos::findBySql($sql)->count();
+                
+        $prioridades = \app\models\PrioridadSprintRequerimientos::findBySql($sql)->orderBy('prioridad_id DESC')->all();
+        
+        if($countPrioridad>0){
+            foreach($prioridades as $prioridad){
+                echo "<option value='".$prioridad->prioridad_id."'>".$prioridad->descripcion."</option>";
+            }
+        }
+        else{
+            echo "<option>-</option>";
+        }
+
+    }
+    
 }

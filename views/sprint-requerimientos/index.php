@@ -57,6 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     //'usuario_asignado',
                     //'tiempo_desarrollo',
+                    'prioridad',
                     [
                             'label' => 'Estado',
                             'attribute' => 'estado',
