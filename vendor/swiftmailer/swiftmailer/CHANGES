@@ -1,10 +1,11 @@
 Changelog
 =========
 
-5.4.8 (2017-XX-XX)
+5.4.8 (2017-05-01)
 ------------------
 
- * n/a
+ * fixed encoding inheritance in addPart()
+ * fixed sorting MIME children when their types are equal
 
 5.4.7 (2017-04-20)
 ------------------

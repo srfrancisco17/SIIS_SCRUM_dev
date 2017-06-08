@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of php-token-stream.
+ * This file is part of the PHP_TokenStream package.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -8,19 +8,22 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\TestCase;
-
-class PHP_Token_ClassTest extends TestCase
+/**
+ * Tests for the PHP_Token_CLASS class.
+ *
+ * @package    PHP_TokenStream
+ * @subpackage Tests
+ * @author     Laurent Laville <pear@laurent-laville.org>
+ * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @version    Release: @package_version@
+ * @link       http://github.com/sebastianbergmann/php-token-stream/
+ * @since      Class available since Release 1.0.2
+ */
+class PHP_Token_ClassTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var PHP_Token_CLASS
-     */
-    private $class;
-
-    /**
-     * @var PHP_Token_FUNCTION
-     */
-    private $function;
+    protected $class;
+    protected $function;
 
     protected function setUp()
     {
@@ -88,7 +91,7 @@ class PHP_Token_ClassTest extends TestCase
 
         $classes = $ts->getClasses();
 
-        $this->assertEquals(['class_with_method_that_declares_anonymous_class'], array_keys($classes));
+        $this->assertEquals(array('class_with_method_that_declares_anonymous_class'), array_keys($classes));
     }
 
     /**
@@ -101,8 +104,8 @@ class PHP_Token_ClassTest extends TestCase
 
         $classes = $ts->getClasses();
 
-        $this->assertEquals(['Test'], array_keys($classes));
-        $this->assertEquals(['methodOne', 'methodTwo'], array_keys($classes['Test']['methods']));
+        $this->assertEquals(array('Test'), array_keys($classes));
+        $this->assertEquals(array('methodOne', 'methodTwo'), array_keys($classes['Test']['methods']));
 
         $this->assertEmpty($ts->getFunctions());
     }

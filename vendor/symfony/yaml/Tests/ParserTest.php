@@ -1081,7 +1081,7 @@ EOF;
 
     /**
      * @group legacy
-     * @expectedDeprecation Implicit casting of incompatible mapping keys to strings is deprecated since version 3.3 and will throw \Symfony\Component\Yaml\Exception\ParseException in 4.0. Pass the PARSE_KEYS_AS_STRING flag to explicitly enable the type casts.
+     * @expectedDeprecation Implicit casting of numeric key to string on line 1 is deprecated since version 3.3 and will throw \Symfony\Component\Yaml\Exception\ParseException in 4.0. Pass the PARSE_KEYS_AS_STRING flag to explicitly enable the type casts.
      */
     public function testFloatKeys()
     {
@@ -1103,7 +1103,7 @@ EOF;
 
     /**
      * @group legacy
-     * @expectedDeprecation Implicit casting of incompatible mapping keys to strings is deprecated since version 3.3 and will throw \Symfony\Component\Yaml\Exception\ParseException in 4.0. Pass the PARSE_KEYS_AS_STRING flag to explicitly enable the type casts.
+     * @expectedDeprecation Implicit casting of incompatible key type to string on line 1 is deprecated since version 3.3 and will throw \Symfony\Component\Yaml\Exception\ParseException in 4.0. Pass the PARSE_KEYS_AS_STRING flag to explicitly enable the type casts.
      */
     public function testBooleanKeys()
     {
@@ -1561,8 +1561,18 @@ EOT;
         $this->assertEquals("foo bar\nbaz", $this->parser->parse("foo\nbar\n\nbaz"));
     }
 
-    public function testParseMultiLineMappingValue()
+    /**
+     * @dataProvider multiLineDataProvider
+     */
+    public function testParseMultiLineMappingValue($yaml, $expected, $parseError)
     {
+        $this->assertEquals($expected, $this->parser->parse($yaml));
+    }
+
+    public function multiLineDataProvider()
+    {
+        $tests = array();
+
         $yaml = <<<'EOF'
 foo:
 - bar:
@@ -1579,7 +1589,43 @@ EOF;
             ),
         );
 
-        $this->assertEquals($expected, $this->parser->parse($yaml));
+        $tests[] = array($yaml, $expected, false);
+
+        $yaml = <<<'EOF'
+bar
+"foo"
+EOF;
+        $expected = 'bar "foo"';
+
+        $tests[] = array($yaml, $expected, false);
+
+        $yaml = <<<'EOF'
+bar
+"foo
+EOF;
+        $expected = 'bar "foo';
+
+        $tests[] = array($yaml, $expected, false);
+
+        $yaml = <<<'EOF'
+bar
+
+'foo'
+EOF;
+        $expected = "bar\n'foo'";
+
+        $tests[] = array($yaml, $expected, false);
+
+        $yaml = <<<'EOF'
+bar
+
+foo'
+EOF;
+        $expected = "bar\nfoo'";
+
+        $tests[] = array($yaml, $expected, false);
+
+        return $tests;
     }
 
     public function testTaggedInlineMapping()
@@ -1773,9 +1819,59 @@ bar:
 YAML;
         $this->parser->parse($yaml);
     }
+
+    public function testPhpConstantTagMappingKey()
+    {
+        $yaml = <<<YAML
+transitions:
+    !php/const:Symfony\Component\Yaml\Tests\B::FOO:
+        from:
+            - !php/const:Symfony\Component\Yaml\Tests\B::BAR
+        to: !php/const:Symfony\Component\Yaml\Tests\B::BAZ
+YAML;
+        $expected = array(
+            'transitions' => array(
+                'foo' => array(
+                    'from' => array(
+                        'bar',
+                    ),
+                    'to' => 'baz',
+                ),
+            ),
+        );
+
+        $this->assertSame($expected, $this->parser->parse($yaml, Yaml::PARSE_CONSTANT));
+    }
+
+    public function testPhpConstantTagMappingKeyWithKeysCastToStrings()
+    {
+        $yaml = <<<YAML
+transitions:
+    !php/const:Symfony\Component\Yaml\Tests\B::FOO:
+        from:
+            - !php/const:Symfony\Component\Yaml\Tests\B::BAR
+        to: !php/const:Symfony\Component\Yaml\Tests\B::BAZ
+YAML;
+        $expected = array(
+            'transitions' => array(
+                'foo' => array(
+                    'from' => array(
+                        'bar',
+                    ),
+                    'to' => 'baz',
+                ),
+            ),
+        );
+
+        $this->assertSame($expected, $this->parser->parse($yaml, Yaml::PARSE_CONSTANT | Yaml::PARSE_KEYS_AS_STRINGS));
+    }
 }
 
 class B
 {
     public $b = 'foo';
+
+    const FOO = 'foo';
+    const BAR = 'bar';
+    const BAZ = 'baz';
 }

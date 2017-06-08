@@ -8,17 +8,9 @@
 namespace yii\debug\panels;
 
 use Yii;
-use yii\base\Controller;
-use yii\base\Model;
 use yii\data\ArrayDataProvider;
-use yii\data\DataProviderInterface;
-use yii\db\ActiveRecord;
-use yii\debug\controllers\UserController;
-use yii\debug\models\search\UserSearchInterface;
-use yii\debug\models\UserSwitch;
 use yii\debug\Panel;
-use yii\filters\AccessControl;
-use yii\filters\AccessRule;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 
@@ -30,142 +22,6 @@ use yii\helpers\VarDumper;
  */
 class UserPanel extends Panel
 {
-
-    /**
-     * @var array the rule which defines who allowed to switch user identity.
-     * Access Control Filter single rule. Ignore: actions, controllers, verbs.
-     * Settable: allow, roles, ips, matchCallback, denyCallback.
-     * By default deny for everyone. Recommendation: can allow for administrator
-     * or developer (if implement) role: ['allow' => true, 'roles' => ['admin']]
-     * @see http://www.yiiframework.com/doc-2.0/guide-security-authorization.html
-     * @since 2.0.10
-     */
-    public $ruleUserSwitch = [
-        'allow' => false
-    ];
-
-    /**
-     * @var UserSwitch object of switching users
-     * @since 2.0.10
-     */
-    public $userSwitch;
-
-    /**
-     * @var Model|UserSearchInterface Implements of User model with search method.
-     * @since 2.0.10
-     */
-    public $filterModel;
-
-    /**
-     * @var array allowed columns for GridView.
-     * @see http://www.yiiframework.com/doc-2.0/yii-grid-gridview.html#$columns-detail
-     * @since 2.0.10
-     */
-    public $filterColumns = [];
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        if (!\Yii::$app->getUser()->isGuest) {
-            $this->userSwitch = new UserSwitch();
-            $this->addAccesRules();
-
-            if (!is_object($this->filterModel)
-                && class_exists($this->filterModel)
-                && in_array(UserSearchInterface::class, class_implements($this->filterModel))
-            ) {
-                $this->filterModel = new $this->filterModel;
-            } elseif (\Yii::$app->user && \Yii::$app->user->identityClass) {
-                $identityImplement = new \Yii::$app->user->identityClass();
-                if ($identityImplement instanceof ActiveRecord) {
-                    $this->filterModel = new \yii\debug\models\search\User();
-                }
-            }
-        }
-    }
-
-    /**
-     * Add ACF rule. AccessControl attach to debug module.
-     * Access rule for main user.
-     */
-    private function addAccesRules()
-    {
-        $this->ruleUserSwitch['controllers'] = [$this->module->id . '/user'];
-
-        $this->module->attachBehavior(
-            'access_debug',
-            [
-                'class' => AccessControl::className(),
-                'only' => [$this->module->id.'/user', $this->module->id.'/default'],
-                'user' => $this->userSwitch->getMainUser(),
-                'rules' => [
-                    $this->ruleUserSwitch
-                ]
-            ]
-        );
-    }
-
-    /**
-     * Get model for GridView -> FilterModel
-     * @return Model|UserSearchInterface
-     */
-    public function getUsersFilterModel()
-    {
-        return $this->filterModel;
-    }
-
-    /**
-     * Get model for GridView -> DataProvider
-     * @return DataProviderInterface
-     */
-    public function getUserDataProvider()
-    {
-        return $this->getUsersFilterModel()->search(Yii::$app->request->queryParams);
-    }
-
-    /**
-     * Check is available search of users
-     * @return bool
-     */
-    public function canSearchUsers()
-    {
-        return (isset($this->filterModel) &&
-            $this->filterModel instanceof Model &&
-            $this->filterModel->hasMethod('search')
-        );
-    }
-
-    /**
-     * Check can main user switch identity.
-     * @return bool
-     */
-    public function canSwitchUser()
-    {
-        $allowSwitchUser = false;
-
-        $rule = new AccessRule($this->ruleUserSwitch);
-
-        /** @var Controller $userController */
-        $userController = null;
-        $controller = $this->module->createController('user');
-        if (isset($controller[0]) && $controller[0] instanceof UserController) {
-            $userController = $controller[0];
-        }
-
-        //check by rule
-        if ($userController) {
-            $action = $userController->createAction('set-identity');
-            $user = $this->userSwitch->getMainUser();
-            $request = Yii::$app->request;
-
-            $allowSwitchUser = $rule->allows($action, $user, $request) ? : false;
-        }
-
-        return $allowSwitchUser;
-    }
-
     /**
      * @inheritdoc
      */
@@ -195,9 +51,9 @@ class UserPanel extends Panel
      */
     public function save()
     {
-        $identity = Yii::$app->user->identity;
+        $data = Yii::$app->user->identity;
 
-        if (!isset($identity)) {
+        if (!isset($data)) {
             return ;
         }
 
@@ -206,7 +62,7 @@ class UserPanel extends Panel
         $rolesProvider = null;
         $permissionsProvider = null;
 
-        if ($authManager instanceof yii\rbac\ManagerInterface) {
+        if ($authManager) {
             $roles = ArrayHelper::toArray($authManager->getRolesByUser(Yii::$app->getUser()->id));
             foreach ($roles as &$role) {
                 $role['data'] = $this->dataToString($role['data']);
@@ -227,25 +83,19 @@ class UserPanel extends Panel
             ]);
         }
 
-        $identityData = $this->identityData($identity);
+        $attributes = array_keys(get_object_vars($data));
+        if ($data instanceof ActiveRecord) {
+            $attributes = array_keys($data->getAttributes());
 
-        // If the identity is a model, let it specify the attribute labels
-        if ($identity instanceof Model) {
-            $attributes = [];
-
-            foreach (array_keys($identityData) as $attribute) {
-                $attributes[] = [
-                    'attribute' => $attribute,
-                    'label' => $identity->getAttributeLabel($attribute)
-                ];
+            $attributeValues = [];
+            foreach ($attributes as $attribute) {
+                $attributeValues[$attribute] =  $data->getAttribute($attribute);
             }
-        } else {
-            // Let the DetailView widget figure the labels out
-            $attributes = null;
+            $data = $attributeValues;
         }
 
         return [
-            'identity' => $identityData,
+            'identity' => $data,
             'attributes' => $attributes,
             'rolesProvider' => $rolesProvider,
             'permissionsProvider' => $permissionsProvider,
@@ -265,20 +115,5 @@ class UserPanel extends Panel
         }
 
         return VarDumper::export($data);
-    }
-
-    /**
-     * Returns the array that should be set on [[\yii\widgets\DetailView::model]]
-     *
-     * @param mixed $identity
-     * @return array
-     */
-    protected function identityData($identity)
-    {
-        if ($identity instanceof Model) {
-            return $identity->getAttributes();
-        }
-
-        return get_object_vars($identity);
     }
 }

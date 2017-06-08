@@ -81,17 +81,6 @@ class InputWidget extends YiiInputWidget
     public $pluginName = '';
 
     /**
-     * @var array the default HTML attributes for the input tag.
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
-     */
-    public $defaultOptions = [];
-
-    /**
-     * @var array widget plugin options.
-     */
-    public $defaultPluginOptions = [];
-
-    /**
      * @var array widget plugin options.
      */
     public $pluginOptions = [];
@@ -179,8 +168,6 @@ class InputWidget extends YiiInputWidget
     public function init()
     {
         parent::init();
-        $this->pluginOptions = ArrayHelper::merge($this->defaultPluginOptions, $this->pluginOptions);
-        $this->options = ArrayHelper::merge($this->defaultOptions, $this->options);
         $this->initDestroyJs();
         $this->initInputWidget();
     }
@@ -294,6 +281,7 @@ class InputWidget extends YiiInputWidget
         $input = $type;
         $checked = false;
         if ($type == 'radio' || $type == 'checkbox') {
+            $this->options['value'] = $this->value;
             $checked = ArrayHelper::remove($this->options, 'checked', '');
             if (empty($checked) && !empty($this->value)) {
                 $checked = ($this->value == 0) ? false : true;

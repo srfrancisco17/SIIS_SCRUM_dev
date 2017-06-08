@@ -4,14 +4,14 @@
  * @copyright  Copyright &copy; Kartik Visweswaran, Krajee.com, 2015 - 2016
  * @package    yii2-widgets
  * @subpackage yii2-widget-activeform
- * @version    1.4.9
+ * @version    1.4.8
  */
 
 namespace kartik\form;
 use kartik\base\AssetBundle;
 
 /**
- * Asset bundle for the [[ActiveForm]] widget and [[ActiveField]] component.
+ * Asset bundle for ActiveForm Widget
  *
  * @author Kartik Visweswaran <kartikv2@gmail.com>
  * @since  1.0

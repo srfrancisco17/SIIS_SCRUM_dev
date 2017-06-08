@@ -1,37 +1,6 @@
 Change Log: `yii2-widget-activeform`
 ====================================
 
-## Version 1.4.9
-
-- (enh #72): Better hint container markup rendering.
-- (bug #75): Allow `ActiveForm::fieldConfig` to be configured as Closure.
-- (enh #76): Refactor code with additional enhancements for horizontal layout (with code support by Enrica):
-    - ActiveForm changes
-        - allow `formConfig` to be changed dynamically between `ActiveForm::begin` and `ActiveForm::end` and move `getFormLayoutStyle` to ActiveField
-    - ActiveField changes
-        - set default template moved from ActiveForm to ActiveField.initLayout()
-          (template and css are properties of an ActiveField)
-        - Enhance public options `labelSpan` and `deviceSize` on level ActiveField also
-        - Defaulting of `labelSpan` and `deviceSize` Priority: 1. Option (fieldConfig),
-           2. formConfig, 3. _settings (default)
-        - Build CSS for label, offset and Input on level field
-        - bug: Fix for checkbox/radio showLabels=>false
-        - enh: New option `horizontalCssClasses` compatible with yii/bootstrap/ActiveForm with
-               config options for `wrapper`, `label`, `error`, `hint`. These options give complete 
-               control for all classes. `labelSpan` still works and `wrapper` is added if there
-               is no `col-` tag defined.
-        - enh: Add template with `{beginWrapper`}, `{endWrapper}` to enclose input, hint, error
-        - enh: Optionally template `{label}` could be split into `{beginLabel}`,
-               `{labelTitle}` and `{endLabel}` tag. `{label}` is still working as usual
-- Add contribution and issue/PR log templates.
-- Enhance PHP Documentation for all classes and methods in the extension.
-- (bug #78): Correct offset CSS class generation for horizontal forms.
-- (enh #79, #80): Allow configuration of multiple addons.
-- (enh #81): Change visibility of `$_pluginHintKeys`.
-- (enh #82): Allow configuration of `itemOptions` for `checkboxButtonGroup` and `radioButtonGroup`.
-- CSS enhancements for addons and other styling validation enhancements.
-- (enh #83): Correct PHPDoc to ensure correct return value for `ActiveForm::field()` method.
-
 ## Version 1.4.8
 
 **Date:** 28-Apr-2016

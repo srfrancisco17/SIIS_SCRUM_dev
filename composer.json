@@ -12,23 +12,17 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "kartik-v/yii2-widgets": "*",
         "dmstr/yii2-adminlte-asset": "2.*",
-        "kartik-v/yii2-grid": "@dev",
-        "kartik-v/yii2-widget-datepicker": "@dev",
-        "kartik-v/yii2-widget-timepicker": "*",
-        "kartik-v/yii2-field-range": "*",
-        "kartik-v/yii2-widget-activeform": "@dev",
-        "kartik-v/yii2-helpers": "dev-master",
-        "kartik-v/yii2-widget-select2": "@dev",
-        "2amigos/yii2-tinymce-widget": "~1.1",
+        "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-sortable": "*",
-        "kartik-v/yii2-widget-depdrop": "@dev"
+        "2amigos/yii2-tinymce-widget" : "~1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -40,7 +34,13 @@
         "codeception/specify": "~0.4.3"
     },
     "config": {
-        "process-timeout": 1800
+        "process-timeout": 1800,
+        "fxp-asset":{
+            "installer-paths": {
+                "npm-asset-library": "vendor/npm",
+                "bower-asset-library": "vendor/bower"
+            }
+        }
     },
     "scripts": {
         "post-create-project-cmd": [
@@ -59,10 +59,6 @@
             "generateCookieValidationKey": [
                 "config/web.php"
             ]
-        },
-        "asset-installer-paths": {
-            "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower"
         }
     }
 }
