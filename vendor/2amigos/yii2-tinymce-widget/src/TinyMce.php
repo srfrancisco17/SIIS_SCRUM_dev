@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2013-2015 2amigOS! Consulting Group LLC
+ * @copyright Copyright (c) 2013-2017 2amigOS! Consulting Group LLC
  * @link http://2amigos.us
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
@@ -63,7 +63,7 @@ class TinyMce extends InputWidget
 
         $this->clientOptions['selector'] = "#$id";
         // @codeCoverageIgnoreStart
-        if ($this->language !== null) {
+        if ($this->language !== null && $this->language !== 'en') {
             $langFile = "langs/{$this->language}.js";
             $langAssetBundle = TinyMceLangAsset::register($view);
             $langAssetBundle->js[] = $langFile;
