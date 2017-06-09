@@ -24,7 +24,8 @@
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-sortable": "*",
         "kartik-v/yii2-field-range": "*",
-        "2amigos/yii2-tinymce-widget" : "~1.1"
+        "2amigos/yii2-tinymce-widget" : "~1.1",
+        "kartik-v/yii2-helpers": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
