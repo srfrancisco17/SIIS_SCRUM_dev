@@ -69,6 +69,18 @@
                         'url' => ['sprints/index'],
                         'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER,
                     ],
+                    [
+                        'label' => 'Diagramas',
+                        'icon' => 'folder-open',
+                        'url' => ['sprints/index'],
+                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER,
+                        'items' => [
+                            ['label' => 'Gantt', 'icon'=>'align-left', 'url' => ['diagramas-master/gantt']],
+                            ['label' => 'area-chart', 'icon'=>'area-chart', 'url' => ['usuarios/index']],
+                            ['label' => 'bar-chart', 'icon'=>'bar-chart', 'url' => ['tipos-usuarios/index']],
+                            ['label' => 'line-chart', 'icon'=>'line-chart', 'url' => ['tipos-documentos/index']],
+                        ],
+                    ],
                     //['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [
                         'label' => 'Administracion', 
