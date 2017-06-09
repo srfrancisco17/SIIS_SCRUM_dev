@@ -1,6 +1,7 @@
 <?php
 /* @var $this yii\web\View */
-use yii\helpers\Html;
+//use yii\helpers\Html;
+//use kartik\helpers\Html;
 
 $this->title = 'Gantt';
 $this->params['breadcrumbs'][] = $this->title;
@@ -28,7 +29,12 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 
       data.addRows([
         <?php
+        
+        $fecha_sprint_inicial = $sprint_requerimientos[0]->sprint->fecha_desde;
+        //$fin_fecha_requerimiento = '2017-05-30';
             foreach ($sprint_requerimientos as $value) { 
+                
+                
                 
                 $tareas_tiempo = 0;
                 $duracion_requerimiento = 0;
@@ -47,8 +53,35 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
             '<?= $value->requerimiento->requerimiento_id;?>', 
             '<?= $value->requerimiento->requerimiento_titulo;?>', 
             'usuario'+'<?= $value->usuario_asignado;?>',
-            new Date('2017-04-10'), 
-            new Date('2017-04-30'), 
+        <?php
+        
+            
+        
+            if ($value->prioridad == 1){
+                
+                $inicio = $fecha_sprint_inicial;
+                
+                $dia_requerimientos = round($value->tiempo_desarrollo/8);
+                $fecha = date($inicio);
+                
+                $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
+                
+                $fin_fecha_requerimiento =  date('Y-m-d', $suma_fecha);
+            }
+            else{
+                $inicio = $fin_fecha_requerimiento;
+                
+                $dia_requerimientos = round($value->tiempo_desarrollo/8);
+                $fecha = date($inicio);
+                
+                $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
+                
+                $fin_fecha_requerimiento =  date('Y-m-d', $suma_fecha);
+                
+            }
+        ?>
+            new Date('<?= $inicio ?>'), 
+            new Date('<?= $fin_fecha_requerimiento ?>'), 
             null,
             <?= round($duracion_requerimiento) ?>, 
             null
@@ -60,7 +93,7 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
       ]);
 
       var options = {
-        height: 250,
+        height: 350,
         gantt: {
           trackHeight: 30
         }
@@ -92,7 +125,8 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
         </div>
 </div>
 <?php   
+
     echo '<pre>';
-    print_r($sprint_requerimientos[0]->sprint->fecha_desde);
+    var_dump($sprint_requerimientos[0]);
     echo '</pre>';
 ?>

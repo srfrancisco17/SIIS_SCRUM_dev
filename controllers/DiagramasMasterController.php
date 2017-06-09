@@ -12,7 +12,7 @@ class DiagramasMasterController extends \yii\web\Controller
     
     public function actionGantt()
     {
-        $sprint_requerimientos = SprintRequerimientos::find()->where(['sprint_id' => 1])->orderBy(['usuario_asignado'=>SORT_DESC, 'prioridad' => SORT_DESC])->all();
+        $sprint_requerimientos = SprintRequerimientos::find()->where(['sprint_id' => 1])->orderBy(['usuario_asignado'=>SORT_DESC, 'prioridad' => SORT_ASC])->all();
         
         
         return $this->render('gantt',[

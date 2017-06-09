@@ -72,7 +72,7 @@
                     [
                         'label' => 'Diagramas',
                         'icon' => 'folder-open',
-                        'url' => ['sprints/index'],
+                        'url' => ['#'],
                         'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER,
                         'items' => [
                             ['label' => 'Gantt', 'icon'=>'align-left', 'url' => ['diagramas-master/gantt']],

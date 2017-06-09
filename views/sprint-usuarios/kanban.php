@@ -41,8 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
         border-radius: 3px;
         background: #ffffff;
         border-top: 0px;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 0px;
+        margin-bottom: 5px;
         width: 100%;
     }
     
@@ -64,22 +64,23 @@ $this->params['breadcrumbs'][] = $this->title;
     div.columna-sortable > ul{
         background-color: none;
         min-height:100px; 
-        margin-top: 10px;
+        margin-top: 0px;
         margin-bottom: 10px;
         padding-bottom:30px;
     }
 
     .box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
         font-size: 13px;
+        color: #f0f0f0;
     }
     td,th {
         padding: 10px;
     }
-</style>  
+</style> 
 
 <div class="kanban">
      
-    <div class="row" style="background-color: #3c8dbc; color: #f0f0f0;">
+    <div class="row" style="background-color: #5A6E83; color: #f0f0f0;">
         <div class="col-lg-3">
             <h4 class="text-center">Requerimiento</h4>
         </div>
@@ -106,6 +107,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
         
         $this->registerJs("var form = $('#tareas-form');");
+        
+        $usuario_color = '#656565';
+        
+        if (!empty(Yii::$app->user->identity->color)){
+            $usuario_color = Yii::$app->user->identity->color;
+        }
        
         
         for ($i = 0; $i < count($consulta); $i++) {
@@ -129,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      
                             $items1[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
-                            'content' => '<div class="box box-default collapsed-box">
+                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                     <div class="box-header with-border">
                                       <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
@@ -152,7 +159,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      
                             $items2[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
-                            'content' => '<div class="box box-default collapsed-box">
+                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                     <div class="box-header with-border">
                                       <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
@@ -174,7 +181,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      
                             $items3[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
-                            'content' => '<div class="box box-default collapsed-box">
+                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                     <div class="box-header with-border">
                                       <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
@@ -200,15 +207,17 @@ $this->params['breadcrumbs'][] = $this->title;
             if ($i%2==0){
                   echo '<div class="row" style="background-color: #E2E4EA;">';
                   //par
+                  echo '<br>';
             }else{
                   echo '<div class="row" style="background-color: #D2D6DE;">';
                   //impar
+                  echo '<br>';
             }
          ?>
          <!-- ------------------------------------- -->
         <!--<div class="row">-->
             <div class="col-lg-3">
-                <div class="box box-default collapsed-box">
+                <div class="box box-default collapsed-box" style="background-color: <?= $usuario_color?>;">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?=  $objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
