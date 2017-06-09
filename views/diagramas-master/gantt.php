@@ -34,8 +34,6 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
         //$fin_fecha_requerimiento = '2017-05-30';
             foreach ($sprint_requerimientos as $value) { 
                 
-                
-                
                 $tareas_tiempo = 0;
                 $duracion_requerimiento = 0;
                 if (!empty($value->tiempo_desarrollo)){
@@ -54,8 +52,6 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
             '<?= $value->requerimiento->requerimiento_titulo;?>', 
             'usuario'+'<?= $value->usuario_asignado;?>',
         <?php
-        
-            
         
             if ($value->prioridad == 1){
                 
@@ -93,7 +89,7 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
       ]);
 
       var options = {
-        height: 350,
+        height: 300,
         gantt: {
           trackHeight: 30
         }
@@ -126,7 +122,7 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 </div>
 <?php   
 
-    echo '<pre>';
-    var_dump($sprint_requerimientos[0]);
-    echo '</pre>';
+//    echo '<pre>';
+//    var_dump($sprint_requerimientos[0]);
+//    echo '</pre>';
 ?>
