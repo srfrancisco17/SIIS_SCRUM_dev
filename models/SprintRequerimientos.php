@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 //use backend\models\SprintUsuarios;
 use app\models\Usuarios;
+use app\models\Sprints;
 /** 
  * This is the model class for table "sprint_requerimientos". 
  * 
@@ -159,6 +160,25 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         */
         
         \app\models\Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, $estado);
+        
+        return true;  
+ 
+    }
+    
+    public function actualizarHorasSprintRequerimientos($sprint_id, $requerimiento_id, $horas){
+        
+        $conexion = Yii::$app->db;
+        
+        $conexion->createCommand("UPDATE sprint_requerimientos SET tiempo_desarrollo=:horas WHERE sprint_id=:sprint_id AND requerimiento_id=:requerimiento_id")
+        ->bindValue(':horas', $horas)
+        ->bindValue(':sprint_id', $sprint_id)
+        ->bindValue(':requerimiento_id', $requerimiento_id)       
+        ->execute();
+        
+        
+        $total_sprint = SprintRequerimientos::find()->select('tiempo_desarrollo')->where(['sprint_id'=>$sprint_id])->sum('tiempo_desarrollo'); 
+        
+        Sprints::actualizarHorasSprints($sprint_id, $total_sprint);
         
         return true;  
  

@@ -137,8 +137,9 @@ use kartik\date\DatePicker;
                                 
                             }else{
                                 
-                                echo $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_requerimiento'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno' ])->label('(*) Estado Del Requerimiento');
-                            
+                                echo $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_requerimiento'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Estado'])->label('(*) Estado Del Requerimiento');
+                                    
+  
                             }
                             
                         ?>

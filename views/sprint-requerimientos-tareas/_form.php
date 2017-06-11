@@ -8,6 +8,11 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <?php   
+
+    if($model->isNewRecord){
+        $model->tiempo_desarrollo = 0;
+    }
+        
     $form = ActiveForm::begin([
         'id' => 'tareas-form',
         'enableAjaxValidation' => true,
@@ -28,7 +33,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'tarea_titulo')->textInput(['maxlength' => true])->label('(*) Titulo') ?>
             </div>
             <div class="col-lg-3">
-                <?= $form->field($model, 'tiempo_desarrollo')->textInput()->label('Horas') ?>
+                <?= $form->field($model, 'tiempo_desarrollo')->textInput(['type' => 'number'])->label('Horas') ?>
             </div>
         </div>
         <div class="row">

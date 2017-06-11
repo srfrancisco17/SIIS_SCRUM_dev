@@ -21,10 +21,10 @@ use yii\helpers\ArrayHelper;
     
     <div class="row">
         <div class="col-lg-6">
-            <?= $form->field($model, 'sprint_alias')->textInput()?>
+            <?= $form->field($model, 'sprint_alias')->textInput()->label('(*) Sprint Alias')?>
         </div>
         <div class="col-lg-3">
-            <?= $form->field($model, 'horas_desarrollo')->input('number')?>
+            <?= $form->field($model, 'horas_desarrollo')->textInput(['type' => 'number', 'disabled' => true])?>
         </div>
         <div class="col-lg-3">
             <?php if($model->isNewRecord){

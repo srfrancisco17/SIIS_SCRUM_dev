@@ -36,6 +36,7 @@ class ComitesAsistentes extends \yii\db\ActiveRecord
             [['comite_id', 'usuario_id'], 'default', 'value' => null],
             [['comite_id', 'usuario_id'], 'integer'],
             [['estado', 'sw_responsable'], 'string', 'max' => 1],
+            [['estado'], 'default', 'value' => '1'],
             [['observacion'], 'string', 'max' => 60],
             [['comite_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comites::className(), 'targetAttribute' => ['comite_id' => 'comite_id']],
             [['usuario_id'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_id' => 'usuario_id']],
@@ -83,6 +84,7 @@ class ComitesAsistentes extends \yii\db\ActiveRecord
             $conexion->createCommand()->insert('comites_asistentes', [
                 'comite_id' => $id,
                 'usuario_id' => $value,
+                'estado' => '1',
             ])->execute();    
         }     
         

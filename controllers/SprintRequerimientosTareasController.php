@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\SprintRequerimientos;
 use app\models\SprintRequerimientosTareas;
 use app\models\SprintRequerimientosTareasSearch;
 use yii\web\Controller;
@@ -83,6 +84,10 @@ class SprintRequerimientosTareasController extends Controller
 
             
             if ($model->save()) {
+                
+                self::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
+
+                
                 $model->refresh();
                 /*
                 Yii::$app->response->format = Response::FORMAT_JSON;
@@ -127,6 +132,10 @@ class SprintRequerimientosTareasController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
+                
+                
+                self::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
+                
                 $model->refresh();
                 /*
                 Yii::$app->response->format = Response::FORMAT_JSON;
@@ -154,7 +163,12 @@ class SprintRequerimientosTareasController extends Controller
      */
     public function actionDelete($id, $sprint_id, $requerimiento_id)
     {
-        $this->findModel($id)->delete();
+        
+        $model = $this->findModel($id);
+        
+        $model->delete();
+           
+        self::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
 
         return $this->redirect(['index', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
     }
@@ -174,5 +188,14 @@ class SprintRequerimientosTareasController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-   
+    
+    public function actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id){
+        
+        $total_tareas = SprintRequerimientosTareas::find()->select('tiempo_desarrollo')->where(['sprint_id'=>$sprint_id])->andWhere(['requerimiento_id'=>$requerimiento_id])->sum('tiempo_desarrollo'); 
+        
+        SprintRequerimientos::actualizarHorasSprintRequerimientos($sprint_id, $requerimiento_id, $total_tareas);
+        
+    }
+    
+    
 }

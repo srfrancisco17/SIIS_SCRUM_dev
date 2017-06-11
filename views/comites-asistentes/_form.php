@@ -18,9 +18,11 @@ use yii\widgets\ActiveForm;
     ]); 
 ?>
 
+   
+    
 <?= $form->field($model, 'comite_id')->hiddenInput(['maxlength' => true, 'readonly' => true])->label(false) ?>
     
-    <?= $form->field($model, 'usuario_id')->hiddenInput(['maxlength' => true, 'readonly' => true])->label(false) ?>
+<?= $form->field($model, 'usuario_id')->hiddenInput(['maxlength' => true, 'readonly' => true])->label(false) ?>
 
 <div class="panel panel-primary">
     <div class="panel-heading">

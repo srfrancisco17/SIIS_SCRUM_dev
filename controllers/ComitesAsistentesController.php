@@ -95,6 +95,7 @@ class ComitesAsistentesController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'comite_id' => $model->comite_id, 'usuario_id' => $model->usuario_id]);
         } else {
+            
             return $this->render('create', [
                 'model' => $model,
             ]);

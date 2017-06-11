@@ -37,8 +37,11 @@ class Sprints extends \yii\db\ActiveRecord
      */
     public function rules() 
     { 
+        /*
+         * El sprint_alias es obligatorio. pero en la tabla puede ir vacio/nulo
+         */
         return [
-            [['fecha_desde', 'fecha_hasta', 'estado'], 'required'],
+            [['sprint_alias','fecha_desde', 'fecha_hasta', 'estado'], 'required'],
             [['fecha_desde', 'fecha_hasta'], 'safe'],
             [['horas_desarrollo'], 'default', 'value' => null],
             [['horas_desarrollo'], 'integer'],
@@ -112,4 +115,16 @@ class Sprints extends \yii\db\ActiveRecord
     { 
         return $this->hasOne(EstadosReqSpr::className(), ['req_spr_id' => 'estado']);
     } 
+    
+    
+    public function actualizarHorasSprints($sprint_id, $horas){
+
+        $conexion = Yii::$app->db;
+
+        $conexion->createCommand("UPDATE sprints SET horas_desarrollo=:horas WHERE sprint_id=:sprint_id")
+        ->bindValue(':horas', $horas)
+        ->bindValue(':sprint_id', $sprint_id)   
+        ->execute();
+        
+    }
 }
