@@ -153,11 +153,6 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         ->bindValue(':requerimiento_id', $requerimiento_id)       
         ->execute();
         
-        /*
-            $conexion->createCommand()->update('sprint_requerimientos', [
-                'estado' => $estado,
-            ],  'sprint_id ='.$sprint_id, 'requerimiento_id ='.$requerimiento_id)->execute(); 
-        */
         
         \app\models\Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, $estado);
         
@@ -183,4 +178,28 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         return true;  
  
     }
+    
+    public function actualizarNoCumplido($sprint_id){
+        
+        $conexion = Yii::$app->db;
+        
+        
+        
+        $conexion->createCommand("UPDATE requerimientos as re SET estado = '1' "
+                . "FROM sprint_requerimientos as sr WHERE "
+                . "sr.estado BETWEEN '2'"
+                . "AND '3' AND sr.sprint_id =:sprint_id AND sr.requerimiento_id = re.requerimiento_id")
+        ->bindValue(':sprint_id', $sprint_id)     
+        ->execute();
+        
+        
+        $conexion->createCommand("UPDATE sprint_requerimientos SET estado = '5' WHERE estado BETWEEN '2' AND '3' AND sprint_id=:sprint_id")
+        ->bindValue(':sprint_id', $sprint_id)     
+        ->execute();
+        
+        return true;
+        
+    }
+    
+
 }

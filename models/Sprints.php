@@ -127,4 +127,16 @@ class Sprints extends \yii\db\ActiveRecord
         ->execute();
         
     }
+    
+    public function terminarSprint($sprint_id){
+
+        $conexion = Yii::$app->db;
+
+        $conexion->createCommand("UPDATE sprints SET estado = 4 WHERE sprint_id=:sprint_id")
+        ->bindValue(':sprint_id', $sprint_id)   
+        ->execute();
+        
+        SprintRequerimientos::actualizarNoCumplido($sprint_id);
+        
+    }
 }

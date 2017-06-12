@@ -55,17 +55,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'estado',
                         'value' => function ($data) {
                             //print_r($data);  
-                            switch ($data['estado']) {
-                                case 0:
-                                    return "Inactivo";
-                                case 1:
-                                    return "Activo";
-                                case 4:
-                                    echo "Terminado";
-                                    break;
-                                default:
-                                   echo "Error";
+                            if($data['estado'] == 0){
+                                return 'Inactivo';
                             }
+                            if($data['estado'] == 1){
+                                return 'Activo';
+                            }
+                            if($data['estado'] == 4){
+                                return 'Terminado';
+                            }
+                            return 'Error';
                         },
                         'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo', '4' => 'Terminado'],['class'=>'form-control','prompt' => '']),
                         'contentOptions' => ['style' => 'width:150px;'],
@@ -98,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]);
                             },
                             'terminar-sprint' => function ($url, $model, $key) {
-                                return Html::a('<span class="glyphicon glyphicon-off"></span>', Url::to(['sprints/master-kanban', 'sprint_id' => $model->sprint_id]), [
+                                return Html::a('<span class="glyphicon glyphicon-off"></span>', Url::to(['sprints/terminar-sprint', 'sprint_id' => $model->sprint_id]), [
                                             'id' => 'activity-index-link2',
                                             'title' => 'Terminar',
                                             'data' => [

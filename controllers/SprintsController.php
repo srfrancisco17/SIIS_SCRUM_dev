@@ -182,4 +182,11 @@ class SprintsController extends Controller
         ]);
        
     }
+    
+    public function actionTerminarSprint($sprint_id){
+        
+        Sprints::terminarSprint($sprint_id);
+        
+        return $this->redirect(['sprints/index']);
+    }
 }
