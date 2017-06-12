@@ -175,7 +175,7 @@ class SprintsController extends Controller
     
     public function actionMasterKanban($sprint_id){
         
-        $consulta = SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->all();
+        $consulta = SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->orderBy(['usuario_asignado'=>SORT_DESC, 'prioridad' => SORT_ASC])->all();
         
         return $this->render('master_kanban', [
             'consulta' => $consulta,

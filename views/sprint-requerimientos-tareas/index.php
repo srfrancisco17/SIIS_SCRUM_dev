@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'tarea_titulo',
                     'tarea_descripcion:ntext',
                     // 'estado',
-                    // 'tiempo_desarrollo',
+                    'tiempo_desarrollo',
 
                     [
                         'class' => 'yii\grid\ActionColumn',
@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     
                                 }
                             );
-                        }));"
+                    }));"
             );
             ?>
             

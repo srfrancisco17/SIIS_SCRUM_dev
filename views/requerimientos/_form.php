@@ -15,6 +15,13 @@ use kartik\date\DatePicker;
 /* @var $model backend\models\Requerimientos */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+<script>
+    function validarBoton(){   
+
+            //$('#boton1').prop('disabled', true);
+        
+    }
+</script>
             <div class="box-body">
                 <div class="requerimientos-form">
 
@@ -153,7 +160,7 @@ use kartik\date\DatePicker;
                 </div>
             </div>   
               <div class="box-footer">
-                <?= Html::submitButton($model->isNewRecord ? 'Crear Requerimiento' : 'Actualizar Requerimiento', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                <?= Html::submitButton($model->isNewRecord ? 'Crear Requerimiento' : 'Actualizar Requerimiento', ['id'=>'boton1' , 'onclick' =>'validarBoton()', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
               </div>
             <?php ActiveForm::end(); ?>
         </div>

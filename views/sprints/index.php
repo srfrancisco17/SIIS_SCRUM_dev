@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'class'=>'kartik\grid\ActionColumn',
                         'contentOptions' => ['style' => 'min-width:100px;'],
-                        'template' => '{sprints} {master-kanban} {update} {delete}',
+                        'template' => '{sprints} {master-kanban} {update} {terminar-sprint} {delete}',
                         'buttons' => [
                             'update' => function ($url, $model, $key) {
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
@@ -96,7 +96,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'id' => 'activity-index-link2',
                                             'title' => 'kanban',
                                 ]);
-                            },                                    
+                            },
+                            'terminar-sprint' => function ($url, $model, $key) {
+                                return Html::a('<span class="glyphicon glyphicon-off"></span>', Url::to(['sprints/master-kanban', 'sprint_id' => $model->sprint_id]), [
+                                            'id' => 'activity-index-link2',
+                                            'title' => 'Terminar',
+                                            'data' => [
+                                                'confirm' => '¿Está seguro de terminar el sprint?',
+                                                'method' => 'post',
+                                            ],
+                                ]);
+                            },                                      
                         ],
                         'deleteOptions' =>
                             [

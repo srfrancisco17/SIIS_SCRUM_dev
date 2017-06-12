@@ -2,12 +2,12 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 /* @var $this yii\web\View */
 /* @var $model app\models\SprintRequerimientosTareas */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <?php   
+
 
     if($model->isNewRecord){
         $model->tiempo_desarrollo = 0;
@@ -38,7 +38,8 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <?= $form->field($model, 'tarea_descripcion')->textarea(['rows' => 6])->label('Descripcion') ?>   
+                <?= $form->field($model, 'tarea_descripcion')->textarea(['rows' => 6])->label('Descripcion') ?>  
+
             </div>
         </div>
 

@@ -43,8 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'detail' => function ($model, $key, $index, $column){
 
-                    $searchModel2 = new SprintRequerimientosSearch();
-                    $dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams,$model->sprint_id,2);
+                $searchModel2 = new SprintRequerimientosSearch();
+                $dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams,$model->sprint_id,2);
 
                 return Yii::$app->controller->renderPartial('_index2', [
                         'searchModel2' => $searchModel2,

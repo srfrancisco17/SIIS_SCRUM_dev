@@ -108,15 +108,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
         
         $this->registerJs("var form = $('#tareas-form');");
-       
+        //$usuario_color = '';
+        
         
         for ($i = 0; $i < count($consulta); $i++) {
             $consulta1 = $consulta[$i]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
-        
-        
-        //echo $consulta[$i]->usuarioAsignado->color;
-        
-        //$requerimientos = \app\models\Requerimientos::find()->with('sprintRequerimientosTareas')->all();
+            
+            
+            $usuario_color = empty($consulta[$i]->usuarioAsignado->color) ? '#656565' : $consulta[$i]->usuarioAsignado->color;
+    
         
         foreach ($consulta1 as $objRequerimientos) {
             $items1 = array(); 
@@ -129,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      
                             $items1[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
-                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$consulta[$i]->usuarioAsignado->color.';">
+                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                     <div class="box-header">
                                       <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
@@ -152,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      
                             $items2[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
-                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$consulta[$i]->usuarioAsignado->color.';">
+                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                     <div class="box-header">
                                       <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
@@ -174,7 +174,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      
                             $items3[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
-                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$consulta[$i]->usuarioAsignado->color.';">
+                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                     <div class="box-header">
                                       <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
@@ -212,7 +212,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <!--<div class="row">-->
             <div class="col-lg-3">
                 
-                <div class="box box-default collapsed-box" style="background-color: <?= empty($consulta[$i]->usuarioAsignado->color) ? '#656565' : $consulta[$i]->usuarioAsignado->color ?>;">
+                <div class="box box-default collapsed-box" style="background-color: <?= $usuario_color ?>;">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?=  $objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
