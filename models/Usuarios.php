@@ -64,6 +64,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return [
             //[['tipo_usuario', 'num_documento', 'tipo_documento', 'nombres', 'apellidos', 'correo', 'contrasena', 'departamento', 'tipo_documento', 'tipo_usuario', 'estado'], 'required'],
             [['tipo_usuario', 'num_documento', 'tipo_documento', 'contrasena', 'departamento', 'tipo_documento' ], 'required'],
+            ['num_documento', 'unique', 'targetAttribute' => ['num_documento'], 'message' => 'Numero documento ya existe!'],
             [['tipo_usuario'], 'number'],
             [['estado'], 'default', 'value' => null],
             [['estado'], 'integer'],
@@ -108,6 +109,12 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     /**
      * @return \yii\db\ActiveQuery
      */
+    
+    public function getnombreCompleto()
+    {
+        return $this->nombres.' '.$this->apellidos;
+    }
+    
     public function getComitesAsistentes()
     {
         return $this->hasMany(ComitesAsistentes::className(), ['usuario_id' => 'usuario_id']);

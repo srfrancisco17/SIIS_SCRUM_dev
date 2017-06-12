@@ -72,12 +72,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class'=>'kartik\grid\ActionColumn',
-                        'template' => '{update}{delete}{sprints}{master-kanban}',
+                        'contentOptions' => ['style' => 'min-width:100px;'],
+                        'template' => '{sprints} {master-kanban} {update} {delete}',
                         'buttons' => [
                             'update' => function ($url, $model, $key) {
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
                                         'id' => 'activity-index-link',
-                                        'title' => Yii::t('yii', 'Actualizar'),
+                                        'title' => 'Actualizar',
                                         'data-toggle' => 'modal',
                                         'data-target' => '#modal',
                                         'data-url' => Url::to(['update', 'id' => $model->sprint_id]),
@@ -87,16 +88,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             'sprints' => function ($url, $model, $key) {
                                 return Html::a('<span class="glyphicon glyphicon-check"></span>', Url::to(['sprint-requerimientos/index', 'sprint_id' => $model->sprint_id]), [
                                             'id' => 'activity-index-link2',
-                                            'title' => Yii::t('yii', 'Requerimientos'),
+                                            'title' => 'Requerimientos',
                                 ]);
                             },
                             'master-kanban' => function ($url, $model, $key) {
                                 return Html::a('<span class="fa fa-table"></span>', Url::to(['sprints/master-kanban', 'sprint_id' => $model->sprint_id]), [
                                             'id' => 'activity-index-link2',
-                                            'title' => Yii::t('yii', 'kanban'),
+                                            'title' => 'kanban',
                                 ]);
                             },                                    
-                        ]
+                        ],
+                        'deleteOptions' =>
+                            [
+                                
+                                'message' => '¿Esta seguro de finalizar el sprint?'
+                            ]
                     ],
                 ],
                 'toolbar' => [

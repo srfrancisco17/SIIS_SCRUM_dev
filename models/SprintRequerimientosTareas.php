@@ -37,12 +37,12 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
             [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'default', 'value' => null],
             [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
             //[['sprint_id', 'requerimiento_id'], 'required'],
+            [['tiempo_desarrollo'], 'default', 'value' => 0],
             [['tarea_descripcion'], 'string'],
             [['tarea_titulo'], 'string', 'max' => 60],
             [['estado'], 'string', 'max' => 2],
             [['estado'], 'default', 'value' => '2'],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
-            [['tiempo_desarrollo'], 'default', 'value' => 0],
             [['requerimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id']],
             [['sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sprints::className(), 'targetAttribute' => ['sprint_id' => 'sprint_id']],
         ];

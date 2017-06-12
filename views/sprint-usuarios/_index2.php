@@ -44,9 +44,12 @@ use yii\helpers\Url;
             [
                 'attribute' => 'requerimiento_id',
                 'label' => 'Descripcion Requerimiento',
-                'value' => 'requerimiento.requerimiento_descripcion',
+                //'value' => 'requerimiento.requerimiento_descripcion',
+                'value' => function ($data) {
+                    return strip_tags($data->requerimiento->requerimiento_descripcion);
+                },
                 'filter' => FALSE,
-                'format' => 'html',
+                'format' => 'text',
                 'headerOptions'=>['style' => 'background-color:#292B2C;'],
                 //'contentOptions' => ['style' => 'background-color:red; '],
             ],

@@ -1,12 +1,11 @@
 <?php
-//nuevo
+
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\models\Usuarios;
 use app\models\Departamentos;
 use app\models\Comites;
-//use kartik\widgets\Select2;
 use dosamigos\tinymce\TinyMce;
 use kartik\select2\Select2;
 use kartik\date\DatePicker;
@@ -84,13 +83,12 @@ use kartik\date\DatePicker;
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 col-lg-6">
-                            
+                        <div class="col-xs-12 col-lg-6"> 
                             <?= $form->field($model, 'usuario_solicita')->widget(Select2::className(),[
-                                'data' => ArrayHelper::map(Usuarios::find()->where(['estado' => 1])->all(), 'usuario_id', 'nombres'),
+                                'data' => ArrayHelper::map(Usuarios::find()->where(['estado' => 1])->all(), 'usuario_id', 'nombreCompleto'),
                                 'theme' => Select2::THEME_DEFAULT,
                                 'language'=>'es',
-                                'options' => ['placeholder'=>'seleccione usuario'],
+                                'options' => ['placeholder'=>'Seleccione usuario'],
                                 'pluginOptions'=>[
                                     'allowClear'=>true
                                 ],
@@ -127,21 +125,14 @@ use kartik\date\DatePicker;
                         <div class="col-xs-12 col-lg-6">
                         <?php
                         /*
-                         * Condicion para cargr por defecto el requerimiento en inactivo 
-                        */
+                         * Condicion para cargar por defecto el requerimiento en inactivo 
+                         */
                             if ($model->isNewRecord){
-                                
                                 $arreglo = array('0'=>'Inactivo', '1' => 'Activo');
-                                
                                 echo $form->field($model, 'estado')->dropDownList($arreglo)->label('(*) Estado Del Requerimiento');
-                                
                             }else{
-                                
                                 echo $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_requerimiento'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Estado'])->label('(*) Estado Del Requerimiento');
-                                    
-  
                             }
-                            
                         ?>
                         </div>                       
                     </div>

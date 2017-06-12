@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\widgets\ColorInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
@@ -26,10 +27,10 @@ use yii\widgets\ActiveForm;
                   </div>
                   <div class="row">
                     <div class="col-lg-6">
-                       <?= $form->field($model, 'nombres')->textInput(['maxlength' => 30])->label('(*) Nombres:') ?>
+                       <?= $form->field($model, 'nombres')->textInput(['maxlength' => 30])->label('Nombres:') ?>
                     </div>
                     <div class="col-lg-6">
-                        <?= $form->field($model, 'apellidos')->textInput(['maxlength' => 30])->label('(*) Apellidos:') ?>
+                        <?= $form->field($model, 'apellidos')->textInput(['maxlength' => 30])->label('Apellidos:') ?>
                     </div>                      
                   </div>
                   <div class="row">
@@ -39,10 +40,10 @@ use yii\widgets\ActiveForm;
                   </div>
                   <div class="row">
                     <div class="col-lg-6">
-                       <?= $form->field($model, 'correo')->textInput(['maxlength' => 50])->label('(*) Correo Electrónico:') ?>
+                       <?= $form->field($model, 'correo')->textInput(['maxlength' => 50])->label('Correo Electrónico:') ?>
                     </div>
                     <div class="col-lg-6">
-                        <?= $form->field($model, 'telefono')->textInput(['maxlength' => 10])->label('(*) Telefono:') ?>
+                        <?= $form->field($model, 'telefono')->textInput(['maxlength' => 10])->label('Telefono:') ?>
                     </div>                       
                   </div>
                   <div class="row">
@@ -68,7 +69,11 @@ use yii\widgets\ActiveForm;
                     )->label('(*) Estado:') ?>
                     </div>
                     <div class="col-lg-4">
-                        <?= $form->field($model, 'color')->textInput(['maxlength' => true]) ?>
+                        <!--<?= $form->field($model, 'color')->textInput(['maxlength' => true]) ?>-->
+                        <?=$form->field($model, 'color')->widget(ColorInput::classname(), [
+                            'value' => '#8a2f13',
+                            'options' => ['placeholder' => 'Select color ...'],
+                        ]); ?>
                     </div> 
                   </div>
   
