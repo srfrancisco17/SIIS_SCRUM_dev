@@ -47,7 +47,7 @@ class SprintRequerimientosSearch extends SprintRequerimientos
             $query = SprintRequerimientos::find()->where(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->andWhere(['sprint_id' => $sprint_id]);
             //$query = SprintUsuarios::find();
         }else if($sw_control == 1){
-            $query = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id]);
+            $query = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->orderBy(['usuario_asignado' => SORT_DESC]);
         }
 
         $dataProvider = new ActiveDataProvider([

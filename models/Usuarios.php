@@ -186,9 +186,31 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return ArrayHelper::map($opciones, 'tipo_usuario_id', 'descripcion');
     }
     
-        public static function getListaTipoDocumentos() {
+    public static function getListaTipoDocumentos() {
         $opciones = TiposDocumentos::find()->asArray()->all();
         return ArrayHelper::map($opciones, 'documento_id', 'descripcion');
+    }
+    
+    public static function getListaDevelopers() {
+        
+        /*
+        $desarrolladores = Usuarios::find()->where(['estado' => 1])->andWhere(['tipo_usuario' => 2])
+        ->orderBy('usuario_id')               
+        ->all();
+
+        $desarrolladoresMap = ArrayHelper::map(
+            $desarrolladores,
+            'usuario_id',
+            function ($person, $defaultValue) {
+                return $person->getnombreCompleto();
+            }
+        );
+        
+        return $desarrolladoresMap;
+        */
+        
+        $opciones = Usuarios::find()->where(['estado' => 1])->andWhere(['tipo_usuario' => 2])->asArray()->all();
+        return ArrayHelper::map($opciones, 'usuario_id', 'nombres');
     }
     
     //Metodos Abstractos de indentity interfaces

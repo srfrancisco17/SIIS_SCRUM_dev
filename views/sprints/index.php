@@ -97,14 +97,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]);
                             },
                             'terminar-sprint' => function ($url, $model, $key) {
-                                return Html::a('<span class="glyphicon glyphicon-off"></span>', Url::to(['sprints/terminar-sprint', 'sprint_id' => $model->sprint_id]), [
+                                return $model->estado != 4 ? Html::a('<span class="glyphicon glyphicon-off"></span>', Url::to(['sprints/terminar-sprint', 'sprint_id' => $model->sprint_id]), [
                                             'id' => 'activity-index-link2',
                                             'title' => 'Terminar',
                                             'data' => [
                                                 'confirm' => '¿Está seguro de terminar el sprint?',
                                                 'method' => 'post',
                                             ],
-                                ]);
+                                ]) : '';
                             },                                      
                         ],
                         'deleteOptions' =>

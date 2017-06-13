@@ -69,8 +69,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-   
-   
     <div class="row">
         <div class="col-lg-6">
             <?php Pjax::begin(); ?>
@@ -81,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'panel' => [
                     'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i> Tareas</h3>',
                     'type' => GridView::TYPE_DEFAULT,
-                    'footer' =>Html::a('<i class="glyphicon glyphicon-plus"></i> Agregar Tarea', '#', [
+                    'footer' => Html::a('<i class="glyphicon glyphicon-plus"></i> Agregar Tarea', '#', [
                             'id' => 'activity-index-link',
                             'class' => 'btn btn-success',
                             'data-toggle' => 'contenido',
@@ -103,30 +101,29 @@ $this->params['breadcrumbs'][] = $this->title;
                     'tarea_descripcion:ntext',
                     // 'estado',
                     'tiempo_desarrollo',
-
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'template' => '{update}{delete}',
                         'buttons' => [
                             'update' => function ($url, $model, $key) {
-                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
+                                return ($model->sprint->estado != 4 && $model->sprint->estado != 0) ? Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
                                             'id' => 'activity-index-link',
                                             'title' => Yii::t('yii', 'Update'),
                                             'data-toggle' => 'contenido',
                                             'data-target' => '#contenido',
                                             'data-url' => Url::to(['update', 'id' => $model->tarea_id]),
                                             'data-pjax' => '0',
-                                ]);
+                                ]) : '';
                             },
                             'delete' => function($url, $model){
-                                return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->tarea_id, 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id], [
+                                return ($model->sprint->estado != 4 && $model->sprint->estado != 0) ? Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->tarea_id, 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id], [
                                     'class' => '',
                                     'title'=>'Eliminar',
                                     'data' => [
                                         'confirm' => '¿Está seguro de eliminar este elemento?',
                                         'method' => 'post',
                                     ],
-                                ]);
+                                ]) : '';
                             }
                         ],
                     ],

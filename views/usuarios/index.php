@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Tipo De Documento',
                 'attribute' => 'tipo_documento',
+                'filter' => FALSE,
                 //'value' => 'tipoDocumento.descripcion',
                 'width' => '10px'
             ],

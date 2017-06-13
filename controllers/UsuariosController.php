@@ -56,7 +56,7 @@ class UsuariosController extends Controller
         $searchModel->estado = 1;
         
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination->pageSize=5;
+        $dataProvider->pagination->pageSize=30;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -85,14 +85,9 @@ class UsuariosController extends Controller
         $model = new Usuarios();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        /*
-        if ($model->load(Yii::$app->request->post())) {
-            $model->setPassword($model->contrasena);
-            $model->save();
-            
-        } 
-        */
-            return $this->redirect(['view', 'id' => $model->usuario_id]);
+
+            //return $this->redirect(['view', 'id' => $model->usuario_id]);
+            return $this->redirect(['index']);
    
         }
         else {

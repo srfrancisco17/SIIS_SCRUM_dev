@@ -26,6 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
         $sprint_alias = $consulta->sprint_alias;
     }
 ?>
+<style>
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+    border: 1px solid #a5d1d1;
+}     
+</style>
+
 <div class="row"> 
     <div class="col-md-10">
         <div class="sprint-requerimientos-index">
@@ -44,27 +55,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $sprintRequerimientosDataProvider,
                 'filterModel' => $sprintRequerimientosSearchModel,
                 'autoXlFormat' => true,
+                'tableOptions' => ['class' => 'table  table-bordered table-hover'],
                 'panel' => [
                     'heading' => '<i class="glyphicon glyphicon-expand"></i> <b> ID:' . $sprint_id . '</b> - '.$sprint_alias,
                     'type' => GridView::TYPE_DEFAULT,
                     'footer' => '',
                 ],
                 'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
+                    ['class' => 'yii\grid\SerialColumn'],
                     //'sprint_id',
+                    [
+                        'label' => 'Usuario Asignado',
+                        'attribute' => 'usuario_asignado',
+                        'value' => 'usuarioAsignado.nombreCompleto',
+                        'filter' => Html::activeDropDownList($sprintRequerimientosSearchModel, 'usuario_asignado', \app\models\Usuarios::getListaDevelopers(),['class'=>'form-control','prompt' => 'Seleccione Desarrollador']),
+                        'group'=>true,  // enable grouping
+                    ],
                     [
                         'attribute' => 'requerimiento_id',
                         'label' => 'Requerimiento',
                         'value' => 'requerimiento.requerimiento_titulo',
                         'filter' => FALSE,
                     ],
-                        [
-                        'label' => 'Usuario Asignado',
-                        'attribute' => 'usuario_asignado',
-                        'value' => 'usuarioAsignado.nombres',
-                        'filter' => FALSE,
-                    ],
-                        [
+                    [
                         'attribute' => 'tiempo_desarrollo',
                         'filter' => FALSE,
                     ],

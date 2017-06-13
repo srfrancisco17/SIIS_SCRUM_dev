@@ -56,7 +56,7 @@ class RequerimientosController extends Controller
         $searchModel = new RequerimientosSearch();
         $searchModel->estado = '1'; 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination->pageSize=10;
+        $dataProvider->pagination->pageSize=30;
         
         return $this->render('index', [
             'searchModel' => $searchModel,

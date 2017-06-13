@@ -26,12 +26,14 @@ use kartik\date\DatePicker;
                 <div class="requerimientos-form">
 
                     <?php $form = ActiveForm::begin(); ?>
-                    <?php if($model->isNewRecord){
-                            
+                    <?php 
+                        
+                        if($model->isNewRecord){
+                        
+                            date_default_timezone_set('America/Bogota');
                             $model->fecha_requerimiento = date('Y-m-d');
-                          }else{
-                              
-                          }    
+                            
+                        }   
                     ?>
                     <div class="row">
                         <div class="col-xs-12 col-lg-12">

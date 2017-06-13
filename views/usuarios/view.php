@@ -37,11 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['label'=> 'Contraseña:','attribute' => 'contrasena'],
                         [                      
                         'label' => 'Departamento',
-                        'value' => $model->departamento0->descripcion,
+                        'value' => empty($model->departamento0->descripcion) ? null : $model->departamento0->descripcion,
                         ],
                         [                      
                         'label' => 'Tipo Usuario',
-                        'value' => $model->tipoUsuario->descripcion,
+                        'value' => empty($model->tipoUsuario->descripcion) ? null : $model->tipoUsuario->descripcion,
                         ],
                         ['label'=> 'Color:','attribute' => 'color'],
                         [

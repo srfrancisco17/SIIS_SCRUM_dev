@@ -61,7 +61,7 @@ class SprintRequerimientosController extends Controller
        
         $sprintRequerimientosSearchModel = new SprintRequerimientosSearch();
         $sprintRequerimientosDataProvider = $sprintRequerimientosSearchModel->search(Yii::$app->request->queryParams,$sprint_id, 1);
-        $sprintRequerimientosDataProvider->pagination->pageSize=5;
+        $sprintRequerimientosDataProvider->pagination->pageSize=30;
         
         $usuariosSearchModel = new UsuariosSearch();
         $usuariosDataProvider = $usuariosSearchModel->search(Yii::$app->request->queryParams,2,$sprint_id);

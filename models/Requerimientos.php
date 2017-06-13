@@ -145,4 +145,6 @@ class Requerimientos extends \yii\db\ActiveRecord
         return true;  
  
     }
+    
+ 
 }

@@ -76,6 +76,9 @@ $this->params['breadcrumbs'][] = $this->title;
     td,th {
         padding: 10px;
     }
+    .btn-box-tool {
+       color: #d9d9d9; 
+    }
 </style>  
 
 <div class="kanban">
