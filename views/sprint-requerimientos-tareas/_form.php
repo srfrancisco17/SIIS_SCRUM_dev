@@ -7,8 +7,6 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <?php   
-
-
     if($model->isNewRecord){
         $model->tiempo_desarrollo = 0;
     }
@@ -39,7 +37,6 @@ use yii\widgets\ActiveForm;
         <div class="row">
             <div class="col-lg-12">
                 <?= $form->field($model, 'tarea_descripcion')->textarea(['rows' => 6])->label('Descripcion') ?>  
-
             </div>
         </div>
 
@@ -50,7 +47,6 @@ use yii\widgets\ActiveForm;
     </div>
 
 <?php ActiveForm::end(); ?>
-
 <?php
     $this->registerJs('
     // obtener la id del formulario y establecer el manejador de eventos

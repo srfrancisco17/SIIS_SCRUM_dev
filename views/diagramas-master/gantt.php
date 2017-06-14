@@ -7,16 +7,23 @@ $this->title = 'Gantt';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 ?>
+
+<?php
+echo '<pre>';
+print_r($sprint_requerimientos);
+echo '</pre>';
+?>
+<?php
+echo $sprint_requerimientos[0]->sprint->fecha_desde;;
+?>
  <script type="text/javascript">
     google.charts.load('current', {'packages':['gantt']});
     google.charts.setOnLoadCallback(drawChart);
     
-    function daysToMilliseconds(days) {
-      return days * 24 * 60 * 60 * 1000;
-    }
-
+    
     function drawChart() {
-
+     
+        
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Task ID');
       data.addColumn('string', 'Task Name');
@@ -31,11 +38,11 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
         <?php
         
         $fecha_sprint_inicial = $sprint_requerimientos[0]->sprint->fecha_desde;
-        //$fin_fecha_requerimiento = '2017-05-30';
-            foreach ($sprint_requerimientos as $value) { 
+            foreach ($sprint_requerimientos as $value) {
                 
                 $tareas_tiempo = 0;
-                $duracion_requerimiento = 0;
+                $porcentaje_req_terminado = 0;
+                
                 if (!empty($value->tiempo_desarrollo)){
                 
                     foreach ($value->requerimiento->sprintRequerimientosTareas as $tareas) {
@@ -43,8 +50,8 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
                             $tareas_tiempo+=$tareas->tiempo_desarrollo;
                         }
                     }
-
-                    $duracion_requerimiento = (100*$tareas_tiempo)/$value->tiempo_desarrollo;
+                
+                    $porcentaje_req_terminado = (100*$tareas_tiempo)/$value->tiempo_desarrollo;
                 }
         ?>
         [
@@ -57,7 +64,7 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
                 
                 $inicio = $fecha_sprint_inicial;
                 
-                $dia_requerimientos = round($value->tiempo_desarrollo/8);
+                $dia_requerimientos = ceil($value->tiempo_desarrollo/8);
                 $fecha = date($inicio);
                 
                 $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
@@ -67,7 +74,7 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
             else{
                 $inicio = $fin_fecha_requerimiento;
                 
-                $dia_requerimientos = round($value->tiempo_desarrollo/8);
+                $dia_requerimientos = ceil($value->tiempo_desarrollo/8);
                 $fecha = date($inicio);
                 
                 $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
@@ -79,7 +86,7 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
             new Date('<?= $inicio ?>'), 
             new Date('<?= $fin_fecha_requerimiento ?>'), 
             null,
-            <?= round($duracion_requerimiento) ?>, 
+            <?= round($porcentaje_req_terminado) ?>, 
             null
         ],
          
@@ -89,7 +96,7 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
       ]);
 
       var options = {
-        height: 300,
+        height: 1500,
         gantt: {
           trackHeight: 30
         }
@@ -99,30 +106,23 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 
       chart.draw(data, options);
     }
+    
+    
   </script>
   <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Diagrama De Gantt</h3>
-
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
           </div>
         </div>
         <!-- /.box-header -->
-        <div class="box-body">
-            
+        <div class="box-body">      
             <div id="chart_div"></div>
-
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
             <p>Footer</p>
         </div>
 </div>
-<?php   
-
-//    echo '<pre>';
-//    var_dump($sprint_requerimientos[0]);
-//    echo '</pre>';
-?>

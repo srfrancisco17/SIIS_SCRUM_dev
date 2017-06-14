@@ -44,7 +44,7 @@ class SprintRequerimientosSearch extends SprintRequerimientos
         // add conditions that should always apply here
         
         if(!Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == 2 && $sw_control == 2){
-            $query = SprintRequerimientos::find()->where(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->andWhere(['sprint_id' => $sprint_id]);
+            $query = SprintRequerimientos::find()->where(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->andWhere(['sprint_id' => $sprint_id])->orderBy(['prioridad' => SORT_ASC]);
             //$query = SprintUsuarios::find();
         }else if($sw_control == 1){
             $query = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->orderBy(['usuario_asignado' => SORT_DESC]);

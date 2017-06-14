@@ -237,8 +237,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box-body">
                         <?=  strip_tags($objRequerimientos->requerimiento_descripcion) ?>
                     </div>
+                    <div class="box-footer">
+                        
+                        asd
+                    </div>
                 </div>
-
             </div>
             <div class="col-lg-3 columna-sortable">
 

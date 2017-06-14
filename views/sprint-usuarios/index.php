@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <style> 
     .panel-default > .panel-heading {
         color: #FFFFFF;
-        background-color: #ff851b;
+        background-color: #3c8dbc;
         border-color: #ddd;
     }
     /*
@@ -45,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 $searchModel2 = new SprintRequerimientosSearch();
                 $dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams,$model->sprint_id,2);
+                $dataProvider2->sort = false;
 
                 return Yii::$app->controller->renderPartial('_index2', [
                         'searchModel2' => $searchModel2,

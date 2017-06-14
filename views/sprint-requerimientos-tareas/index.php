@@ -60,6 +60,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Estado',
                         'value' => $requerimiento->estado0->descripcion,
                         ],
+                        [                      
+                        'label' => 'Prioridad',
+                        'value' => $requerimiento->sprintRequerimientos[0]->prioridad0->descripcion,
+                        ],
                     ],
                 ]) ?>     
                 </div>

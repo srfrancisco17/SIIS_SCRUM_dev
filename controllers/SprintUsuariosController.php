@@ -143,7 +143,7 @@ class SprintUsuariosController extends Controller
     
     public function actionKanban($sprint_id){
         
-        $consulta = SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->andWhere(['usuario_asignado'=>Yii::$app->user->identity->usuario_id])->all();
+        $consulta = SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->andWhere(['usuario_asignado'=>Yii::$app->user->identity->usuario_id])->orderBy(['prioridad' => SORT_ASC])->all();
         
         //return $this->render('kanban');
         

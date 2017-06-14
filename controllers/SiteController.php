@@ -101,7 +101,8 @@ class SiteController extends Controller
         if (Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER){
             return $this->redirect(["site/index-scrum-master"]);
         }else if(Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_DEVELOPER){
-            return $this->redirect(["site/index-developer"]);
+            //return $this->redirect(["site/index-developer"]);
+            return $this->redirect(["sprint-usuarios/index"]); 
         }
     }
 
@@ -112,7 +113,8 @@ class SiteController extends Controller
         if (Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER){
             return $this->redirect(["site/index-scrum-master"]);
         }else if(Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_DEVELOPER){
-            return $this->redirect(["site/index-developer"]);
+            //return $this->redirect(["site/index-developer"]);
+            return $this->redirect(["sprint-usuarios/index"]); 
         }
     }else {
         return $this->render('login', [
