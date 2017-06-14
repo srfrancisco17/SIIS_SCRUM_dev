@@ -16,6 +16,7 @@ use yii\web\Response;
 use yii\widgets\ActiveForm;
 use app\models\Usuarios;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 /**
  * SprintRequerimientosController implements the CRUD actions for SprintRequerimientos model.
  */
@@ -248,6 +249,30 @@ class SprintRequerimientosController extends Controller
             echo "<option>-</option>";
         }
 
+    }
+    
+    public function actionSubcat($sprint_id) {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if (!empty($parents[0])) {
+                $cat_id = $parents[0];
+                
+                //print_r($parents);
+                
+                $out = \app\models\PrioridadSprintRequerimientos::getSubCatList($sprint_id, $cat_id); 
+               
+                //if ($out )
+                if (empty($out)){
+                  $out = [["id"=>"-","name"=>"Advertencia"]];  
+                } 
+                
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        
+        echo Json::encode(['output'=>'', 'selected'=>'']);
     }
     
 }

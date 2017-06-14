@@ -1,8 +1,10 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
-use kartik\depdrop\DepDrop;
+use kartik\widgets\DepDrop;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\SprintRequerimientos */
@@ -26,18 +28,22 @@ use kartik\depdrop\DepDrop;
             <?= $form->field($model, 'requerimiento_id')->dropDownList($model->ListaRequerimientos, ['prompt' => 'Seleccione Uno'])->label('(*) Requerimiento:'); ?>
         </div>
        <div class="col-lg-4">
-           <!-- Aqui usuario asignado-->
-           <?= $form->field($model, 'usuario_asignado')->dropDownList(yii\helpers\ArrayHelper::map(app\models\SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all(), 'usuario_id', 'usuario.nombres'), 
-                       [
-                           'prompt' => 'Seleccione Usuario',
-                            'onchange'=>'
-                                $.post( "index.php?r=sprint-requerimientos/lists&sprint_id='.$sprint_id.'&usuario_id="+$(this).val(), function( data ) {
-                                    $( "select#sprintrequerimientos-prioridad" ).html( data );
-                            });'
-                       ])->label('Desarrollador:'); ?>
-        </div>
+           
+
+           
+            <?= $form->field($model, 'usuario_asignado')->dropDownList(yii\helpers\ArrayHelper::map(app\models\SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all(), 'usuario_id', 'usuario.nombres'), ['prompt' => 'Seleccione Desarrollador']); ?>
+        
+       </div>
         <div class="col-lg-4">
-            <?= $form->field($model, 'prioridad')->dropDownList(yii\helpers\ArrayHelper::map(app\models\PrioridadSprintRequerimientos::find()->all(), 'prioridad_id', 'descripcion'), ['prompt' => 'Seleccione Prioridad' ])->label('Prioridad:'); ?>
+            
+            <?= $form->field($model, 'prioridad')->widget(DepDrop::classname(), [
+                'options'=>['id'=>'prioridad-id'],
+                'pluginOptions'=>[
+                    'depends'=>[Html::getInputId($model, 'usuario_asignado')],
+                    'placeholder'=>false,
+                    'url'=>Url::to(['/sprint-requerimientos/subcat', 'sprint_id' => $sprint_id])
+                ]
+            ]) ?>
         </div>
     </div>
    <?php
