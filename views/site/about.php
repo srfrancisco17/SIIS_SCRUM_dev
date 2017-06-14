@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     - Harrison Gonzales Parra (Desarrollador)<br>
                     - Leoardo Rodriguez (Desarrollador)<br>
                     - Luisa Fernanda Bedoya (Desarrollador)<br>
-                    - Juan (Desarrollador)<br>
+                    - Juan Fernando Hoyos(Desarrollador)<br>
                 </div>
             </div>
         </li>

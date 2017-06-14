@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Requerimiento</h3>
+                  <h3 class="box-title">Detalles del requerimiento</h3>
                 </div>
                 <?php
                 //echo $requerimiento->departamentoSolicita->descripcion;
@@ -39,8 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= DetailView::widget([
                     'model' => $requerimiento,
                     'attributes' => [
-                        'requerimiento_id',
-                        'comite_id',
+                        //'requerimiento_id',
+                        //'comite_id',
                         'requerimiento_titulo',
                         'requerimiento_descripcion:html',
                         'requerimiento_justificacion:html',

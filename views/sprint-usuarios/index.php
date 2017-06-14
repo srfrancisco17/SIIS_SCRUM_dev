@@ -53,20 +53,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 },
             ],
+            /*
             [
                 'attribute' => 'sprint_id',
                 'contentOptions' => ['style' => 'width:0px;'],
                 'filter'=>FALSE
-            ],                              
+            ],
+            */                              
             [
                 'attribute' => 'sprintName'
             ],
-            //'sprint_id',
             //'usuario_id',
             //'horas_desarrollo',
             //'observacion:ntext',
             [
               'attribute' => 'sprint.fecha_desde', 
+              'contentOptions' => ['style' => 'width:100px;'],
+            ],
+            [
+              'attribute' => 'sprint.fecha_hasta', 
               'contentOptions' => ['style' => 'width:100px;'],
             ],
             [
