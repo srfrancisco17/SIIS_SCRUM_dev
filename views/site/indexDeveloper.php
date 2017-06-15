@@ -7,16 +7,13 @@ $this->title = 'Proyecto-FAOF2';
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>BIENVENIDO DESARROLLADOR!</h1>
+        <h1>Bienvenido Desarrollador!</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p class="lead">Proximamente...</p>
+        
     </div>
 
     <div class="body-content">
-
-
-
+        
     </div>
 </div>

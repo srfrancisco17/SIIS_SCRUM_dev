@@ -21,7 +21,7 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>Proyecto</b>-FAOF2</a>
+        <a href="#"><b>SIIS</b>-SCRUM</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -32,7 +32,7 @@ $fieldOptions2 = [
         <?= $form
             ->field($model, 'username', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('Numero De Documento')]) ?>
+            ->textInput(['placeholder' => $model->getAttributeLabel('Numero de Documento')]) ?>
 
         <?= $form
             ->field($model, 'password', $fieldOptions2)

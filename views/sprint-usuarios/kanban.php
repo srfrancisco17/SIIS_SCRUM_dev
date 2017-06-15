@@ -83,7 +83,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     .box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
         font-size: 13px;
-        color: #f0f0f0;
+        font-weight: 600;
+        color: #671f31;
     }
     td,th {
         padding: 10px;
@@ -291,7 +292,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?=  strip_tags($objRequerimientos->requerimiento_descripcion) ?>
                     </div>
                     <div class="box-footer" style="background-color: <?= $usuario_color?>;">
-                        <button id="activity-index-link" data-url=<?= Url::to(['sprint-requerimientos-tareas/create', 'sprint_id' => $objRequerimientos->sprints[0]->sprint_id, 'requerimiento_id' => $objRequerimientos->requerimiento_id])?> data-toggle="modal" data-target="#modal" data-pjax="0" type="button" class="btn btn-success btn-sm">Añadir Tarea</button>
+                        <div class="box-tools pull-right">    
+                            <?= Html::a('<span class="glyphicon glyphicon-list-alt" style="color: #d9d9d9;"></span>', ['#'], [
+                                            'title' => 'Crear Tarea',
+                                            'id' => 'activity-index-link',
+                                            'data-toggle' => 'modal',
+                                            'data-target' => '#modal',
+                                            'data-url' => Url::to(['sprint-requerimientos-tareas/create', 'sprint_id' => $objRequerimientos->sprints[0]->sprint_id, 'requerimiento_id' => $objRequerimientos->requerimiento_id]),
+                                            'data-pjax' => '0',
+                            ]) ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -327,7 +337,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>                
             </div>
             <div class="col-lg-3 columna-sortable">
- 
                 <?php
                     echo Sortable::widget([
                         'connected' => $objRequerimientos->requerimiento_id.'',
@@ -413,7 +422,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
         Modal::begin([
             'id' => 'modal',
-            'header' => '<h4 class="modal-title">Añadir Tarea</h4>'
+            'header' => '<h4 class="modal-title">Tareas</h4>'
 
         ]);
         echo "<div class='well'></div>";
