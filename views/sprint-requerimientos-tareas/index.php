@@ -152,7 +152,16 @@ $this->params['breadcrumbs'][] = $this->title;
             
         </div>
         <div class="col-lg-6">
-            <div id="contenido"></div>
+            
+        <div class="box box-solid box-default">
+            <div class="box-header with-border">
+                
+            </div>
+            <div class="box-body">
+                <div id="contenido"></div>
+            </div>
+        </div>
+               
         </div>
     </div>
 </div>

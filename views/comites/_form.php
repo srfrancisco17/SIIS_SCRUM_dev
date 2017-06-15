@@ -77,6 +77,7 @@ use kartik\time\TimePicker;
                 )
                 .done(function(result) {
                     form.parent().html(result.message);
+                    
                     $.pjax.reload({container:"#comites-grid"});
                     
                 });

@@ -36,7 +36,7 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
         return [
             [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'default', 'value' => null],
             [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
-            //[['sprint_id', 'requerimiento_id'], 'required'],
+            [['tarea_titulo'], 'required'],
             [['tiempo_desarrollo'], 'default', 'value' => 0],
             [['tarea_descripcion'], 'string'],
             [['tarea_titulo'], 'string', 'max' => 60],

@@ -18,14 +18,9 @@ use yii\widgets\ActiveForm;
         'enableClientValidation' => true,
     ]); 
 ?>
-    <div class="box box-solid box-default">
-        <div class="box-header with-border">
-            <h3 class="box-title">
-                <?= $model->isNewRecord ? 'Crear Nueva Tarea' : 'Actualizar Tarea' ?>
-            </h3>
-        </div>
-        <div class="box-body">
-
+ 
+        <!--<?= $model->isNewRecord ? 'Crear Nueva Tarea' : 'Actualizar Tarea' ?> -->
+            
         <div class="row">
             <div class="col-lg-9">
                 <?= $form->field($model, 'tarea_titulo')->textInput(['maxlength' => true])->label('(*) Titulo') ?>
@@ -39,11 +34,9 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'tarea_descripcion')->textarea(['rows' => 6])->label('Descripcion') ?>  
             </div>
         </div>
-
-        </div>
-        <div class="panel-footer">
+       
             <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        </div>
+       
     </div>
 
 <?php ActiveForm::end(); ?>
@@ -58,6 +51,7 @@ use yii\widgets\ActiveForm;
             )
             .done(function(result) {
                 form.parent().html(result.message);
+                $("#modal").modal("hide");
                 $.pjax.reload({container:"#tareas-grid"});
 
             });

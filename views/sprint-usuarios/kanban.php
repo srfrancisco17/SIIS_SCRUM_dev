@@ -3,7 +3,9 @@
 use yii\helpers\Html;
 use kartik\sortable\Sortable;
 use yii\widgets\ActiveForm;
-
+use yii\widgets\Pjax;
+use yii\bootstrap\Modal;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel2 app\models\SprintRequerimientosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -44,6 +46,16 @@ $this->params['breadcrumbs'][] = $this->title;
         margin-top: 0px;
         margin-bottom: 5px;
         width: 100%;
+    }
+    
+    .box-footer {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 3px;
+        border-bottom-left-radius: 3px;
+        border-top: 0px solid;
+        padding: 5px;
+        background-color: #fff;
     }
     
     .sortable {
@@ -99,17 +111,18 @@ $this->params['breadcrumbs'][] = $this->title;
         <!--<hr>-->
         <br>
     </div>
+    <?php Pjax::begin(['id' => 'tareas-grid']); ?>
     <?php
-    $form = ActiveForm::begin([
-                'id' => 'tareas-form',
-                'enableAjaxValidation' => true,
-                'enableClientScript' => true,
-                'enableClientValidation' => true,
-    ]);
+        $form = ActiveForm::begin([
+                    'id' => 'tareas-form1',
+                    'enableAjaxValidation' => true,
+                    'enableClientScript' => true,
+                    'enableClientValidation' => true,
+        ]);
     ?>
     <?php
         
-        $this->registerJs("var form = $('#tareas-form');");
+        $this->registerJs("var form = $('#tareas-form1');");
         
         $usuario_color = '#656565';
         
@@ -145,14 +158,27 @@ $this->params['breadcrumbs'][] = $this->title;
                                       <div class="box-tools pull-right">
                                         <span class="label label-default">'.$objTareas->tiempo_desarrollo.'</span>
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                                      </div><!-- /.box-tools -->
+                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
                                     ' . $objTareas->tarea_descripcion . '
                                     </div><!-- /.box-body -->
+                                    <div class="box-footer" style="background-color:'.$usuario_color.'">
+                                        <div class="box-tools pull-right">
+                                            <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'id' => $objTareas->tarea_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
+                                            '.
+                                            Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
+                                                'title' => 'Eliminar',
+                                                'data' => [
+                                                    'confirm' => 'Esta seguro de eliminar esta tarea?',
+                                                    'method' => 'post',
+                                                ],
+                                            ])
+                                            .'
+                                        </div>
+                                    </div>
                                     </div><!-- /.box -->',
                             'options' => ['id' => $objTareas->tarea_id],
-                                //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
                         ];  
                         
                         break;
@@ -168,14 +194,27 @@ $this->params['breadcrumbs'][] = $this->title;
                                       <div class="box-tools pull-right">
                                         <span class="label label-default">'.$objTareas->tiempo_desarrollo.'</span>
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                                      </div><!-- /.box-tools -->
+                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
                                     ' . $objTareas->tarea_descripcion . '
                                     </div><!-- /.box-body -->
+                                    <div class="box-footer" style="background-color:'.$usuario_color.'">
+                                        <div class="box-tools pull-right">
+                                            <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'id' => $objTareas->tarea_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
+                                            '.
+                                            Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
+                                                'title' => 'Eliminar',
+                                                'data' => [
+                                                    'confirm' => 'Esta seguro de eliminar esta tarea?',
+                                                    'method' => 'post',
+                                                ],
+                                            ])
+                                            .'                                        
+                                        </div>                                        
+                                    </div>
                                     </div><!-- /.box -->',
                             'options' => ['id' => $objTareas->tarea_id],
-                                //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
                         ];  
                         
                         break;
@@ -195,6 +234,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="box-body">
                                     ' . $objTareas->tarea_descripcion . '
                                     </div><!-- /.box-body -->
+                                    <div class="box-footer" style="background-color:'.$usuario_color.'">
+                                        <div class="box-tools pull-right">
+                                            <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'id' => $objTareas->tarea_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
+                                            '.
+                                            Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
+                                                'title' => 'Eliminar',
+                                                'data' => [
+                                                    'confirm' => 'Esta seguro de eliminar esta tarea?',
+                                                    'method' => 'post',
+                                                ],
+                                            ])
+                                            .'                                        
+                                        </div>                                        
+                                    </div>
                                     </div><!-- /.box -->',
                             'options' => ['id' => $objTareas->tarea_id],
                                 //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
@@ -237,9 +290,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box-body">
                         <?=  strip_tags($objRequerimientos->requerimiento_descripcion) ?>
                     </div>
-                    <div class="box-footer">
-                        
-                        asd
+                    <div class="box-footer" style="background-color: <?= $usuario_color?>;">
+                        <button id="activity-index-link" data-url=<?= Url::to(['sprint-requerimientos-tareas/create', 'sprint_id' => $objRequerimientos->sprints[0]->sprint_id, 'requerimiento_id' => $objRequerimientos->requerimiento_id])?> data-toggle="modal" data-target="#modal" data-pjax="0" type="button" class="btn btn-success btn-sm">Añadir Tarea</button>
                     </div>
                 </div>
             </div>
@@ -262,7 +314,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);
-                            //$.pjax.reload({container:"#tareas-form"}); 
+                            //$.pjax.reload({container:"#tareas-form1"}); 
 
                         });
                                 
@@ -293,7 +345,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);
-                            //$.pjax.reload({container:"#tareas-form"}); 
+                            //$.pjax.reload({container:"#tareas-form1"}); 
 
                         });
                                 
@@ -323,7 +375,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);
-                            //$.pjax.reload({container:"#tareas-form"}); 
+                            //$.pjax.reload({container:"#tareas-form1"}); 
 
                         });
                                 
@@ -343,7 +395,30 @@ $this->params['breadcrumbs'][] = $this->title;
         }
     ?>    
     <?php ActiveForm::end() ?>
-   
+
+    <?php Pjax::end(); ?>
+    <?php
+        $this->registerJs(
+                "$(document).on('click', '#activity-index-link', (function() {
+                        $.get(
+                            $(this).data('url'),
+                            function (data) {
+                                $('.modal-body').html(data);
+                                $('#modal').modal();
+                            }
+                        );
+                    }));"
+        );
+    ?>
+    <?php
+        Modal::begin([
+            'id' => 'modal',
+            'header' => '<h4 class="modal-title">Añadir Tarea</h4>'
+
+        ]);
+        echo "<div class='well'></div>";
+        Modal::end();
+     ?>
 <?php
 //$items2_options = ['style' => ['background-color' => 'blue', 'color'=>'white', 'width' => '100px', 'height' => '100px']];
 $options2 = ['style' => ['background-color' => 'blue', 'min-height' => '100px', 'padding-bottom' => '30px']];

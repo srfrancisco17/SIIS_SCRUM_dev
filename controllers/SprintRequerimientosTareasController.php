@@ -89,13 +89,12 @@ class SprintRequerimientosTareasController extends Controller
 
                 
                 $model->refresh();
-                /*
+                
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
                     'message' => '¡Éxito!',
                 ];
-                */
-                return TRUE;
+               
             } else {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
@@ -169,10 +168,24 @@ class SprintRequerimientosTareasController extends Controller
         $model->delete();
            
         self::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
-
+           
         return $this->redirect(['index', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
     }
-
+    
+    public function actionDelete2($id, $sprint_id, $requerimiento_id)
+    {
+        
+        $model = $this->findModel($id);
+        
+        $model->delete();
+           
+        self::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
+        
+        return $this->redirect(['sprint-usuarios/kanban','sprint_id' => $sprint_id]);
+        
+    }
+    
+    
     /**
      * Finds the SprintRequerimientosTareas model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
