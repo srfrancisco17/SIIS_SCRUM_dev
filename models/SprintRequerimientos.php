@@ -95,7 +95,11 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         return $this->hasOne(Requerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
     
-    
+    public function getRequerimiento2()
+    {
+        return $this->hasMany(Requerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
+    }
+     
     /**
      * @return \yii\db\ActiveQuery
      */

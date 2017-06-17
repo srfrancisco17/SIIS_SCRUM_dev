@@ -3,113 +3,155 @@
 //use yii\helpers\Html;
 //use kartik\helpers\Html;
 
-$this->title = 'Gantt';
+$this->title = 'Diagrama Gantt';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 ?>
-
 <?php
-echo '<pre>';
-print_r($sprint_requerimientos);
-echo '</pre>';
+    
+//    echo '<pre>';
+//    $var = $consulta[0];
+//        print_r($var->sprint->fecha_hasta);
+//    echo '</pre>';
+//    exit();
 ?>
-<?php
-echo $sprint_requerimientos[0]->sprint->fecha_desde;;
-?>
- <script type="text/javascript">
+<script type="text/javascript">
     google.charts.load('current', {'packages':['gantt']});
-    google.charts.setOnLoadCallback(drawChart);
     
+    <?php
     
-    function drawChart() {
-     
+        $contador = 1;
         
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Task ID');
-      data.addColumn('string', 'Task Name');
-      data.addColumn('string', 'Resource');
-      data.addColumn('date', 'Start Date');
-      data.addColumn('date', 'End Date');
-      data.addColumn('number', 'Duration');
-      data.addColumn('number', 'Percent Complete');
-      data.addColumn('string', 'Dependencies');
+            foreach ($consulta as $obj_usuarios){
+            
+    ?>   
 
-      data.addRows([
-        <?php
-        
-        $fecha_sprint_inicial = $sprint_requerimientos[0]->sprint->fecha_desde;
-            foreach ($sprint_requerimientos as $value) {
+            function drawChart<?=$contador?>(){
                 
-                $tareas_tiempo = 0;
-                $porcentaje_req_terminado = 0;
                 
-                if (!empty($value->tiempo_desarrollo)){
+                var data<?=$contador?> = new google.visualization.DataTable();
+                data<?=$contador?>.addColumn('string', 'Task ID');
+                data<?=$contador?>.addColumn('string', 'Task Name');
+                data<?=$contador?>.addColumn('string', 'Resource');
+                data<?=$contador?>.addColumn('date', 'Start Date');
+                data<?=$contador?>.addColumn('date', 'End Date');
+                data<?=$contador?>.addColumn('number', 'Duration');
+                data<?=$contador?>.addColumn('number', 'Percent Complete');
+                data<?=$contador?>.addColumn('string', 'Dependencies');
                 
-                    foreach ($value->requerimiento->sprintRequerimientosTareas as $tareas) {
-                        if ($tareas->estado == 4){
-                            $tareas_tiempo+=$tareas->tiempo_desarrollo;
+                /*
+                 * foreach de usuarios
+                 */
+
+                
+                data<?=$contador?>.addRows([
+                    
+                <?php
+                
+                
+                $tamaño_chart = 0;
+                $var2 = $obj_usuarios->sprintRequerimientos;
+                    
+                    foreach ($var2 as $sprint_requerimientos) {
+                        
+                        $tamaño_chart++;
+                        
+                        if ($sprint_requerimientos->prioridad == 1){
+
+                            $inicio = '2017-06-13';
+
+                            $dia_requerimientos = ceil($sprint_requerimientos->tiempo_desarrollo/8);
+                            $fecha = date($inicio);
+
+                            $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
+
+                            $fin_fecha_requerimiento =  date('Y-m-d', $suma_fecha);
                         }
+                        
+                        if ($sprint_requerimientos === end($var2)) {
+                            
+                            $inicio = $fin_fecha_requerimiento;
+
+                            $dia_requerimientos = ceil($sprint_requerimientos->tiempo_desarrollo/8);
+                            $fecha = date($inicio);
+
+                            $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
+
+                            $fin_fecha_requerimiento =  $consulta[0]->sprint->fecha_hasta;
+
+                            
+                        }
+                        
+                        else{
+
+                            $inicio = $fin_fecha_requerimiento;
+
+                            $dia_requerimientos = ceil($sprint_requerimientos->tiempo_desarrollo/8);
+                            $fecha = date($inicio);
+
+                            $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
+
+                            $fin_fecha_requerimiento =  date('Y-m-d', $suma_fecha);
+
+                        }
+                    
+                        foreach ($sprint_requerimientos->requerimiento2 as $requerimiento){
+                        
+                ?>   
+                            ['<?= $requerimiento->requerimiento_id ?>', '<?= $requerimiento->requerimiento_titulo ?>', '<?=$requerimiento->requerimiento_id?>',
+                            new Date('<?= $inicio ?>'), new Date('<?= $fin_fecha_requerimiento ?>'), null, 100, null],     
+                <?php 
+                            }
+                        }
+                ?>
+                      
+                    
+                ]);
+                
+                
+                var options = {
+                        height: <?= $tamaño_chart*90?>,
+                    gantt: {
+                        trackHeight: 30
                     }
-                
-                    $porcentaje_req_terminado = (100*$tareas_tiempo)/$value->tiempo_desarrollo;
-                }
-        ?>
-        [
-            '<?= $value->requerimiento->requerimiento_id;?>', 
-            '<?= $value->requerimiento->requerimiento_titulo;?>', 
-            'usuario'+'<?= $value->usuario_asignado;?>',
-        <?php
-        
-            if ($value->prioridad == 1){
-                
-                $inicio = $fecha_sprint_inicial;
-                
-                $dia_requerimientos = ceil($value->tiempo_desarrollo/8);
-                $fecha = date($inicio);
-                
-                $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
-                
-                $fin_fecha_requerimiento =  date('Y-m-d', $suma_fecha);
-            }
-            else{
-                $inicio = $fin_fecha_requerimiento;
-                
-                $dia_requerimientos = ceil($value->tiempo_desarrollo/8);
-                $fecha = date($inicio);
-                
-                $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
-                
-                $fin_fecha_requerimiento =  date('Y-m-d', $suma_fecha);
-                
-            }
-        ?>
-            new Date('<?= $inicio ?>'), 
-            new Date('<?= $fin_fecha_requerimiento ?>'), 
-            null,
-            <?= round($porcentaje_req_terminado) ?>, 
-            null
-        ],
-         
-         <?php
-            }
-         ?>
-      ]);
+                };
 
-      var options = {
-        height: 1500,
-        gantt: {
-          trackHeight: 30
+                var chart<?=$contador?> = new google.visualization.Gantt(document.getElementById('chart_div_<?=$contador?>'));
+
+                chart<?=$contador?>.draw(data<?=$contador?>, options);
+
+            }
+            
+    <?php  
+            $suma[] = $contador;
+            $contador++;
+            
         }
-      };
+        
+        foreach ($suma as $value){
+    ?>
+        google.charts.setOnLoadCallback(drawChart<?=$value?>);
+    <?php                  
+        }
+    ?>
+        
+   
+ 
+ 
+ </script>
+ <?php
+         foreach ($suma as $value){
+    ?>
+ 
+     <div id="chart_div_<?=$value?>"></div>
+     <br>
+     <hr>
+     <br>
+    <?php                  
+        }
+    ?>
 
-      var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
-
-      chart.draw(data, options);
-    }
-    
-    
-  </script>
-  <div class="box box-default">
+<div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Diagrama De Gantt</h3>
           <div class="box-tools pull-right">
@@ -117,11 +159,10 @@ echo $sprint_requerimientos[0]->sprint->fecha_desde;;
             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
           </div>
         </div>
-        <!-- /.box-header -->
         <div class="box-body">      
             <div id="chart_div"></div>
         </div>
-        <!-- /.box-body -->
+
         <div class="box-footer">
             <p>Footer</p>
         </div>

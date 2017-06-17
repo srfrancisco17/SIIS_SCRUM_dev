@@ -93,7 +93,14 @@ $this->params['breadcrumbs'][] = $this->title;
        color: #d9d9d9; 
     }
 </style> 
-
+<?php
+//echo '<pre>';
+//$consulta1 = $consulta[0]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
+//
+//print_r($consulta1[0]->sprintRequerimientosTareas);
+//echo '</pre>';
+//exit();
+?>
 <div class="kanban">
      
     <div class="row" style="background-color: #5A6E83; color: #f0f0f0;">
