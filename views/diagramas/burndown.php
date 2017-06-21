@@ -56,15 +56,76 @@ $this->params['breadcrumbs'][] = $this->title;
 
         return json_encode($datos);
     }
+    
 
-//echo '<pre>';
-//print_r($consulta_tiempo_desarrollo);
-////print_r($datos_ideal_burn = json_decode(ideal_burn($consulta_burndown->horas_desarrollo, $consulta_burndown->sprint->fecha_desde, $consulta_burndown->sprint->fecha_hasta)));
-//echo '</pre>';
-//exit();
+    foreach ($consulta_acutal_burn as $key => $value) {
+        
+        
+        $datetime1 = date_create($consulta_ideal_burn->sprint->fecha_desde);
+        $datetime2 = date_create($value['fecha_terminado']);
+        $interval = date_diff($datetime1, $datetime2);
 
-$datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $consulta_burndown->sprint->fecha_desde, $consulta_burndown->sprint->fecha_hasta);
-$arreglo_dias = intervalo_dias($consulta_burndown->sprint->fecha_desde, $consulta_burndown->sprint->fecha_hasta, 2);
+        $dias = $interval->format('%a');
+        
+        $consulta_acutal_burn[$key]['dias'] = $dias;
+        
+
+    }
+
+    /*
+     * 
+     */
+    
+    $arreglo_actual_burn = array();
+    $total_tiempo_desarrollo = $consulta_tiempo_desarrollo; //120 Horas
+    $contador = 0;
+    $total_dias_sprint = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 1); // 17 Dias
+    
+   
+    for ($i = 1; $i < $total_dias_sprint; $i++) {
+
+        foreach ($consulta_acutal_burn as $value2) {
+            
+                if ($i == $value2['dias']) {
+
+                    
+                    $total_tiempo_desarrollo = $total_tiempo_desarrollo - $value2['sum_horas'];
+                    $contador++;
+                        
+		}
+
+
+        }
+        
+        $arreglo_actual_burn[] = (int)$total_tiempo_desarrollo;
+
+            if ($contador == count($consulta_acutal_burn)) {
+
+                break;
+            }
+
+        
+    }
+    
+    //$datos_actual_burn = json_encode($arreglo_actual_burn);
+    
+    $json_actual_burn = json_encode($arreglo_actual_burn);
+    
+//    echo '<pre>';
+//    var_dump($arreglo_actual_burn[1]);
+//    echo '</pre>';
+//    
+//    echo '<pre>';
+//        print_r($json_actual_burn);
+//    echo '</pre>';
+//    echo '<br>';
+//    echo '<pre>';
+//        print_r($consulta_acutal_burn);
+//    echo '</pre>';
+    
+
+$datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta);
+$arreglo_dias = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 2);
 
 $this->registerJs("
     
@@ -114,6 +175,15 @@ $this->registerJs("
       color: 'rgba(255,0,0,0.25)',
       lineWidth: 2,
       data: $datos_ideal_burn
+    },
+    {
+      name: 'Actual Burn',
+      color: 'rgba(0,120,200,0.75)',
+      marker: {
+        radius: 6
+      },
+      //data: [100, 110, 85, 60, 60, 30, 32, 23, 9, 2]
+     data:$json_actual_burn 
     }]
   });
 

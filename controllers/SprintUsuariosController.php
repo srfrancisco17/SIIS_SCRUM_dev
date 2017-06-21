@@ -159,9 +159,11 @@ class SprintUsuariosController extends Controller
         
         if (Yii::$app->request->isAjax){
             
-            $model->actualizarEstadoTareas($id, $estado);
+            //$model->actualizarEstadoTareas($id, $estado);
             
             if ($estado == 2){
+                
+                $model->actualizarEstadoTareas($id, $estado, 2);
                 
                 $sw_var = \app\models\SprintRequerimientosTareas::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->andWhere(['estado' => '3'])->count();
                 
@@ -171,11 +173,16 @@ class SprintUsuariosController extends Controller
                 }
                 
             }else if ($estado == 3){
+                $model->actualizarEstadoTareas($id, $estado, 3);
+                
                 \app\models\SprintRequerimientos::actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, '3');
             }
             else if ($estado == 4){
                 echo 'estoy en el 4';
-                $sw_var = \app\models\SprintRequerimientosTareas::find()->where(['between', 'estado','2', '3'])->andWhere(['requerimiento_id' => $requerimiento_id])->andWhere(['sprint_id' => $sprint_id])->count();
+                
+                    $model->actualizarEstadoTareas($id, $estado, 4);
+
+                    $sw_var = \app\models\SprintRequerimientosTareas::find()->where(['between', 'estado','2', '3'])->andWhere(['requerimiento_id' => $requerimiento_id])->andWhere(['sprint_id' => $sprint_id])->count();
                 
                 if ($sw_var == 0){
                     

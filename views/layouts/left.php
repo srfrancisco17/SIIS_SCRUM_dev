@@ -73,9 +73,9 @@
                         'label' => 'Diagramas',
                         'icon' => 'folder-open',
                         'url' => ['#'],
-                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER || \app\models\Usuarios::USUARIO_DEVELOPER,
+                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER,
                         'items' => [
-                            Yii::$app->user->identity->tipo_usuario == 2 ? ['label' => 'Burndown', 'icon'=>'line-chart', 'url' => ['diagramas/burndown2']] : '',
+                            //['label' => 'Burndown', 'icon'=>'line-chart', 'url' => ['diagramas/burndown2']],
                             ['label' => 'Gantt', 'icon'=>'align-left', 'url' => ['diagramas/gantt']],
                             //['label' => 'Burndown', 'icon'=>'line-chart', 'url' => ['diagramas/burndown']],
                             ['label' => 'area-chart', 'icon'=>'area-chart', 'url' => ['#']],

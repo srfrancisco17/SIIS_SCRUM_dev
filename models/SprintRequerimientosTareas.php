@@ -14,7 +14,8 @@ use Yii;
  * @property string $tarea_descripcion
  * @property string $estado
  * @property int $tiempo_desarrollo
- *
+ * @property string $fecha_terminado
+ * 
  * @property Requerimientos $requerimiento
  * @property Sprints $sprint
  */
@@ -36,6 +37,7 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
         return [
             [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'default', 'value' => null],
             [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
+            [['fecha_terminado'], 'safe'],
             [['tarea_titulo'], 'required'],
             [['tiempo_desarrollo'], 'default', 'value' => 0],
             [['tarea_descripcion'], 'string'],
@@ -61,6 +63,7 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
             'tarea_descripcion' => 'Tarea Descripcion',
             'estado' => 'Estado',
             'tiempo_desarrollo' => 'Tiempo Desarrollo',
+            'fecha_terminado' => 'Fecha Terminado',
         ];
     }
     
@@ -84,16 +87,29 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
         return $this->hasOne(Sprints::className(), ['sprint_id' => 'sprint_id']);
     }
     
-    public function actualizarEstadoTareas($id, $estado){
+    public function actualizarEstadoTareas($id, $estado, $sw_control){
         
         $conexion = Yii::$app->db;
-           
-        //$usuarios = explode(",",$key);
+        
+        
+        if ($sw_control == 4){
+            
+            $expression = new \yii\db\Expression('NOW()');
+            $now = (new \yii\db\Query)->select('now()::timestamp')->scalar();
+            
+            $conexion->createCommand()->update('sprint_requerimientos_tareas', [
+                'estado' => $estado,
+                'fecha_terminado' => $now,
+            ],  'tarea_id ='.$id)->execute();      
+            
+        }else{
             
             $conexion->createCommand()->update('sprint_requerimientos_tareas', [
                 'estado' => $estado,
             ],  'tarea_id ='.$id)->execute();         
-        
+
+        }     
+
         return true;  
         
     }
