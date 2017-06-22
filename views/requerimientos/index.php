@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'bordered' => true,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                        'requerimiento_id',
+                    //'requerimiento_id',
                     [
                         'attribute' => 'comite_id',
                         'label' => 'Comite',

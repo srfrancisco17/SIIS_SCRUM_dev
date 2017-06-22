@@ -56,7 +56,7 @@ class PrioridadSprintRequerimientos extends \yii\db\ActiveRecord
     
     public static function getSubCatList($sprint_id, $usuario_id) {
         
-        $sql = "Select prioridad_id AS id, descripcion AS name From prioridad_sprint_requerimientos where Not prioridad_id In (SELECT CASE WHEN prioridad is NULL THEN 99 ELSE prioridad END  from sprint_requerimientos where sprint_id = ".$sprint_id." and usuario_asignado = ".$usuario_id.")";
+        $sql = "Select prioridad_id AS id, descripcion AS name From prioridad_sprint_requerimientos where Not prioridad_id In (SELECT CASE WHEN prioridad is NULL THEN 99 ELSE prioridad END  from sprint_requerimientos where sprint_id = ".$sprint_id." and usuario_asignado = ".$usuario_id.") order by prioridad_id";
         
         $prioridades = \app\models\PrioridadSprintRequerimientos::findBySql($sql)->asArray()->all();
         

@@ -4,6 +4,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\widgets\DepDrop;
+use kartik\select2\Select2;
 
 
 /* @var $this yii\web\View */
@@ -22,21 +23,39 @@ use kartik\widgets\DepDrop;
     <?php
         if ($model->isNewRecord) {
     ?>
-     <?= $form->field($model, 'sprint_id')->hiddenInput(['value'=> $sprint_id])->label(false); ?>
+    <?= $form->field($model, 'sprint_id')->hiddenInput(['value'=> $sprint_id])->label(false); ?>
     <div class="row">
-        <div class="col-lg-4">
-            <?= $form->field($model, 'requerimiento_id')->dropDownList($model->ListaRequerimientos, ['prompt' => 'Seleccione Uno'])->label('(*) Requerimiento:'); ?>
+        <div class="col-lg-4">  
+        
+            <?= $form->field($model, 'requerimiento_id')->widget(Select2::className(),[
+                'data' => $model->ListaRequerimientos,
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'language'=>'es',
+                'options' => ['placeholder'=>'Seleccione Requerimiento'],
+                'pluginOptions'=>[
+                    'allowClear'=>true
+                ],
+                ])->label('(*) Requerimiento:');
+            ?>
         </div>
        <div class="col-lg-4">
            
-
+            <!--<?= $form->field($model, 'usuario_asignado')->dropDownList(\app\models\SprintUsuarios::getListaDesarrolladores($sprint_id), ['prompt' => 'Seleccione Desarrollador']); ?>-->
            
-            <?= $form->field($model, 'usuario_asignado')->dropDownList(yii\helpers\ArrayHelper::map(app\models\SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all(), 'usuario_id', 'usuario.nombres'), ['prompt' => 'Seleccione Desarrollador']); ?>
-        
+            <?= $form->field($model, 'usuario_asignado')->widget(Select2::className(),[
+                'data' => \app\models\SprintUsuarios::getListaDesarrolladores($sprint_id),
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'language'=>'es',
+                'options' => ['placeholder'=>'Seleccione Desarrollador'],
+                'pluginOptions'=>[
+                    'allowClear'=>true
+                ],
+                ])->label('Desarrollador:');
+            ?>   
        </div>
         <div class="col-lg-4">
-            
             <?= $form->field($model, 'prioridad')->widget(DepDrop::classname(), [
+                'type'=>DepDrop::TYPE_SELECT2,
                 'options'=>['id'=>'prioridad-id'],
                 'pluginOptions'=>[
                     'depends'=>[Html::getInputId($model, 'usuario_asignado')],
@@ -73,10 +92,10 @@ use kartik\widgets\DepDrop;
     <?php    
         }
     ?>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-              <?= Html::submitButton($model->isNewRecord ? 'Agregar RQM' : 'Actualizar RQM', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <?= Html::submitButton($model->isNewRecord ? 'Agregar RQM' : 'Actualizar RQM', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
     <?php ActiveForm::end(); ?>
     </div>
     <?php

@@ -129,6 +129,13 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         return ArrayHelper::map($query, 'requerimiento_id', 'requerimiento_titulo');
     }
     
+    public static function getListaRequerimientos2(){
+        
+        $query = Requerimientos::find()->all();
+        
+        return ArrayHelper::map($query, 'requerimiento_id', 'requerimiento_titulo');
+    }
+    
     public static function getListaSprintUsuarios() {
         /*
         $opciones = SprintUsuarios::find()

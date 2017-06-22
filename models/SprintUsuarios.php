@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 use Yii;
 
 /**
@@ -78,8 +79,6 @@ class SprintUsuarios extends \yii\db\ActiveRecord
         return $this->hasOne(Sprints::className(), ['sprint_id' => 'sprint_id']);
     }
     
-
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -91,7 +90,6 @@ class SprintUsuarios extends \yii\db\ActiveRecord
     public function insertarSprintUsuarios($id, $key){
         
         $conexion = Yii::$app->db;
-       
            
         $usuarios = explode(",",$key);
         foreach ($usuarios as $value) {
@@ -143,5 +141,11 @@ class SprintUsuarios extends \yii\db\ActiveRecord
     
     public function getSprintName() {
         return $this->sprint->sprint_alias;
+    }
+    
+    public static function getListaDesarrolladores($sprint_id){
+        
+        $opciones = SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all();
+        return ArrayHelper::map($opciones, 'usuario_id', 'usuario.nombreCompleto');
     }
 }

@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
     border: 1px solid #a5d1d1;
 }     
 </style>
-
 <div class="row"> 
     <div class="col-md-10">
         <div class="sprint-requerimientos-index">
@@ -55,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $sprintRequerimientosDataProvider,
                 'filterModel' => $sprintRequerimientosSearchModel,
                 'autoXlFormat' => true,
-                'tableOptions' => ['class' => 'table  table-bordered table-hover'],
+                'tableOptions' => ['class' => 'table table-bordered table-hover'],
                 'panel' => [
                     'heading' => '<i class="glyphicon glyphicon-expand"></i> <b> ID:' . $sprint_id . '</b> - '.$sprint_alias,
                     'type' => GridView::TYPE_DEFAULT,
@@ -68,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Usuario Asignado',
                         'attribute' => 'usuario_asignado',
                         'value' => 'usuarioAsignado.nombreCompleto',
-                        'filter' => Html::activeDropDownList($sprintRequerimientosSearchModel, 'usuario_asignado', \app\models\Usuarios::getListaDevelopers(),['class'=>'form-control','prompt' => 'Seleccione Desarrollador']),
+                        'filter' => Html::activeDropDownList($sprintRequerimientosSearchModel, 'usuario_asignado', \app\models\SprintUsuarios::getListaDesarrolladores($sprint_id),['class'=>'form-control','prompt' => 'Seleccione Desarrollador']),
                         'group'=>true,  // enable grouping
                     ],
                     [
@@ -140,10 +139,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]);
             ?>
-            <!-- -->
             <?php
-            $this->registerJs(
-                    "$(document).on('click', '#activity-index-link', (function() {
+            $this->registerJs("
+                $(document).on('click', '#activity-index-link', (function() {
                     $.get(
                         $(this).data('url'),
                         function (data) {
@@ -215,16 +213,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 });
             ");
             ?>
-            <?php
-            Modal::begin([
-                'id' => 'modal',
-                'header' => '<h4 class="modal-title">MODULO: Sprint-Requerimientos</h4>',
-            ]);
-
-            echo "<div class='well'></div>";
-
-            Modal::end();
-            ?>
+            <div id="modal" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Sprint-Requerimientos / vincular requerimientos al sprint</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="well"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>               
         </div>
     </div> 
     <div class="row">
@@ -256,8 +257,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'btn btn-app',
                 'data-toggle' => 'modal3',
                 'data-target' => '#modal3', //Aqui!!!
-                //'data-url' => Url::to(['listausuarios']),
-                //'data-url' => Url::to(['listausuarios', 'comite_id' => $comite_id ]),
                 'data-pjax' => '0',
             ])
             ?>
