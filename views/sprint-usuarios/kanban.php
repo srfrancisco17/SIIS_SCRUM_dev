@@ -103,18 +103,18 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="kanban">
      
-    <div class="row" style="background-color: #5A6E83; color: #f0f0f0;">
+    <div class="row" style="background-color: #bc3c4d; color: #f5f5f5;">
         <div class="col-lg-3">
             <h4 class="text-center">Requerimiento</h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">En Espera</h4>
+            <h4 class="text-center">En Espera   <span class="label label-primary">10</span></h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">En Progreso</h4>
+            <h4 class="text-center">En Progreso  <span class="label label-primary">20</span></h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">Terminado</h4>
+            <h4 class="text-center">Terminado  <span class="label label-primary">30</span></h4>
         </div>
         <!--<hr>-->
         <br>

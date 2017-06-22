@@ -72,7 +72,12 @@ use yii\helpers\Url;
                 'filter' => FALSE,
             ],
             */
-
+            [
+                'attribute' => 'tiempo_desarrollo',
+                'label' => 'Hr',
+                'filter' => FALSE,
+                'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+            ],
 
 
             //'usuario_asignado',

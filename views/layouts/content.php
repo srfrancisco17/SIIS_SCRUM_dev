@@ -39,11 +39,10 @@ use dmstr\widgets\Alert;
 
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 2.0
+        <b>Version</b> 2.0.51
     </div>
     <strong>Copyright &copy; 2017-2018 <a href="http://www.clinicadeoccidente.com.co/">Clinicia Occidente(SIIS)</a>.</strong> Todos los derechos reservados.
 </footer>
-
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
