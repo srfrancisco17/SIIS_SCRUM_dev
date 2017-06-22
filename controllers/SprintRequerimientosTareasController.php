@@ -86,7 +86,19 @@ class SprintRequerimientosTareasController extends Controller
             if ($model->save()) {
                 
                 self::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
+                
+                //----
+                $sw_var = \app\models\SprintRequerimientosTareas::find()->where(['estado'=>'4'])->andWhere(['requerimiento_id' => $model->requerimiento_id])->andWhere(['sprint_id' => $model->sprint_id])->count();
+                
+                
+                if ($sw_var == 0){
+                    SprintRequerimientos::actualizarEstadoSprintRequerimientos($model->sprint_id, $model->requerimiento_id, '2');
+                }else{
+                    SprintRequerimientos::actualizarEstadoSprintRequerimientos($model->sprint_id, $model->requerimiento_id, '3');
+                }
 
+                //SprintRequerimientos::actualizarEstadoSprintRequerimientos();
+                
                 
                 $model->refresh();
                 

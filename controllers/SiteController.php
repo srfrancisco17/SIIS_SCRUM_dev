@@ -190,12 +190,43 @@ class SiteController extends Controller
                                             ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                             ->queryAll();        
         
+        $consulta_total_requerimientos = SprintRequerimientos::find()
+                                         ->select('usuario_asignado')
+                                         ->where(['sprint_id' => '1'])
+                                         ->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])
+                                         ->count();
+        
+        $consulta_total_requerimientos_terminados = SprintRequerimientos::find()
+                                 ->select('usuario_asignado')
+                                 ->where(['sprint_id' => '1'])
+                                 ->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])
+                                 ->andWhere(['estado' => '4'])
+                                 ->count();
+        
+        $consulta_total_tareas = $connection->createCommand("select 
+                                                            COUNT(*)
+                                                            from sprint_requerimientos as sr
+                                                            inner join sprint_requerimientos_tareas as srt
+                                                            on (
+                                                                srt.requerimiento_id = sr.requerimiento_id
+                                                                and srt.sprint_id = sr.sprint_id
+                                                            )
+                                                            where sr.sprint_id = :sprint_id
+                                                            and sr.usuario_asignado = :usuario_asignado")
+                                                    ->bindValue(':sprint_id', 1)
+                                                    ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
+                                                    ->queryScalar(); 
+        
+        
         //return $this->render('indexDeveloper');
         
         return $this->render('indexDeveloper',[
             'consulta_ideal_burn'=>$consulta_ideal_burn,
             'consulta_tiempo_desarrollo' => $consulta_tiempo_desarrollo,
-            'consulta_acutal_burn' => $consulta_acutal_burn
+            'consulta_acutal_burn' => $consulta_acutal_burn,
+            'consulta_total_requerimientos' => $consulta_total_requerimientos,
+            'consulta_total_requerimientos_terminados' => $consulta_total_requerimientos_terminados,
+            'consulta_total_tareas' => $consulta_total_tareas
         ]);
     }
 }

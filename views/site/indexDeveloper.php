@@ -5,11 +5,6 @@
     HighchartsAssets::register($this);
     $this->title = 'Dashboard';
     $this->params['breadcrumbs'][] = $this->title;
-?>
-
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
-<?php
 
     function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
 
@@ -95,8 +90,9 @@
 
 
 //        echo '<pre>';
-//        print_r($consulta_ideal_burn->sprint->sprint_alias);
+//        print_r($consulta_total_tareas);
 //        echo '</pre>';
+//        exit();
 
     $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta);
     $arreglo_dias = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 2);
@@ -166,3 +162,71 @@
 
     ");
 ?>
+<br>
+<div class="col-md-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">burndown</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-wrench"></i></button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <br>
+                    <h5 class="description-header"><?= $consulta_total_requerimientos?></h5>
+                    <span class="description-text">Total Requerimientos</span>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <br>
+                    <h5 class="description-header"><?= $consulta_total_requerimientos_terminados ?></h5>
+                    <span class="description-text">Total Terminados</span>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <br>
+                    <h5 class="description-header"><?= $consulta_total_tareas ?></h5>
+                    <span class="description-text">Total Tareas</span>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block">
+                    <!--                    
+                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
+                    <h5 class="description-header">1200</h5>
+                    <span class="description-text">GOAL COMPLETIONS</span>
+                    -->
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            
+          </div>
+        </div>
+</div>
+    
