@@ -83,12 +83,6 @@ class SiteController extends Controller
         return $this->render('index');
     }
     
-    
-    public function actionIndexScrumMaster()
-    {
-        return $this->render('indexScrumMaster');
-    }
-
     /**
      * Login action.
      *
@@ -164,6 +158,63 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+ 
+    
+    public function actionIndexScrumMaster()
+    {
+        
+        $whereUsuario = "";
+        $usuario_id = Yii::$app->request->post('list');
+        $titulo = 'Todos los desarrolladores';
+        $subtitulo = '---';
+        
+        if(empty($usuario_id)){
+            
+            $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => '1']);
+            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->sum('tiempo_desarrollo');
+
+        }else{
+            
+            $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => '1', 'usuario_asignado' => $usuario_id]);
+            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->andWhere(['usuario_asignado' => $usuario_id])->sum('tiempo_desarrollo');
+            $whereUsuario= "and sr.usuario_asignado = ".$usuario_id." ";
+            
+            $titulo = $consulta_ideal_burn->usuarioAsignado->nombreCompleto;
+           
+        }
+            
+        $connection = Yii::$app->db;
+        $consulta_acutal_burn = $connection->createCommand("select 
+                                            sum(srt.tiempo_desarrollo) as sum_horas,
+                                            srt.fecha_terminado::date
+                                            from sprint_requerimientos as sr
+                                            inner join sprint_requerimientos_tareas as srt
+                                            on (
+                                                    srt.requerimiento_id = sr.requerimiento_id
+                                                    and srt.sprint_id = sr.sprint_id
+                                            )
+                                            where sr.sprint_id = :sprint_id
+                                            $whereUsuario
+                                            and srt.estado = '4'
+                                            group by srt.fecha_terminado::date
+                                            order by srt.fecha_terminado::date")
+                                            ->bindValue(':sprint_id', 1)
+                                            ->queryAll(); 
+        
+        
+        $subtitulo = '('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_desde.')';
+        
+        return $this->render('indexScrumMaster', [
+            'consulta_ideal_burn'=>$consulta_ideal_burn,
+            'consulta_tiempo_desarrollo' => $consulta_tiempo_desarrollo,
+            'consulta_acutal_burn' => $consulta_acutal_burn,
+            'titulo' => $titulo,
+            'subtitulo' => $subtitulo,
+        ]);
+    }    
+    
+    
+    
     
     public function actionIndexDeveloper()
     {
@@ -190,18 +241,7 @@ class SiteController extends Controller
                                             ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                             ->queryAll();        
         
-        $consulta_total_requerimientos = SprintRequerimientos::find()
-                                         ->select('usuario_asignado')
-                                         ->where(['sprint_id' => '1'])
-                                         ->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])
-                                         ->count();
-        
-        $consulta_total_requerimientos_terminados = SprintRequerimientos::find()
-                                 ->select('usuario_asignado')
-                                 ->where(['sprint_id' => '1'])
-                                 ->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])
-                                 ->andWhere(['estado' => '4'])
-                                 ->count();
+ 
         
         $consulta_total_tareas = $connection->createCommand("select 
                                                             COUNT(*)
