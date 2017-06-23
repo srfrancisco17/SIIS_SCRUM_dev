@@ -93,28 +93,19 @@ $this->params['breadcrumbs'][] = $this->title;
        color: #d9d9d9; 
     }
 </style> 
-<?php
-//echo '<pre>';
-//$consulta1 = $consulta[0]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
-//
-//print_r($consulta1[0]->sprintRequerimientosTareas);
-//echo '</pre>';
-//exit();
-?>
 <div class="kanban">
-     
-    <div class="row" style="background-color: #bc3c4d; color: #f5f5f5;">
+    <div class="row" style="background-color: #605ca8; color: #f5f5f5;">
         <div class="col-lg-3">
-            <h4 class="text-center">Requerimiento</h4>
+            <h4 class="text-center" style="font-family: Century Gothic;">Requerimiento</h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">En Espera   <span class="label label-primary">10</span></h4>
+            <h4 class="text-center" style="font-family: Century Gothic;">En Espera   <!--<span class="label label-default">10</span>--></h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">En Progreso  <span class="label label-primary">20</span></h4>
+            <h4 class="text-center" style="font-family: Century Gothic;">En Progreso  <!--<span class="label label-primary">20</span>--></h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">Terminado  <span class="label label-primary">30</span></h4>
+            <h4 class="text-center" style="font-family: Century Gothic;">Terminado  <!--<span class="label label-primary">30</span>--></h4>
         </div>
         <!--<hr>-->
         <br>
@@ -279,14 +270,6 @@ $this->params['breadcrumbs'][] = $this->title;
             }
          ?>
          <!-- ------------------------------------- -->
-        <?php
-//        echo '<pre>';
-//        print_r($objRequerimientos->sprints[0]->sprint_id);
-//        echo '</pre>';
-//        exit();
-        ?>
-        
-        <!--<div class="row">-->
             <div class="col-lg-3">
                 <div class="box box-default collapsed-box" style="background-color: <?= $usuario_color?>;">
                     <div class="box-header with-border">

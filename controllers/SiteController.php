@@ -230,8 +230,8 @@ class SiteController extends Controller
                                                             and srt.estado = '4' ")
                                                     ->bindValue(':sprint_id', 1)
                                                     ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
-                                                    ->queryScalar();         
-        
+                                                    ->queryScalar(); 
+
         
         //return $this->render('indexDeveloper');
         

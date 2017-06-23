@@ -55,7 +55,7 @@ use kartik\select2\Select2;
        </div>
         <div class="col-lg-4">
             <?= $form->field($model, 'prioridad')->widget(DepDrop::classname(), [
-                'type'=>DepDrop::TYPE_SELECT2,
+                //'type'=>DepDrop::TYPE_SELECT2,
                 'options'=>['id'=>'prioridad-id'],
                 'pluginOptions'=>[
                     'depends'=>[Html::getInputId($model, 'usuario_asignado')],

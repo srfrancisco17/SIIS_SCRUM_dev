@@ -90,7 +90,7 @@
 
 
 //        echo '<pre>';
-//        print_r($consulta_total_tareas);
+//        print_r($consulta_ideal_burn->sprint->sprint_alias);
 //        echo '</pre>';
 //        exit();
 
@@ -98,13 +98,15 @@
     $arreglo_dias = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 2);
     $json_actual_burn = json_encode($arreglo_actual_burn);
     
-//    $titulo = $consulta_ideal_burn->sprint->sprint_alias;
+    $titulo = $consulta_ideal_burn->sprint->sprint_alias;
+    $subtitulo = '('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_hasta.')';
+    
     
     $this->registerJs("
     
         $('#container').highcharts({
         title: {
-          text: 'Sprint Actual',
+          text: '$titulo',
           x: -20 //center
         },
         colors: ['blue', 'red'],
@@ -117,7 +119,7 @@
           }
         },
         subtitle: {
-          text: 'sub-titulo',
+          text: '$subtitulo',
           x: -20
         },
         xAxis: {
@@ -167,7 +169,7 @@
     <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">burndown</h3>
+              <h3 class="box-title">Burndown</h3>
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                 </button>

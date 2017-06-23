@@ -145,6 +145,11 @@ class SprintUsuariosController extends Controller
         
         $consulta = SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->andWhere(['usuario_asignado'=>Yii::$app->user->identity->usuario_id])->orderBy(['prioridad' => SORT_ASC])->all();
         
+        /*
+            $total_tareas_espera = 0;
+            $total_tareas_progreso = 0;
+            $total_tareas_terminada = 0;
+        */
         //return $this->render('kanban');
         
         return $this->render('kanban', [
