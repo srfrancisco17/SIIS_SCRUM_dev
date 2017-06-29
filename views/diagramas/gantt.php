@@ -9,11 +9,10 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 ?>
 <?php
     
-//    echo '<pre>';
-//    $var = $consulta[0];
-//        print_r($var->sprint->fecha_hasta);
-//    echo '</pre>';
-//    exit();
+//        echo '<pre>';
+//        print_r($consulta[0]->sprint->fecha_desde);
+//        echo '</pre>';
+//        exit;
 ?>
 <script type="text/javascript">
     google.charts.load('current', {'packages':['gantt']});
@@ -24,10 +23,11 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
         
         $fecha_sprint_inicial = $consulta[0]->sprint->fecha_desde;
         
+
             foreach ($consulta as $obj_usuarios){
+                
             
     ?>   
-
             function drawChart<?=$contador?>(){
                 
                 
@@ -44,10 +44,8 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
                 /*
                  * foreach de usuarios
                  */
-
                 
                 data<?=$contador?>.addRows([
-                    
                 <?php
                 
                 
@@ -55,12 +53,13 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
                 $var2 = $obj_usuarios->sprintRequerimientos;
                     
                     foreach ($var2 as $sprint_requerimientos) {
+                       
                         
                         $tamaño_chart++;
                         
                         if ($sprint_requerimientos->prioridad == 1){
 
-                            $inicio = '2017-06-13';
+                            $inicio = $fecha_sprint_inicial;
 
                             $dia_requerimientos = ceil($sprint_requerimientos->tiempo_desarrollo/8);
                             $fecha = date($inicio);
@@ -68,6 +67,19 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
                             $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
 
                             $fin_fecha_requerimiento =  date('Y-m-d', $suma_fecha);
+                        }
+                        
+                        else if ($sprint_requerimientos !== end($var2)) {
+
+                            $inicio = $fin_fecha_requerimiento;
+
+                            $dia_requerimientos = ceil($sprint_requerimientos->tiempo_desarrollo/8);
+                            $fecha = date($inicio);
+
+                            $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
+
+                            $fin_fecha_requerimiento =  date('Y-m-d', $suma_fecha);
+
                         }
                         
                         if ($sprint_requerimientos === end($var2)) {
@@ -83,27 +95,12 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 
                             
                         }
-                        
-                        else{
-
-                            $inicio = $fin_fecha_requerimiento;
-
-                            $dia_requerimientos = ceil($sprint_requerimientos->tiempo_desarrollo/8);
-                            $fecha = date($inicio);
-
-                            $suma_fecha = strtotime('+'.$dia_requerimientos.' day', strtotime($fecha));
-
-                            $fin_fecha_requerimiento =  date('Y-m-d', $suma_fecha);
-
-                        }
                     
-                        foreach ($sprint_requerimientos->requerimiento2 as $requerimiento){
-                        
+                     $titulo = substr($sprint_requerimientos->requerimiento->requerimiento_titulo, 0, 40);   
                 ?>   
-                            ['<?= $requerimiento->requerimiento_id ?>', '<?= $requerimiento->requerimiento_titulo ?>', '<?=$requerimiento->requerimiento_id?>',
+                            ['<?= $sprint_requerimientos->requerimiento->requerimiento_id ?>', '<?= $titulo ?>', '<?=$sprint_requerimientos->prioridad?>',
                             new Date('<?= $inicio ?>'), new Date('<?= $fin_fecha_requerimiento ?>'), null, 100, null],     
                 <?php 
-                            }
                         }
                 ?>
                       
@@ -112,7 +109,7 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
                 
                 
                 var options = {
-                        height: <?= $tamaño_chart*90?>,
+                        height: <?= 100 + ($tamaño_chart*25)?>,
                     gantt: {
                         trackHeight: 30
                     }
@@ -145,27 +142,25 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
          foreach ($suma as $value){
     ?>
  
-     <div id="chart_div_<?=$value?>"></div>
-     <br>
-     <hr>
+    <div class="box box-default">
+           <div class="box-header with-border">
+             <h3 class="box-title"><?= $consulta[$value-1]->usuario->nombreCompleto ?></h3>
+             <div class="box-tools pull-right">
+               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+               <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+             </div>
+           </div>
+           <div class="box-body">      
+               <div id="chart_div_<?=$value?>"></div>
+           </div>
+
+           <div class="box-footer">
+               <p>Footer</p>
+           </div>
+   </div>
+  
      <br>
     <?php                  
         }
     ?>
 
-<div class="box box-default">
-        <div class="box-header with-border">
-          <h3 class="box-title">Diagrama De Gantt</h3>
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
-          </div>
-        </div>
-        <div class="box-body">      
-            <div id="chart_div"></div>
-        </div>
-
-        <div class="box-footer">
-            <p>Footer</p>
-        </div>
-</div>

@@ -208,7 +208,7 @@ class SiteController extends Controller
                                             ->queryAll(); 
         
         
-        $subtitulo = '('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_desde.')';
+        $subtitulo = $consulta_ideal_burn->sprint->sprint_alias.' | ('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_hasta.')';
         
 
         $consulta_total_tareas = $connection->createCommand("

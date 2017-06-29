@@ -192,7 +192,8 @@ $this->params['breadcrumbs'][] = $this->title;
                   <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-wrench"></i></button>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
+                    <!--<li><a href="#">Action</a></li>-->
+                    <li><?= Html::a('Ir al sprint', ['sprint-requerimientos/index', 'sprint_id' => 1]) ?></li>
                     <li><a href="#">Another action</a></li>
                     <li><a href="#">Something else here</a></li>
                     <li class="divider"></li>

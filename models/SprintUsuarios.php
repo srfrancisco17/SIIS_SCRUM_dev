@@ -68,7 +68,8 @@ class SprintUsuarios extends \yii\db\ActiveRecord
      */
     public function getSprintRequerimientos()
     {
-        return $this->hasMany(SprintRequerimientos::className(), ['sprint_id' => 'sprint_id', 'usuario_asignado' => 'usuario_id']);
+        return $this->hasMany(SprintRequerimientos::className(), ['sprint_id' => 'sprint_id', 'usuario_asignado' => 'usuario_id'])->
+        orderBy(['prioridad' => SORT_ASC]);
     }
 
     /**
