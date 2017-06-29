@@ -272,6 +272,26 @@ class SiteController extends Controller
                                                     ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                                     ->queryScalar(); 
 
+                
+        $consulta_total_requerimientos = $connection->createCommand("select 
+                                                                    COUNT(*)
+                                                                    from sprint_requerimientos as sr
+                                                                    where sprint_id = :sprint_id
+                                                                    and usuario_asignado = :usuario_asignado")
+                                            ->bindValue(':sprint_id', 1)
+                                            ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
+                                            ->queryScalar(); 
+                
+     
+        $consulta_total_requerimientos_terminados = $connection->createCommand("select 
+                                                                    COUNT(*)
+                                                                    from sprint_requerimientos as sr
+                                                                    where sprint_id = :sprint_id
+                                                                    and usuario_asignado = :usuario_asignado
+                                                                    and estado = '4' ")
+                                            ->bindValue(':sprint_id', 1)
+                                            ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
+                                            ->queryScalar(); 
         
         //return $this->render('indexDeveloper');
         
