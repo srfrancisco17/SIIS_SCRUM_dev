@@ -10,7 +10,7 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 <?php
     
 //        echo '<pre>';
-//        print_r($consulta[0]->sprint->fecha_desde);
+//        var_dump($consulta[0]->sprintRequerimientos[3]->tiempo_desarrollo);
 //        echo '</pre>';
 //        exit;
 ?>
@@ -96,10 +96,15 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
                             
                         }
                     
-                     $titulo = substr($sprint_requerimientos->requerimiento->requerimiento_titulo, 0, 40);   
+                     $titulo = substr($sprint_requerimientos->requerimiento->requerimiento_titulo, 0, 40); 
+                     $porcentaje_avance = 0;
+                     if(!empty($sprint_requerimientos->tiempo_desarrollo)){
+                         $porcentaje_avance = ($sprint_requerimientos->sprintRequerimientosTareasHoras*100)/$sprint_requerimientos->tiempo_desarrollo;
+                     }
+                                 
                 ?>   
                             ['<?= $sprint_requerimientos->requerimiento->requerimiento_id ?>', '<?= $titulo ?>', '<?=$sprint_requerimientos->prioridad?>',
-                            new Date('<?= $inicio ?>'), new Date('<?= $fin_fecha_requerimiento ?>'), null, 100, null],     
+                            new Date('<?= $inicio ?>'), new Date('<?= $fin_fecha_requerimiento ?>'), null, <?= number_format($porcentaje_avance,2) ?>, null],     
                 <?php 
                         }
                 ?>

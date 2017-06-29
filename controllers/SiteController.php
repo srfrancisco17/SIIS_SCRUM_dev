@@ -174,8 +174,7 @@ class SiteController extends Controller
             
             $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => '1']);
             $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->sum('tiempo_desarrollo');
-            
-           
+
 
         }else{
             

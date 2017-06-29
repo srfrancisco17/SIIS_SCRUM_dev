@@ -104,6 +104,11 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
     {
         return $this->hasMany(SprintRequerimientosTareas::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
+
+    public function getSprintRequerimientosTareasHoras()
+    {
+        return $this->hasMany(SprintRequerimientosTareas::className(), ['requerimiento_id' => 'requerimiento_id'])->where(['estado' => '4'])->sum('tiempo_desarrollo');
+    }
      
     /**
      * @return \yii\db\ActiveQuery
