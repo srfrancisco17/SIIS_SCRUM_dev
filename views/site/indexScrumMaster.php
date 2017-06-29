@@ -173,16 +173,17 @@ $this->params['breadcrumbs'][] = $this->title;
           });
 
         ");
+     
     ?>
 <div class="row">
     <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">
-                        <?= Html::beginForm(['site/index-scrum-master'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>
-        <?= Html::dropDownList('list', 'usuario_id',  \app\models\SprintUsuarios::getListaDesarrolladores(1), ['class'=>'form-control','prompt' => 'Todos desarrolladores']) ?>   
-        <?= Html::submitButton('Cargar', ['class' => 'btn btn-primary', 'name' => 'hash-button']) ?>
-    <?= Html::endForm() ?>
+                    <?= Html::beginForm(['site/index-scrum-master'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>
+                        <?= Html::dropDownList('list', 'usuario_id',  \app\models\SprintUsuarios::getListaDesarrolladores(1), ['class'=>'form-control','prompt' => 'Todos desarrolladores']) ?>   
+                        <?= Html::submitButton('Cargar', ['class' => 'btn btn-primary', 'name' => 'hash-button']) ?>
+                    <?= Html::endForm() ?>
                 </h3>
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -212,31 +213,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-sm-3 col-xs-6">
                   <div class="description-block border-right">
                     <br>
-                    <h5 class="description-header">0</h5>
+                    <h5 class="description-header"><?= $consulta_total_requerimientos ?></h5>
                     <span class="description-text">Total Requerimientos</span>
                   </div>
                 </div>
                 <div class="col-sm-3 col-xs-6">
                   <div class="description-block border-right">
-                    <br>
-                    <h5 class="description-header">0</h5>
+                    <?= $html_span_requerimientos ?>
+                    <h5 class="description-header"><?= $consulta_total_requerimientos_terminados ?></h5>
                     <span class="description-text">Total Terminados</span>
                   </div>
                 </div>
                 <div class="col-sm-3 col-xs-6">
                   <div class="description-block border-right">
                     <br>
-                    <h5 class="description-header">0</h5>
+                    <h5 class="description-header"><?= $consulta_total_tareas ?></h5>
                     <span class="description-text">Total Tareas</span>
                   </div>
                 </div>
                 <div class="col-sm-3 col-xs-6">
                   <div class="description-block">
-                    <!--                    
-                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-                    -->
-                    <br>
-                    <h5 class="description-header">0</h5>
+                    <?= $html_span_tareas ?>
+                    <h5 class="description-header"><?= $consulta_total_tareas_terminadas ?></h5>
                     <span class="description-text">Total Tareas Terminadas</span>
                     
                   </div>

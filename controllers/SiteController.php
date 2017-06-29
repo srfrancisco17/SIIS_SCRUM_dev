@@ -170,10 +170,16 @@ class SiteController extends Controller
         
         if(empty($usuario_id)){
             
+            // Diagrama De Todos Los Usuarios
+            
             $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => '1']);
             $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->sum('tiempo_desarrollo');
+            
+           
 
         }else{
+            
+            // Diagrama Por Usuario
             
             $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => '1', 'usuario_asignado' => $usuario_id]);
             $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->andWhere(['usuario_asignado' => $usuario_id])->sum('tiempo_desarrollo');
@@ -204,12 +210,112 @@ class SiteController extends Controller
         
         $subtitulo = '('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_desde.')';
         
+
+        $consulta_total_tareas = $connection->createCommand("
+            select 
+                COUNT(*)
+                from sprint_requerimientos as sr
+                inner join sprint_requerimientos_tareas as srt
+                on (
+                    srt.requerimiento_id = sr.requerimiento_id
+                    and srt.sprint_id = sr.sprint_id
+                    )
+                where sr.sprint_id = :sprint_id
+                $whereUsuario
+        ")
+        ->bindValue(':sprint_id', 1)
+        ->queryScalar(); 
+        
+        $consulta_total_tareas_terminadas = $connection->createCommand("
+            select 
+                COUNT(*)
+                from sprint_requerimientos as sr
+                inner join sprint_requerimientos_tareas as srt
+                on (
+                    srt.requerimiento_id = sr.requerimiento_id
+                    and srt.sprint_id = sr.sprint_id
+                    )
+                where sr.sprint_id = :sprint_id
+                $whereUsuario
+                and srt.estado = '4' ")
+        ->bindValue(':sprint_id', 1)
+        ->queryScalar();        
+        
+        
+        
+        $consulta_total_requerimientos = $connection->createCommand("
+            select 
+                COUNT(*)
+                from sprint_requerimientos as sr
+                where sprint_id = :sprint_id
+                $whereUsuario   
+        ")
+        ->bindValue(':sprint_id', 1)
+        ->queryScalar();
+  
+        
+        $consulta_total_requerimientos_terminados = $connection->createCommand("
+            select 
+                COUNT(*)
+                from sprint_requerimientos as sr
+                where sprint_id = :sprint_id
+                $whereUsuario
+                and estado = '4' 
+        ")
+        ->bindValue(':sprint_id', 1)
+        ->queryScalar();   
+        
+        
+        $porcentaje_requerimientos =  number_format($consulta_total_requerimientos_terminados*100/$consulta_total_requerimientos, 2);
+        
+        $porcentaje_tareas =  number_format($consulta_total_tareas_terminadas*100/$consulta_total_tareas, 2);
+        
+        
+        //Porcentaje Span Requerimientos
+        
+        $html_span_requerimientos = "";
+        
+        if($porcentaje_requerimientos == 0){
+            $html_span_requerimientos = '<span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> '.$porcentaje_requerimientos.'%</span>'; 
+        }
+        else if ($porcentaje_requerimientos <= 30){
+
+            $html_span_requerimientos = '<span class="description-percentage text-red"><i class="fa fa-caret-down"></i> '.$porcentaje_requerimientos.'%</span>'; 
+        
+            
+        }else if ($porcentaje_requerimientos > 30) {
+            $html_span_requerimientos = '<span class="description-percentage text-green"><i class="fa fa-caret-up"></i> '.$porcentaje_requerimientos.'%</span>'; 
+        }
+        
+        
+        //Porcentaje Span tareas
+        
+        $html_span_tareas = "";
+        
+        if($porcentaje_tareas == 0){
+            $html_span_tareas = '<span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> '.$porcentaje_tareas.'%</span>'; 
+        }
+        else if ($porcentaje_tareas <= 30){
+
+            $html_span_tareas = '<span class="description-percentage text-red"><i class="fa fa-caret-down"></i> '.$porcentaje_tareas.'%</span>'; 
+            
+        }else if ($porcentaje_tareas > 30) {
+            $html_span_tareas = '<span class="description-percentage text-green"><i class="fa fa-caret-up"></i> '.$porcentaje_tareas.'%</span>'; 
+        }        
+        
         return $this->render('indexScrumMaster', [
             'consulta_ideal_burn'=>$consulta_ideal_burn,
             'consulta_tiempo_desarrollo' => $consulta_tiempo_desarrollo,
             'consulta_acutal_burn' => $consulta_acutal_burn,
             'titulo' => $titulo,
             'subtitulo' => $subtitulo,
+            'consulta_total_requerimientos' => $consulta_total_requerimientos,
+            'consulta_total_requerimientos_terminados' => $consulta_total_requerimientos_terminados,
+            'consulta_total_tareas' => $consulta_total_tareas,
+            'consulta_total_tareas_terminadas' => $consulta_total_tareas_terminadas,
+            'porcentaje_requerimientos' => $porcentaje_requerimientos,
+            'html_span_requerimientos' => $html_span_requerimientos,
+            'html_span_tareas' => $html_span_tareas
         ]);
     }    
     
@@ -293,7 +399,6 @@ class SiteController extends Controller
                                             ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                             ->queryScalar(); 
         
-        //return $this->render('indexDeveloper');
         
         return $this->render('indexDeveloper',[
             'consulta_ideal_burn'=>$consulta_ideal_burn,

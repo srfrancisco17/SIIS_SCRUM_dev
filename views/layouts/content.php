@@ -39,7 +39,7 @@ use dmstr\widgets\Alert;
 
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 2.0.51
+        <b>Version</b> 2.0.55
     </div>
     <strong>Copyright &copy; 2017-2018 <a href="http://www.clinicadeoccidente.com.co/">Clinicia Occidente(SIIS)</a>.</strong> Todos los derechos reservados.
 </footer>
