@@ -265,11 +265,13 @@ class SiteController extends Controller
         ->bindValue(':sprint_id', 1)
         ->queryScalar();   
         
+        if ($consulta_total_tareas != 0){
+            $porcentaje_tareas =  number_format($consulta_total_tareas_terminadas*100/$consulta_total_tareas, 2);
+        }else{
+            $porcentaje_tareas = 0;
+        }
         
-        $porcentaje_requerimientos =  number_format($consulta_total_requerimientos_terminados*100/$consulta_total_requerimientos, 2);
-        
-        $porcentaje_tareas =  number_format($consulta_total_tareas_terminadas*100/$consulta_total_tareas, 2);
-        
+        $porcentaje_requerimientos =  number_format($consulta_total_requerimientos_terminados*100/$consulta_total_requerimientos, 2); 
         
         //Porcentaje Span Requerimientos
         
