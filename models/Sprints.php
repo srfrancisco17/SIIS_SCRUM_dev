@@ -43,14 +43,44 @@ class Sprints extends \yii\db\ActiveRecord
         return [
             [['sprint_alias','fecha_desde', 'fecha_hasta', 'estado'], 'required'],
             [['fecha_desde', 'fecha_hasta'], 'safe'],
+            
+            /*
+            [['fecha_desde'], 'compare', 'compareAttribute'=>'fecha_hasta', 'operator'=>'!=', 'skipOnEmpty'=>true],
+            [['fecha_hasta'], 'compare', 'compareAttribute'=>'fecha_desde', 'operator'=>'!='],
+            */
+            //[['fecha_desde'], 'compare', 'compareAttribute'=>'fecha_hasta', 'operator'=>'<=', 'skipOnEmpty'=>true],
+            //[['fecha_hasta'], 'compare', 'compareAttribute'=>'fecha_desde', 'operator'=>'>='],
+            
             [['horas_desarrollo'], 'default', 'value' => null],
             [['horas_desarrollo'], 'integer'],
             [['observaciones'], 'string'],
             [['sprint_alias'], 'string', 'max' => 60],
             [['estado'], 'string', 'max' => 2],
+            [['estado'], 'checkEstado'],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
         ]; 
-    } 
+    }
+    
+    public function checkEstado($attribute, $params)
+    {
+        
+        if ($this->$attribute == 1){
+            
+            $estado_id = $this->estado;
+
+            $connection = Yii::$app->db;
+            $query = "SELECT COUNT(*) FROM sprints WHERE estado = '1'";
+
+            $resultado = $connection->createCommand($query)->queryScalar();
+
+            if ($resultado > 0){
+                $this->addError($attribute, 'Ya Existe Un Sprint Activo');
+            } 
+                
+        }
+ 
+        //$this->addError($attribute, 'Ya Existe Un Sprint Activo');
+    }        
 
     /**
      * @inheritdoc

@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use app\models\EliminacionTareas;
 /**
  * SprintRequerimientosTareasController implements the CRUD actions for SprintRequerimientosTareas model.
  */
@@ -190,6 +191,16 @@ class SprintRequerimientosTareasController extends Controller
         $model = $this->findModel($id);
         
         $model->delete();
+        
+
+        EliminacionTareas::estadoEspera($id , $sprint_id, $requerimiento_id);
+        
+        EliminacionTareas::estadoProgreso($id , $sprint_id, $requerimiento_id);
+        
+       
+        /*
+         * 
+         */ 
            
         self::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
         

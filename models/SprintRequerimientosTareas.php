@@ -87,7 +87,7 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
         return $this->hasOne(Sprints::className(), ['sprint_id' => 'sprint_id']);
     }
     
-    public function actualizarEstadoTareas($id, $estado, $sw_control){
+    public function actualizarEstadoTareas($id, $estado, $sw_control = null){
         
         $conexion = Yii::$app->db;
         

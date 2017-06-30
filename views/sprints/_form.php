@@ -10,7 +10,6 @@ use yii\helpers\ArrayHelper;
 ?>
 
 <div class="sprints-form">
-
     <?php $form = ActiveForm::begin([
           'id' => 'sprints-form',
           'enableAjaxValidation' => true,
@@ -18,7 +17,6 @@ use yii\helpers\ArrayHelper;
           'enableClientValidation' => true,
         ]); 
     ?>
-    
     <div class="row">
         <div class="col-lg-6">
             <?= $form->field($model, 'sprint_alias')->textInput()->label('(*) Sprint Alias')?>
@@ -27,13 +25,16 @@ use yii\helpers\ArrayHelper;
             <?= $form->field($model, 'horas_desarrollo')->textInput(['type' => 'number', 'disabled' => true])?>
         </div>
         <div class="col-lg-3">
-            <?php if($model->isNewRecord){
+        <?php 
+            if($model->isNewRecord){
+
                 $model->estado  = 1;
-              }    
-            
-            echo  $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_sprint'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno' ])->label('Estado');
-            ?>
-            
+                echo  $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_sprint'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno' ])->label('Estado');
+
+            }else{
+                echo  $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_sprint'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Uno', 'disabled' => true])->label('Estado');
+            }    
+        ?>   
         </div>
     </div>
     <div class="row">
@@ -68,35 +69,34 @@ use yii\helpers\ArrayHelper;
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <br>
             <?= $form->field($model, 'observaciones')->textarea(['rows' => 6]) ?>
         </div>
     </div>
-
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
         <?= Html::submitButton($model->isNewRecord ? 'Crear Sprint' : 'Actualizar Sprint', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-       
 </div>
-    <?php ActiveForm::end(); ?>
-    <?php
-        $this->registerJs('
-        // obtener la id del formulario y establecer el manejador de eventos
-            $("form#sprints-form").on("beforeSubmit", function(e) {
-                var form = $(this);
-                $.post(
-                    form.attr("action")+"&submit=true",
-                    form.serialize()
-                )
-                .done(function(result) {
-                    form.parent().html(result.message);
-                    $.pjax.reload({container:"#sprints-grid"});
-                });
-                return false;
-            }).on("submit", function(e){
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                return false;
+<?php ActiveForm::end(); ?>
+<?php
+    $this->registerJs('
+    // obtener la id del formulario y establecer el manejador de eventos
+        $("form#sprints-form").on("beforeSubmit", function(e) {
+            var form = $(this);
+            $.post(
+                form.attr("action")+"&submit=true",
+                form.serialize()
+            )
+            .done(function(result) {
+                form.parent().html(result.message);
+                $.pjax.reload({container:"#sprints-grid"});
             });
-        ');
-    ?>
+            return false;
+        }).on("submit", function(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+        });
+    ');
+?>

@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $total_dias_sprint = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 1); // 17 Dias
 
 
-        for ($i = 1; $i < $total_dias_sprint; $i++) {
+        for ($i = 1; $i <= $total_dias_sprint; $i++) {
 
             foreach ($consulta_acutal_burn as $value2) {
 

@@ -163,6 +163,8 @@ class SiteController extends Controller
     public function actionIndexScrumMaster()
     {
         
+
+        
         $whereUsuario = "";
         $usuario_id = Yii::$app->request->post('list');
         $titulo = 'Todos los desarrolladores';
