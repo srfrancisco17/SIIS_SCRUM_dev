@@ -11,13 +11,14 @@ $this->title = 'Dashboard Scrum Master';
 $this->params['breadcrumbs'][] = $this->title;
 
 
+
 //$this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 ?>
     
     <?php Pjax::begin(); ?>  
 
     <?php
-
+    
         function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
 
             $datetime1 = date_create($fecha_inicial);

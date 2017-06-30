@@ -203,8 +203,7 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
     public function actualizarNoCumplido($sprint_id){
         
         $conexion = Yii::$app->db;
-        
-        
+              
         
         $conexion->createCommand("UPDATE requerimientos as re SET estado = '1' "
                 . "FROM sprint_requerimientos as sr WHERE "

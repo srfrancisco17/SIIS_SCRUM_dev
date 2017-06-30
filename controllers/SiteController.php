@@ -332,6 +332,7 @@ class SiteController extends Controller
         $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->sum('tiempo_desarrollo');
     
         $connection = Yii::$app->db;
+        
         $consulta_acutal_burn = $connection->createCommand("select 
                                             sum(srt.tiempo_desarrollo) as sum_horas,
                                             srt.fecha_terminado::date
@@ -349,9 +350,7 @@ class SiteController extends Controller
                                             ->bindValue(':sprint_id', 1)
                                             ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                             ->queryAll();        
-        
- 
-        
+         
         $consulta_total_tareas = $connection->createCommand("select 
                                                             COUNT(*)
                                                             from sprint_requerimientos as sr
@@ -381,7 +380,6 @@ class SiteController extends Controller
                                                     ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                                     ->queryScalar(); 
 
-                
         $consulta_total_requerimientos = $connection->createCommand("select 
                                                                     COUNT(*)
                                                                     from sprint_requerimientos as sr
@@ -390,8 +388,7 @@ class SiteController extends Controller
                                             ->bindValue(':sprint_id', 1)
                                             ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                             ->queryScalar(); 
-                
-     
+                  
         $consulta_total_requerimientos_terminados = $connection->createCommand("select 
                                                                     COUNT(*)
                                                                     from sprint_requerimientos as sr
