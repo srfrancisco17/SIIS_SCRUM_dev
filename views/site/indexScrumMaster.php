@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $datetime2 = date_create($fecha_final);
             $interval = date_diff($datetime1, $datetime2);
 
-            $dias = $interval->format('%a');
+            $dias = $interval->format('%a')+1;
 
             if ($sw_control == 1) {
                 return $dias;
@@ -68,11 +68,10 @@ $this->params['breadcrumbs'][] = $this->title;
             $datetime2 = date_create($value['fecha_terminado']);
             $interval = date_diff($datetime1, $datetime2);
 
-            $dias = $interval->format('%a');
+            $dias = $interval->format('%a')+1;
 
             $consulta_acutal_burn[$key]['dias'] = $dias;
         }
-
 
         $arreglo_actual_burn = array();
         $total_tiempo_desarrollo = $consulta_tiempo_desarrollo; //120 Horas

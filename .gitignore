@@ -1,3 +1,5 @@
 /runtime/debug
 /nbproject/private/
 /runtime
+/vendor
+/web/assets
