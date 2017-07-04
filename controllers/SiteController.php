@@ -163,7 +163,7 @@ class SiteController extends Controller
     public function actionIndexScrumMaster()
     {
         
-
+        $sprint_id = \app\models\Sprints::getSprintActivo()->sprint_id;
         
         $whereUsuario = "";
         $usuario_id = Yii::$app->request->post('list');
@@ -174,7 +174,7 @@ class SiteController extends Controller
             
             // Diagrama De Todos Los Usuarios
             
-            $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => '1']);
+            $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id]);
             $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->sum('tiempo_desarrollo');
 
 
@@ -182,8 +182,8 @@ class SiteController extends Controller
             
             // Diagrama Por Usuario
             
-            $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => '1', 'usuario_asignado' => $usuario_id]);
-            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->andWhere(['usuario_asignado' => $usuario_id])->sum('tiempo_desarrollo');
+            $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => $usuario_id]);
+            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('tiempo_desarrollo');
             $whereUsuario= "and sr.usuario_asignado = ".$usuario_id." ";
             
             $titulo = $consulta_ideal_burn->usuarioAsignado->nombreCompleto;
@@ -205,7 +205,7 @@ class SiteController extends Controller
                                             and srt.estado = '4'
                                             group by srt.fecha_terminado::date
                                             order by srt.fecha_terminado::date")
-                                            ->bindValue(':sprint_id', 1)
+                                            ->bindValue(':sprint_id', $sprint_id)
                                             ->queryAll(); 
         
         
@@ -224,7 +224,7 @@ class SiteController extends Controller
                 where sr.sprint_id = :sprint_id
                 $whereUsuario
         ")
-        ->bindValue(':sprint_id', 1)
+        ->bindValue(':sprint_id', $sprint_id)
         ->queryScalar(); 
         
         $consulta_total_tareas_terminadas = $connection->createCommand("
@@ -239,7 +239,7 @@ class SiteController extends Controller
                 where sr.sprint_id = :sprint_id
                 $whereUsuario
                 and srt.estado = '4' ")
-        ->bindValue(':sprint_id', 1)
+        ->bindValue(':sprint_id', $sprint_id)
         ->queryScalar();        
         
         
@@ -251,7 +251,7 @@ class SiteController extends Controller
                 where sprint_id = :sprint_id
                 $whereUsuario   
         ")
-        ->bindValue(':sprint_id', 1)
+        ->bindValue(':sprint_id', $sprint_id)
         ->queryScalar();
   
         
@@ -263,7 +263,7 @@ class SiteController extends Controller
                 $whereUsuario
                 and estado = '4' 
         ")
-        ->bindValue(':sprint_id', 1)
+        ->bindValue(':sprint_id', $sprint_id)
         ->queryScalar();   
         
         if ($consulta_total_tareas != 0){
@@ -328,8 +328,10 @@ class SiteController extends Controller
     public function actionIndexDeveloper()
     {
         
-        $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => '1', 'usuario_asignado' => Yii::$app->user->identity->usuario_id]);
-        $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->sum('tiempo_desarrollo');
+        $sprint_id = \app\models\Sprints::getSprintActivo()->sprint_id;
+        
+        $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => Yii::$app->user->identity->usuario_id]);
+        $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->sum('tiempo_desarrollo');
     
         $connection = Yii::$app->db;
         
@@ -347,7 +349,7 @@ class SiteController extends Controller
                                             and srt.estado = '4'
                                             group by srt.fecha_terminado::date
                                             order by srt.fecha_terminado::date")
-                                            ->bindValue(':sprint_id', 1)
+                                            ->bindValue(':sprint_id', $sprint_id)
                                             ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                             ->queryAll();        
          
@@ -361,7 +363,7 @@ class SiteController extends Controller
                                                             )
                                                             where sr.sprint_id = :sprint_id
                                                             and sr.usuario_asignado = :usuario_asignado")
-                                                    ->bindValue(':sprint_id', 1)
+                                                    ->bindValue(':sprint_id', $sprint_id)
                                                     ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                                     ->queryScalar(); 
         
@@ -376,7 +378,7 @@ class SiteController extends Controller
                                                             where sr.sprint_id = :sprint_id
                                                             and sr.usuario_asignado = :usuario_asignado
                                                             and srt.estado = '4' ")
-                                                    ->bindValue(':sprint_id', 1)
+                                                    ->bindValue(':sprint_id', $sprint_id)
                                                     ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                                     ->queryScalar(); 
 
@@ -385,7 +387,7 @@ class SiteController extends Controller
                                                                     from sprint_requerimientos as sr
                                                                     where sprint_id = :sprint_id
                                                                     and usuario_asignado = :usuario_asignado")
-                                            ->bindValue(':sprint_id', 1)
+                                            ->bindValue(':sprint_id', $sprint_id)
                                             ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                             ->queryScalar(); 
                   
@@ -395,7 +397,7 @@ class SiteController extends Controller
                                                                     where sprint_id = :sprint_id
                                                                     and usuario_asignado = :usuario_asignado
                                                                     and estado = '4' ")
-                                            ->bindValue(':sprint_id', 1)
+                                            ->bindValue(':sprint_id', $sprint_id)
                                             ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                             ->queryScalar(); 
         

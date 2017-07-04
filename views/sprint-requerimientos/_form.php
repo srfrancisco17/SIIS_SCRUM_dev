@@ -28,7 +28,7 @@ use kartik\select2\Select2;
         <div class="col-lg-4">  
         
             <?= $form->field($model, 'requerimiento_id')->widget(Select2::className(),[
-                'data' => $model->ListaRequerimientos,
+                'data' => $model->getListaRequerimientos($sprint_id),
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'language'=>'es',
                 'options' => ['placeholder'=>'Seleccione Requerimiento'],

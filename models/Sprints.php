@@ -144,7 +144,13 @@ class Sprints extends \yii\db\ActiveRecord
     public function getEstado0() 
     { 
         return $this->hasOne(EstadosReqSpr::className(), ['req_spr_id' => 'estado']);
-    } 
+    }
+
+    public static function getSprintActivo()
+    {
+        $sprint_activo = Sprints::findOne(['estado' => '1']);
+        return $sprint_activo ? $sprint_activo : NULL;
+    }    
     
     
     public function actualizarHorasSprints($sprint_id, $horas){
