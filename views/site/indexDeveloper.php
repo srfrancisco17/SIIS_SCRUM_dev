@@ -169,8 +169,16 @@
 
         ");
         
-    }   
+    } 
+    
+    
+//    echo '<pre>';
+//    print_r($consulta_acutal_burn);
+//    echo '</pre>';
+     
 ?>
+
+
 
 <div class="row">
     <div class="col-md-12">
