@@ -5,8 +5,6 @@
     HighchartsAssets::register($this);
     $this->title = 'Dashboard';
     $this->params['breadcrumbs'][] = $this->title;
-
-    
     
 //    echo '<pre>';
 //    var_dump($consulta_ideal_burn);

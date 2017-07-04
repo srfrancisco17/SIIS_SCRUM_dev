@@ -35,7 +35,7 @@ $this->registerCss("
             margin-top: 5%;
             /*margin: 0 auto;*/
             border: 1px solid black;
-            background: rgba(48, 46, 45, 1);
+            background-color: #f2f2f2;
             min-height: 250px;
             padding: 20px;
             z-index: 9999;
@@ -51,7 +51,7 @@ $this->registerCss("
             color: #ff5252;
     }
     .login-logo a, .register-logo a{
-        color: white;
+        color: #565656;
     }
     #login-box .controls {
             padding-top: 30px;
