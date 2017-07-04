@@ -148,6 +148,7 @@ class Sprints extends \yii\db\ActiveRecord
 
     public static function getSprintActivo()
     {
+        
         $sprint_activo = Sprints::findOne(['estado' => '1']);
         return $sprint_activo ? $sprint_activo : NULL;
     }    
