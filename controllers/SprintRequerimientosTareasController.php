@@ -193,9 +193,8 @@ class SprintRequerimientosTareasController extends Controller
         $model->delete();
         
 
-        EliminacionTareas::estadoEspera($id , $sprint_id, $requerimiento_id);
-        
-        EliminacionTareas::estadoProgreso($id , $sprint_id, $requerimiento_id);
+        EliminacionTareas::estadoEspera($sprint_id, $requerimiento_id);
+        EliminacionTareas::estadoProgreso($sprint_id, $requerimiento_id);
         
        
         /*

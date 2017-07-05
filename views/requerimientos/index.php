@@ -47,6 +47,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     //'comite_id',
                     'requerimiento_titulo',
+                    [
+                        'attribute' => 'usuario_asignado',
+                        'value' => 'sprintRequerimientos2.usuarioAsignado.nombreCompleto'
+                    ],
                     //'requerimiento_descripcion:ntext',
                     //'requerimiento_justificacion:ntext',
                     // 'usuario_solicita',

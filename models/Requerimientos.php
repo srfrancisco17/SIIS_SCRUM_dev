@@ -28,6 +28,8 @@ use Yii;
  */
 class Requerimientos extends \yii\db\ActiveRecord
 {
+    
+    
     /**
      * @inheritdoc
      */
@@ -77,6 +79,7 @@ class Requerimientos extends \yii\db\ActiveRecord
             'estado' => 'Estado',
         ];
     }
+    
 
     /**
      * @return \yii\db\ActiveQuery
@@ -116,6 +119,11 @@ class Requerimientos extends \yii\db\ActiveRecord
     public function getSprintRequerimientos()
     {
         return $this->hasMany(SprintRequerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
+    }
+    
+    public function getSprintRequerimientos2()
+    {
+        return $this->hasOne(SprintRequerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
 
     /**

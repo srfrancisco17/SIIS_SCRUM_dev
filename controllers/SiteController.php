@@ -163,7 +163,13 @@ class SiteController extends Controller
     public function actionIndexScrumMaster()
     {
         
-        $sprint_id = \app\models\Sprints::getSprintActivo()->sprint_id;
+        $sprint_id = 1;
+        
+//        echo '<pre>';
+//        print_r($sprint_id);
+//        echo '</pre>';
+//        exit();
+        
         
         $whereUsuario = "";
         $usuario_id = Yii::$app->request->post('list');

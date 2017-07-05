@@ -189,7 +189,7 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         
         \app\models\Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, $estado);
         
-        return true;  
+        //return true;  
  
     }
     

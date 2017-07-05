@@ -13,6 +13,8 @@ use yii\widgets\Pjax;
 
 $this->title = 'Sprints';
 $this->params['breadcrumbs'][] = $this->title;
+
+
 ?>
 <style> 
     .panel-default > .panel-heading {

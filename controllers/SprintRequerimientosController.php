@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Requerimientos;
 use app\models\SprintRequerimientos;
+use app\models\SprintRequerimientosTareas;
 use app\models\SprintUsuariosSearch;
 use app\models\UsuariosSearch;
 use app\models\SprintRequerimientosSearch;
@@ -111,15 +112,28 @@ class SprintRequerimientosController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             
-            //Comando Para Cambiar de estado
             Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
             
             if ($model->save()) {
+                
+                //Consulta !
+                
+                $query = SprintRequerimientosTareas::find()->select('tarea_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->one();               
+                
+                if (!empty($query)){
+                    
+                    $conexion = Yii::$app->db;
+                    
+                    $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id='.$model->sprint_id.' WHERE tarea_id='.$query->tarea_id);
+                    $command->execute();
+
+                }
                 $model->refresh();
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
                     'message' => '¡Éxito ALGO!',
                 ];
+                
             } else {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);

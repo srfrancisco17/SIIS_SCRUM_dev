@@ -134,6 +134,11 @@ class UsuariosController extends Controller
         
         return $this->redirect(['index']);
     }
+    
+    public function actionProfile(){
+        
+        return $this->render('profile');
+    }
 
     /**
      * Finds the Usuarios model based on its primary key value.

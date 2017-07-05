@@ -154,6 +154,7 @@ class SprintUsuariosController extends Controller
         
         return $this->render('kanban', [
             'consulta' => $consulta,
+            'sprint_id' => $sprint_id,
         ]);
        
     }
