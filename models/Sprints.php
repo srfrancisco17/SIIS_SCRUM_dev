@@ -173,6 +173,26 @@ class Sprints extends \yii\db\ActiveRecord
         ->bindValue(':sprint_id', $sprint_id)   
         ->execute();
         
+        //
+        $query = SprintRequerimientosTareas::find()->select('requerimiento_id, tarea_titulo, tarea_descripcion, tiempo_desarrollo')->where(['sprint_id' => $sprint_id])->andWhere(['between', 'estado','2', '3'])->all();
+        
+        if (!empty($query)){
+            
+                foreach ($query as $objTareas) {
+                        
+//                        $command = $conexion->createCommand('insert into sprint_requerimientos_tareas (requerimiento_id, tarea_titulo, tarea_descripcion, tiempo_desarrollo');
+//                        $command->execute();
+                        
+                        $conexion->createCommand()->insert('sprint_requerimientos_tareas', [
+                            'requerimiento_id' => $objTareas->requerimiento_id,
+                            'tarea_titulo' => $objTareas->tarea_titulo,
+                            'tarea_descripcion' => $objTareas->tarea_descripcion,
+                            'tiempo_desarrollo' => $objTareas->tiempo_desarrollo,
+                        ])->execute();
+                         
+                }
+        }
+        
         SprintRequerimientos::actualizarNoCumplido($sprint_id);
         
     }

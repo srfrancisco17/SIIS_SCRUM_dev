@@ -30,14 +30,12 @@ class EliminacionTareas{
         
         $tareas_terminadas = SprintRequerimientosTareas::find()->where(['estado' => '2'])->andWhere(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->count();
         
-        if ($query == 0){
-            
+        if ($query == 0){            
             if ($tareas_terminadas > 0){
                 SprintRequerimientos::actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, '2');
             }
-            
-        }
  
+        }
     }
 }
     

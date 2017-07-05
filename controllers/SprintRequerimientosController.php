@@ -118,15 +118,21 @@ class SprintRequerimientosController extends Controller
                 
                 //Consulta !
                 
-                $query = SprintRequerimientosTareas::find()->select('tarea_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->one();               
+                $query = SprintRequerimientosTareas::find()->select('tarea_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->all();               
                 
-                if (!empty($query)){
+      
+                
+                if (!empty($query)){                
                     
                     $conexion = Yii::$app->db;
                     
-                    $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id='.$model->sprint_id.' WHERE tarea_id='.$query->tarea_id);
-                    $command->execute();
-
+                    foreach ($query as $objTareas) {
+                        
+                        $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id='.$model->sprint_id.' WHERE tarea_id='.$objTareas->tarea_id);
+                        $command->execute();
+                         
+                    }
+                    
                 }
                 $model->refresh();
                 Yii::$app->response->format = Response::FORMAT_JSON;
