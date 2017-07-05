@@ -41,13 +41,22 @@ class RequerimientosSearch extends Requerimientos
      */
     public function search($params)
     {
-        $query = Requerimientos::find();
-
+        $query = Requerimientos::find()
+                ->select('*')
+                ->leftJoin('sprint_requerimientos', 'sprint_requerimientos.requerimiento_id = requerimientos.requerimiento_id')->all();
+        
+        
+          echo '<pre>';
+          print_r($query);
+          echo '</pre>';
+//        echo $query->createCommand()->getRawSql();
+//        exit();
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['requerimiento_id'=>SORT_ASC]],
+            //'sort'=> ['defaultOrder' => ['requerimientos.requerimiento_id'=>SORT_ASC]],
         ]);
 
         $this->load($params);
