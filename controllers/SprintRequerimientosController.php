@@ -119,8 +119,7 @@ class SprintRequerimientosController extends Controller
                 //Consulta !
                 
                 $query = SprintRequerimientosTareas::find()->select('tarea_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->all();               
-                
-      
+
                 
                 if (!empty($query)){                
                     
@@ -132,6 +131,8 @@ class SprintRequerimientosController extends Controller
                         $command->execute();
                          
                     }
+                    
+                    \app\controllers\SprintRequerimientosTareasController::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
                     
                 }
                 $model->refresh();
@@ -200,6 +201,22 @@ class SprintRequerimientosController extends Controller
         /*
         *   Comando Para Cambiar de estado
         */
+        
+        $query = SprintRequerimientosTareas::find()->select('tarea_id')->where(['requerimiento_id' => $requerimiento_id])->andWhere(['sprint_id' => $sprint_id])->all();
+                
+            if (!empty($query)){                
+                    
+                $conexion = Yii::$app->db;
+                    
+                foreach ($query as $objTareas) {
+                        
+                    $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id = NULL, estado = \'2\', fecha_terminado = NULL WHERE tarea_id='.$objTareas->tarea_id);
+                    $command->execute();
+                         
+                }
+            }        
+        
+        
         Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, '1');
 
         return $this->redirect(['index','sprint_id'=>$sprint_id]);

@@ -189,7 +189,7 @@ class Sprints extends \yii\db\ActiveRecord
                             'tarea_descripcion' => $objTareas->tarea_descripcion,
                             'tiempo_desarrollo' => $objTareas->tiempo_desarrollo,
                         ])->execute();
-                         
+
                 }
         }
         
