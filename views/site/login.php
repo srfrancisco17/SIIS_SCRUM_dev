@@ -28,11 +28,11 @@ $this->registerCss("
     }
     #login-box {
             position: absolute;
-            top: 150px;
+            top: 120px;
             left: 50%;
             transform: translateX(-50%);
             width: 350px;
-            margin-top: 5%;
+            margin-top: 0px;
             /*margin: 0 auto;*/
             border: 1px solid black;
             background-color: #f2f2f2;
@@ -54,7 +54,7 @@ $this->registerCss("
         color: #565656;
     }
     #login-box .controls {
-            padding-top: 30px;
+            padding-top: 0px;
     }
     #login-box .controls input {
             border-radius: 0px;
@@ -228,24 +228,26 @@ $this->registerJs('
 ?>
 <div class="container">
 	<div id="login-box">
-            <div class="login-logo">
+            <div class="login-logo"> 
+                <?= Html::img('@web/img/icono-cdo.png', ['alt' => 'My logo', 'style' => ['width' => '150px', 'height' => '150px']]) ?>
+                <br>
                 <a href="#"><b>SIIS</b>-SCRUM</a>
             </div>
-		<div class="controls">
-                    <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
-                        <?= $form
-                            ->field($model, 'username', $fieldOptions1)
-                            ->label(false)
-                            ->textInput(['placeholder' => $model->getAttributeLabel('Numero de documento')]) ?>
+            <div class="controls">
+                <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
+                    <?= $form
+                        ->field($model, 'username', $fieldOptions1)
+                        ->label(false)
+                        ->textInput(['placeholder' => $model->getAttributeLabel('Numero de documento')]) ?>
 
-                        <?= $form
-                            ->field($model, 'password', $fieldOptions2)
-                            ->label(false)
-                            ->passwordInput(['placeholder' => $model->getAttributeLabel('Contraseña')]) ?>
+                    <?= $form
+                        ->field($model, 'password', $fieldOptions2)
+                        ->label(false)
+                        ->passwordInput(['placeholder' => $model->getAttributeLabel('Contraseña')]) ?>
 
-                        <?= Html::submitButton('<i class="glyphicon glyphicon-log-in"></i> Iniciar sesion', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>    
-                    <?php ActiveForm::end(); ?>
-                </div><!-- /.controls -->
-	</div><!-- /#login-box -->
-</div><!-- /.container -->
+                    <?= Html::submitButton('<i class="glyphicon glyphicon-log-in"></i> Iniciar sesion', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>    
+                <?php ActiveForm::end(); ?>
+            </div><
+	</div>
+</div>
 <div id="particles-js"></div>
