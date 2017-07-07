@@ -4,21 +4,19 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "sprint_requerimientos_tareas".
- *
- * @property int $tarea_id
- * @property int $sprint_id
- * @property int $requerimiento_id
- * @property string $tarea_titulo
- * @property string $tarea_descripcion
- * @property string $estado
- * @property int $tiempo_desarrollo
- * @property string $fecha_terminado
+/** 
+ * This is the model class for table "sprint_requerimientos_tareas". 
  * 
+ * @property integer $tarea_id
+ * @property integer $sprint_id
+ * @property integer $requerimiento_id
+ * @property string $estado
+ * 
+ * @property EstadosReqSpr $estado0
  * @property Requerimientos $requerimiento
+ * @property RequerimientosTareas $tarea
  * @property Sprints $sprint
- */
+ */ 
 class SprintRequerimientosTareas extends \yii\db\ActiveRecord
 {
     /**
@@ -35,13 +33,15 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'default', 'value' => null],
-            [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
-            [['fecha_terminado'], 'safe'],
-            [['tarea_titulo'], 'required'],
-            [['tiempo_desarrollo'], 'default', 'value' => 0],
-            [['tarea_descripcion'], 'string'],
-            [['tarea_titulo'], 'string', 'max' => 60],
+//            [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'default', 'value' => null],
+//            [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
+            [['sprint_id', 'requerimiento_id'], 'default', 'value' => null],
+            [['sprint_id', 'requerimiento_id'], 'integer'],
+            //[['fecha_terminado'], 'safe'],
+            //[['tarea_titulo'], 'required'],
+            //[['tiempo_desarrollo'], 'default', 'value' => 0],
+            //[['tarea_descripcion'], 'string'],
+            //[['tarea_titulo'], 'string', 'max' => 60],
             [['estado'], 'string', 'max' => 2],
             [['estado'], 'default', 'value' => '2'],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
@@ -49,23 +49,33 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
             [['sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sprints::className(), 'targetAttribute' => ['sprint_id' => 'sprint_id']],
         ];
     }
+    
+    public static function primaryKey()
+    {
+        return ['tarea_id'];
+    }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
-        return [
+    public function attributeLabels() 
+    { 
+        return [ 
             'tarea_id' => 'Tarea ID',
             'sprint_id' => 'Sprint ID',
             'requerimiento_id' => 'Requerimiento ID',
-            'tarea_titulo' => 'Tarea Titulo',
-            'tarea_descripcion' => 'Tarea Descripcion',
             'estado' => 'Estado',
-            'tiempo_desarrollo' => 'Tiempo Desarrollo',
-            'fecha_terminado' => 'Fecha Terminado',
-        ];
-    }
+        ]; 
+    } 
+
+    
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getTarea() 
+    { 
+        return $this->hasOne(RequerimientosTareas::className(), ['tarea_id' => 'tarea_id']);
+    } 
     
     public function getEstado0() 
     { 
@@ -99,8 +109,11 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
             
             $conexion->createCommand()->update('sprint_requerimientos_tareas', [
                 'estado' => $estado,
-                'fecha_terminado' => $now,
             ],  'tarea_id ='.$id)->execute();      
+            
+            $conexion->createCommand()->update('requerimientos_tareas', [
+                'fecha_terminado' => $now,
+            ],  'tarea_id ='.$id)->execute(); 
             
         }else{
             

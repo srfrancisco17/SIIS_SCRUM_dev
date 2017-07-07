@@ -118,7 +118,7 @@ class SprintRequerimientosController extends Controller
                 
                 //Consulta !
                 
-                $query = SprintRequerimientosTareas::find()->select('tarea_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->all();               
+                $query = SprintRequerimientosTareas::find()->select('tarea_id, requerimiento_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->all();               
 
                 
                 if (!empty($query)){                
@@ -127,7 +127,7 @@ class SprintRequerimientosController extends Controller
                     
                     foreach ($query as $objTareas) {
                         
-                        $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id='.$model->sprint_id.' WHERE tarea_id='.$objTareas->tarea_id);
+                        $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id='.$model->sprint_id.' WHERE tarea_id='.$objTareas->tarea_id.' AND requerimiento_id ='.$objTareas->requerimiento_id.' AND sprint_id is null');
                         $command->execute();
                          
                     }

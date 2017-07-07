@@ -126,6 +126,11 @@ $this->params['breadcrumbs'][] = $this->title;
             $items2 = array();
             $items3 = array();
             foreach ($objRequerimientos->sprintRequerimientosTareas as $objTareas){
+                
+//                echo '<pre>';
+//                print_r($objTareas->tarea->tarea_titulo);
+//                echo '</pre>';
+//                exit();
                   
                 switch ($objTareas->estado){
                     case 2: 
@@ -134,14 +139,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'content' => $objTareas->tarea_descripcion,
                             'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                     <div class="box-header">
-                                      <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
+                                      <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
-                                        <span class="label label-default">'.$objTareas->tiempo_desarrollo.'</span>
+                                        <span class="label label-default">'.$objTareas->tarea->tiempo_desarrollo.'</span>
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
-                                    ' . $objTareas->tarea_descripcion . '
+                                    ' . $objTareas->tarea->tarea_descripcion . '
                                     </div><!-- /.box-body -->
                                     </div><!-- /.box -->',
                             'options' => ['id' => $objTareas->tarea_id],
@@ -157,14 +162,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'content' => $objTareas->tarea_descripcion,
                             'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                     <div class="box-header">
-                                      <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
+                                      <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
-                                        <span class="label label-default">'.$objTareas->tiempo_desarrollo.'</span>
+                                        <span class="label label-default">'.$objTareas->tarea->tiempo_desarrollo.'</span>
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
-                                    ' . $objTareas->tarea_descripcion . '
+                                    ' . $objTareas->tarea->tarea_descripcion . '
                                     </div><!-- /.box-body -->
                                     </div><!-- /.box -->',
                             'options' => ['id' => $objTareas->tarea_id],
@@ -179,14 +184,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'content' => $objTareas->tarea_descripcion,
                             'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                     <div class="box-header">
-                                      <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
+                                      <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
-                                        <span class="label label-default">'.$objTareas->tiempo_desarrollo.'</span>
+                                        <span class="label label-default">'.$objTareas->tarea->tiempo_desarrollo.'</span>
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
-                                    ' . $objTareas->tarea_descripcion . '
+                                    ' . $objTareas->tarea->tarea_descripcion . '
                                     </div><!-- /.box-body -->
                                     </div><!-- /.box -->',
                             'options' => ['id' => $objTareas->tarea_id],

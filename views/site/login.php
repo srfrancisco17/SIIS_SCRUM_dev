@@ -247,7 +247,7 @@ $this->registerJs('
 
                     <?= Html::submitButton('<i class="glyphicon glyphicon-log-in"></i> Iniciar sesion', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>    
                 <?php ActiveForm::end(); ?>
-            </div><
+            </div>
 	</div>
 </div>
 <div id="particles-js"></div>

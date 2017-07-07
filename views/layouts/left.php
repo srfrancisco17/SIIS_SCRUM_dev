@@ -61,7 +61,7 @@
                         'label' => 'Requerimientos',
                         'icon' => 'check-square-o',
                         'url' => ['requerimientos/index'],
-                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER,
+                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER ||\app\models\Usuarios::USUARIO_DEVELOPER,
                     ],
                     [
                         'label' => 'Sprints',

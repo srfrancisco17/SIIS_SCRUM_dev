@@ -198,19 +198,24 @@ class SiteController extends Controller
             
         $connection = Yii::$app->db;
         $consulta_acutal_burn = $connection->createCommand("select 
-                                            sum(srt.tiempo_desarrollo) as sum_horas,
-                                            srt.fecha_terminado::date
+                                            sum(rt.tiempo_desarrollo) as sum_horas,
+                                            rt.fecha_terminado::date
                                             from sprint_requerimientos as sr
                                             inner join sprint_requerimientos_tareas as srt
                                             on (
                                                     srt.requerimiento_id = sr.requerimiento_id
                                                     and srt.sprint_id = sr.sprint_id
                                             )
+                                            inner join requerimientos_tareas as rt
+                                            on (
+                                                rt.requerimiento_id = srt.requerimiento_id
+                                                and rt.tarea_id = srt.tarea_id
+                                            )
                                             where sr.sprint_id = :sprint_id
                                             $whereUsuario
                                             and srt.estado = '4'
-                                            group by srt.fecha_terminado::date
-                                            order by srt.fecha_terminado::date")
+                                            group by rt.fecha_terminado::date
+                                            order by rt.fecha_terminado::date")
                                             ->bindValue(':sprint_id', $sprint_id)
                                             ->queryAll(); 
         
@@ -347,19 +352,24 @@ class SiteController extends Controller
         $connection = Yii::$app->db;
         
         $consulta_acutal_burn = $connection->createCommand("select 
-                                            sum(srt.tiempo_desarrollo) as sum_horas,
-                                            srt.fecha_terminado::date
+                                            sum(rt.tiempo_desarrollo) as sum_horas,
+                                            rt.fecha_terminado::date
                                             from sprint_requerimientos as sr
                                             inner join sprint_requerimientos_tareas as srt
                                             on (
                                                     srt.requerimiento_id = sr.requerimiento_id
                                                     and srt.sprint_id = sr.sprint_id
                                             )
+                                            inner join requerimientos_tareas as rt
+                                            on (
+                                                rt.requerimiento_id = srt.requerimiento_id
+                                                and rt.tarea_id = srt.tarea_id
+                                            )
                                             where sr.sprint_id = :sprint_id
                                             and sr.usuario_asignado = :usuario_asignado
                                             and srt.estado = '4'
-                                            group by srt.fecha_terminado::date
-                                            order by srt.fecha_terminado::date")
+                                            group by rt.fecha_terminado::date
+                                            order by rt.fecha_terminado::date")
                                             ->bindValue(':sprint_id', $sprint_id)
                                             ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
                                             ->queryAll();        

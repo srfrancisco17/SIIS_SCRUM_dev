@@ -80,7 +80,8 @@ class Sprints extends \yii\db\ActiveRecord
         }
  
         //$this->addError($attribute, 'Ya Existe Un Sprint Activo');
-    }        
+    } 
+    
 
     /**
      * @inheritdoc
@@ -174,26 +175,23 @@ class Sprints extends \yii\db\ActiveRecord
         ->execute();
         
         //
-        $query = SprintRequerimientosTareas::find()->select('requerimiento_id, tarea_titulo, tarea_descripcion, tiempo_desarrollo')->where(['sprint_id' => $sprint_id])->andWhere(['between', 'estado','2', '3'])->all();
+        $query = SprintRequerimientosTareas::find()->select('tarea_id, requerimiento_id')->where(['sprint_id' => $sprint_id])->andWhere(['between', 'estado','2', '3'])->all();
         
         if (!empty($query)){
             
                 foreach ($query as $objTareas) {
                         
-//                        $command = $conexion->createCommand('insert into sprint_requerimientos_tareas (requerimiento_id, tarea_titulo, tarea_descripcion, tiempo_desarrollo');
-//                        $command->execute();
-                        
-                        $conexion->createCommand()->insert('sprint_requerimientos_tareas', [
-                            'requerimiento_id' => $objTareas->requerimiento_id,
-                            'tarea_titulo' => $objTareas->tarea_titulo,
-                            'tarea_descripcion' => $objTareas->tarea_descripcion,
-                            'tiempo_desarrollo' => $objTareas->tiempo_desarrollo,
-                        ])->execute();
+                    $conexion->createCommand()->insert('sprint_requerimientos_tareas', [
+                        'tarea_id' => $objTareas->tarea_id,
+                        'requerimiento_id' => $objTareas->requerimiento_id,
+                        'estado' => '2',
+                    ])->execute();
+                    
 
+                    $sql = "Update requerimientos_tareas set ultimo_estado = '5' Where tarea_id=".$objTareas->tarea_id." And requerimiento_id =".$objTareas->requerimiento_id;
+                    $conexion->createCommand($sql)->execute();
                 }
         }
-        
-        SprintRequerimientos::actualizarNoCumplido($sprint_id);
-        
+        SprintRequerimientos::actualizarNoCumplido($sprint_id); 
     }
 }

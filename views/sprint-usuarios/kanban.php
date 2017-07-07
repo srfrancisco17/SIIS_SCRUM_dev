@@ -120,6 +120,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ]);
     ?>
     <?php
+    
+        $buttons_pull_right = '';
         
         $this->registerJs("var form = $('#tareas-form1');");
         
@@ -148,33 +150,39 @@ $this->params['breadcrumbs'][] = $this->title;
             if ($objTareas->sprint_id == $sprint_id){
                 
                 if($objTareas->estado == 2){
+                          
+                    if ($objTareas->tarea->ultimo_estado != 5){
+                        
+                        $buttons_pull_right = '
+                            <div class="box-tools pull-right">
+                                <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
+                                '.
+                                Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
+                                    'title' => 'Eliminar',
+                                        'data' => [
+                                            'confirm' => 'Esta seguro de eliminar esta tarea?',
+                                            'method' => 'post',
+                                        ],
+                                ])
+                                .'
+                            </div>';          
+                    }
                     
                     $items1[$objTareas->tarea_id] = [
                         //'content' => $objTareas->tarea_descripcion,
                         'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                 <div class="box-header with-border">
-                                  <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
+                                  <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                   <div class="box-tools pull-right">
-                                    <span class="label label-default">'.$objTareas->tiempo_desarrollo.'</span>
+                                    <span class="label label-default">'.$objTareas->tarea->tiempo_desarrollo.'</span>
                                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                    </div><!-- /.box-tools -->
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-                                ' . $objTareas->tarea_descripcion . '
+                                ' . $objTareas->tarea->tarea_descripcion . '
                                 </div><!-- /.box-body -->
                                 <div class="box-footer" style="background-color:'.$usuario_color.'">
-                                    <div class="box-tools pull-right">
-                                        <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'id' => $objTareas->tarea_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
-                                        '.
-                                        Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
-                                            'title' => 'Eliminar',
-                                            'data' => [
-                                                'confirm' => 'Esta seguro de eliminar esta tarea?',
-                                                'method' => 'post',
-                                            ],
-                                        ])
-                                        .'
-                                    </div>
+                                '.$buttons_pull_right.'
                                 </div>
                                 </div><!-- /.box -->',
                         'options' => ['id' => $objTareas->tarea_id],
@@ -182,32 +190,38 @@ $this->params['breadcrumbs'][] = $this->title;
   
                 }else if($objTareas->estado == 3){
                     
+                    if ($objTareas->tarea->ultimo_estado != 5){
+                        
+                        $buttons_pull_right = '
+                            <div class="box-tools pull-right">
+                                <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
+                                '.
+                                Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
+                                    'title' => 'Eliminar',
+                                        'data' => [
+                                            'confirm' => 'Esta seguro de eliminar esta tarea?',
+                                            'method' => 'post',
+                                        ],
+                                ])
+                                .'
+                            </div>';          
+                    }
+
                     $items2[$objTareas->tarea_id] = [
                         //'content' => $objTareas->tarea_descripcion,
                         'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                 <div class="box-header with-border">
-                                  <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
+                                  <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                   <div class="box-tools pull-right">
-                                    <span class="label label-default">'.$objTareas->tiempo_desarrollo.'</span>
+                                    <span class="label label-default">'.$objTareas->tarea->tiempo_desarrollo.'</span>
                                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                    </div><!-- /.box-tools -->
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-                                ' . $objTareas->tarea_descripcion . '
+                                ' . $objTareas->tarea->tarea_descripcion . '
                                 </div><!-- /.box-body -->
                                 <div class="box-footer" style="background-color:'.$usuario_color.'">
-                                    <div class="box-tools pull-right">
-                                        <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'id' => $objTareas->tarea_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
-                                        '.
-                                        Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
-                                            'title' => 'Eliminar',
-                                            'data' => [
-                                                'confirm' => 'Esta seguro de eliminar esta tarea?',
-                                                'method' => 'post',
-                                            ],
-                                        ])
-                                        .'                                        
-                                    </div>                                        
+                                    '.$buttons_pull_right.'
                                 </div>
                                 </div><!-- /.box -->',
                         'options' => ['id' => $objTareas->tarea_id],
@@ -215,33 +229,40 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                 }else if ($objTareas->estado == 4){
                     
+                    if ($objTareas->tarea->ultimo_estado != 5){
+                        
+                        $buttons_pull_right = '
+                            <div class="box-tools pull-right">
+                                <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
+                                '.
+                                Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
+                                    'title' => 'Eliminar',
+                                        'data' => [
+                                            'confirm' => 'Esta seguro de eliminar esta tarea?',
+                                            'method' => 'post',
+                                        ],
+                                ])
+                                .'
+                            </div>';          
+                    }
+                    
                     $items3[$objTareas->tarea_id] = [
                         //'content' => $objTareas->tarea_descripcion,
                         'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                 <div class="box-header with-border">
-                                  <h5 class="box-title">' . $objTareas->tarea_titulo . '</h5>
+                                  <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                   <div class="box-tools pull-right">
-                                    <span class="label label-default">'.$objTareas->tiempo_desarrollo.'</span>
+                                    <span class="label label-default">'.$objTareas->tarea->tiempo_desarrollo.'</span>
                                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                   </div><!-- /.box-tools -->
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-                                ' . $objTareas->tarea_descripcion . '
+                                ' . $objTareas->tarea->tarea_descripcion . '
                                 </div><!-- /.box-body -->
                                 <div class="box-footer" style="background-color:'.$usuario_color.'">
                                     <div class="box-tools pull-right">
-                                        <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'id' => $objTareas->tarea_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
-                                        '.
-                                        Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
-                                            'title' => 'Eliminar',
-                                            'data' => [
-                                                'confirm' => 'Esta seguro de eliminar esta tarea?',
-                                                'method' => 'post',
-                                            ],
-                                        ])
-                                        .'                                        
-                                    </div>                                        
-                                </div>
+                                        '.$buttons_pull_right.'        
+                                    </div>
                                 </div><!-- /.box -->',
                         'options' => ['id' => $objTareas->tarea_id],
                             //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],

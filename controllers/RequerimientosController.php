@@ -31,7 +31,7 @@ class RequerimientosController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            $validar_tipousuario = [Usuarios::USUARIO_SCRUM_MASTER];
+                            $validar_tipousuario = [Usuarios::USUARIO_SCRUM_MASTER || Usuarios::USUARIO_DEVELOPER];
                             return Usuarios::tipoUsuarioArreglo($validar_tipousuario) && Usuarios::estaActivo();
                         }
                     ],

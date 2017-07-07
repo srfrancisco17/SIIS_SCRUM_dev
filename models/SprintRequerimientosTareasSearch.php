@@ -18,8 +18,10 @@ class SprintRequerimientosTareasSearch extends SprintRequerimientosTareas
     public function rules() 
     { 
         return [ 
-            [['tarea_id', 'sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
-            [['tarea_titulo', 'tarea_descripcion', 'estado'], 'safe'], 
+            //[['tarea_id', 'sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
+            [['tarea_id', 'sprint_id', 'requerimiento_id'], 'integer'],
+            //[['tarea_titulo', 'tarea_descripcion', 'estado'], 'safe'], 
+            [['estado'], 'safe'], 
         ]; 
     }
 
