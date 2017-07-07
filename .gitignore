@@ -4,3 +4,6 @@
 /vendor
 
 /web/assets
+config/db.php
+nbproject/project.xml
+web/index.php
