@@ -5,23 +5,26 @@ use dmstr\widgets\Alert;
 ?>
 <div class="content-wrapper">
     <section class="content-header">
-        <?php if (isset($this->blocks['content-header'])) { ?>
-            <h1><?= $this->blocks['content-header'] ?></h1>
-        <?php } else { ?>
+        <?php 
+            if (isset($this->blocks['content-header'])) { 
+            
+        ?>
+        <h1><?= $this->blocks['content-header'] ?></h1>
+        <?php 
+        
+            } else { ?>
             <h1>
                 <?php
-                if ($this->title !== null) {
-                    //echo \yii\helpers\Html::encode($this->title);
-                    echo '<br>';
-                } else {
-                    echo \yii\helpers\Inflector::camel2words(
-                        \yii\helpers\Inflector::id2camel($this->context->module->id)
-                    );
-                    echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
-                } ?>
+                    if ($this->title !== null) {
+                        //echo \yii\helpers\Html::encode($this->title);
+                        echo '<br>';
+                    } else {
+                        echo \yii\helpers\Inflector::camel2words(\yii\helpers\Inflector::id2camel($this->context->module->id));
+                        echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
+                    }   
+                ?>
             </h1>
         <?php } ?>
-
         <?=
         Breadcrumbs::widget(
             [
@@ -30,7 +33,6 @@ use dmstr\widgets\Alert;
             ]
         ) ?>
     </section>
-
     <section class="content">
         <?= Alert::widget() ?>
         <?= $content ?>

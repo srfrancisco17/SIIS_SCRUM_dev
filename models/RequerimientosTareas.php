@@ -34,7 +34,7 @@ class RequerimientosTareas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['requerimiento_id'], 'required'],
+            [['requerimiento_id', 'tarea_titulo'], 'required'],
             [['requerimiento_id', 'tiempo_desarrollo'], 'integer'],
             [['tarea_descripcion'], 'string'],
             [['fecha_terminado'], 'safe'],

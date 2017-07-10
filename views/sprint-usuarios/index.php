@@ -75,6 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
               'attribute' => 'sprint.fecha_hasta', 
               'contentOptions' => ['style' => 'width:100px;'],
             ],
+            /*
             [
                 'attribute' => 'estado',
                 'value' => function ($data) {
@@ -89,6 +90,23 @@ $this->params['breadcrumbs'][] = $this->title;
                  },
                 'filter'=>FALSE,
                 'contentOptions' => ['style' => 'width:10px;'],
+            ], 
+            */
+            [
+                'attribute' => 'sprint.estado',
+                'value' => function ($data) {
+                        if($data['sprint']->estado == 0){
+                            return 'Inactivo';
+                        }
+                        if($data['sprint']->estado == 1){
+                            return 'Activo';
+                        }
+                        if($data['sprint']->estado == 4){
+                            return 'Terminado';
+                        }
+                        return 'Error';
+                 },
+                'contentOptions' => ['style' => 'width:100px;'],
             ],
             [
                 'class'=>'kartik\grid\ActionColumn',

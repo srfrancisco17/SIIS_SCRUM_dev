@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SprintRequerimientosTareas */
+/* @var $model app\models\RequerimientosTareas */
 
 $this->title = $model->tarea_id;
-$this->params['breadcrumbs'][] = ['label' => 'Sprint Requerimientos Tareas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Requerimientos Tareas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sprint-requerimientos-tareas-view">
+<div class="requerimientos-tareas-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,9 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'tarea_id',
-            'sprint_id',
             'requerimiento_id',
-            'estado',
+            'tarea_titulo',
+            'tarea_descripcion:ntext',
+            'ultimo_estado',
+            'tiempo_desarrollo',
+            'fecha_terminado',
         ],
     ]) ?>
 

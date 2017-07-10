@@ -6,33 +6,35 @@ use yii\helpers\Url;
 ?>
 
 <header class="main-header">
-
    
-    
     <?php
         if(Yii::$app->user->identity->tipo_usuario == 1){
+            
             echo Html::a('<span class="logo-mini">CDO</span><span class="logo-lg">' . Yii::$app->name . '</span>', Url::to(['site/index-scrum-master']), ['class' => 'logo']);
+        
+            
         }else if(Yii::$app->user->identity->tipo_usuario == 2){
+            
             echo Html::a('<span class="logo-mini">CDO</span><span class="logo-lg">' . Yii::$app->name . '</span>', Url::to(['site/index-developer']), ['class' => 'logo']);
+        
+            
         }else{
             echo Html::a('<span class="logo-mini">CDO</span><span class="logo-lg">' . Yii::$app->name . '</span>', '#', ['class' => 'logo']);
         }
+        
     ?>
-    
+  
     <nav class="navbar navbar-static-top" role="navigation">
-
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
-
         <div class="navbar-custom-menu">
-
-            <ul class="nav navbar-nav">
-                
+            <ul class="nav navbar-nav"> 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!--<img src="<?= $directoryAsset ?>/img/icono-cdo.png" class="user-image" alt="User Image"/>-->
-                        <img src="/Proyecto-FAOF2/web/img/icono-cdo.png" class="user-image" alt="User Image"/>
+                        
+                        <?= Html::img('@web/img/icono-cdo.png', ['class' => 'user-image', 'alt' => 'User Image']) ?>
                         <!--<span class="hidden-xs">Francisco Ortega</span>-->
                         <span class="hidden-xs">
                             <?php
@@ -48,22 +50,14 @@ use yii\helpers\Url;
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="/Proyecto-FAOF2/web/img/icono-cdo.png" class="img-circle"
-                                 alt="User Image"/>
-
+                            <?= Html::img('@web/img/icono-cdo.png', ['class' => 'img-circle', 'alt' => 'User Image']) ?>
                             <p>
                                 <?php
-                                    if (Yii::$app->user->isGuest) {
-                                        echo 'Soy Desconocido';
-                                    }else{
-                                        echo Yii::$app->user->identity->nombres.' '.Yii::$app->user->identity->apellidos;
-                                        
-                                        echo '<small>'.Yii::$app->user->identity->tipoUsuario->descripcion.' - '.Yii::$app->user->identity->departamento0->descripcion.'</small>';
-                                    }
+                                    echo Yii::$app->user->identity->nombreCompleto;
+                                    echo '<small>'.Yii::$app->user->identity->tipoUsuario->descripcion.' - '.Yii::$app->user->identity->departamento0->descripcion.'</small>';  
                                 ?>
                                 <!--<small>Miembro desde Feb. 2017</small>-->
-                                
-                                
+
                             </p>
                         </li>
                         <!-- Menu Body 
@@ -93,7 +87,6 @@ use yii\helpers\Url;
                         </li>
                     </ul>
                 </li>
-
                 <!-- User Account: style can be found in dropdown.less -->
                 <li>
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>

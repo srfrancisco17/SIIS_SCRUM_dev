@@ -9,8 +9,6 @@ use yii\helpers\Url;
 /* @var $searchModel2 app\models\SprintRequerimientosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 ?>
-
-
 <br>
 <div class="row">
     <div class="col-md-12">
@@ -89,7 +87,7 @@ use yii\helpers\Url;
                 'template' => '{requerimientos}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
-                    return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['sprint-requerimientos-tareas/index','sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
+                    return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index','sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
                                 'id' => 'activity-index-link2',
                                 'class' => 'btn btn-success',
                          

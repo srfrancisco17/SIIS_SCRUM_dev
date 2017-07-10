@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SprintRequerimientosTareasSearch */
+/* @var $model app\models\RequerimientosTareasSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="sprint-requerimientos-tareas-search">
+<div class="requerimientos-tareas-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,11 +17,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'tarea_id') ?>
 
-    <?= $form->field($model, 'sprint_id') ?>
-
     <?= $form->field($model, 'requerimiento_id') ?>
 
-    <?= $form->field($model, 'estado') ?>
+    <?= $form->field($model, 'tarea_titulo') ?>
+
+    <?= $form->field($model, 'tarea_descripcion') ?>
+
+    <?= $form->field($model, 'ultimo_estado') ?>
+
+    <?php // echo $form->field($model, 'tiempo_desarrollo') ?>
+
+    <?php // echo $form->field($model, 'fecha_terminado') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

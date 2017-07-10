@@ -4,19 +4,19 @@ namespace app\models;
 
 use Yii;
 
-/** 
- * This is the model class for table "sprint_requerimientos_tareas". 
- * 
+/**
+ * This is the model class for table "sprint_requerimientos_tareas".
+ *
  * @property integer $tarea_id
  * @property integer $sprint_id
  * @property integer $requerimiento_id
  * @property string $estado
- * 
+ *
  * @property EstadosReqSpr $estado0
  * @property Requerimientos $requerimiento
  * @property RequerimientosTareas $tarea
  * @property Sprints $sprint
- */ 
+ */
 class SprintRequerimientosTareas extends \yii\db\ActiveRecord
 {
     /**
@@ -25,29 +25,6 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'sprint_requerimientos_tareas';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-//            [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'default', 'value' => null],
-//            [['sprint_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
-            [['sprint_id', 'requerimiento_id'], 'default', 'value' => null],
-            [['sprint_id', 'requerimiento_id'], 'integer'],
-            //[['fecha_terminado'], 'safe'],
-            //[['tarea_titulo'], 'required'],
-            //[['tiempo_desarrollo'], 'default', 'value' => 0],
-            //[['tarea_descripcion'], 'string'],
-            //[['tarea_titulo'], 'string', 'max' => 60],
-            [['estado'], 'string', 'max' => 2],
-            [['estado'], 'default', 'value' => '2'],
-            [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
-            [['requerimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id']],
-            [['sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sprints::className(), 'targetAttribute' => ['sprint_id' => 'sprint_id']],
-        ];
     }
     
     public static function primaryKey()
@@ -58,35 +35,56 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels() 
-    { 
-        return [ 
+    public function rules()
+    {
+        return [
+            [['sprint_id', 'requerimiento_id'], 'integer'],
+            [['sprint_id'], 'default', 'value' => null],
+            [['requerimiento_id'], 'required'],
+            [['estado'], 'string', 'max' => 2],
+            [['estado'], 'default', 'value' => '2'],
+            [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
+            [['requerimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id']],
+            [['tarea_id'], 'exist', 'skipOnError' => true, 'targetClass' => RequerimientosTareas::className(), 'targetAttribute' => ['tarea_id' => 'tarea_id']],
+            [['sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sprints::className(), 'targetAttribute' => ['sprint_id' => 'sprint_id']],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
             'tarea_id' => 'Tarea ID',
             'sprint_id' => 'Sprint ID',
             'requerimiento_id' => 'Requerimiento ID',
             'estado' => 'Estado',
-        ]; 
-    } 
+        ];
+    }
 
-    
-    /** 
-     * @return \yii\db\ActiveQuery 
-     */ 
-    public function getTarea() 
-    { 
-        return $this->hasOne(RequerimientosTareas::className(), ['tarea_id' => 'tarea_id']);
-    } 
-    
-    public function getEstado0() 
-    { 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEstado0()
+    {
         return $this->hasOne(EstadosReqSpr::className(), ['req_spr_id' => 'estado']);
-    } 
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getRequerimiento()
     {
         return $this->hasOne(Requerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTarea()
+    {
+        return $this->hasOne(RequerimientosTareas::className(), ['tarea_id' => 'tarea_id']);
     }
 
     /**
@@ -126,4 +124,5 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
         return true;  
         
     }
+    
 }

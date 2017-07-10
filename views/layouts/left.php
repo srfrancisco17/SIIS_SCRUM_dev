@@ -41,37 +41,32 @@ use app\models\Usuarios;
                             'label' => 'Dashboard',
                             'icon' => 'dashboard ',
                             'url' => ['site/index-scrum-master'],
-                            'visible' => Usuarios::USUARIO_SCRUM_MASTER,
+                            //'visible' => Usuarios::USUARIO_SCRUM_MASTER,
                         ],
                         [
                             'label' => 'Gii',
                             'icon' => 'file-code-o',
                             'url' => ['/gii'],
-                            'visible' => Usuarios::USUARIO_SCRUM_MASTER,
                         ],
                         [
                             'label' => 'Comites', 
                             'icon' => 'book', 
                             'url' => ['comites/index'],
-                            'visible' => Usuarios::USUARIO_SCRUM_MASTER,
                         ],
                         [
                             'label' => 'Requerimientos',
                             'icon' => 'check-square-o',
                             'url' => ['requerimientos/index'],
-                            'visible' => Usuarios::USUARIO_SCRUM_MASTER ||\app\models\Usuarios::USUARIO_DEVELOPER,
                         ],
                         [
                             'label' => 'Sprints',
                             'icon' => 'undo',
                             'url' => ['sprints/index'],
-                            'visible' => Usuarios::USUARIO_SCRUM_MASTER,
                         ],
                         [
                             'label' => 'Diagramas',
                             'icon' => 'folder-open',
                             'url' => ['#'],
-                            'visible' => Usuarios::USUARIO_SCRUM_MASTER,
                             'items' => [
                                 ['label' => 'Gantt', 'icon'=>'align-left', 'url' => ['diagramas/gantt']],
                                 ['label' => 'area-chart', 'icon'=>'area-chart', 'url' => ['#']],
@@ -88,7 +83,6 @@ use app\models\Usuarios;
                                 ['label' => 'Tipo Documentos', 'icon'=>'folder', 'url' => ['tipos-documentos/index']],
                                 ['label' => 'Departamentos', 'icon'=>'building', 'url' => ['departamentos/index']],
                             ],
-                            'visible' => Usuarios::USUARIO_SCRUM_MASTER,
                         ],
                         [
                             'label' => 'Acerca Del Proyecto',
@@ -108,13 +102,17 @@ use app\models\Usuarios;
                             'label' => 'Dashboard',
                             'icon' => 'dashboard ',
                             'url' => ['site/index-developer'],
-                            'visible' => Usuarios::USUARIO_SCRUM_MASTER,
+                            //'visible' => Usuarios::USUARIO_DEVELOPER,
                         ],
                         [
                             'label' => 'Mis Sprints',
                             'icon' => 'undo',
                             'url' => ['sprint-usuarios/index'],
-                            'visible' => Usuarios::USUARIO_DEVELOPER,
+                        ],
+                        [
+                            'label' => 'Requerimientos',
+                            'icon' => 'check-square-o',
+                            'url' => ['requerimientos/index'],
                         ],
                         [
                             'label' => 'Acerca Del Proyecto',

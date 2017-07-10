@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 //use yii\grid\GridView;
 use kartik\grid\GridView;
@@ -96,14 +97,38 @@ $this->params['breadcrumbs'][] = $this->title;
                         'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo', '2' => 'En Espera', '3' => 'En Progreso', '4' => 'Terminado'],['class'=>'form-control','prompt' => '']),
                         'contentOptions' => ['style' => 'width:100px;'],
                     ],
-                    ['class'=>'kartik\grid\ActionColumn'],
-                ],
-                'toolbar' => [
-                        ['content' =>
-                            Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Requerimientos', ['create'], ['class' => 'btn btn-success'])
+                    [
+                        'class'=>'kartik\grid\ActionColumn',
+                        'template' => Yii::$app->user->identity->tipo_usuario == 1 ? '{view}{update}{delete}{tareas}' : '{tareas}',
+                        'buttons' => [
+//                            'tareas' => function ($url, $model, $key) {
+//                                return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index', 'requerimiento_id' => $model->requerimiento_id]), [
+//                                            'id' => 'activity-index-link2',
+//                                            'title' => Yii::t('yii', 'Tareas'),
+//                                ]);
+//                            },
+                            'tareas' => function ($url, $model, $key) {
+                                return 
+                                    Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index', 'requerimiento_id' => $model->requerimiento_id]), [ 
+                                    /*            
+                                    'data' => [
+                                        'method' => 'post',
+                                        'title' => Yii::t('yii', 'Tareas'),
+                                        'params'=> ['param1' => $model->requerimiento_id],
+                                    ]
+                                    */
+                                    ]);
+                            },
+                        ]
                     ],
-                ],
-
+                ],              
+                'toolbar' =>  (Yii::$app->user->identity->tipo_usuario == 1) ?  
+                [
+                    ['content' =>
+                        Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Requerimientos', ['create'], ['class' => 'btn btn-success'])
+                    ],
+                ]                                             
+                : FALSE,
             ]); 
             ?>
             <?php Pjax::end(); ?>

@@ -268,7 +268,8 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     
     public static function estaActivo()
     {
-    return Yii::$app->user->identity->estado == self::ESTADO_ACTIVO;
+        return Yii::$app->user->identity->estado == self::ESTADO_ACTIVO;
     }
+    
    
 }

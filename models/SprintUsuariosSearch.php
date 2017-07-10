@@ -42,7 +42,7 @@ class SprintUsuariosSearch extends SprintUsuarios
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$sprint_id = false)
+    public function search($params, $sprint_id = false)
     {
         //$query = SprintUsuarios::find();
         //$query = SprintUsuarios::find()->where(['sprint_id' => $sprint_id]);
