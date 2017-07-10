@@ -112,11 +112,10 @@ class SprintRequerimientosController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             
+            //Cuando se asocia un requerimiento al sprint este pasa de estado (Activo = 1) a (En Espera = 2) 
             Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
             
             if ($model->save()) {
-                
-                //Consulta !
                 
                 $query = SprintRequerimientosTareas::find()->select('tarea_id, requerimiento_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->all();               
 
@@ -132,13 +131,13 @@ class SprintRequerimientosController extends Controller
                          
                     }
                     
-                    \app\controllers\SprintRequerimientosTareasController::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
+                    //self::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
                     
                 }
                 $model->refresh();
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
-                    'message' => '¡Éxito ALGO!',
+                    'message' => '¡Éxito!',
                 ];
                 
             } else {
@@ -312,4 +311,12 @@ class SprintRequerimientosController extends Controller
         echo Json::encode(['output'=>'', 'selected'=>'']);
     }
     
+    
+    public function actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id){
+        
+        $total_tareas = SprintRequerimientosTareas::find()->select('tiempo_desarrollo')->where(['sprint_id'=>$sprint_id])->andWhere(['sprint_requerimientos_tareas.requerimiento_id'=>$requerimiento_id])->joinWith('tarea')->sum('tiempo_desarrollo'); 
+        
+        SprintRequerimientos::actualizarHorasSprintRequerimientos($sprint_id, $requerimiento_id, $total_tareas);
+        
+    }    
 }

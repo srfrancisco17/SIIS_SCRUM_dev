@@ -122,11 +122,5 @@ class SprintRequerimientosTareasController extends Controller
         }
     }
     
-    public function actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id){
-        
-        $total_tareas = SprintRequerimientosTareas::find()->select('tiempo_desarrollo')->where(['sprint_id'=>$sprint_id])->andWhere(['sprint_requerimientos_tareas.requerimiento_id'=>$requerimiento_id])->joinWith('tarea')->sum('tiempo_desarrollo'); 
-        
-        SprintRequerimientos::actualizarHorasSprintRequerimientos($sprint_id, $requerimiento_id, $total_tareas);
-        
-    }
+
 }

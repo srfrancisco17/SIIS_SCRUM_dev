@@ -50,7 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'requerimiento_titulo',
                     [
                         'attribute' => 'usuario_asignado',
-                        'value' => 'sprintRequerimientos2.usuarioAsignado.nombreCompleto'
+                        'value' => 'sprintRequerimientos2.usuarioAsignado.nombreCompleto',
+                        'contentOptions' => ['style' => ' width:150px;'],
+                    ],
+                    [
+                            'label' => 'Tiempo Desarrollo',
+                            'attribute' => 'tiempo_desarrollo',
+                            'contentOptions' => ['style' => 'width:10px;'],
                     ],
                     //'requerimiento_descripcion:ntext',
                     //'requerimiento_justificacion:ntext',
@@ -108,16 +114,22 @@ $this->params['breadcrumbs'][] = $this->title;
 //                                ]);
 //                            },
                             'tareas' => function ($url, $model, $key) {
-                                return 
-                                    Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index', 'requerimiento_id' => $model->requerimiento_id]), [ 
-                                    /*            
-                                    'data' => [
-                                        'method' => 'post',
-                                        'title' => Yii::t('yii', 'Tareas'),
-                                        'params'=> ['param1' => $model->requerimiento_id],
-                                    ]
-                                    */
-                                    ]);
+                                
+                                $count = 0;
+                            
+                                foreach ($model->requerimientosTareas as $valor) {
+                                    
+                                    if ($valor->ultimo_estado == 5){
+                                       $count++;
+                                    }
+                                }
+                                
+                                if ($count > 0){
+                                    return '---';
+                                }else{
+                                    return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index', 'requerimiento_id' => $model->requerimiento_id]), []); 
+                                }
+                                
                             },
                         ]
                     ],

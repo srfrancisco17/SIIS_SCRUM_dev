@@ -16,12 +16,16 @@ $this->title = 'Requerimientos Tareas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+
 <?php
+//echo '<pre>';
+//    print_r($dataProvider->getModels());
+//echo '</pre>';
 
-echo($sprint_id);
+foreach ($dataProvider->getModels() as $variable ){
+    echo $variable->ultimo_estado.'<br>';
+}
 ?>
-
-
 <div class="row">
     <div class="col-lg-6">
                 <?= GridView::widget([
@@ -60,7 +64,7 @@ echo($sprint_id);
                         //'ultimo_estado',
                         [
                             'label' => 'Horas',
-                            'attribute' => 'tiempo_desarrollo',
+                            'attribute' => 'horas_desarrollo',
                             'contentOptions' => ['style' => 'width:10px;'],
                         ],
                         // 'fecha_terminado',

@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
     <?php
     
     if($model->isNewRecord){
-        $model->tiempo_desarrollo = 0;
+        $model->horas_desarrollo = 0;
     }
     
     $form = ActiveForm::begin([
@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'tarea_titulo')->textInput(['maxlength' => true])->label('(*) Titulo') ?>
         </div>
         <div class="col-lg-3">
-                <?= $form->field($model, 'tiempo_desarrollo')->textInput(['type' => 'number'])->label('Horas') ?>
+                <?= $form->field($model, 'horas_desarrollo')->textInput(['type' => 'number'])->label('Horas') ?>
         </div>
     </div>
     <div class="row">
@@ -48,7 +48,7 @@ use yii\widgets\ActiveForm;
 
     <!-- <?= $form->field($model, 'ultimo_estado')->textInput(['maxlength' => true]) ?> -->
 
-    <!-- <?= $form->field($model, 'tiempo_desarrollo')->textInput() ?> -->
+    <!-- <?= $form->field($model, 'horas_desarrollo')->textInput() ?> -->
 
     <!-- <?= $form->field($model, 'fecha_terminado')->textInput() ?> -->
 

@@ -18,7 +18,7 @@ class RequerimientosTareasSearch extends RequerimientosTareas
     public function rules()
     {
         return [
-            [['tarea_id', 'requerimiento_id', 'tiempo_desarrollo'], 'integer'],
+            [['tarea_id', 'requerimiento_id', 'horas_desarrollo'], 'integer'],
             [['tarea_titulo', 'tarea_descripcion', 'ultimo_estado', 'fecha_terminado'], 'safe'],
         ];
     }
@@ -61,7 +61,7 @@ class RequerimientosTareasSearch extends RequerimientosTareas
         $query->andFilterWhere([
             'tarea_id' => $this->tarea_id,
             'requerimiento_id' => $this->requerimiento_id,
-            'tiempo_desarrollo' => $this->tiempo_desarrollo,
+            'horas_desarrollo' => $this->horas_desarrollo,
             'fecha_terminado' => $this->fecha_terminado,
         ]);
 

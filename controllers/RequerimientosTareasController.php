@@ -48,9 +48,19 @@ class RequerimientosTareasController extends Controller
         $searchModel = new RequerimientosTareasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $requerimiento_id);
         
+        $count = 0;
+        
+        foreach ($dataProvider->getModels() as $variable ){
+            echo $variable->ultimo_estado.'<br>';
+            
+            if ($variable->ultimo_estado == 5){
+                $count++;
+            }
+        }
+        
         $modelRequerimiento = Requerimientos::findOne(['requerimiento_id'=>$requerimiento_id]);
         
-        if (empty($modelRequerimiento)){
+        if (empty($modelRequerimiento) || $count > 0){
             return $this->redirect(['requerimientos/index']);
         }
 
@@ -66,7 +76,7 @@ class RequerimientosTareasController extends Controller
      * Displays a single RequerimientosTareas model.
      * @param integer $id
      * @return mixed
-     */
+    */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -98,6 +108,7 @@ class RequerimientosTareasController extends Controller
             $model->fecha_terminado = NULL;
             
             $sw_model = $model->save();
+           
        
             $model_sprintRequerimientosTareas->tarea_id = $model->tarea_id;
             $model_sprintRequerimientosTareas->requerimiento_id = $requerimiento_id;
@@ -112,15 +123,17 @@ class RequerimientosTareasController extends Controller
             if ($sw_model && $model_sprintRequerimientosTareas->save()){
                 
                 if ($sprint_id != FALSE){
-                    self::actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id);
+                    //self::actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id);
                 }
+                
+                Requerimientos::updateTiempoDesarrollo($requerimiento_id);
                 
                 $model->refresh();
                 $model_sprintRequerimientosTareas->refresh();
                 
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
-                    'message' => '¡Éxito!',
+                    'message' => '¡Tarea creada con ÉXITO!',
                 ];
             } else {
                 Yii::$app->response->format = Response::FORMAT_JSON;
@@ -155,6 +168,8 @@ class RequerimientosTareasController extends Controller
                     self::actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $model->requerimiento_id);
                 }
                 
+                Requerimientos::updateTiempoDesarrollo($model->requerimiento_id);
+                
                 $model->refresh();
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
@@ -184,13 +199,15 @@ class RequerimientosTareasController extends Controller
         
         $requerimiento_id = $model_requerimientosTareas->requerimiento_id;
         
-        if ($model_sprintRequerimientosTareas != FALSE){
+        if ($model_sprintRequerimientosTareas != FALSE ){
             $model_sprintRequerimientosTareas->delete();
             
-            self::actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $model_requerimientosTareas->requerimiento_id);
+            //self::actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $model_requerimientosTareas->requerimiento_id);
         }
         
         $model_requerimientosTareas->delete();
+        
+        Requerimientos::updateTiempoDesarrollo($model_requerimientosTareas->requerimiento_id);
 
         return $this->redirect(['index', 'requerimiento_id' => $requerimiento_id]);
     }
@@ -231,4 +248,5 @@ class RequerimientosTareasController extends Controller
         
     }
     
+
 }

@@ -12,7 +12,7 @@ use Yii;
  * @property string $tarea_titulo
  * @property string $tarea_descripcion
  * @property string $ultimo_estado
- * @property integer $tiempo_desarrollo
+ * @property integer $horas_desarrollo
  * @property string $fecha_terminado
  *
  * @property EstadosReqSpr $ultimoEstado
@@ -35,7 +35,7 @@ class RequerimientosTareas extends \yii\db\ActiveRecord
     {
         return [
             [['requerimiento_id', 'tarea_titulo'], 'required'],
-            [['requerimiento_id', 'tiempo_desarrollo'], 'integer'],
+            [['requerimiento_id', 'horas_desarrollo'], 'integer'],
             [['tarea_descripcion'], 'string'],
             [['fecha_terminado'], 'safe'],
             [['tarea_titulo'], 'string', 'max' => 60],
@@ -56,7 +56,7 @@ class RequerimientosTareas extends \yii\db\ActiveRecord
             'tarea_titulo' => 'Tarea Titulo',
             'tarea_descripcion' => 'Tarea Descripcion',
             'ultimo_estado' => 'Ultimo Estado',
-            'tiempo_desarrollo' => 'Tiempo Desarrollo',
+            'horas_desarrollo' => 'Horas Desarrollo',
             'fecha_terminado' => 'Fecha Terminado',
         ];
     }

@@ -21,7 +21,7 @@ class RequerimientosSearch extends Requerimientos
     public function rules()
     {
         return [
-            [['requerimiento_id', 'comite_id', 'usuario_solicita'], 'integer'],
+            [['requerimiento_id', 'comite_id', 'usuario_solicita', 'tiempo_desarrollo'], 'integer'],
             [['requerimiento_titulo', 'requerimiento_descripcion', 'requerimiento_justificacion', 'departamento_solicita', 'observaciones', 'fecha_requerimiento', 'estado'], 'safe'],
             [['usuario_asignado'], 'safe'],
         ];
@@ -86,6 +86,7 @@ class RequerimientosSearch extends Requerimientos
             'usuario_solicita' => $this->usuario_solicita,
             'fecha_requerimiento' => $this->fecha_requerimiento,
             'sprint_requerimientos.usuario_asignado' => $this->usuario_asignado,
+            'requerimientos.tiempo_desarrollo' => $this->tiempo_desarrollo,
         ]);
 
         $query->andFilterWhere(['like', 'requerimiento_titulo', $this->requerimiento_titulo])

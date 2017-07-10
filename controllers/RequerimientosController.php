@@ -58,7 +58,7 @@ class RequerimientosController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
           
-        //$dataProvider->pagination->pageSize=30;
+        $dataProvider->pagination->pageSize=30;
         
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -88,7 +88,7 @@ class RequerimientosController extends Controller
         $model = new Requerimientos();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->requerimiento_id]);
+
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -108,7 +108,7 @@ class RequerimientosController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->requerimiento_id]);
+
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
@@ -126,7 +126,6 @@ class RequerimientosController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 

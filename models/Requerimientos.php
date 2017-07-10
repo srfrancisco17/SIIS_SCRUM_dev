@@ -4,28 +4,30 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "requerimientos".
- *
- * @property int $requerimiento_id
- * @property int $comite_id
+/** 
+ * This is the model class for table "requerimientos". 
+ * 
+ * @property integer $requerimiento_id
+ * @property integer $comite_id
  * @property string $requerimiento_titulo
  * @property string $requerimiento_descripcion
  * @property string $requerimiento_justificacion
- * @property int $usuario_solicita
+ * @property integer $usuario_solicita
  * @property string $departamento_solicita
  * @property string $observaciones
  * @property string $fecha_requerimiento
  * @property string $estado
- *
+ * @property integer $tiempo_desarrollo
+ * 
  * @property Comites $comite
  * @property Departamentos $departamentoSolicita
- * @property RequerimientosEstados $estado0
+ * @property EstadosReqSpr $estado0
  * @property Usuarios $usuarioSolicita
+ * @property RequerimientosTareas[] $requerimientosTareas
  * @property SprintRequerimientos[] $sprintRequerimientos
  * @property Sprints[] $sprints
  * @property SprintRequerimientosTareas[] $sprintRequerimientosTareas
- */
+ */ 
 class Requerimientos extends \yii\db\ActiveRecord
 {
     
@@ -45,7 +47,8 @@ class Requerimientos extends \yii\db\ActiveRecord
     {
         return [
             [['comite_id', 'usuario_solicita'], 'default', 'value' => null],
-            [['comite_id', 'usuario_solicita'], 'integer'],
+            [['tiempo_desarrollo'], 'default', 'value' => 0],            
+            [['comite_id', 'usuario_solicita', 'tiempo_desarrollo'], 'integer'],
             [['requerimiento_titulo', 'usuario_solicita', 'fecha_requerimiento', 'estado'], 'required'],
             [['requerimiento_descripcion', 'requerimiento_justificacion', 'observaciones'], 'string'],
             [['fecha_requerimiento'], 'safe'],
@@ -64,9 +67,9 @@ class Requerimientos extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
-        return [
+    public function attributeLabels() 
+    { 
+        return [ 
             'requerimiento_id' => 'Requerimiento ID',
             'comite_id' => 'Comite ID',
             'requerimiento_titulo' => 'Requerimiento Titulo',
@@ -77,10 +80,15 @@ class Requerimientos extends \yii\db\ActiveRecord
             'observaciones' => 'Observaciones',
             'fecha_requerimiento' => 'Fecha Requerimiento',
             'estado' => 'Estado',
-        ];
-    }
+            'tiempo_desarrollo' => 'Tiempo Desarrollo',
+        ]; 
+    } 
     
-
+    public function getRequerimientosTareas() 
+    { 
+        return $this->hasMany(RequerimientosTareas::className(), ['requerimiento_id' => 'requerimiento_id']);
+    } 
+   
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -152,6 +160,22 @@ class Requerimientos extends \yii\db\ActiveRecord
         
         return true;  
  
+    }
+    
+    public function updateTiempoDesarrollo($requerimiento_id){
+        
+        $conexion = Yii::$app->db;
+        
+        
+        $total_tareas = SprintRequerimientosTareas::find()->select('horas_desarrollo')->where(['sprint_requerimientos_tareas.requerimiento_id'=>$requerimiento_id])->joinWith('tarea')->sum('horas_desarrollo'); 
+        
+        
+        $conexion ->createCommand()
+            ->update('requerimientos', ['tiempo_desarrollo' => $total_tareas], 'requerimiento_id = :requerimiento_id')
+            ->bindParam(':requerimiento_id', $requerimiento_id)
+            ->execute();
+        
+        return TRUE;
     }
     
  
