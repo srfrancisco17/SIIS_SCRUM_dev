@@ -163,7 +163,7 @@ class SiteController extends Controller
     public function actionIndexScrumMaster()
     {
         
-        $sprint_id = 1;
+        $sprint_id = 2;
         
 //        echo '<pre>';
 //        print_r($sprint_id);
@@ -339,12 +339,8 @@ class SiteController extends Controller
     public function actionIndexDeveloper()
     {
         
-        $sprint_id = 1;
-        
-//        echo '<pre>';
-//        var_dump($sprint_id);
-//        echo '<pre>';
-//        exit();
+        $sprint_id = 2;
+       
         
         $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => Yii::$app->user->identity->usuario_id]);
         $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->sum('tiempo_desarrollo');
