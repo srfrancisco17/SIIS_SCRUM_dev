@@ -110,13 +110,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class'=>'kartik\grid\ActionColumn',
-                'template' => '{requerimientos}',
+                'template' => '{kanban}',
                 'buttons' => [
-                    'requerimientos' => function ($url, $model, $key) {
-                    return Html::a('<span class="fa fa-table"></span>', Url::to(['sprint-usuarios/kanban','sprint_id'=>$model->sprint_id]), [
-                                'id' => 'activity-index-link2',
-                                'title' => Yii::t('yii', 'Tablero Kanban'),
-                    ]);
+                    'kanban' => function ($url, $model, $key) {
+                     
+                        if ($model->sprint->estado != 0){
+                            return Html::a('<span class="fa fa-table"></span>', Url::to(['sprint-usuarios/kanban','sprint_id'=>$model->sprint_id]), [
+                                    'id' => 'activity-index-link2',
+                                    'title' => Yii::t('yii', 'Tablero Kanban'),
+                            ]);
+                        }else{
+                            return 'No Disponible';
+                        } 
                 },
                 ]
             ],

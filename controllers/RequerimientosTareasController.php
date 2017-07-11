@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\ValorHelpers;
 use app\models\SprintRequerimientos;
 use app\models\SprintRequerimientosTareas;
 use app\models\RequerimientosTareas;
@@ -51,7 +52,6 @@ class RequerimientosTareasController extends Controller
         $count = 0;
         
         foreach ($dataProvider->getModels() as $variable ){
-            echo $variable->ultimo_estado.'<br>';
             
             if ($variable->ultimo_estado == 5){
                 $count++;
@@ -123,7 +123,7 @@ class RequerimientosTareasController extends Controller
             if ($sw_model && $model_sprintRequerimientosTareas->save()){
                 
                 if ($sprint_id != FALSE){
-                    //self::actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id);
+                    ValorHelpers::actualizarTiempos($sprint_id);
                 }
                 
                 Requerimientos::updateTiempoDesarrollo($requerimiento_id);
@@ -165,7 +165,7 @@ class RequerimientosTareasController extends Controller
             if ($model->save()) {
                 
                 if ($sprint_id != FALSE){
-                    self::actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $model->requerimiento_id);
+                    ValorHelpers::actualizarTiempos($sprint_id);
                 }
                 
                 Requerimientos::updateTiempoDesarrollo($model->requerimiento_id);

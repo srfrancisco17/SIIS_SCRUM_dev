@@ -48,7 +48,7 @@ use yii\widgets\ActiveForm;
 
     <!-- <?= $form->field($model, 'ultimo_estado')->textInput(['maxlength' => true]) ?> -->
 
-    <!-- <?= $form->field($model, 'horas_desarrollo')->textInput() ?> -->
+    <!-- <?= $form->field($model, 'horas_desarrollo')->textInput(['maxlength'=>2]) ?> -->
 
     <!-- <?= $form->field($model, 'fecha_terminado')->textInput() ?> -->
 

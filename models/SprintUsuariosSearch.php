@@ -57,7 +57,7 @@ class SprintUsuariosSearch extends SprintUsuarios
         }
         
         if(!Yii::$app->user->isGuest && Yii::$app->user->identity->tipo_usuario == 2){
-            $query = SprintUsuarios::find()->where(['usuario_id' => Yii::$app->user->identity->usuario_id]);
+            $query = SprintUsuarios::find()->where(['usuario_id' => Yii::$app->user->identity->usuario_id])->orderBy(['sprint_id' => SORT_DESC]);
             //$query = SprintUsuarios::find();
         }
         

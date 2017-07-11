@@ -141,7 +141,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="box-header">
                                       <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
-                                        <span class="label label-default">'.$objTareas->tarea->tiempo_desarrollo.'</span>
+                                        <span class="label label-default">'.$objTareas->tarea->horas_desarrollo.'</span>
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
@@ -155,8 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         
                         break;
                         //------------------------------------------------------------
-                        case 3
-                            : 
+                        case 3: 
                      
                             $items2[$objTareas->tarea_id] = [
                             //'content' => $objTareas->tarea_descripcion,
@@ -164,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="box-header">
                                       <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
-                                        <span class="label label-default">'.$objTareas->tarea->tiempo_desarrollo.'</span>
+                                        <span class="label label-default">'.$objTareas->tarea->horas_desarrollo.'</span>
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
@@ -186,7 +185,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="box-header">
                                       <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                       <div class="box-tools pull-right">
-                                        <span class="label label-default">'.$objTareas->tarea->tiempo_desarrollo.'</span>
+                                        <span class="label label-default">'.$objTareas->tarea->horas_desarrollo.'</span>
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->

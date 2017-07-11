@@ -71,7 +71,8 @@ use yii\helpers\Url;
             ],
             */
             [
-                'attribute' => 'tiempo_desarrollo',
+                'attribute' => 'requerimiento.tiempo_desarrollo',
+                'value' => 'requerimiento.tiempo_desarrollo',
                 'label' => 'Hr',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
@@ -87,12 +88,19 @@ use yii\helpers\Url;
                 'template' => '{requerimientos}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
-                    return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index','sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
-                                'id' => 'activity-index-link2',
-                                'class' => 'btn btn-success',
+                    
+                    if ($model->sprint->estado == 0){
+                        
+                        return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index','sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
+                            'id' => 'activity-index-link2',
+                            'class' => 'btn btn-success',
                          
-                                'title' => Yii::t('yii', 'Asignar Tareas'),
-                    ]);
+                            'title' => Yii::t('yii', 'Asignar Tareas'),
+                        ]);
+                    }else{
+                        return 'No Disponilbe';
+                    }
+                    
                 },
                 ]
             ],

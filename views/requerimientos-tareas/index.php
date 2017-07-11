@@ -17,15 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
-<?php
-//echo '<pre>';
-//    print_r($dataProvider->getModels());
-//echo '</pre>';
-
-foreach ($dataProvider->getModels() as $variable ){
-    echo $variable->ultimo_estado.'<br>';
-}
-?>
 <div class="row">
     <div class="col-lg-6">
                 <?= GridView::widget([
@@ -50,13 +41,13 @@ foreach ($dataProvider->getModels() as $variable ){
                     ],
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-
+                        /*
                         [
                             'label' => 'ID Tarea',
                             'attribute' => 'tarea_id',
                             'contentOptions' => ['style' => 'width:10px;'],
                         ],
-                        
+                        */
                         //'tarea_id',
                         //'requerimiento_id',
                         'tarea_titulo',
@@ -162,12 +153,5 @@ $this->registerJs(
     Modal::end();
 ?>
 
-<?php
-        
-//        echo '<pre>';
-//        echo $modelRequerimiento->requerimiento_id;
-//        echo '<pre>';
-        
-?>
 
 

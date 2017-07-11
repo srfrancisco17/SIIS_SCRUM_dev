@@ -35,7 +35,8 @@ class RequerimientosTareas extends \yii\db\ActiveRecord
     {
         return [
             [['requerimiento_id', 'tarea_titulo'], 'required'],
-            [['requerimiento_id', 'horas_desarrollo'], 'integer'],
+            [['requerimiento_id'], 'integer'],
+            ['horas_desarrollo', 'integer', 'min' => 0, 'max' => 8, 'message' => 'Horas  no debe ser mayor a 8.'],
             [['tarea_descripcion'], 'string'],
             [['fecha_terminado'], 'safe'],
             [['tarea_titulo'], 'string', 'max' => 60],
@@ -76,4 +77,9 @@ class RequerimientosTareas extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Requerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
+    
+    public function getSprintRequerimientosTareas() 
+    { 
+        return $this->hasOne(SprintRequerimientosTareas::className(), ['tarea_id' => 'tarea_id']);
+    } 
 }

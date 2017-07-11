@@ -151,7 +151,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 if($objTareas->estado == 2){
                           
-                    if ($objTareas->tarea->ultimo_estado != 5){
+                    if ($objTareas->tarea->ultimo_estado == 6){
                         
                         $buttons_pull_right = '
                             <div class="box-tools pull-right">
@@ -190,7 +190,7 @@ $this->params['breadcrumbs'][] = $this->title;
   
                 }else if($objTareas->estado == 3){
                     
-                    if ($objTareas->tarea->ultimo_estado != 5){
+                    if ($objTareas->tarea->ultimo_estado == 6){
                         
                         $buttons_pull_right = '
                             <div class="box-tools pull-right">
@@ -229,7 +229,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                 }else if ($objTareas->estado == 4){
                     
-                    if ($objTareas->tarea->ultimo_estado != 5){
+                    if ($objTareas->tarea->ultimo_estado == 5){
                         
                         $buttons_pull_right = '
                             <div class="box-tools pull-right">
@@ -317,7 +317,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?=  strip_tags($objRequerimientos->requerimiento_descripcion) ?>
                     </div>
                     <div class="box-footer" style="background-color: <?= $usuario_color?>;">
-                        <div class="box-tools pull-right">    
+                        <!--<div class="box-tools pull-right">    
                             <?= Html::a('<span class="glyphicon glyphicon-list-alt" style="color: #d9d9d9;"></span>', ['#'], [
                                             'title' => 'Crear Tarea',
                                             'id' => 'activity-index-link',
@@ -326,7 +326,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-url' => Url::to(['sprint-requerimientos-tareas/create', 'sprint_id' => $sprint_id, 'requerimiento_id' => $objRequerimientos->requerimiento_id]),
                                             'data-pjax' => '0',
                             ]) ?>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>

@@ -77,7 +77,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         'filter' => FALSE,
                     ],
                     [
-                        'attribute' => 'tiempo_desarrollo',
+                        'attribute' => 'requerimiento.tiempo_desarrollo',
+                        'value' => 'requerimiento.tiempo_desarrollo',
                         'filter' => FALSE,
                     ],
                     //'usuario_asignado',

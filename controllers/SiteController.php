@@ -198,7 +198,7 @@ class SiteController extends Controller
             
         $connection = Yii::$app->db;
         $consulta_acutal_burn = $connection->createCommand("select 
-                                            sum(rt.tiempo_desarrollo) as sum_horas,
+                                            sum(rt.horas_desarrollo) as sum_horas,
                                             rt.fecha_terminado::date
                                             from sprint_requerimientos as sr
                                             inner join sprint_requerimientos_tareas as srt
@@ -352,7 +352,7 @@ class SiteController extends Controller
         $connection = Yii::$app->db;
         
         $consulta_acutal_burn = $connection->createCommand("select 
-                                            sum(rt.tiempo_desarrollo) as sum_horas,
+                                            sum(rt.horas_desarrollo) as sum_horas,
                                             rt.fecha_terminado::date
                                             from sprint_requerimientos as sr
                                             inner join sprint_requerimientos_tareas as srt

@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\ValorHelpers;
+
 use app\models\Requerimientos;
 use app\models\SprintRequerimientos;
 use app\models\SprintRequerimientosTareas;
@@ -111,11 +113,12 @@ class SprintRequerimientosController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            
-            //Cuando se asocia un requerimiento al sprint este pasa de estado (Activo = 1) a (En Espera = 2) 
-            Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
+           
             
             if ($model->save()) {
+                
+                //Cuando se asocia un requerimiento al sprint este pasa de estado (Activo = 1) a (En Espera = 2) 
+                Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
                 
                 $query = SprintRequerimientosTareas::find()->select('tarea_id, requerimiento_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->all();               
 
@@ -131,13 +134,15 @@ class SprintRequerimientosController extends Controller
                          
                     }
                     
-                    //self::actualizarTiempoDesarrollo_SprintRequerimientos($model->sprint_id, $model->requerimiento_id);
-                    
+                    //Actualizacion del tiempo en los sprints
+                    ValorHelpers::actualizarTiempos($model->sprint_id);
+
                 }
+                
                 $model->refresh();
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
-                    'message' => '¡Éxito!',
+                    'message' => '¡Éxito al vincular requerimiento al sprint!',
                 ];
                 
             } else {
@@ -209,13 +214,15 @@ class SprintRequerimientosController extends Controller
                     
                 foreach ($query as $objTareas) {
                         
-                    $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id = NULL, estado = \'2\', fecha_terminado = NULL WHERE tarea_id='.$objTareas->tarea_id);
+                    $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id = NULL, estado = \'2\' WHERE tarea_id='.$objTareas->tarea_id);
                     $command->execute();
                          
                 }
             }        
         
-        
+        //Actualizacion del tiempo en los sprints
+        ValorHelpers::actualizarTiempos($sprint_id);
+            
         Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, '1');
 
         return $this->redirect(['index','sprint_id'=>$sprint_id]);
@@ -311,7 +318,7 @@ class SprintRequerimientosController extends Controller
         echo Json::encode(['output'=>'', 'selected'=>'']);
     }
     
-    
+    /*
     public function actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id){
         
         $total_tareas = SprintRequerimientosTareas::find()->select('tiempo_desarrollo')->where(['sprint_id'=>$sprint_id])->andWhere(['sprint_requerimientos_tareas.requerimiento_id'=>$requerimiento_id])->joinWith('tarea')->sum('tiempo_desarrollo'); 
@@ -319,4 +326,26 @@ class SprintRequerimientosController extends Controller
         SprintRequerimientos::actualizarHorasSprintRequerimientos($sprint_id, $requerimiento_id, $total_tareas);
         
     }    
+    */
+    
+//    public function actualizarTiempos($sprint_id){
+//        
+//        $conexion = Yii::$app->db;
+//        
+//        $tiempo_desarrollo = $conexion->createCommand('
+//        select
+//            sum(r.tiempo_desarrollo) as sum_horas
+//            from sprint_requerimientos as sr
+//            left join requerimientos as r
+//            on (
+//                r.requerimiento_id = sr.requerimiento_id
+//            )      
+//            where sr.sprint_id = :sprint_id
+//        ')
+//        ->bindValue(':sprint_id', $sprint_id)      
+//        ->queryScalar();
+//                    
+//        Sprints::actualizarHorasSprints($sprint_id, $tiempo_desarrollo);
+//    }
+    
 }
