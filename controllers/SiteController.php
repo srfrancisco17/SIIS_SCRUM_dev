@@ -179,17 +179,15 @@ class SiteController extends Controller
         if(empty($usuario_id)){
             
             // Diagrama De Todos Los Usuarios
-            
             $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id]);
             $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->sum('tiempo_desarrollo');
-
 
         }else{
             
             // Diagrama Por Usuario
             
             $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => $usuario_id]);
-            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('tiempo_desarrollo');
+            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
             $whereUsuario= "and sr.usuario_asignado = ".$usuario_id." ";
             
             $titulo = $consulta_ideal_burn->usuarioAsignado->nombreCompleto;
@@ -343,7 +341,7 @@ class SiteController extends Controller
        
         
         $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => Yii::$app->user->identity->usuario_id]);
-        $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->sum('tiempo_desarrollo');
+        $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->sum('requerimientos.tiempo_desarrollo');
     
         $connection = Yii::$app->db;
         

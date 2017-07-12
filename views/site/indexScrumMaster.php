@@ -14,10 +14,79 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //$this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 ?>
-    
-    <?php Pjax::begin(); ?>  
+<div class="row">
+    <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <?= Html::beginForm(['site/index-scrum-master'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>
+                        <?= Html::dropDownList('list', 'usuario_id',  \app\models\SprintUsuarios::getListaDesarrolladores(1), ['class'=>'form-control','prompt' => 'Todos desarrolladores']) ?>   
+                        <?= Html::submitButton('Cargar', ['class' => 'btn btn-primary', 'name' => 'hash-button']) ?>
+                    <?= Html::endForm() ?>
+                </h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-wrench"></i></button>
+                  <ul class="dropdown-menu" role="menu">
+                    <!--<li><a href="#">Action</a></li>-->
+                    <li><?= Html::a('Ir al sprint', ['sprint-requerimientos/index', 'sprint_id' => 1]) ?></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <br>
+                    <h5 class="description-header"><?= $consulta_total_requerimientos ?></h5>
+                    <span class="description-text">Total Requerimientos</span>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <?= $html_span_requerimientos ?>
+                    <h5 class="description-header"><?= $consulta_total_requerimientos_terminados ?></h5>
+                    <span class="description-text">Total Terminados</span>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <br>
+                    <h5 class="description-header"><?= $consulta_total_tareas ?></h5>
+                    <span class="description-text">Total Tareas</span>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block">
+                    <?= $html_span_tareas ?>
+                    <h5 class="description-header"><?= $consulta_total_tareas_terminadas ?></h5>
+                    <span class="description-text">Total Tareas Terminadas</span>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
 
-    <?php
+<?php
     
         function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
 
@@ -175,75 +244,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ");
      
     ?>
-<div class="row">
-    <div class="col-md-12">
-          <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">
-                    <?= Html::beginForm(['site/index-scrum-master'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>
-                        <?= Html::dropDownList('list', 'usuario_id',  \app\models\SprintUsuarios::getListaDesarrolladores(1), ['class'=>'form-control','prompt' => 'Todos desarrolladores']) ?>   
-                        <?= Html::submitButton('Cargar', ['class' => 'btn btn-primary', 'name' => 'hash-button']) ?>
-                    <?= Html::endForm() ?>
-                </h3>
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-wrench"></i></button>
-                  <ul class="dropdown-menu" role="menu">
-                    <!--<li><a href="#">Action</a></li>-->
-                    <li><?= Html::a('Ir al sprint', ['sprint-requerimientos/index', 'sprint_id' => 1]) ?></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="row">
-                <div class="col-md-12">
-                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                </div>
-            </div>
-            <div class="box-footer">
-              <div class="row">
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <br>
-                    <h5 class="description-header"><?= $consulta_total_requerimientos ?></h5>
-                    <span class="description-text">Total Requerimientos</span>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <?= $html_span_requerimientos ?>
-                    <h5 class="description-header"><?= $consulta_total_requerimientos_terminados ?></h5>
-                    <span class="description-text">Total Terminados</span>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <br>
-                    <h5 class="description-header"><?= $consulta_total_tareas ?></h5>
-                    <span class="description-text">Total Tareas</span>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block">
-                    <?= $html_span_tareas ?>
-                    <h5 class="description-header"><?= $consulta_total_tareas_terminadas ?></h5>
-                    <span class="description-text">Total Tareas Terminadas</span>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>
-</div>
-<?php Pjax::end(); ?>
+<!--<?php Pjax::begin(); ?>
+<?php Pjax::end(); ?> -->

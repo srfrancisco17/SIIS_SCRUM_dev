@@ -7,7 +7,7 @@
     $this->params['breadcrumbs'][] = $this->title;
     
 //    echo '<pre>';
-//    var_dump($consulta_ideal_burn);
+//    print_r($consulta_ideal_burn);
 //    echo '</pre>';
 //    exit();    
 
