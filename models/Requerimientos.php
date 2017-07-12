@@ -18,6 +18,7 @@ use Yii;
  * @property string $fecha_requerimiento
  * @property string $estado
  * @property integer $tiempo_desarrollo
+ * @property string $sw_soporte
  * 
  * @property Comites $comite
  * @property Departamentos $departamentoSolicita
@@ -57,6 +58,7 @@ class Requerimientos extends \yii\db\ActiveRecord
             [['departamento_solicita'], 'default', 'value' => NULL],  
             [['estado'], 'string', 'max' => 2],
             [['estado'], 'default', 'value' => '0'],
+            [['sw_soporte'], 'string', 'max' => 1],
             [['comite_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comites::className(), 'targetAttribute' => ['comite_id' => 'comite_id']],
             //[['departamento_solicita'], 'exist', 'skipOnError' => true, 'targetClass' => Departamentos::className(), 'targetAttribute' => ['departamento_solicita' => 'departamento_id']],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
@@ -72,15 +74,16 @@ class Requerimientos extends \yii\db\ActiveRecord
         return [ 
             'requerimiento_id' => 'Requerimiento ID',
             'comite_id' => 'Comite ID',
-            'requerimiento_titulo' => 'Requerimiento Titulo',
-            'requerimiento_descripcion' => 'Requerimiento Descripcion',
-            'requerimiento_justificacion' => 'Requerimiento Justificacion',
+            'requerimiento_titulo' => 'Titulo',
+            'requerimiento_descripcion' => 'Descripcion',
+            'requerimiento_justificacion' => 'Justificacion',
             'usuario_solicita' => 'Usuario Solicita',
             'departamento_solicita' => 'Departamento Solicita',
             'observaciones' => 'Observaciones',
             'fecha_requerimiento' => 'Fecha Requerimiento',
             'estado' => 'Estado',
             'tiempo_desarrollo' => 'Tiempo Desarrollo',
+            'sw_soporte' => 'Sw Soporte',
         ]; 
     } 
     

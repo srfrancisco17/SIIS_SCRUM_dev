@@ -22,7 +22,7 @@ class RequerimientosSearch extends Requerimientos
     {
         return [
             [['requerimiento_id', 'comite_id', 'usuario_solicita', 'tiempo_desarrollo'], 'integer'],
-            [['requerimiento_titulo', 'requerimiento_descripcion', 'requerimiento_justificacion', 'departamento_solicita', 'observaciones', 'fecha_requerimiento', 'estado'], 'safe'],
+            [['requerimiento_titulo', 'requerimiento_descripcion', 'requerimiento_justificacion', 'departamento_solicita', 'observaciones', 'fecha_requerimiento', 'estado', 'sw_soporte'], 'safe'],
             [['usuario_asignado'], 'safe'],
         ];
     }
@@ -98,8 +98,8 @@ class RequerimientosSearch extends Requerimientos
             ->andFilterWhere(['like', 'requerimiento_justificacion', $this->requerimiento_justificacion])
             ->andFilterWhere(['like', 'departamento_solicita', $this->departamento_solicita])
             ->andFilterWhere(['like', 'observaciones', $this->observaciones])
-            ->andFilterWhere(['like', 'requerimientos.estado', $this->estado]);
-
+            ->andFilterWhere(['like', 'requerimientos.estado', $this->estado])
+            ->andFilterWhere(['like', 'sw_soporte', $this->sw_soporte]);
         return $dataProvider;
     }
 }

@@ -71,7 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     .box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
         font-size: 13px;
-        color: #f0f0f0;
+        font-weight: 600;
+        color: #671f31;
     }
     td,th {
         padding: 10px;
@@ -79,6 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
     .btn-box-tool {
        color: #d9d9d9; 
     }
+    
 </style>  
 
 <div class="kanban">

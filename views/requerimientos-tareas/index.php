@@ -102,6 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
                         //'requerimiento_id',
                         //'comite_id',
+
                         'requerimiento_titulo',
                         'requerimiento_descripcion:html',
                         'requerimiento_justificacion:html',
