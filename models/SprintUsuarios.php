@@ -94,6 +94,9 @@ class SprintUsuarios extends \yii\db\ActiveRecord
            
         $usuarios = explode(",",$key);
         foreach ($usuarios as $value) {
+            
+
+            self::requerimiento_soporte();
             /*
             $conexion->createCommand()->insert('sprint_usuarios', [
                 'sprint_id' => $id,
@@ -101,6 +104,8 @@ class SprintUsuarios extends \yii\db\ActiveRecord
                 'estado' => '1',
             ])->execute();    
             */
+            
+            
             $conexion->createCommand(" 
                 UPDATE sprint_usuarios SET sprint_id=".$id.", usuario_id=".$value.", estado='1' WHERE sprint_id=".$id." and usuario_id=".$value.";
             ")->execute();
@@ -148,5 +153,52 @@ class SprintUsuarios extends \yii\db\ActiveRecord
         
         $opciones = SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all();
         return ArrayHelper::map($opciones, 'usuario_id', 'usuario.nombreCompleto');
+    }
+    
+    public function requerimiento_soporte($usuario_asignado, $sprint_id){
+        
+        $conexion = Yii::$app->db;
+        
+        $var_soporte = $conexion->createCommand("
+            SELECT 
+                COUNT(*)
+            FROM
+            sprint_requerimientos AS sr
+            INNER JOIN requerimientos r
+            ON(
+                sr.requerimiento_id = r.requerimiento_id
+            )
+            WHERE sw_soporte = '1' AND usuario_asignado = :usuario_asignado AND sprint_id = :sprint_id
+        ")
+        ->bindValue(':usuario_asignado', $usuario_asignado)
+        ->bindValue(':sprint_id', $sprint_id)
+        ->queryScalar();
+
+        if ($var_soporte != 0){
+
+            $conexion->createCommand()
+            ->insert('requerimientos', [
+                'requerimiento_titulo' => 'yii',
+		'usuario_solicita' => 1,
+                'departamento_solicita' => 1,
+                'fecha_requerimiento' => 1,
+                'estado' => '2',
+                'sw_soporte' => 1,
+            ])->execute();
+            
+            
+            $conexion->createCommand()
+            ->insert('sprint_requerimientos', [
+                'requerimiento_titulo' => 'yii',
+		'usuario_solicita' => 1,
+                'departamento_solicita' => 1,
+                'fecha_requerimiento' => 1,
+                'estado' => '2',
+                'sw_soporte' => 1,
+            ])->execute();
+            
+
+        }
+
     }
 }

@@ -181,5 +181,13 @@ class Requerimientos extends \yii\db\ActiveRecord
         return TRUE;
     }
     
+    
+    public function createRequerimientosSoporte(){
+        
+        //Consulta para ver si a tiene un requerimiento de soporte
+        
+        
+        
+    }
  
 }
