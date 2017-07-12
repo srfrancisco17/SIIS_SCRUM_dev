@@ -9,10 +9,10 @@ $this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 ?>
 <?php
     
-//        echo '<pre>';
-//        var_dump($consulta[0]->sprintRequerimientos[3]->tiempo_desarrollo);
-//        echo '</pre>';
-//        exit;
+        echo '<pre>';
+        var_dump($consulta[0]->sprintRequerimientos[3]->tareas);
+        echo '</pre>';
+        exit;
 ?>
 <script type="text/javascript">
     google.charts.load('current', {'packages':['gantt']});

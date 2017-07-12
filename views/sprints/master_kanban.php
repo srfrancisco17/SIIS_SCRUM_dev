@@ -146,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
-                                    ' . $objTareas->tarea->tarea_descripcion . '
+                                    ' . str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion) . '
                                     </div><!-- /.box-body -->
                                     </div><!-- /.box -->',
                             'options' => ['id' => $objTareas->tarea_id],
@@ -168,7 +168,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
-                                    ' . $objTareas->tarea->tarea_descripcion . '
+                                    ' . str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion) . '
                                     </div><!-- /.box-body -->
                                     </div><!-- /.box -->',
                             'options' => ['id' => $objTareas->tarea_id],
@@ -190,7 +190,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                       </div><!-- /.box-tools -->
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
-                                    ' . $objTareas->tarea->tarea_descripcion . '
+                                    ' . str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion) . '
                                     </div><!-- /.box-body -->
                                     </div><!-- /.box -->',
                             'options' => ['id' => $objTareas->tarea_id],

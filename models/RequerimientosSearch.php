@@ -50,6 +50,10 @@ class RequerimientosSearch extends Requerimientos
         $query->joinWith(['sprintRequerimientos2']);
         
         
+        if (Yii::$app->user->identity->tipo_usuario == 2){
+            $query->where('sprint_id is NULL');
+        }
+        
 //          echo '<pre>';
 //          print_r($query);
 //          echo '</pre>';

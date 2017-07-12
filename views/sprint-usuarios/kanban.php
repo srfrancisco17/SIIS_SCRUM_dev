@@ -179,7 +179,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                    </div><!-- /.box-tools -->
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-                                ' . $objTareas->tarea->tarea_descripcion . '
+                                ' .str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion). '
                                 </div><!-- /.box-body -->
                                 <div class="box-footer" style="background-color:'.$usuario_color.'">
                                 '.$buttons_pull_right.'
@@ -218,7 +218,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                    </div><!-- /.box-tools -->
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-                                ' . $objTareas->tarea->tarea_descripcion . '
+                                ' .str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion). '
                                 </div><!-- /.box-body -->
                                 <div class="box-footer" style="background-color:'.$usuario_color.'">
                                     '.$buttons_pull_right.'
@@ -257,7 +257,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                   </div><!-- /.box-tools -->
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-                                ' . $objTareas->tarea->tarea_descripcion . '
+                                ' .str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion). '
                                 </div><!-- /.box-body -->
                                 <div class="box-footer" style="background-color:'.$usuario_color.'">
                                     <div class="box-tools pull-right">
