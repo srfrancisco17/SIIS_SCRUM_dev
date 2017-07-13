@@ -273,29 +273,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="modal-body2">
                     <?=
-                    GridView::widget([
-                        'id' => 'kv-grid-listausuarios',
-                        'dataProvider' => $usuariosDataProvider,
-                        'filterModel' => FALSE,
-                        'columns' => [
+                        GridView::widget([
+                            'id' => 'kv-grid-listausuarios',
+                            'dataProvider' => $usuariosDataProvider,
+                            'filterModel' => FALSE,
+                            'columns' => [
                                 ['attribute' => 'usuario_id', 'width' => '100px', 'filter' => FALSE],
                                 [
-                                'label' => 'Nombres',
-                                'attribute' => 'nombres',
-                                'filter' => FALSE
-                            ],
+                                    'label' => 'Nombres',
+                                    'attribute' => 'nombres',
+                                    'filter' => FALSE
+                                ],
                                 [
-                                'label' => 'Apellidos',
-                                'attribute' => 'apellidos',
-                                'filter' => FALSE
-                            ],
+                                    'label' => 'Apellidos',
+                                    'attribute' => 'apellidos',
+                                    'filter' => FALSE
+                                ],
                                 [
-                                'class' => 'kartik\grid\CheckboxColumn',
-                                'rowSelectedClass' => GridView::TYPE_SUCCESS,
+                                    'class' => 'kartik\grid\CheckboxColumn',
+                                    'rowSelectedClass' => GridView::TYPE_SUCCESS,
+                                ],
                             ],
-                        ],
-                        'pjax' => true,
-                    ])
+                            'pjax' => true,
+                        ])
                     ?>
                 </div>
                 <div class="modal-footer">
@@ -305,7 +305,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-    <!-- Modal 3 -->
+<!-- Modal 3 -->
     <div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <!--ASIGNAMOS UN ID A ESTE DIV -->
         <div class="modal-dialog" id="mdialTamanio">

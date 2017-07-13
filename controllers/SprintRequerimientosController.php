@@ -250,15 +250,10 @@ class SprintRequerimientosController extends Controller
         $model = new \app\models\SprintUsuarios();
         
         if (Yii::$app->request->isAjax){
-            
-            
-            
-            
+                        
         
             $model->insertarSprintUsuarios($id, $k);
-
-            //$model->refresh();
-            //Yii::$app->response->format = Response::FORMAT_JSON;
+            
             return $this->redirect(['index','sprint_id'=>$id]);
         } 
     }

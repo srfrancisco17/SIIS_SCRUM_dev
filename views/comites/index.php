@@ -23,7 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <b>COMITES</b> un grupo de individuos que trabajan en conjunto para resolver alguna problemática o llevar a cabo un proyecto.
   </p>
 </section>
-    
     <div class="row">
         <div class="col-lg-12"> 
             <?php Pjax::begin(); ?>

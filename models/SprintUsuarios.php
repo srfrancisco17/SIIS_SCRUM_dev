@@ -2,9 +2,11 @@
 
 namespace app\models;
 
+
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use Yii;
+use app\models\Requerimientos;
 
 /**
  * This is the model class for table "sprint_usuarios".
@@ -91,21 +93,16 @@ class SprintUsuarios extends \yii\db\ActiveRecord
     public function insertarSprintUsuarios($id, $key){
         
         $conexion = Yii::$app->db;
-           
         $usuarios = explode(",",$key);
+        
+        
+        $sprint_alias = Sprints::find()->select('sprint_alias')->where(['sprint_id' => $id])->one()->sprint_alias;
+        
+        $prioridad_id = $conexion->createCommand("select prioridad_id from prioridad_sprint_requerimientos order by prioridad_id DESC limit 1")->queryScalar();
+        
         foreach ($usuarios as $value) {
             
 
-            self::requerimiento_soporte();
-            /*
-            $conexion->createCommand()->insert('sprint_usuarios', [
-                'sprint_id' => $id,
-                'usuario_id' => $value,
-                'estado' => '1',
-            ])->execute();    
-            */
-            
-            
             $conexion->createCommand(" 
                 UPDATE sprint_usuarios SET sprint_id=".$id.", usuario_id=".$value.", estado='1' WHERE sprint_id=".$id." and usuario_id=".$value.";
             ")->execute();
@@ -115,6 +112,8 @@ class SprintUsuarios extends \yii\db\ActiveRecord
                     SELECT ".$id.", ".$value.", '1'
                     WHERE NOT EXISTS (SELECT 1 FROM sprint_usuarios WHERE sprint_id=".$id." and usuario_id=".$value.");
             ")->execute();
+            
+            self::requerimiento_soporte($value, $id, $sprint_alias, $prioridad_id);
           
         }     
         
@@ -155,7 +154,7 @@ class SprintUsuarios extends \yii\db\ActiveRecord
         return ArrayHelper::map($opciones, 'usuario_id', 'usuario.nombreCompleto');
     }
     
-    public function requerimiento_soporte($usuario_asignado, $sprint_id){
+    public function requerimiento_soporte($usuario_asignado, $sprint_id, $sprint_alias, $prioridad_id){
         
         $conexion = Yii::$app->db;
         
@@ -174,27 +173,29 @@ class SprintUsuarios extends \yii\db\ActiveRecord
         ->bindValue(':sprint_id', $sprint_id)
         ->queryScalar();
 
-        if ($var_soporte != 0){
-
-            $conexion->createCommand()
-            ->insert('requerimientos', [
-                'requerimiento_titulo' => 'yii',
-		'usuario_solicita' => 1,
-                'departamento_solicita' => 1,
-                'fecha_requerimiento' => 1,
-                'estado' => '2',
-                'sw_soporte' => 1,
-            ])->execute();
+        if ($var_soporte == 0){
             
+            date_default_timezone_set('America/Bogota');
+
+            
+            $model_requerimientos = new Requerimientos();
+            $model_requerimientos->requerimiento_titulo = 'Soporte '.$sprint_alias;
+            $model_requerimientos->usuario_solicita = 1;
+            $model_requerimientos->departamento_solicita = '1';
+            $model_requerimientos->fecha_requerimiento = date('Y-m-d');
+            $model_requerimientos->estado = '2';
+            $model_requerimientos->sw_soporte = '1';
+            
+            $model_requerimientos->save();
+
             
             $conexion->createCommand()
             ->insert('sprint_requerimientos', [
-                'requerimiento_titulo' => 'yii',
-		'usuario_solicita' => 1,
-                'departamento_solicita' => 1,
-                'fecha_requerimiento' => 1,
+                'sprint_id' => $sprint_id,
+		'requerimiento_id' => $model_requerimientos->requerimiento_id,
+                'usuario_asignado' => $usuario_asignado,
                 'estado' => '2',
-                'sw_soporte' => 1,
+                'prioridad' => $prioridad_id,
             ])->execute();
             
 
