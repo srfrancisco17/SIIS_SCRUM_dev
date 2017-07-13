@@ -13,6 +13,9 @@ use app\models\SprintRequerimientos;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\models\Usuarios;
+use app\models\Sprints;
+use app\models\SprintUsuarios;
+
 class SiteController extends Controller
 {
     /**
@@ -163,14 +166,41 @@ class SiteController extends Controller
     public function actionIndexScrumMaster()
     {
         
-        $sprint_id = 2;
+        //$sprint_id = 1;
+        
+        $array_sprints = Sprints::find()->orderBy(['sprint_id'=>SORT_ASC])->asArray()->all();
+        
+
+ 
+        if (is_null(Yii::$app->request->post('sprint_id'))){
+            
+            $last_position = end($array_sprints);
+            $sprint_id = $last_position['sprint_id'];
+            
+        }else{
+            $sprint_id = Yii::$app->request->post('sprint_id');
+        }
+        
+        
+        foreach ($array_sprints as $index => $value){
+            if($value['sprint_id'] == $sprint_id){
+                
+               //$ubicacion = $index;
+               $array_actual = $value;
+               break;
+               
+            }
+        }
         
 //        echo '<pre>';
-//        print_r($sprint_id);
-//        echo '</pre>';
+//        print_r($array_actual);
+//        echo '<pre>';
 //        exit();
         
+        $array_sprints_usuarios = SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all();
         
+        
+
         $whereUsuario = "";
         $usuario_id = Yii::$app->request->post('list');
         $titulo = 'Todos los desarrolladores';
@@ -179,18 +209,18 @@ class SiteController extends Controller
         if(empty($usuario_id)){
             
             // Diagrama De Todos Los Usuarios
-            $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id]);
+
             $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->sum('tiempo_desarrollo');
 
         }else{
             
             // Diagrama Por Usuario
             
-            $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => $usuario_id]);
+            
             $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
             $whereUsuario= "and sr.usuario_asignado = ".$usuario_id." ";
             
-            $titulo = $consulta_ideal_burn->usuarioAsignado->nombreCompleto;
+            $titulo = '';
            
         }
             
@@ -218,8 +248,9 @@ class SiteController extends Controller
                                             ->queryAll(); 
         
         
-        $subtitulo = $consulta_ideal_burn->sprint->sprint_alias.' | ('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_hasta.')';
+        //$subtitulo = $consulta_ideal_burn->sprint->sprint_alias.' | ('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_hasta.')';
         
+        $subtitulo = $array_actual['sprint_alias'].' | ('.$array_actual['fecha_desde'].') - ('.$array_actual['fecha_hasta'].')';
 
         $consulta_total_tareas = $connection->createCommand("
             select 
@@ -316,7 +347,7 @@ class SiteController extends Controller
         }        
         
         return $this->render('indexScrumMaster', [
-            'consulta_ideal_burn'=>$consulta_ideal_burn,
+            'array_actual' => $array_actual,
             'consulta_tiempo_desarrollo' => $consulta_tiempo_desarrollo,
             'consulta_acutal_burn' => $consulta_acutal_burn,
             'titulo' => $titulo,
@@ -327,7 +358,9 @@ class SiteController extends Controller
             'consulta_total_tareas_terminadas' => $consulta_total_tareas_terminadas,
             'porcentaje_requerimientos' => $porcentaje_requerimientos,
             'html_span_requerimientos' => $html_span_requerimientos,
-            'html_span_tareas' => $html_span_tareas
+            'html_span_tareas' => $html_span_tareas,
+            'array_sprints' => $array_sprints,
+            'array_sprints_usuarios' => $array_sprints_usuarios,
         ]);
     }    
     
