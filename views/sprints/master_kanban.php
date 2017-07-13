@@ -225,6 +225,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box-header with-border">
                         <h3 class="box-title"><?=  $objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
+                            <span class="label label-default"><?= $objRequerimientos->tiempo_desarrollo ?></span>
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                         </div>
                     </div>
