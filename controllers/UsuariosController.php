@@ -84,10 +84,18 @@ class UsuariosController extends Controller
     {
         $model = new Usuarios();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            
+            $model->contrasena = Yii::$app->getSecurity()->generatePasswordHash(Yii::$app->request->post('contrasena'));
 
+            if ($model->save()){
+                
+                return $this->redirect(['index']);
+                
+            }
+            
             //return $this->redirect(['view', 'id' => $model->usuario_id]);
-            return $this->redirect(['index']);
+            //return $this->redirect(['index']);
    
         }
         else {
@@ -137,7 +145,20 @@ class UsuariosController extends Controller
     
     public function actionProfile(){
         
-        return $this->render('profile');
+        $model = Yii::$app->user->identity;
+        
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            
+            return $this->redirect(['profile']);
+            
+        } else {
+            return $this->render('profile', [
+                'model' => $model,
+            ]);
+        }        
+        
     }
 
     /**

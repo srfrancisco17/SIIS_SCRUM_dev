@@ -183,6 +183,7 @@ use dmstr\widgets\Alert;
 <?php
 $this->registerJs("
     $(function (){
+            
         change_skin = function(parametro){
             localStorage.setItem('skin', parametro);
             $('body').attr('class', 'hold-transition'+' '+parametro+' '+'sidebar-mini');

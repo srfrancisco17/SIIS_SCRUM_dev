@@ -23,47 +23,37 @@ $arraySprints = array(
     '2' => 'Sprint (2)',
 );
 
-/*
-echo '<pre>';
-print_r($array);
-echo '</pre>';
-*/
+
+
+
+
 ?>
 
-<?php Pjax::begin(); ?>
+
 <div class="row">
     
-    <?= Html::beginForm(['pruebas/index'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>
+    <div class="col-lg-12">
+        
+        <?php
+        
+        $contrasena = '$2y$13$.GZ4NIiMoeNTe8TBkv1evOMJGp0vACf4VQTHd97pMyXxpDPLfD5Ja';
+            
+        
+        //var_dump($operacion);
+        echo '<br>';
 
-    <div class="col-lg-2">
-        <?= Select2::widget([
-            'name' => 'sprint_id',
-            'size' => Select2::SMALL,
-            'value' => Yii::$app->request->post('sprint_id'), // value to initialize
-            'data' => $arraySprints
-        ])?>
+        
+        if (Yii::$app->getSecurity()->validatePassword('1234567', $contrasena)) {
+            // all good, logging user in
+            echo 'se completo exitosamente';
+        } else {
+            // wrong password
+            echo 'ERROR';
+        }
+        
+        
+        ?>
+       
     </div>
-    <div class="col-lg-2">
-        <?= Select2::widget([
-            'name' => 'list',
-            'size' => Select2::SMALL,
-            'value' => Yii::$app->request->post('list'),
-            'options' => ['placeholder'=>'Todos Los Usuarios'],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-            'data' => \app\models\SprintUsuarios::getListaDesarrolladores(1)
-        ])?>
 
-    </div>
-    <div class="col-lg-2">
-            <?= Html::submitButton('Cargar', ['class' => 'btn btn-sm btn-primary', 'name' => 'hash-button']) ?>
-    </div>
-    <?= Html::endForm() ?>
 </div>
-
-
-<h3><?= $sprint_id ?></h3>
-<h3><?= $usuario_id ?></h3>
-
-<?php Pjax::end(); ?>

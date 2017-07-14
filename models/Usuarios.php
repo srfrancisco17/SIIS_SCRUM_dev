@@ -50,7 +50,9 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
 
     const ESTADO_INACTIVO = 0;
     const ESTADO_ACTIVO = 1;
-
+    
+    public $password_repeat;
+    
     public static function tableName()
     {
         return 'usuarios';
@@ -75,6 +77,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             [['correo'], 'string', 'max' => 50],
             [['telefono'], 'string', 'max' => 10],
             [['contrasena'], 'string', 'max' => 225],
+            ['password_repeat', 'compare', 'compareAttribute' => 'contrasena'],
             [['departamento'], 'string', 'max' => 4],
             [['auth_key'], 'string', 'max' => 32],
             [['departamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamentos::className(), 'targetAttribute' => ['departamento' => 'departamento_id']],
@@ -98,6 +101,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'correo' => 'Correo',
             'telefono' => 'Telefono',
             'contrasena' => 'Contrasena',
+            'password_repeat' => 'Repetir Contraseña',
             'departamento' => 'Departamento',
             'tipo_usuario' => 'Tipo Usuario',
             'color' => 'Color',
@@ -244,17 +248,24 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public static function findByUsername($username){
         return self::findOne(['num_documento' => $username]);
     }
+    
    
     public function validatePassword($password){
         return $this->contrasena  === $password;
     }
     
-    /*
-    public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->contrasena);
-    }
-    */
+    
+//    public function validatePassword($password)
+//    {
+//        //$hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+//        
+//        //echo $hash;
+//        //exit();
+//        
+//        return Yii::$app->security->validatePassword($password, $this->contrasena);
+//    }
+    
+    
     public function setPassword($password)
     {
         $this->contrasena = Yii::$app->security->generatePasswordHash($password);

@@ -1,5 +1,10 @@
 <?php
 $this->title = 'Perfil';
+
+use app\models\Usuarios;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use kartik\widgets\ColorInput;
 ?>
 <style>
     .user-row {
@@ -35,65 +40,91 @@ $this->title = 'Perfil';
         margin-top:20px;
     }    
 </style>
+<script>
+    function editarDatos(){
+        
+        $("#usuarios-nombres").attr("readonly", false);
+        $("#usuarios-apellidos").attr("readonly", false);
+        $("#usuarios-correo").attr("readonly", false);
+        $("#usuarios-telefono").attr("readonly", false);
+        $("#usuarios-contrasena").attr("readonly", false);
+        $("#usuarios-password_repeat").attr("readonly", false);
+        $('#boton1').prop('disabled', false);
+    }
+</script>
+<?php $form = ActiveForm::begin(); ?>
 <div class="row">   
-
-            <div class="col-md-12">
+            <div class="col-md-9 col-md-offset-1">
               <div class="panel panel-info">
                 <div class="panel-heading">
-                  <h3 class="panel-title">Sheena Shrestha</h3>
+                  <h3 class="panel-title">Perfil De Usuario</h3>
                 </div>
                 <div class="panel-body">
                   <div class="row">
-                    <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive"> </div>
-
+                    <div class="col-md-3 col-lg-3 " align="center">
+                        <!--<img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive">--> 
+                        <?= Html::img('@web/img/icono-cdo.png', ['alt' => 'User Pic']) ?>
+                    </div>
                     <div class=" col-md-9 col-lg-9 "> 
                       <table class="table table-user-information">
                         <tbody>
                           <tr>
+                            <td>Nombres:</td>
+                            <td><?= $form->field($model, 'nombres')->textInput(['maxlength' => 30, 'readonly' => true])->label(FALSE) ?></td>
+                          </tr>
+                          <tr>
+                            <td>Apellidos:</td>
+                            <td><?= $form->field($model, 'apellidos')->textInput(['maxlength' => 30, 'readonly' => true])->label(FALSE) ?></td>
+                          </tr>
+                          <tr>
+                            <td>Correo Electronico:</td>
+                            <td><?= $form->field($model, 'correo')->textInput(['maxlength' => 50, 'readonly' => true])->label(FALSE) ?></td>
+                          </tr>
+                          <tr>
+                            <td>Telefono:</td>
+                            <td><?= $form->field($model, 'telefono')->textInput(['maxlength' => 10, 'readonly' => true])->label(FALSE) ?></td>
+                          </tr>
+                          <tr>
+                          <td>Cambiar Contraseña:</td>
+                            <td><?= $form->field($model, 'contrasena')->passwordInput(['readonly' => true, 'value'=> '', 'placeholder' => 'Escriba Nueva Contraseña'])->label(FALSE) ?></td>
+                          </tr>
+                          <tr>
+                              <td></td>
+                              <td><?= $form->field($model, 'password_repeat')->passwordInput(['readonly' => true, 'placeholder' => 'Repita Contraseña'])->label(FALSE) ?></td>
+                          </tr>
+                          <tr>
+                            <td>Tipo De Usuario:</td>
+                            <td><?= $model->tipoUsuario->descripcion ?></td>
+                          </tr>
+                          <tr>
                             <td>Departamento:</td>
-                            <td>Programming</td>
+                            <td><?= $model->departamento0->descripcion ?></a></td>
                           </tr>
-                          <tr>
-                            <td>Hire date:</td>
-                            <td>06/23/2013</td>
-                          </tr>
-                          <tr>
-                            <td>Date of Birth</td>
-                            <td>01/24/1988</td>
-                          </tr>
-
-                             <tr>
-                                 <tr>
-                            <td>Genero</td>
-                            <td>Female</td>
-                          </tr>
-                            <tr>
-                            <td>Home Address</td>
-                            <td>Kathmandu,Nepal</td>
-                          </tr>
-                          <tr>
-                            <td>Correo Electronico</td>
-                            <td><a href="mailto:info@support.com">info@support.com</a></td>
-                          </tr>
-                            <td>Telefono</td>
-                            <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
+                            <td>Color:</td>
+                            <td>
+                                <?=$form->field($model, 'color')->widget(ColorInput::classname(), [
+                                    'disabled' => true,
+                                    'options' => ['placeholder' => 'Select color ...'],
+                                ])->label(FALSE); ?>       
                             </td>
 
                           </tr>
 
                         </tbody>
                       </table>
-
+                    <!--
                       <a href="#" class="btn btn-primary">My Sales Performance</a>
                       <a href="#" class="btn btn-primary">Team Sales Performance</a>
+                    -->
                     </div>
                   </div>
                 </div>
                      <div class="panel-footer">
                             <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
                             <span class="pull-right">
-                                <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
-                                <a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                                <?= Html::submitButton('Guardar Datos', ['id'=>'boton1', 'disabled' => 'disabled', 'class' => 'btn btn-primary']) ?>
+                                <a href="#" id="editar" onclick="editarDatos()" data-original-title="Editar Mis Datos" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                                <!--<a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>-->
                             </span>
                         </div>
 
@@ -101,4 +132,5 @@ $this->title = 'Perfil';
             </div>
 
 </div>
+<?php ActiveForm::end(); ?>
 
