@@ -86,7 +86,7 @@ class UsuariosController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             
-            $model->contrasena = Yii::$app->getSecurity()->generatePasswordHash(Yii::$app->request->post('contrasena'));
+            $model->contrasena = Yii::$app->security->generatePasswordHash(Yii::$app->request->post('contrasena'));
 
             if ($model->save()){
                 

@@ -257,10 +257,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     
 //    public function validatePassword($password)
 //    {
-//        //$hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+//      
 //        
-//        //echo $hash;
-//        //exit();
+////        echo $password;
+////        exit();
 //        
 //        return Yii::$app->security->validatePassword($password, $this->contrasena);
 //    }
