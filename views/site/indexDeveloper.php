@@ -16,6 +16,7 @@
     
     
         function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
+            
             $fecha1 = strtotime($fecha_inicial); 
             $fecha2 = strtotime($fecha_final);
             $array_data = array();
