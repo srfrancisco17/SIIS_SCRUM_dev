@@ -117,7 +117,8 @@ $last_position = end($array_sprints);
 </div>
 <?php   
     function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
-
+        
+            $dias = array('Mon'=>'Lun', 'Tue'=>'Mar', 'Wed'=>'Mie', 'Thu'=>'Jue', 'Fri'=>'Vie');
             $fecha1 = strtotime($fecha_inicial); 
             $fecha2 = strtotime($fecha_final);
             $array_data = array();
@@ -125,15 +126,19 @@ $last_position = end($array_sprints);
             $j = 0;
             for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
                 if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){	
-                    array_push($array_data, date('Y-m-d D',$fecha1));
+                    array_push($array_data, date('m-d',$fecha1)." ".$dias[date('D',$fecha1)]);
                     $j++;
                 }
             }
             
             if ($sw_control == 1) {
+                
                 return $j;
+                
             }else if ($sw_control == 2) {
+                
                return json_encode($array_data);
+               
             }
     }
 

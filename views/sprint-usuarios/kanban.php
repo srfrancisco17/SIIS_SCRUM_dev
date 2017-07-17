@@ -151,13 +151,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 if($objTareas->estado == 2){
                           
-                    if ($objTareas->tarea->ultimo_estado == 6){
+                    if ($objRequerimientos->sw_soporte == 1){
                         
                         $buttons_pull_right = '
                             <div class="box-tools pull-right">
-                                <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
+                                <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['requerimientos-tareas/update', 'sprint_id' => $objTareas->sprint_id, 'tarea_id' => $objTareas->tarea_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
                                 '.
-                                Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
+                                Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['requerimientos-tareas/delete', 'sprint_id' => $objTareas->sprint_id, 'tarea_id' => $objTareas->tarea_id], [
                                     'title' => 'Eliminar',
                                         'data' => [
                                             'confirm' => 'Esta seguro de eliminar esta tarea?',
@@ -190,13 +190,13 @@ $this->params['breadcrumbs'][] = $this->title;
   
                 }else if($objTareas->estado == 3){
                     
-                    if ($objTareas->tarea->ultimo_estado == 6){
+                    if ($objRequerimientos->sw_soporte  == 1){
                         
                         $buttons_pull_right = '
                             <div class="box-tools pull-right">
-                                <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
+                                <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['requerimientos-tareas/update', 'sprint_id' => $objTareas->sprint_id, 'tarea_id' => $objTareas->tarea_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
                                 '.
-                                Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
+                                Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['requerimientos-tareas/delete', 'sprint_id' => $objTareas->sprint_id, 'tarea_id' => $objTareas->tarea_id], [
                                     'title' => 'Eliminar',
                                         'data' => [
                                             'confirm' => 'Esta seguro de eliminar esta tarea?',
@@ -229,13 +229,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                 }else if ($objTareas->estado == 4){
                     
-                    if ($objTareas->tarea->ultimo_estado == 5){
+                    if ($objRequerimientos->sw_soporte == 1){
                         
                         $buttons_pull_right = '
                             <div class="box-tools pull-right">
-                                <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['sprint-requerimientos-tareas/update', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
+                                <button id="activity-index-link" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal" data-url='.Url::to(['requerimientos-tareas/update', 'sprint_id' => $objTareas->sprint_id, 'tarea_id' => $objTareas->tarea_id]).' data-pjax="0"><i class="fa fa-pencil"></i></button>
                                 '.
-                                Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['sprint-requerimientos-tareas/delete2', 'tarea_id' => $objTareas->tarea_id, 'sprint_id' => $objTareas->sprint_id, 'requerimiento_id' => $objTareas->requerimiento_id], [
+                                Html::a('<span class="fa fa-trash" style="color: #d9d9d9;"></span>', ['requerimientos-tareas/delete', 'sprint_id' => $objTareas->sprint_id, 'tarea_id' => $objTareas->tarea_id], [
                                     'title' => 'Eliminar',
                                         'data' => [
                                             'confirm' => 'Esta seguro de eliminar esta tarea?',

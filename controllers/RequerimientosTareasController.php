@@ -192,10 +192,10 @@ class RequerimientosTareasController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($sprint_id = FALSE, $id)
+    public function actionDelete($sprint_id = FALSE, $tarea_id)
     {
-        $model_requerimientosTareas = $this->findModel($id);
-        $model_sprintRequerimientosTareas = $this->findModelsprintRequerimientosTareas($id);
+        $model_requerimientosTareas = $this->findModel($tarea_id);
+        $model_sprintRequerimientosTareas = $this->findModelsprintRequerimientosTareas($tarea_id);
         
         $requerimiento_id = $model_requerimientosTareas->requerimiento_id;
         
@@ -208,6 +208,13 @@ class RequerimientosTareasController extends Controller
         $model_requerimientosTareas->delete();
         
         Requerimientos::updateTiempoDesarrollo($model_requerimientosTareas->requerimiento_id);
+        
+        
+        if ($sprint_id != FALSE ){
+            
+            return $this->redirect(['sprint-usuarios/kanban', 'sprint_id' => $sprint_id]);
+            
+        }
 
         return $this->redirect(['index', 'requerimiento_id' => $requerimiento_id]);
     }
