@@ -16,24 +16,22 @@
     
     
         function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
+            $fecha1 = strtotime($fecha_inicial); 
+            $fecha2 = strtotime($fecha_final);
+            $array_data = array();
 
-            $datetime1 = date_create($fecha_inicial);
-            $datetime2 = date_create($fecha_final);
-            $interval = date_diff($datetime1, $datetime2);
-
-            $dias = $interval->format('%a')+1;
-
-            if ($sw_control == 1) {
-                return $dias;
-            } else if ($sw_control == 2) {
-
-                $array_data = array();
-
-                for ($i = 1; $i <= $dias; $i++) {
-
-                    array_push($array_data, 'Dia ' . $i);
+            $j = 0;
+            for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
+                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){	
+                    array_push($array_data, date('Y-m-d D',$fecha1));
+                    $j++;
                 }
-                return json_encode($array_data);
+            }
+            
+            if ($sw_control == 1) {
+                return $j;
+            }else if ($sw_control == 2) {
+               return json_encode($array_data);
             }
         }
 
@@ -56,19 +54,18 @@
 
             return json_encode($datos);
         }
-
+        
         foreach ($consulta_acutal_burn as $key => $value) {
-
-
-            $datetime1 = date_create($consulta_ideal_burn->sprint->fecha_desde);
-            $datetime2 = date_create($value['fecha_terminado']);
-            $interval = date_diff($datetime1, $datetime2);
-
-            $dias = $interval->format('%a')+1;
-
-            $consulta_acutal_burn[$key]['dias'] = $dias;
+            $fecha1 = strtotime($consulta_ideal_burn->sprint->fecha_desde); 
+            $fecha2 = strtotime($value['fecha_terminado']);
+            $j = 0;
+            for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
+                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){	
+                    $j++;
+                }
+            }
+            $consulta_acutal_burn[$key]['dias'] = $j;            
         }
-
 
         $arreglo_actual_burn = array();
         $total_tiempo_desarrollo = $consulta_tiempo_desarrollo; //120 Horas

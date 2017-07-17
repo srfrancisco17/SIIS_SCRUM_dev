@@ -67,6 +67,7 @@ use yii\widgets\ActiveForm;
                 .done(function(result) {
                     form.parent().html(result.message);
                     
+                    $("#modal").modal("hide");
                     $.pjax.reload({container:"#grid-requerimientos_tareas"});
                     
                 });

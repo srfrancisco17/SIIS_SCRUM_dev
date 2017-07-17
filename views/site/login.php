@@ -243,7 +243,7 @@ $this->registerJs('
                     <?= $form
                         ->field($model, 'password', $fieldOptions2)
                         ->label(false)
-                        ->passwordInput(['placeholder' => $model->getAttributeLabel('Contraseña')]) ?>
+                        ->passwordInput(['placeholder' => 'Contraseña']) ?>
 
                     <?= Html::submitButton('<i class="glyphicon glyphicon-log-in"></i> Iniciar sesion', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>    
                 <?php ActiveForm::end(); ?>

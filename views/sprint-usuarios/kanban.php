@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(['id' => 'tareas-grid']); ?>
     <?php
         $form = ActiveForm::begin([
-                    'id' => 'tareas-form1',
+                    'id' => 'grid-requerimientos_tareas',
                     'enableAjaxValidation' => true,
                     'enableClientScript' => true,
                     'enableClientValidation' => true,
@@ -318,16 +318,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?=  strip_tags($objRequerimientos->requerimiento_descripcion) ?>
                     </div>
                     <div class="box-footer" style="background-color: <?= $usuario_color?>;">
-                        <!--<div class="box-tools pull-right">    
-                            <?= Html::a('<span class="glyphicon glyphicon-list-alt" style="color: #d9d9d9;"></span>', ['#'], [
-                                            'title' => 'Crear Tarea',
-                                            'id' => 'activity-index-link',
-                                            'data-toggle' => 'modal',
-                                            'data-target' => '#modal',
-                                            'data-url' => Url::to(['sprint-requerimientos-tareas/create', 'sprint_id' => $sprint_id, 'requerimiento_id' => $objRequerimientos->requerimiento_id]),
-                                            'data-pjax' => '0',
-                            ]) ?>
-                        </div>-->
+                        <?php
+                        if ($objRequerimientos->sw_soporte == 1){
+                        ?>
+                            <div class="box-tools pull-right">    
+                                <?= Html::a('<span class="glyphicon glyphicon-list-alt" style="color: #d9d9d9;"></span>', ['#'], [
+                                                'title' => 'Crear Tarea',
+                                                'id' => 'activity-index-link',
+                                                'data-toggle' => 'modal',
+                                                'data-target' => '#modal',
+                                                'data-url' => Url::to(['requerimientos-tareas/create', 'sprint_id' => $sprint_id, 'requerimiento_id' => $objRequerimientos->requerimiento_id]),
+                                                'data-pjax' => '0',
+                                ]) ?> 
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>

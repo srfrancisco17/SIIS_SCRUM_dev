@@ -409,6 +409,7 @@ class SiteController extends Controller
                                             where sr.sprint_id = :sprint_id
                                             and sr.usuario_asignado = :usuario_asignado
                                             and srt.estado = '4'
+
                                             group by rt.fecha_terminado::date
                                             order by rt.fecha_terminado::date")
                                             ->bindValue(':sprint_id', $sprint_id)
