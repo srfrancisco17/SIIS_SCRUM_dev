@@ -65,7 +65,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return [
             //[['tipo_usuario', 'num_documento', 'tipo_documento', 'nombres', 'apellidos', 'correo', 'contrasena', 'departamento', 'tipo_documento', 'tipo_usuario', 'estado'], 'required'],
-            [['tipo_usuario', 'num_documento', 'tipo_documento', 'contrasena', 'departamento', 'tipo_documento' ], 'required'],
+            [['tipo_usuario', 'num_documento', 'tipo_documento', 'contrasena', 'password_repeat', 'departamento', 'tipo_documento' ], 'required'],
             ['num_documento', 'unique', 'targetAttribute' => ['num_documento'], 'message' => 'Numero documento ya existe!'],
             [['tipo_usuario'], 'number'],
             [['estado'], 'default', 'value' => null],

@@ -5,6 +5,9 @@ use app\models\Usuarios;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\ColorInput;
+
+
+
 ?>
 <style>
     .user-row {
@@ -41,15 +44,33 @@ use kartik\widgets\ColorInput;
     }    
 </style>
 <script>
-    function editarDatos(){
+    function editarDatos(parameter){
         
-        $("#usuarios-nombres").attr("readonly", false);
-        $("#usuarios-apellidos").attr("readonly", false);
-        $("#usuarios-correo").attr("readonly", false);
-        $("#usuarios-telefono").attr("readonly", false);
-        $("#usuarios-contrasena").attr("readonly", false);
-        $("#usuarios-password_repeat").attr("readonly", false);
-        $('#boton1').prop('disabled', false);
+        
+        if (parameter == 1) {
+            
+            $("#usuarios-nombres").attr("readonly", false);
+            $("#usuarios-apellidos").attr("readonly", false);
+            $("#usuarios-correo").attr("readonly", false);
+            $("#usuarios-telefono").attr("readonly", false);
+            
+        }else if (parameter == 2){
+            
+            $("#usuarios-contrasena").attr("readonly", false);
+            $("#usuarios-password_repeat").attr("readonly", false);
+            
+            $("#usuarios-contrasena").val('')
+            $("#usuarios-password_repeat").val('')
+            
+        } 
+        
+       
+       
+       $('#boton1').prop('disabled', false);
+       
+       
+
+        
     }
 </script>
 <?php $form = ActiveForm::begin(); ?>
@@ -85,12 +106,15 @@ use kartik\widgets\ColorInput;
                             <td><?= $form->field($model, 'telefono')->textInput(['maxlength' => 10, 'readonly' => true])->label(FALSE) ?></td>
                           </tr>
                           <tr>
-                          <td>Cambiar Contraseña:</td>
-                            <td><?= $form->field($model, 'contrasena')->passwordInput(['readonly' => true, 'value'=> '', 'placeholder' => 'Escriba Nueva Contraseña'])->label(FALSE) ?></td>
+                          <td>
+                              Cambiar Contraseña:
+                              <button type="button" class="btn btn-danger btn-xs" onclick="editarDatos(2)">cambiar</button>  
+                          </td>
+                            <td><?= $form->field($model, 'contrasena')->passwordInput(['readonly' => true, 'placeholder' => 'Escriba Nueva Contraseña'])->label(FALSE) ?></td>
                           </tr>
                           <tr>
                               <td></td>
-                              <td><?= $form->field($model, 'password_repeat')->passwordInput(['readonly' => true, 'placeholder' => 'Repita Contraseña'])->label(FALSE) ?></td>
+                              <td><?= $form->field($model, 'password_repeat')->passwordInput(['readonly' => true, 'value' => $model->contrasena, 'placeholder' => 'Repita Contraseña'])->label(FALSE) ?></td>
                           </tr>
                           <tr>
                             <td>Tipo De Usuario:</td>
@@ -123,7 +147,7 @@ use kartik\widgets\ColorInput;
                             <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
                             <span class="pull-right">
                                 <?= Html::submitButton('Guardar Datos', ['id'=>'boton1', 'disabled' => 'disabled', 'class' => 'btn btn-primary']) ?>
-                                <a href="#" id="editar" onclick="editarDatos()" data-original-title="Editar Mis Datos" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a href="#" id="editar" onclick="editarDatos(1)" data-original-title="Editar Mis Datos" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
                                 <!--<a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>-->
                             </span>
                         </div>

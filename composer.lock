@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9e63a0d5450b418f238af13af442ce3",
+    "content-hash": "31400581ee37abee2a6c254f2e193ef9",
     "packages": [
         {
             "name": "2amigos/yii2-tinymce-widget",
@@ -620,16 +620,16 @@
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
-            "version": "v4.4.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "aa4e1a520cef078922ed2c7c8e3e944d496388f6"
+                "reference": "87671f3c12ea3da7a40634511b86349517658461"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/aa4e1a520cef078922ed2c7c8e3e944d496388f6",
-                "reference": "aa4e1a520cef078922ed2c7c8e3e944d496388f6",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/87671f3c12ea3da7a40634511b86349517658461",
+                "reference": "87671f3c12ea3da7a40634511b86349517658461",
                 "shasum": ""
             },
             "type": "library",
@@ -669,7 +669,7 @@
                 "progress",
                 "upload"
             ],
-            "time": "2017-05-25T19:06:59+00:00"
+            "time": "2017-07-05 01:54:38"
         },
         {
             "name": "kartik-v/bootstrap-star-rating",
@@ -4918,7 +4918,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "kartik-v/bootstrap-fileinput": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
