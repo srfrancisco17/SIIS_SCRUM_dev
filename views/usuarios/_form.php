@@ -94,4 +94,4 @@ use kartik\widgets\ColorInput;
         
 
 </div>
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>

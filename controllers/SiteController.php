@@ -94,31 +94,45 @@ class SiteController extends Controller
     
     public function actionLogin(){
          
-    if (!\Yii::$app->user->isGuest) {
-   
-        if (Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER){
-            return $this->redirect(["site/index-scrum-master"]);
-        }else if(Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_DEVELOPER){
-            //return $this->redirect(["site/index-developer"]);
-            return $this->redirect(["sprint-usuarios/index"]); 
-        }
-    }
+        if (!Yii::$app->user->isGuest) {
 
-    $model = new LoginForm();
-        
-    if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $tipo_usuario = Yii::$app->user->identity->tipo_usuario;
 
-        if (Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_SCRUM_MASTER){
-            return $this->redirect(["site/index-scrum-master"]);
-        }else if(Yii::$app->user->identity->tipo_usuario == \app\models\Usuarios::USUARIO_DEVELOPER){
-            //return $this->redirect(["site/index-developer"]);
-            return $this->redirect(["sprint-usuarios/index"]); 
+            switch ($tipo_usuario) {
+
+                case Usuarios::USUARIO_SCRUM_MASTER:
+
+                    return $this->redirect(["site/index-scrum-master"]);
+
+                case Usuarios::USUARIO_DEVELOPER:
+
+                    return $this->redirect(["sprint-usuarios/index"]); 
+
+            }
+
         }
-    }else {
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
+        $model = new LoginForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+            $tipo_usuario = Yii::$app->user->identity->tipo_usuario;
+
+            switch ($tipo_usuario) {
+
+                case Usuarios::USUARIO_SCRUM_MASTER:
+
+                    return $this->redirect(["site/index-scrum-master"]);
+
+                case Usuarios::USUARIO_DEVELOPER:
+
+                    return $this->redirect(["sprint-usuarios/index"]); 
+
+            }        
+        }else {
+            return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**

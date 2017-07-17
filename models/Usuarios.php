@@ -51,6 +51,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     const ESTADO_INACTIVO = 0;
     const ESTADO_ACTIVO = 1;
     
+    public $new_password;
     public $password_repeat;
     
     public static function tableName()
@@ -64,8 +65,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public function rules()
     {
         return [
+            //['new_password', 'required'],
+            ['new_password', 'string', 'min' => 6],
             //[['tipo_usuario', 'num_documento', 'tipo_documento', 'nombres', 'apellidos', 'correo', 'contrasena', 'departamento', 'tipo_documento', 'tipo_usuario', 'estado'], 'required'],
-            [['tipo_usuario', 'num_documento', 'tipo_documento', 'contrasena', 'password_repeat', 'departamento', 'tipo_documento' ], 'required'],
+            [['tipo_usuario', 'num_documento', 'tipo_documento', 'contrasena', 'departamento', 'tipo_documento' ], 'required'],
             ['num_documento', 'unique', 'targetAttribute' => ['num_documento'], 'message' => 'Numero documento ya existe!'],
             [['tipo_usuario'], 'number'],
             [['estado'], 'default', 'value' => null],
@@ -77,7 +80,8 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             [['correo'], 'string', 'max' => 50],
             [['telefono'], 'string', 'max' => 10],
             [['contrasena'], 'string', 'max' => 225],
-            ['password_repeat', 'compare', 'compareAttribute' => 'contrasena'],
+            ['password_repeat', 'compare', 'compareAttribute' => 'new_password'],
+            ['new_password', 'compare', 'compareAttribute' => 'password_repeat'],
             [['departamento'], 'string', 'max' => 4],
             [['auth_key'], 'string', 'max' => 32],
             [['departamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamentos::className(), 'targetAttribute' => ['departamento' => 'departamento_id']],
@@ -101,6 +105,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'correo' => 'Correo',
             'telefono' => 'Telefono',
             'contrasena' => 'Contrasena',
+            'new_password' => 'Nueva Contraseña',
             'password_repeat' => 'Repetir Contraseña',
             'departamento' => 'Departamento',
             'tipo_usuario' => 'Tipo Usuario',
@@ -197,22 +202,6 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     
     public static function getListaDevelopers() {
         
-        /*
-        $desarrolladores = Usuarios::find()->where(['estado' => 1])->andWhere(['tipo_usuario' => 2])
-        ->orderBy('usuario_id')               
-        ->all();
-
-        $desarrolladoresMap = ArrayHelper::map(
-            $desarrolladores,
-            'usuario_id',
-            function ($person, $defaultValue) {
-                return $person->getnombreCompleto();
-            }
-        );
-        
-        return $desarrolladoresMap;
-        */
-        
         $opciones = Usuarios::find()->where(['estado' => 1])->andWhere(['tipo_usuario' => 2])->asArray()->all();
         return ArrayHelper::map($opciones, 'usuario_id', 'nombres');
     }
@@ -249,21 +238,21 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return self::findOne(['num_documento' => $username]);
     }
     
-   
+    
     public function validatePassword($password){
-        return $this->contrasena  === $password;
+        
+        //return $this->contrasena  === $password;
+        
+        // $2y$13$ojJ1rG1wGRBWXTHUotp6gOa0jM9dxSxrGQeBJX.OQlU4LLe6a6DAi
+        
+        
+//        $validacion = Yii::$app->security->validatePassword($password, '$2y$13$APasiVAPvJsieLFsSgAaROl/VY/hs1kS/sZ0/oMSgXUvw/fXUQSjq');
+//        
+//        var_dump($validacion);
+//        exit();
+//        
+        return Yii::$app->security->validatePassword($password, $this->contrasena);
     }
-    
-    
-//    public function validatePassword($password)
-//    {
-//      
-//        
-////        echo $password;
-////        exit();
-//        
-//        return Yii::$app->security->validatePassword($password, $this->contrasena);
-//    }
     
     
     public function setPassword($password)
@@ -280,6 +269,10 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public static function estaActivo()
     {
         return Yii::$app->user->identity->estado == self::ESTADO_ACTIVO;
+    }
+    
+    public function updatePassword($new_password) {
+        $this->contrasena = Yii::$app->security->generatePasswordHash($new_password);
     }
     
    

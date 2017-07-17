@@ -17,7 +17,7 @@ class LoginForm extends Model
     public $password;
     public $rememberMe = true;
 
-    private $_user = false;
+    private $_user;
 
 
     /**
@@ -46,9 +46,8 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Contraseña o documento incorrecto.');
+                $this->addError($attribute, 'Usuario o Contraseña incorrecta.');
             }
         }
     }
@@ -70,13 +69,13 @@ class LoginForm extends Model
      *
      * @return User|null
      */
-    public function getUser()
+    protected function getUser()
     {
-        if ($this->_user === false) {
-            /*
-            $this->_user = User::findByUsername($this->username);
-             */
+        if ($this->_user === null) { //cambiamos aqui
+            
+            
             $this->_user = Usuarios::findByUsername($this->username);
+            
         }
 
         return $this->_user;

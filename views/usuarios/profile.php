@@ -56,7 +56,7 @@ use kartik\widgets\ColorInput;
             
         }else if (parameter == 2){
             
-            $("#usuarios-contrasena").attr("readonly", false);
+            $("#usuarios-new_password").attr("readonly", false);
             $("#usuarios-password_repeat").attr("readonly", false);
             
             $("#usuarios-contrasena").val('')
@@ -110,11 +110,11 @@ use kartik\widgets\ColorInput;
                               Cambiar Contraseña:
                               <button type="button" class="btn btn-danger btn-xs" onclick="editarDatos(2)">cambiar</button>  
                           </td>
-                            <td><?= $form->field($model, 'contrasena')->passwordInput(['readonly' => true, 'placeholder' => 'Escriba Nueva Contraseña'])->label(FALSE) ?></td>
+                            <td><?= $form->field($model, 'new_password')->passwordInput(['readonly' => true, 'placeholder' => 'Escriba Nueva Contraseña'])->label(FALSE) ?></td>
                           </tr>
                           <tr>
                               <td></td>
-                              <td><?= $form->field($model, 'password_repeat')->passwordInput(['readonly' => true, 'value' => $model->contrasena, 'placeholder' => 'Repita Contraseña'])->label(FALSE) ?></td>
+                              <td><?= $form->field($model, 'password_repeat')->passwordInput(['readonly' => true, 'placeholder' => 'Repita Contraseña'])->label(FALSE) ?></td>
                           </tr>
                           <tr>
                             <td>Tipo De Usuario:</td>

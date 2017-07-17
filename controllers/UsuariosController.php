@@ -86,9 +86,14 @@ class UsuariosController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             
-            $model->contrasena = Yii::$app->security->generatePasswordHash(Yii::$app->request->post('contrasena'));
+//            echo '<pre>';
+//            print_r(Yii::$app->request->post('Usuarios')['contrasena']);
+//            echo '</pre>';
+                
+            $model->contrasena = Yii::$app->security->generatePasswordHash(Yii::$app->request->post('Usuarios')['contrasena']);
 
             if ($model->save()){
+                
                 
                 return $this->redirect(['index']);
                 
@@ -115,9 +120,22 @@ class UsuariosController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->usuario_id]);
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            
+            /*
+            if (!empty(Yii::$app->request->post('Usuarios')['new_password'])){
+                
+                $nueva_contrasena = Yii::$app->request->post('Usuarios')['new_password'];
+                
+                $model->updatePassword($nueva_contrasena);
+                
+            }
+            */
+
+            if ($model->save()){
+                return $this->redirect(['index']);
+            }
+            
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -148,10 +166,22 @@ class UsuariosController extends Controller
         $model = Yii::$app->user->identity;
         
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
+        if ($model->load(Yii::$app->request->post())) {
             
-            return $this->redirect(['profile']);
+            if (!empty(Yii::$app->request->post('Usuarios')['new_password'])){
+                
+                $nueva_contrasena = Yii::$app->request->post('Usuarios')['new_password'];
+                
+                $model->updatePassword($nueva_contrasena);
+                
+            }
+            
+            
+            if ($model->save()){
+                 return $this->redirect(['profile']);
+            }
+            
+           
             
         } else {
             return $this->render('profile', [

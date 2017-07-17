@@ -238,7 +238,7 @@ $this->registerJs('
                     <?= $form
                         ->field($model, 'username', $fieldOptions1)
                         ->label(false)
-                        ->textInput(['placeholder' => $model->getAttributeLabel('Numero de documento')]) ?>
+                        ->textInput(['autofocus' => true, 'placeholder' => $model->getAttributeLabel('Numero de documento')]) ?>
 
                     <?= $form
                         ->field($model, 'password', $fieldOptions2)
