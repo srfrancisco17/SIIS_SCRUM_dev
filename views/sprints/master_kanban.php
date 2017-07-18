@@ -82,16 +82,15 @@ $this->params['breadcrumbs'][] = $this->title;
     }
     
 </style>  
-
 <div class="kanban">
-     
 <div class="row">
-    <div class="col-md-4">
-        <div class="box box-default box-solid">
+    <div class="col-md-12">
+        <div class="box box-default box-solid collapsed-box">
             <div class="box-header with-border">
-                <h3 class="box-title">Informacion</h3>
+                <p class="text-center" style="margin: 0 0 0px;"><b>Desarrolladores</b></p>
 
                 <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                 </div>
                 </div>
@@ -102,19 +101,27 @@ $this->params['breadcrumbs'][] = $this->title;
                             <th>#</th>
                             <th>Desarrollador</th>
                             <th>Color</th>
-
+                            <th>Total de horas</th>
                           </tr>
                         </thead>
                         <tbody>
                         <?php 
                             $contador = 1;
-                            foreach ($consulta_usuarios as $value){    
+                            foreach ($consulta_usuarios as $value){  
+                                
+                                $suma_total = 0;
+                                
+                                foreach ($value->sprintRequerimientos as $algo ){
+                                    $suma_total = $suma_total+ $algo->requerimiento->tiempo_desarrollo;
+                                    //print_r($algo->requerimiento->tiempo_desarrollo);
+                                    
+                                }
                         ?>
-                            
                             <tr>
                                 <td><?= $contador ?></td>
                                 <td> <?= $value->usuario->nombreCompleto ?> </td>
                                 <td style ='background-color: <?= $value->usuario->color ?>'><?= $value->usuario->color ?></td>
+                                <td><?= $suma_total ?> hr</td>
                             </tr>
                             
                         <?php
@@ -128,11 +135,13 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 <?php
-    
+
+//$consulta2 = $consulta_usuarios[1]->sprintRequerimientos[0]->requerimiento->tiempo_desarrollo;
+//    
 //echo '<pre>';
-//print_r($consulta_usuarios[0]->usuario->color);
+//print_r($consulta2);
 //echo '</pre>';
-//
+
 //foreach ($consulta_usuarios as $value){
 //    echo $value->usuario->color.'<br>';
 //}
