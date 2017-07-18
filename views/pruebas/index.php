@@ -9,19 +9,15 @@ use kartik\select2\Select2;
 
 
 
-$array = array(
-    '19' => 'Jorge Rodriguez',
-    '20' => 'Harrison Gonzalez',
-    '21' => 'Juan Pablo Sanchez Echavarria',
-    '22' => 'Juan Fernando Hoyos',
-    '23' => 'Leonardo Rodriguez',
-    '24' => 'Luisa Fernanda Bedoya',
-);
 
-$arraySprints = array(
-    '1' => 'Sprint (1)',
-    '2' => 'Sprint (2)',
-);
+     
+//$array = array(
+//    array('Jorge Rodriguez1',23),
+//    array('Jorge Rodriguez2',23),
+//    array('Jorge Rodriguez3',23),
+//    array('Jorge Rodriguez3',23)
+//);
+
 
 ?>
 
@@ -32,8 +28,11 @@ $arraySprints = array(
         
         <?php
         
-
-
+            echo '<pre>';
+            print_r ($resulado);
+            echo '</pre>';
+            
+            //echo json_encode($array);
         ?>
        
     </div>

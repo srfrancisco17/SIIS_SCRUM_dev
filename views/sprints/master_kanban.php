@@ -91,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
                 </div>
                 </div>
                 <div class="box-body">
@@ -119,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                             <tr>
                                 <td><?= $contador ?></td>
-                                <td> <?= $value->usuario->nombreCompleto ?> </td>
+                                <td> <?= Html::a($value->usuario->nombreCompleto, '#') ?> </td>
                                 <td style ='background-color: <?= $value->usuario->color ?>'><?= $value->usuario->color ?></td>
                                 <td><?= $suma_total ?> hr</td>
                             </tr>
@@ -182,7 +182,8 @@ $this->params['breadcrumbs'][] = $this->title;
         
         for ($i = 0; $i < count($consulta); $i++) {
             $consulta1 = $consulta[$i]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
-            
+        
+            //$variable_control = 0;
             
             $usuario_color = empty($consulta[$i]->usuarioAsignado->color) ? '#656565' : $consulta[$i]->usuarioAsignado->color;
     
@@ -191,6 +192,8 @@ $this->params['breadcrumbs'][] = $this->title;
             $items1 = array(); 
             $items2 = array();
             $items3 = array();
+            
+            
             foreach ($objRequerimientos->sprintRequerimientosTareas as $objTareas){
                 
 //                echo '<pre>';

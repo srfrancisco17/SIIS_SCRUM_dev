@@ -19,7 +19,7 @@ $last_position = end($array_sprints);
 ?>
 <?php Pjax::begin(); ?>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-8">
           <div class="box box-primary">
             <div class="box-header with-border">
                 <!--<h3 class="box-title"></h3>-->
@@ -114,68 +114,53 @@ $last_position = end($array_sprints);
           </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-          <div class="box box-primary">
+    <div class="col-lg-4">
+        <div class="box box-success">
             <div class="box-header with-border">
-                <!--<h3 class="box-title"></h3>-->
-                <div class="row">
-                    
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-wrench"></i></button>
+              <h3 class="box-title">Grafico de barras</h3>
 
-                </div>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
               </div>
+              <!-- /.box-tools -->
             </div>
+            <!-- /.box-header -->
             <div class="box-body">
-              <div class="row">
-                <div class="col-md-12">
-                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                </div>
+                
+              <div id="container2" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+              
             </div>
-            <div class="box-footer">
-              <div class="row">
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <br>
-                    <h5 class="description-header"><?= $consulta_total_requerimientos ?></h5>
-                    <span class="description-text">Total Requerimientos</span>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <?= $html_span_requerimientos ?>
-                    <h5 class="description-header"><?= $consulta_total_requerimientos_terminados ?></h5>
-                    <span class="description-text">Total Terminados</span>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <br>
-                    <h5 class="description-header"><?= $consulta_total_tareas ?></h5>
-                    <span class="description-text">Total Tareas</span>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block">
-                    <?= $html_span_tareas ?>
-                    <h5 class="description-header"><?= $consulta_total_tareas_terminadas ?></h5>
-                    <span class="description-text">Total Tareas Terminadas</span>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
+            <!-- /.box-body -->
           </div>
-        </div>
     </div>
 </div>
+
+<!-- Diagrama de Barras -->
+<!--
+<div class="row">
+    <div class="col-lg-4">
+        <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Grafico de barras</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+          
+            </div>
+         
+            <div class="box-body">
+                
+              <div id="container2" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+              
+            </div>
+          
+          </div>
+    </div>
+</div>
+-->
 <?php   
     function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
         
@@ -263,11 +248,28 @@ $last_position = end($array_sprints);
             break;
         }
     }
+    
+    
+    function arreglo_barchart($barChart) {
+        // arreglo de dias
+        
+    $grafica = array();
+        foreach ($barChart as $value2) {
+            $grafica[] = array(
+                $value2['nombres'],
+                (($value2['tiempo_terminado']*100)/$value2['tiempo_total'])
+            );
+        }
+        
+    return json_encode($grafica);
+    }
+    
 
     $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $array_actual['fecha_desde'], $array_actual['fecha_hasta']);
     $arreglo_dias = intervalo_dias($array_actual['fecha_desde'], $array_actual['fecha_hasta'], 2);
     $json_actual_burn = json_encode($arreglo_actual_burn);
-
+    
+    $datos_barChart = arreglo_barchart($barChart);
 
     $this->registerJs("
 
@@ -330,5 +332,58 @@ $last_position = end($array_sprints);
       });
 
     ");  
+    
+    $this->registerJs("
+            Highcharts.chart('container2', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Titulo'
+                },
+                subtitle: {
+
+                },
+                xAxis: {
+                    type: 'category',
+                    labels: {
+                        //rotation: -45,
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Horas'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: 'Porcentaje Horas Terminadas: <b>{point.y:.1f}% Horas</b>'
+                },
+                series: [{
+                    name: 'Population',
+                    data: $datos_barChart,
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        //rotation: -90,
+                        //color: '#FFFFFF',
+                        align: 'center',
+                        format: '{point.y:.1f}%', // one decimal
+                        y: 1, // 10 pixels down from the top
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
+            });   
+    ");
 ?>
 <?php Pjax::end(); ?>
