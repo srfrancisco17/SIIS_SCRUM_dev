@@ -391,7 +391,6 @@ class SiteController extends Controller
         $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->sum('requerimientos.tiempo_desarrollo');
     
         $connection = Yii::$app->db;
-        
         $consulta_acutal_burn = $connection->createCommand("select 
                                             sum(rt.horas_desarrollo) as sum_horas,
                                             rt.fecha_terminado::date
@@ -466,7 +465,7 @@ class SiteController extends Controller
         
         
         return $this->render('indexDeveloper',[
-            'consulta_ideal_burn'=>$consulta_ideal_burn,
+            'consulta_ideal_burn' => $consulta_ideal_burn,
             'consulta_tiempo_desarrollo' => $consulta_tiempo_desarrollo,
             'consulta_acutal_burn' => $consulta_acutal_burn,
             'consulta_total_requerimientos' => $consulta_total_requerimientos,

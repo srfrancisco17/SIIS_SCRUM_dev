@@ -85,6 +85,61 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="kanban">
      
+<div class="row">
+    <div class="col-md-4">
+        <div class="box box-default box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Informacion</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Desarrollador</th>
+                            <th>Color</th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <?php 
+                            $contador = 1;
+                            foreach ($consulta_usuarios as $value){    
+                        ?>
+                            
+                            <tr>
+                                <td><?= $contador ?></td>
+                                <td> <?= $value->usuario->nombreCompleto ?> </td>
+                                <td style ='background-color: <?= $value->usuario->color ?>'><?= $value->usuario->color ?></td>
+                            </tr>
+                            
+                        <?php
+                            $contador++;
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+</div>
+<?php
+    
+//echo '<pre>';
+//print_r($consulta_usuarios[0]->usuario->color);
+//echo '</pre>';
+//
+//foreach ($consulta_usuarios as $value){
+//    echo $value->usuario->color.'<br>';
+//}
+
+?>
+    
+    <br>
     <div class="row" style="background-color: #5A6E83; color: #f0f0f0;">
         <div class="col-lg-3">
             <h4 class="text-center">Requerimiento</h4>

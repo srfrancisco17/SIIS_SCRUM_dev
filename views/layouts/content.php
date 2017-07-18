@@ -165,7 +165,8 @@ use dmstr\widgets\Alert;
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
                 <h3 class="control-sidebar-heading">General Settings</h3>
-            <a href="#" onclick="change_skin('skin-blue')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
+            <a href="javascript:void(0)" onclick="change_skin('skin-blue')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
+            <br>
             <a href="#" onclick="change_skin('skin-yellow')" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a>
             <a href="#" onclick="change_skin('skin-green')" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
             <a href="#" onclick="change_skin('skin-purple')" class="btn bg-purple btn-xs"><i class="fa fa-eye"></i></a>

@@ -115,6 +115,67 @@ $last_position = end($array_sprints);
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-lg-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                <!--<h3 class="box-title"></h3>-->
+                <div class="row">
+                    
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-wrench"></i></button>
+
+                </div>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <br>
+                    <h5 class="description-header"><?= $consulta_total_requerimientos ?></h5>
+                    <span class="description-text">Total Requerimientos</span>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <?= $html_span_requerimientos ?>
+                    <h5 class="description-header"><?= $consulta_total_requerimientos_terminados ?></h5>
+                    <span class="description-text">Total Terminados</span>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <br>
+                    <h5 class="description-header"><?= $consulta_total_tareas ?></h5>
+                    <span class="description-text">Total Tareas</span>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block">
+                    <?= $html_span_tareas ?>
+                    <h5 class="description-header"><?= $consulta_total_tareas_terminadas ?></h5>
+                    <span class="description-text">Total Tareas Terminadas</span>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
 <?php   
     function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
         

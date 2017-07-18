@@ -23,10 +23,6 @@ $arraySprints = array(
     '2' => 'Sprint (2)',
 );
 
-
-
-
-
 ?>
 
 
@@ -36,22 +32,8 @@ $arraySprints = array(
         
         <?php
         
-        $contrasena = '$2y$13$.GZ4NIiMoeNTe8TBkv1evOMJGp0vACf4VQTHd97pMyXxpDPLfD5Ja';
-            
-        
-        //var_dump($operacion);
-        echo '<br>';
 
-        
-        if (Yii::$app->getSecurity()->validatePassword('1234567', $contrasena)) {
-            // all good, logging user in
-            echo 'se completo exitosamente';
-        } else {
-            // wrong password
-            echo 'ERROR';
-        }
-        
-        
+
         ?>
        
     </div>

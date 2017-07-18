@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\SprintUsuarios;
 use app\models\Sprints;
 use app\models\SprintRequerimientos;
 use app\models\SprintsSearch;
@@ -177,8 +178,11 @@ class SprintsController extends Controller
         
         $consulta = SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->orderBy(['usuario_asignado'=>SORT_DESC, 'prioridad' => SORT_ASC])->all();
         
+        $consulta_usuarios = SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->orderBy(['usuario_id'=>SORT_DESC])->all();
+        
         return $this->render('master_kanban', [
             'consulta' => $consulta,
+            'consulta_usuarios' => $consulta_usuarios,
         ]);
        
     }
