@@ -122,11 +122,13 @@ class RequerimientosTareasController extends Controller
             
             if ($sw_model && $model_sprintRequerimientosTareas->save()){
                 
+
+                
+                Requerimientos::updateTiempoDesarrollo($requerimiento_id);
+                
                 if ($sprint_id != FALSE){
                     ValorHelpers::actualizarTiempos($sprint_id);
                 }
-                
-                Requerimientos::updateTiempoDesarrollo($requerimiento_id);
                 
                 $model->refresh();
                 $model_sprintRequerimientosTareas->refresh();
@@ -163,12 +165,12 @@ class RequerimientosTareasController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
+                 
+                Requerimientos::updateTiempoDesarrollo($model->requerimiento_id);
                 
                 if ($sprint_id != FALSE){
                     ValorHelpers::actualizarTiempos($sprint_id);
                 }
-                
-                Requerimientos::updateTiempoDesarrollo($model->requerimiento_id);
                 
                 $model->refresh();
                 Yii::$app->response->format = Response::FORMAT_JSON;
@@ -212,6 +214,7 @@ class RequerimientosTareasController extends Controller
         
         if ($sprint_id != FALSE ){
             
+            ValorHelpers::actualizarTiempos($sprint_id);
             return $this->redirect(['sprint-usuarios/kanban', 'sprint_id' => $sprint_id]);
             
         }

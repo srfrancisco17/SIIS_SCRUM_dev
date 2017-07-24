@@ -275,27 +275,38 @@ $last_position = end($array_sprints);
         }
     }
     
-    //$tiempo_terminado_todos = 0;
-    //$tiempo_total_todos = 0;
+    $grafica2 = array();
     
-    function arreglo_barchart($barChart) {
-    // arreglo de dias
-    
+    function arreglo_barchart($barChart, &$grafica2) {
+        
+        $tiempo_terminado_todos = 0;
+        $tiempo_total_todos = 0;
 
-        
-    $grafica = array();
-        foreach ($barChart as $value2) {
-            $grafica[] = array(
-                $value2['nombres'],
-                (($value2['tiempo_terminado']*100)/$value2['tiempo_total'])
-            ); 
-            
-        }
-        
-    return json_encode($grafica);
+
+
+        $grafica = array();
+
+            foreach ($barChart as $value2) {
+                $grafica[] = array(
+                    $value2['nombres'],
+                    (($value2['tiempo_terminado']*100)/$value2['tiempo_total'])
+                ); 
+
+                $tiempo_terminado_todos += $value2['tiempo_terminado'];
+                $tiempo_total_todos += $value2['tiempo_total'];
+
+            }
+
+        $grafica2[] = array(
+            'Equipo Desarrollo',
+            (($tiempo_terminado_todos*100)/$tiempo_total_todos)
+        );
+
+        return json_encode($grafica);
     
     }
     
+    /*
     function arreglo_barchart2($barChart) {
   
         $tiempo_total_todos = 0;    
@@ -319,14 +330,15 @@ $last_position = end($array_sprints);
         return json_encode($grafica2);
     
     }    
-    
+    */
 
     $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $array_actual['fecha_desde'], $array_actual['fecha_hasta']);
     $arreglo_dias = intervalo_dias($array_actual['fecha_desde'], $array_actual['fecha_hasta'], 2);
     $json_actual_burn = json_encode($arreglo_actual_burn);
-    
-    $datos_barChart = arreglo_barchart($barChart);
-    $datos_barChart2 = arreglo_barchart2($barChart);
+    var_dump($grafica2);
+    $datos_barChart = arreglo_barchart($barChart, $grafica2);
+    var_dump($grafica2);
+    $datos_barChart2 =  json_encode($grafica2);
     
     
 
@@ -454,7 +466,7 @@ $last_position = end($array_sprints);
                 title: {
                     text: 'Grafico Grupal'
                 },
-                colors: ['gray'],
+                colors: ['#F56954'],
                 subtitle: {
 
                 },

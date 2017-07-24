@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ]);
                                 },
                                 'delete' => function($url, $model, $key) use(&$sprint_id){
-                                    return  Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'sprint_id' => $sprint_id, 'id' => $model->tarea_id], [
+                                    return  Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'sprint_id' => $sprint_id, 'tarea_id' => $model->tarea_id], [
                                         'class' => '',
                                         'title'=>'Eliminar',
                                         'data' => [
