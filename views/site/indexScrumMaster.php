@@ -115,24 +115,50 @@ $last_position = end($array_sprints);
         </div>
     </div>
     <div class="col-lg-4">
-        <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">Grafico de barras</h3>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                      <h3 class="box-title"></h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-              <!-- /.box-tools -->
+                      <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                      </div>
+                      <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
+                      <div id="container2" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                
-              <div id="container2" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-              
+            <div class="col-lg-12">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                      <h3 class="box-title"></h3>
+
+                      <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                      </div>
+                      <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
+                      <div id="container3" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
             </div>
-            <!-- /.box-body -->
-          </div>
+        </div>
+        
+
     </div>
 </div>
 
@@ -249,20 +275,50 @@ $last_position = end($array_sprints);
         }
     }
     
+    //$tiempo_terminado_todos = 0;
+    //$tiempo_total_todos = 0;
     
     function arreglo_barchart($barChart) {
-        // arreglo de dias
+    // arreglo de dias
+    
+
         
     $grafica = array();
         foreach ($barChart as $value2) {
             $grafica[] = array(
                 $value2['nombres'],
                 (($value2['tiempo_terminado']*100)/$value2['tiempo_total'])
-            );
+            ); 
+            
         }
         
     return json_encode($grafica);
+    
     }
+    
+    function arreglo_barchart2($barChart) {
+  
+        $tiempo_total_todos = 0;    
+        $tiempo_terminado_todos = 0;         
+
+        $grafica2 = array();
+        
+        foreach ($barChart as $value2) {
+
+
+            $tiempo_terminado_todos = $value2['tiempo_terminado']+$tiempo_terminado_todos;
+            $tiempo_total_todos = $value2['tiempo_total']+$tiempo_total_todos;
+
+        }
+
+        $grafica2[] = array(
+            'Equipo Desarrollo',
+            (($tiempo_terminado_todos*100)/$tiempo_total_todos)
+        );
+
+        return json_encode($grafica2);
+    
+    }    
     
 
     $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $array_actual['fecha_desde'], $array_actual['fecha_hasta']);
@@ -270,6 +326,9 @@ $last_position = end($array_sprints);
     $json_actual_burn = json_encode($arreglo_actual_burn);
     
     $datos_barChart = arreglo_barchart($barChart);
+    $datos_barChart2 = arreglo_barchart2($barChart);
+    
+    
 
     $this->registerJs("
 
@@ -339,7 +398,7 @@ $last_position = end($array_sprints);
                     type: 'column'
                 },
                 title: {
-                    text: 'Titulo'
+                    text: 'Grafico indivudual'
                 },
                 subtitle: {
 
@@ -369,6 +428,61 @@ $last_position = end($array_sprints);
                 series: [{
                     name: 'Population',
                     data: $datos_barChart,
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        //rotation: -90,
+                        //color: '#FFFFFF',
+                        align: 'center',
+                        format: '{point.y:.1f}%', // one decimal
+                        y: 1, // 10 pixels down from the top
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
+            });   
+    ");
+    
+    // Tercer diagrama
+    $this->registerJs("
+            Highcharts.chart('container3', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Grafico Grupal'
+                },
+                colors: ['gray'],
+                subtitle: {
+
+                },
+                xAxis: {
+                    type: 'category',
+                    labels: {
+                        //rotation: -45,
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Horas'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: 'Porcentaje Horas Terminadas: <b>{point.y:.1f}% Horas</b>'
+                },
+                series: [{
+                    name: 'Population',
+                    data: $datos_barChart2,
                     borderWidth: 0,
                     dataLabels: {
                         enabled: true,
