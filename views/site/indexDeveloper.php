@@ -13,9 +13,9 @@
 
     if (!empty($consulta_ideal_burn)){
     
+        $dias_festivos = array('2017-07-20', '2017-08-07', '2017-08-21', '2017-10-16', '2017-11-06', '2017-11-13', '2017-12-08', '2017-12-25', '2018-01-01', '2018-01-08');
     
-    
-        function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
+        function intervalo_dias($fecha_inicial, $fecha_final, $sw_control, $dias_festivos_p) {
             $dias = array('Mon'=>'Lun', 'Tue'=>'Mar', 'Wed'=>'Mie', 'Thu'=>'Jue', 'Fri'=>'Vie');
             $fecha1 = strtotime($fecha_inicial); 
             $fecha2 = strtotime($fecha_final);
@@ -23,9 +23,11 @@
 
             $j = 0;
             for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
-                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){                    
-                    array_push($array_data, date('m-d',$fecha1)." ".$dias[date('D',$fecha1)]);
-                    $j++;
+                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){  
+                    if (!(in_array(date('Y-m-d',$fecha1), $dias_festivos_p))) {
+                        array_push($array_data, date('m-d',$fecha1)." ".$dias[date('D',$fecha1)]);
+                        $j++;
+                    }
                 }
             }
             if ($sw_control == 1) {
@@ -39,13 +41,13 @@
             }
         }
 
-        function ideal_burn($horas, $fecha_inicial, $fecha_final) {
+        function ideal_burn($horas, $fecha_inicial, $fecha_final, $dias_festivos_p) {
 
             $datos = array();
             $suma_horas = $horas;
 
 
-            $dias = intervalo_dias($fecha_inicial, $fecha_final, 1);
+            $dias = intervalo_dias($fecha_inicial, $fecha_final, 1, $dias_festivos_p);
             $resta = ($horas / $dias);
 
             for ($i = 1; $i <= $dias; $i++) {
@@ -64,8 +66,10 @@
             $fecha2 = strtotime($value['fecha_terminado']);
             $j = 0;
             for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
-                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){	
-                    $j++;
+                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){
+                    if (!(in_array(date('Y-m-d',$fecha1), $dias_festivos))) {
+                        $j++;
+                    }
                 }
             }
             $consulta_acutal_burn[$key]['dias'] = $j;            
@@ -74,7 +78,7 @@
         $arreglo_actual_burn = array();
         $total_tiempo_desarrollo = $consulta_tiempo_desarrollo; //120 Horas
         $contador = 0;
-        $total_dias_sprint = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 1); // 17 Dias
+        $total_dias_sprint = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 1, $dias_festivos); // 17 Dias
 
 
         for ($i = 1; $i <= $total_dias_sprint; $i++) {
@@ -98,8 +102,8 @@
         }
 
 
-        $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta);
-        $arreglo_dias = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 2);
+        $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, $dias_festivos);
+        $arreglo_dias = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 2, $dias_festivos);
         $json_actual_burn = json_encode($arreglo_actual_burn);
 
         $titulo = $consulta_ideal_burn->sprint->sprint_alias;

@@ -217,24 +217,25 @@ class SiteController extends Controller
 
         $whereUsuario = "";
         $usuario_id = Yii::$app->request->post('list');
-        $titulo = 'Todos los desarrolladores';
+        $titulo = '';
         $subtitulo = '---';
         
         if(empty($usuario_id)){
             
             // Diagrama De Todos Los Usuarios
 
-            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->where(['sprint_id' => '1'])->sum('tiempo_desarrollo');
-
+            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->sum('requerimientos.tiempo_desarrollo');
+            $titulo = 'Total horas programas = '.$consulta_tiempo_desarrollo;
+        
+            
         }else{
             
             // Diagrama Por Usuario
             
-            
             $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
             $whereUsuario= "and sr.usuario_asignado = ".$usuario_id." ";
             
-            $titulo = '';
+            $titulo = 'Total horas asignadas = '.$consulta_tiempo_desarrollo;
            
         }
             

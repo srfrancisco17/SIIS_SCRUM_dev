@@ -188,18 +188,23 @@ $last_position = end($array_sprints);
 </div>
 -->
 <?php   
-    function intervalo_dias($fecha_inicial, $fecha_final, $sw_control) {
+
+    $dias_festivos = array('2017-07-20', '2017-08-07', '2017-08-21', '2017-10-16', '2017-11-06', '2017-11-13', '2017-12-08', '2017-12-25', '2018-01-01', '2018-01-08');
+    
+    function intervalo_dias($fecha_inicial, $fecha_final, $sw_control, $dias_festivos_p) {
         
             $dias = array('Mon'=>'Lun', 'Tue'=>'Mar', 'Wed'=>'Mie', 'Thu'=>'Jue', 'Fri'=>'Vie');
             $fecha1 = strtotime($fecha_inicial); 
             $fecha2 = strtotime($fecha_final);
             $array_data = array();
-
+    
             $j = 0;
             for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
-                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){	
-                    array_push($array_data, date('m-d',$fecha1)." ".$dias[date('D',$fecha1)]);
-                    $j++;
+                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){                    
+                    if (!(in_array(date('Y-m-d',$fecha1), $dias_festivos_p))) {
+                        array_push($array_data, date('m-d',$fecha1)." ".$dias[date('D',$fecha1)]);
+                        $j++;
+                    }                      
                 }
             }
             
@@ -214,13 +219,13 @@ $last_position = end($array_sprints);
             }
     }
 
-    function ideal_burn($horas, $fecha_inicial, $fecha_final) {
+    function ideal_burn($horas, $fecha_inicial, $fecha_final, $dias_festivos_p) {
 
         $datos = array();
         $suma_horas = $horas;
 
 
-        $dias = intervalo_dias($fecha_inicial, $fecha_final, 1);
+        $dias = intervalo_dias($fecha_inicial, $fecha_final, 1, $dias_festivos_p);
         $resta = ($horas / $dias);
 
         for ($i = 1; $i <= $dias; $i++) {
@@ -242,7 +247,9 @@ $last_position = end($array_sprints);
         
         for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
             if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){	
-                $j++;
+                if (!(in_array(date('Y-m-d',$fecha1), $dias_festivos))) {
+                    $j++;
+                }
             }
         }
          
@@ -251,8 +258,9 @@ $last_position = end($array_sprints);
 
     $arreglo_actual_burn = array();
     $total_tiempo_desarrollo = $consulta_tiempo_desarrollo; //120 Horas
+    echo $total_tiempo_desarrollo;
     $contador = 0;
-    $total_dias_sprint = intervalo_dias($array_actual['fecha_desde'], $array_actual['fecha_hasta'], 1); // 17 Dias
+    $total_dias_sprint = intervalo_dias($array_actual['fecha_desde'], $array_actual['fecha_hasta'], 1, $dias_festivos); // 17 Dias
 
 
     for ($i = 1; $i <= $total_dias_sprint; $i++) {
@@ -306,40 +314,14 @@ $last_position = end($array_sprints);
     
     }
     
-    /*
-    function arreglo_barchart2($barChart) {
-  
-        $tiempo_total_todos = 0;    
-        $tiempo_terminado_todos = 0;         
-
-        $grafica2 = array();
-        
-        foreach ($barChart as $value2) {
-
-
-            $tiempo_terminado_todos = $value2['tiempo_terminado']+$tiempo_terminado_todos;
-            $tiempo_total_todos = $value2['tiempo_total']+$tiempo_total_todos;
-
-        }
-
-        $grafica2[] = array(
-            'Equipo Desarrollo',
-            (($tiempo_terminado_todos*100)/$tiempo_total_todos)
-        );
-
-        return json_encode($grafica2);
     
-    }    
-    */
-
-    $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $array_actual['fecha_desde'], $array_actual['fecha_hasta']);
-    $arreglo_dias = intervalo_dias($array_actual['fecha_desde'], $array_actual['fecha_hasta'], 2);
+    $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $array_actual['fecha_desde'], $array_actual['fecha_hasta'], $dias_festivos);
+    $arreglo_dias = intervalo_dias($array_actual['fecha_desde'], $array_actual['fecha_hasta'], 2, $dias_festivos);
     $json_actual_burn = json_encode($arreglo_actual_burn);
-    var_dump($grafica2);
+
     $datos_barChart = arreglo_barchart($barChart, $grafica2);
-    var_dump($grafica2);
+
     $datos_barChart2 =  json_encode($grafica2);
-    
     
 
     $this->registerJs("
@@ -512,4 +494,14 @@ $last_position = end($array_sprints);
             });   
     ");
 ?>
+<?php
+echo '<pre>';
+print_r($arreglo_actual_burn);
+echo '</pre>';
+echo '<h1>'.$consulta_tiempo_desarrollo.'</h1]><br>';
+//echo '<h1>'.$total_tiempo_desarrollo.'</h1]><br>';
+
+
+?>
 <?php Pjax::end(); ?>
+
