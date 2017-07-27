@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span class="time"></span>
                     <h3 class="timeline-header" style="background: #f9f9f9">Análisis, Diseño y Desarrollo de software</h3>
                     <div class="timeline-body">
-                        Francisco Andres Ortega Florez
+                        Francisco Andrés Ortega Florez
                     </div>
                 </div>
             </li>
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span class="time"></span>
                     <h3 class="timeline-header" style="background: #f9f9f9">Análisis - Desarrollo de software - Administración de la plataforma</h3>
                     <div class="timeline-body">
-                        Ing. Diego Luis Cardona
+                        Ing. Diego Luis Naranjo Cardona
                     </div>
                 </div>
             </li>
@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span class="time"></span>
                     <h3 class="timeline-header" style="background: #f9f9f9">Idea y Supervisión</h3>
                     <div class="timeline-body">
-                        Ing. Diego Luis Cardona
+                        Ing. Diego Luis Naranjo Cardona
                     </div>
                 </div>
             </li>
@@ -59,12 +59,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span class="time"></span>
                     <h3 class="timeline-header" style="background: #f9f9f9">Agradecimientos</h3>
                     <div class="timeline-body">
-                        - Jorge Alberto (Desarrollador)<br>
-                        - Juan Pablo Sanchez (Desarrollador)<br>
-                        - Harrison Gonzales Parra (Desarrollador)<br>
-                        - Leoardo Rodriguez (Desarrollador)<br>
+                        - Jorge Alberto Rodríguez (Desarrollador)<br>
+                        - Juan Pablo Sánchez (Desarrollador)<br>
+                        - Harrison Gonzales (Desarrollador)<br>
+                        - Leonardo Rodríguez (Desarrollador)<br>
                         - Luisa Fernanda Bedoya (Desarrollador)<br>
-                        - Juan Fernando Hoyos(Desarrollador)<br>
+                        - Juan Fernando Hoyos (Desarrollador)<br>
                     </div>
                 </div>
             </li>

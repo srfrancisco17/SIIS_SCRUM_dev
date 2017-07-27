@@ -43,7 +43,7 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            $validar_tipousuario = [Usuarios::USUARIO_SCRUM_MASTER];
+                            $validar_tipousuario = [Usuarios::USUARIO_SCRUM_MASTER || Usuarios::USUARIO_PRODUCT_OWNER];
                             return Usuarios::tipoUsuarioArreglo($validar_tipousuario) && Usuarios::estaActivo();
                         }
                     ],
@@ -107,6 +107,10 @@ class SiteController extends Controller
                 case Usuarios::USUARIO_DEVELOPER:
 
                     return $this->redirect(["sprint-usuarios/index"]); 
+                    
+                case Usuarios::USUARIO_PRODUCT_OWNER:
+
+                    return $this->redirect(["site/index-scrum-master"]); 
 
             }
 
@@ -126,7 +130,11 @@ class SiteController extends Controller
                 case Usuarios::USUARIO_DEVELOPER:
 
                     return $this->redirect(["sprint-usuarios/index"]); 
+                    
+                case Usuarios::USUARIO_PRODUCT_OWNER:
 
+                    return $this->redirect(["site/index-scrum-master"]);     
+                
             }        
         }else {
             return $this->render('login', [

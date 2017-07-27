@@ -123,6 +123,25 @@ use app\models\Usuarios;
                 ];                
                 
                 
+            }else if (Yii::$app->user->identity->tipo_usuario == Usuarios::USUARIO_PRODUCT_OWNER){
+                
+                $menu = [
+                    'options' => ['class' => 'sidebar-menu'],
+                    'items' => [
+                        ['label' => 'Menu PRODUCT_OWNER', 'options' => ['class' => 'header']],
+                        [
+                            'label' => 'Dashboard',
+                            'icon' => 'dashboard ',
+                            'url' => ['site/index-scrum-master'],
+
+                        ],
+                        [
+                            'label' => 'Acerca Del Proyecto',
+                            'icon' => 'info-circle',
+                            'url' => ['site/about'],
+                        ],                    
+                    ]
+                ]; 
             }
  
         ?>
