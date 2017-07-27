@@ -258,7 +258,7 @@ $last_position = end($array_sprints);
 
     $arreglo_actual_burn = array();
     $total_tiempo_desarrollo = $consulta_tiempo_desarrollo; //120 Horas
-    echo $total_tiempo_desarrollo;
+
     $contador = 0;
     $total_dias_sprint = intervalo_dias($array_actual['fecha_desde'], $array_actual['fecha_hasta'], 1, $dias_festivos); // 17 Dias
 
@@ -493,15 +493,6 @@ $last_position = end($array_sprints);
                 }]
             });   
     ");
-?>
-<?php
-echo '<pre>';
-print_r($arreglo_actual_burn);
-echo '</pre>';
-echo '<h1>'.$consulta_tiempo_desarrollo.'</h1]><br>';
-//echo '<h1>'.$total_tiempo_desarrollo.'</h1]><br>';
-
-
 ?>
 <?php Pjax::end(); ?>
 
