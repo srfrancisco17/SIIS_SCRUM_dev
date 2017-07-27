@@ -206,14 +206,7 @@ class SiteController extends Controller
             }
         }
         
-//        echo '<pre>';
-//        print_r($array_actual);
-//        echo '<pre>';
-//        exit();
-        
         $array_sprints_usuarios = SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all();
-        
-        
 
         $whereUsuario = "";
         $usuario_id = Yii::$app->request->post('list');
@@ -427,11 +420,23 @@ class SiteController extends Controller
     public function actionIndexDeveloper()
     {
         
-        $sprint_id = 2;
-       
         
-        $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => Yii::$app->user->identity->usuario_id]);
-        $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => Yii::$app->user->identity->usuario_id])->sum('requerimientos.tiempo_desarrollo');
+        $array_sprints = Sprints::find()->orderBy(['sprint_id'=>SORT_ASC])->asArray()->all();
+        $usuario_id = Yii::$app->user->identity->usuario_id;
+        //$sprint_id = 2;
+        
+        
+        if (is_null(Yii::$app->request->post('sprint_id'))){
+            
+            $last_position = end($array_sprints);
+            $sprint_id = $last_position['sprint_id'];
+            
+        }else{
+            $sprint_id = Yii::$app->request->post('sprint_id');
+        }        
+        
+        $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => $usuario_id]);
+        $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
     
         $connection = Yii::$app->db;
         $consulta_acutal_burn = $connection->createCommand("select 
@@ -455,7 +460,7 @@ class SiteController extends Controller
                                             group by rt.fecha_terminado::date
                                             order by rt.fecha_terminado::date")
                                             ->bindValue(':sprint_id', $sprint_id)
-                                            ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
+                                            ->bindValue(':usuario_asignado', $usuario_id)
                                             ->queryAll();        
          
         $consulta_total_tareas = $connection->createCommand("select 
@@ -469,7 +474,7 @@ class SiteController extends Controller
                                                             where sr.sprint_id = :sprint_id
                                                             and sr.usuario_asignado = :usuario_asignado")
                                                     ->bindValue(':sprint_id', $sprint_id)
-                                                    ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
+                                                    ->bindValue(':usuario_asignado', $usuario_id)
                                                     ->queryScalar(); 
         
         $consulta_total_tareas_terminadas = $connection->createCommand("select 
@@ -484,7 +489,7 @@ class SiteController extends Controller
                                                             and sr.usuario_asignado = :usuario_asignado
                                                             and srt.estado = '4' ")
                                                     ->bindValue(':sprint_id', $sprint_id)
-                                                    ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
+                                                    ->bindValue(':usuario_asignado', $usuario_id)
                                                     ->queryScalar(); 
 
         $consulta_total_requerimientos = $connection->createCommand("select 
@@ -493,7 +498,7 @@ class SiteController extends Controller
                                                                     where sprint_id = :sprint_id
                                                                     and usuario_asignado = :usuario_asignado")
                                             ->bindValue(':sprint_id', $sprint_id)
-                                            ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
+                                            ->bindValue(':usuario_asignado', $usuario_id)
                                             ->queryScalar(); 
                   
         $consulta_total_requerimientos_terminados = $connection->createCommand("select 
@@ -503,9 +508,47 @@ class SiteController extends Controller
                                                                     and usuario_asignado = :usuario_asignado
                                                                     and estado = '4' ")
                                             ->bindValue(':sprint_id', $sprint_id)
-                                            ->bindValue(':usuario_asignado', Yii::$app->user->identity->usuario_id)
+                                            ->bindValue(':usuario_asignado', $usuario_id)
                                             ->queryScalar(); 
         
+        
+        $barChart = $connection->createCommand(" 
+
+            select
+                    usu.usuario_id, usu.nombres, usu.apellidos, sum(r.tiempo_desarrollo) as tiempo_total,
+                    (
+                            select
+                                    sum(rt1.horas_desarrollo)
+                            from sprint_requerimientos as sr1
+                            left join sprint_requerimientos_tareas srt1
+                            on(
+                                    sr1.sprint_id = srt1.sprint_id
+                                    and
+                                    sr1.requerimiento_id = srt1.requerimiento_id
+                            )
+                            left join requerimientos_tareas as rt1
+                            on(
+                                    srt1.requerimiento_id = rt1.requerimiento_id
+                                    and rt1.tarea_id = srt1.tarea_id
+                            )
+                            where sr1.sprint_id = ".$sprint_id." and srt1.estado = '4' and sr1.usuario_asignado = ".$usuario_id."
+                            
+                    ) as tiempo_terminado
+            from
+                    sprint_requerimientos as sr
+            inner join requerimientos as r
+            on (
+                    r.requerimiento_id = sr.requerimiento_id
+            )
+            inner join usuarios as usu
+            on (
+                    usu.usuario_id = sr.usuario_asignado
+            )
+            where
+                    sr.sprint_id = ".$sprint_id." and usuario_asignado = ".$usuario_id."
+            group by 1, 2, 3, sr.usuario_asignado            
+
+        ")->queryOne();
         
         return $this->render('indexDeveloper',[
             'consulta_ideal_burn' => $consulta_ideal_burn,
@@ -515,6 +558,8 @@ class SiteController extends Controller
             'consulta_total_requerimientos_terminados' => $consulta_total_requerimientos_terminados,
             'consulta_total_tareas' => $consulta_total_tareas,
             'consulta_total_tareas_terminadas' => $consulta_total_tareas_terminadas,
+            'array_sprints' => $array_sprints,
+            'barChart' => $barChart,
         ]);
     }
 }
