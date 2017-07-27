@@ -13,6 +13,10 @@
     $last_position = end($array_sprints);
     
 
+//    echo '<pre>';
+//    var_dump($barChart);
+//    echo '</pre>';
+//    exit();
     
 ?>
 <?php Pjax::begin(); ?>
@@ -133,6 +137,7 @@
     </div>
 </div>
 <?php
+
     if (!empty($consulta_ideal_burn)){
     
         $dias_festivos = array('2017-07-20', '2017-08-07', '2017-08-21', '2017-10-16', '2017-11-06', '2017-11-13', '2017-12-08', '2017-12-25', '2018-01-01', '2018-01-08');
@@ -228,11 +233,21 @@
             
             $grafica = array();
 
-
-            $grafica[] = array(
-                $barChart['nombres'].' '.$barChart['apellidos'],
-                (($barChart['tiempo_terminado']*100)/$barChart['tiempo_total'])
-            );
+            $tiempo_terminado = $barChart['tiempo_terminado'];
+            $tiempo_total = $barChart['tiempo_total'];
+            
+            if (is_null($tiempo_terminado) || is_null($tiempo_total)){
+                
+                $grafica[] = array('', 0);
+                
+            }else{
+                
+                $grafica[] = array(
+                    $barChart['nombres'].' '.$barChart['apellidos'],
+                    (($tiempo_terminado*100)/$tiempo_total)
+                );
+                
+            }
 
             return json_encode($grafica);
               
@@ -243,7 +258,8 @@
         $arreglo_dias = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 2, $dias_festivos);
         $json_actual_burn = json_encode($arreglo_actual_burn);
 
-        $titulo = $consulta_ideal_burn->sprint->sprint_alias;
+        $titulo = $consulta_ideal_burn->sprint->sprint_alias.' = '.$consulta_tiempo_desarrollo. ' horas ';
+   
         $subtitulo = '('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_hasta.')';
         
         $datos_barChart = arreglo_barchart($barChart);
@@ -310,8 +326,7 @@
 
         ");
         
-        
-        
+         
     $this->registerJs("
             Highcharts.chart('container3', {
                 chart: {
@@ -364,10 +379,7 @@
                     }
                 }]
             });   
-    ");
-        
+    ");  
     } 
-    
-    
 ?>
 <?php Pjax::end(); ?>
