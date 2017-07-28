@@ -20,7 +20,7 @@ use yii\helpers\ArrayHelper;
  * @property string $tipo_usuario
  * @property string $color
  * @property int $estado
- * @property string $auth_key
+ * @property string $skin
  *
  * @property ComitesAsistentes[] $comitesAsistentes
  * @property Comites[] $comites
@@ -83,7 +83,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ['password_repeat', 'compare', 'compareAttribute' => 'new_password'],
             ['new_password', 'compare', 'compareAttribute' => 'password_repeat'],
             [['departamento'], 'string', 'max' => 4],
-            [['auth_key'], 'string', 'max' => 32],
+            [['skin'], 'string', 'max' => 20],
             [['departamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamentos::className(), 'targetAttribute' => ['departamento' => 'departamento_id']],
             [['tipo_documento'], 'exist', 'skipOnError' => true, 'targetClass' => TiposDocumentos::className(), 'targetAttribute' => ['tipo_documento' => 'documento_id']],
             [['tipo_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => TiposUsuarios::className(), 'targetAttribute' => ['tipo_usuario' => 'tipo_usuario_id']],
@@ -111,7 +111,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'tipo_usuario' => 'Tipo Usuario',
             'color' => 'Color',
             'estado' => 'Estado',
-            'auth_key' => 'Auth Key',
+            'skin' => 'Skin',
         ];
     }
 

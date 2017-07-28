@@ -120,6 +120,9 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
             $tipo_usuario = Yii::$app->user->identity->tipo_usuario;
+            
+            $session = Yii::$app->getSession();
+            $session->set('skin_session', Yii::$app->user->identity->skin);
 
             switch ($tipo_usuario) {
 

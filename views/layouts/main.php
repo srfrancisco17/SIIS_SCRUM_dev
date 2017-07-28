@@ -37,9 +37,14 @@ if (Yii::$app->controller->action->id === 'login') {
         <?php $this->head() ?>
     </head>
     
-    
-    <body class="hold-transition skin-green sidebar-mini">
+    <?php
+        $session = Yii::$app->getSession();
+        $variable_sesion = $session->get('skin_session');
+        echo '<body class="hold-transition '.$variable_sesion.' sidebar-mini">';
+    ?>
+    <!--<body class="hold-transition skin-green sidebar-mini">-->
     <!--<body id="body1" class="hold-transition layout-boxed skin-green sidebar-mini">-->
+    
     <?php $this->beginBody() ?>
     <div class="wrapper">
 

@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 use dmstr\widgets\Alert;
 
@@ -165,13 +166,22 @@ use dmstr\widgets\Alert;
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
                 <h3 class="control-sidebar-heading">General Settings</h3>
-            <a href="javascript:void(0)" onclick="change_skin('skin-blue')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
             <br>
-            <a href="#" onclick="change_skin('skin-yellow')" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a>
+            <?php
+                
+                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn btn-primary btn-xs']);
+                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn btn-warning btn-xs']);
+                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn btn-success btn-xs']);
+                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn bg-purple btn-xs']);
+                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn btn-danger btn-xs']);
+                echo Html::a('<i class="fa fa-eye"></i>', ['site/sad'], ['class' => 'btn bg-black btn-xs']);
+            
+            ?>
+<!--            <a href="#" onclick="change_skin('skin-yellow')" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a>
             <a href="#" onclick="change_skin('skin-green')" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
             <a href="#" onclick="change_skin('skin-purple')" class="btn bg-purple btn-xs"><i class="fa fa-eye"></i></a>
             <a href="#" onclick="change_skin('skin-red')" class="btn btn-danger btn-xs"><i class="fa fa-eye"></i></a>
-            <a href="#" onclick="change_skin('skin-black')" class="btn bg-black btn-xs"><i class="fa fa-eye"></i></a>
+            <a href="#" onclick="change_skin('skin-black')" class="btn bg-black btn-xs"><i class="fa fa-eye"></i></a>-->
                 <!-- /.form-group -->
             </form>
         </div>
