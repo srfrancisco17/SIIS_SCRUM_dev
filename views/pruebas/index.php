@@ -51,35 +51,45 @@ $this->registerJs($script);
 
 
 <div class="row">
-    
-    <div class="col-lg-12">
-        <!--
-        <div class="form-group">
-            <form name="add_name" id="add_name">
-                <table class="table table-bordered" id="dynamic_field">
+ <div class="box box-solid" style="max-width: 150px;">
+            <div class="box-body no-padding">
+                <table id="layout-skins-list" class="table table-striped bring-up nth-2-center">
+                    <thead>
                     <tr>
-                        <td><input type="text" name="name[]" id="name" placeholder="Enter Name" class="form-control name_list"/></td>
-                        <td><input type="text" name="lugar[]" id="lugar" placeholder="Enter Lugar" class="form-control name_list"/></td>
-                        <td><button  type="button" name="add" id="add" class="btn-success">Add more</button></td>
+                        <th style="width: 210px; text-align: center;">Skin Class</th>
                     </tr>
-                </table>
-                <input type="button" name="submit" id="submit" value="submit" />
-            </form>
-        </div>
-        -->
-        
-        <div class="form-group">
-            <form name="add_name" id="add_name" method="POST" action="index.php?r=pruebas/insertar">
-                <table class="table table-bordered" id="dynamic_field">
+                    </thead>
+                    <tbody>
                     <tr>
-                        <td><input type="text" name="name[]" id="name" placeholder="Enter Name" class="form-control name_list"/></td>
-                        <td><input type="text" name="lugar[]" id="lugar" placeholder="Enter Lugar" class="form-control name_list"/></td>
-                        <td><button  type="button" name="add" id="add" class="btn-success">Add more</button></td>
+                        <td>
+                            <a style="width: 130px;" href="#" data-skin="skin-blue" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
+                        </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <a style="width: 130px;" href="#" data-skin="skin-yellow-light" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a style="width: 130px;" href="#" data-skin="skin-green" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a style="width: 130px;" href="#" data-skin="skin-purple" class="btn bg-purple btn-xs"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a style="width: 130px;" href="#" data-skin="skin-red" class="btn btn-danger btn-xs"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a style="width: 130px;" href="#" data-skin="skin-black" class="btn bg-black btn-xs"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
                 </table>
-                <input type="submit" name="submit" id="submit" value="submit" />
-            </form>
-        </div>
-    </div>
-
+            </div>
+        </div>   
+   
 </div>

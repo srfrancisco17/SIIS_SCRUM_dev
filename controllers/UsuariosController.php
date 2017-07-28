@@ -190,6 +190,23 @@ class UsuariosController extends Controller
         }        
         
     }
+    
+    public function actionRespuesta($id){
+
+        if (Yii::$app->request->isAjax){
+            
+            $conexion = Yii::$app->db;
+            
+            $conexion->createCommand()
+                        ->update('usuarios', ['skin' => $id], ['usuario_id' => Yii::$app->user->identity->usuario_id])
+			->execute();
+            
+            $session = Yii::$app->getSession();
+            $session->set('skin_session', $id);
+                    
+        } 
+    }
+    
 
     /**
      * Finds the Usuarios model based on its primary key value.

@@ -2,7 +2,6 @@
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 use dmstr\widgets\Alert;
-
 ?>
 <div class="content-wrapper">
     <section class="content-header">
@@ -158,32 +157,65 @@ use dmstr\widgets\Alert;
                 </li>
             </ul>
             <!-- /.control-sidebar-menu -->
-
         </div>
         <!-- /.tab-pane -->
-
         <!-- Settings tab content -->
         <div class="tab-pane" id="control-sidebar-settings-tab">
-            <form method="post">
-                <h3 class="control-sidebar-heading">General Settings</h3>
-            <br>
-            <?php
-                
-                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn btn-primary btn-xs']);
-                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn btn-warning btn-xs']);
-                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn btn-success btn-xs']);
-                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn bg-purple btn-xs']);
-                echo Html::a('<i class="fa fa-eye"></i>', ['#'], ['class' => 'btn btn-danger btn-xs']);
-                echo Html::a('<i class="fa fa-eye"></i>', ['site/sad'], ['class' => 'btn bg-black btn-xs']);
-            
-            ?>
-<!--            <a href="#" onclick="change_skin('skin-yellow')" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a>
-            <a href="#" onclick="change_skin('skin-green')" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
-            <a href="#" onclick="change_skin('skin-purple')" class="btn bg-purple btn-xs"><i class="fa fa-eye"></i></a>
-            <a href="#" onclick="change_skin('skin-red')" class="btn btn-danger btn-xs"><i class="fa fa-eye"></i></a>
-            <a href="#" onclick="change_skin('skin-black')" class="btn bg-black btn-xs"><i class="fa fa-eye"></i></a>-->
-                <!-- /.form-group -->
-            </form>
+            <div class="row">
+                <div class="col-lg-12" style="text-align: center;">
+                    <h3 class="control-sidebar-heading">Configuraciones</h3>
+                </div>
+                <div class="col-lg-12">
+                    <div class="box box-solid">
+                       <div class="box-body no-padding">
+                           <table id="layout-skins-list" class="table table-striped bring-up nth-2-center">
+                               <thead>
+                               <tr>
+                                   <th style="width: 210px; text-align: center;">Skin Class</th>
+                               </tr>
+                               </thead>
+                               <tbody>
+                               <tr>
+                                   <td>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn btn-primary', 'onclick' => 'change_skin("skin-blue")', 'style' => 'width: 180px;']) ?>
+                                       <!--<a style="width: 180px;" href="#" data-skin="skin-blue" class="btn btn-primary"><i class="fa fa-eye"></i></a>-->
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn btn-warning', 'onclick' => 'change_skin("skin-yellow")', 'style' => 'width: 180px;'])?>
+                                       <!--<a style="width: 180px;" href="#" data-skin="skin-yellow-light" class="btn btn-warning"><i class="fa fa-eye"></i></a>-->
+                                   </td>
+                               </tr>
+                               <tr>
+                                    <td>
+                                        <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn btn-success', 'onclick' => 'change_skin("skin-green")', 'style' => 'width: 180px;'])?>
+                                    </td>  
+                               </tr>
+                               <tr>
+                                   <td>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn bg-purple', 'onclick' => 'change_skin("skin-purple")', 'style' => 'width: 180px;'])?>
+                                       <!--<a style="width: 180px;" href="#" data-skin="skin-purple" class="btn bg-purple"><i class="fa fa-eye"></i></a>-->
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn btn-danger', 'onclick' => 'change_skin("skin-red")', 'style' => 'width: 180px;'])?>
+                                       <!--<a style="width: 180px;" href="#" data-skin="skin-red" class="btn btn-danger"><i class="fa fa-eye"></i></a>-->
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn bg-black', 'onclick' => 'change_skin("skin-black")', 'style' => 'width: 180px;'])?>
+                                       <!--<a style="width: 180px;" href="#" data-skin="skin-black" class="btn bg-black"><i class="fa fa-eye"></i></a>-->
+                                   </td>
+                               </tr>
+                               </tbody>
+                           </table>
+                       </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- /.tab-pane -->
     </div>
@@ -196,13 +228,17 @@ $this->registerJs("
     $(function (){
             
         change_skin = function(parametro){
+       
             localStorage.setItem('skin', parametro);
-            $('body').attr('class', 'hold-transition'+' '+parametro+' '+'sidebar-mini');
+            $('body').attr('class', parametro+' '+'sidebar-mini');
 
+
+            $.ajax({
+                    type: 'POST',    
+                    url:'index.php?r=usuarios/respuesta&id='+parametro,
+            }); 
         }
         
-        
-    
     });
 ");
 ?>
