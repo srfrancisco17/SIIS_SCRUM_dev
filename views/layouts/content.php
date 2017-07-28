@@ -240,5 +240,62 @@ $this->registerJs("
         }
         
     });
+    
+    $(document).ready(function(){
+    
+        $('#ir_arriba').click(function(){
+        
+            $('body, html').animate({
+                
+                scrollTop: '0px'
+    
+            }, 300);
+
+        });
+        
+        $(window).scroll(function(){
+            
+            if( $(this).scrollTop() > 0 ){
+                $('.arriba_block').slideDown(300);
+            }else{
+                $('.arriba_block').slideUp(300);
+            }
+        });
+    });
 ");
 ?>
+<style>
+
+.arriba_position_bottom {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    
+}
+
+.arriba_block {
+    float: left;
+    margin: 0;
+    border-right: 1px solid rgba(0, 0, 0, 0.11);
+    line-height: 32px;
+    background-color: #024959;
+    display: none;
+}
+
+.ir-arriba{
+    display: inline-block;
+    background: #024959;
+    font-size: 20px;
+    color: white;
+    padding: 15px;
+}
+</style>
+
+<div id="ir_arriba" class="arriba_position_bottom" style="display: block;">
+    <div class="arriba_block">
+        <a href="javascript:void(0)">    
+            <span class="ir-arriba glyphicon glyphicon-menu-up"></span>
+        </a> 
+    </div>
+</div>

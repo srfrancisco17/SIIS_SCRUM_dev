@@ -1,12 +1,12 @@
 <?php
 
 //Modo Desarrollador
-defined('YII_DEBUG') or define('YII_DEBUG', true);
-defined('YII_ENV') or define('YII_ENV', 'dev');
+//defined('YII_DEBUG') or define('YII_DEBUG', true);
+//defined('YII_ENV') or define('YII_ENV', 'dev');
 
 //Modo Produccion
-//defined('YII_ENV_PROD') or define('YII_ENV_PROD', 'prod');
-//defined('YII_DEBUG') or define('YII_DEBUG', FALSE);
+defined('YII_ENV_PROD') or define('YII_ENV_PROD', 'prod');
+defined('YII_DEBUG') or define('YII_DEBUG', FALSE);
 
 require(__DIR__ . '/../vendor/autoload.php');
 require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');

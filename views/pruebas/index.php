@@ -49,47 +49,21 @@ JS;
 $this->registerJs($script);
 ?>
 
+<style>
+    /*
+.yii-debug-toolbar_position_bottom {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+}
 
-<div class="row">
- <div class="box box-solid" style="max-width: 150px;">
-            <div class="box-body no-padding">
-                <table id="layout-skins-list" class="table table-striped bring-up nth-2-center">
-                    <thead>
-                    <tr>
-                        <th style="width: 210px; text-align: center;">Skin Class</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <a style="width: 130px;" href="#" data-skin="skin-blue" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a style="width: 130px;" href="#" data-skin="skin-yellow-light" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><a style="width: 130px;" href="#" data-skin="skin-green" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a style="width: 130px;" href="#" data-skin="skin-purple" class="btn bg-purple btn-xs"><i class="fa fa-eye"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><a style="width: 130px;" href="#" data-skin="skin-red" class="btn btn-danger btn-xs"><i class="fa fa-eye"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><a style="width: 130px;" href="#" data-skin="skin-black" class="btn bg-black btn-xs"><i class="fa fa-eye"></i></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>   
-   
-</div>
+.yii-debug-toolbar {
+    font: 11px Verdana, Arial, sans-serif;
+    text-align: left;
+    width: 96px;
+    transition: width .3s ease;
+    z-index: 1000000;
+}   */
+</style>
+

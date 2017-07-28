@@ -14,7 +14,7 @@ use app\models\Usuarios;
                 <p>
                     <?= Yii::$app->user->identity->nombres ?>
                 </p>
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                <a href="#"><i class="fa fa-circle text-success"></i> En Linea</a>
             </div>
         </div>
         <form action="#" method="get" class="sidebar-form">
