@@ -177,36 +177,36 @@ use dmstr\widgets\Alert;
                                <tbody>
                                <tr>
                                    <td>
-                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn btn-primary', 'onclick' => 'change_skin("skin-blue")', 'style' => 'width: 180px;']) ?>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', 'javascript:void(0)', ['class' => 'btn btn-primary', 'onclick' => 'change_skin("skin-blue")', 'style' => 'width: 180px;']) ?>
                                        <!--<a style="width: 180px;" href="#" data-skin="skin-blue" class="btn btn-primary"><i class="fa fa-eye"></i></a>-->
                                    </td>
                                </tr>
                                <tr>
                                    <td>
-                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn btn-warning', 'onclick' => 'change_skin("skin-yellow")', 'style' => 'width: 180px;'])?>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', 'javascript:void(0)', ['class' => 'btn btn-warning', 'onclick' => 'change_skin("skin-yellow")', 'style' => 'width: 180px;'])?>
                                        <!--<a style="width: 180px;" href="#" data-skin="skin-yellow-light" class="btn btn-warning"><i class="fa fa-eye"></i></a>-->
                                    </td>
                                </tr>
                                <tr>
                                     <td>
-                                        <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn btn-success', 'onclick' => 'change_skin("skin-green")', 'style' => 'width: 180px;'])?>
+                                        <?= Html::a('<i class="fa fa-eye"></i>', 'javascript:void(0)', ['class' => 'btn btn-success', 'onclick' => 'change_skin("skin-green")', 'style' => 'width: 180px;'])?>
                                     </td>  
                                </tr>
                                <tr>
                                    <td>
-                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn bg-purple', 'onclick' => 'change_skin("skin-purple")', 'style' => 'width: 180px;'])?>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', 'javascript:void(0)', ['class' => 'btn bg-purple', 'onclick' => 'change_skin("skin-purple")', 'style' => 'width: 180px;'])?>
                                        <!--<a style="width: 180px;" href="#" data-skin="skin-purple" class="btn bg-purple"><i class="fa fa-eye"></i></a>-->
                                    </td>
                                </tr>
                                <tr>
                                    <td>
-                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn btn-danger', 'onclick' => 'change_skin("skin-red")', 'style' => 'width: 180px;'])?>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', 'javascript:void(0)', ['class' => 'btn btn-danger', 'onclick' => 'change_skin("skin-red")', 'style' => 'width: 180px;'])?>
                                        <!--<a style="width: 180px;" href="#" data-skin="skin-red" class="btn btn-danger"><i class="fa fa-eye"></i></a>-->
                                    </td>
                                </tr>
                                <tr>
                                    <td>
-                                       <?= Html::a('<i class="fa fa-eye"></i>', '#', ['class' => 'btn bg-black', 'onclick' => 'change_skin("skin-black")', 'style' => 'width: 180px;'])?>
+                                       <?= Html::a('<i class="fa fa-eye"></i>', 'javascript:void(0)', ['class' => 'btn bg-black', 'onclick' => 'change_skin("skin-black")', 'style' => 'width: 180px;'])?>
                                        <!--<a style="width: 180px;" href="#" data-skin="skin-black" class="btn bg-black"><i class="fa fa-eye"></i></a>-->
                                    </td>
                                </tr>
