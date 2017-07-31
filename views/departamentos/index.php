@@ -30,7 +30,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     //['class' => 'yii\grid\SerialColumn'],
                     ['label' => 'ID', 'attribute' => 'departamento_id', 'filter' => FALSE],
-                    ['label' => 'Descripcion', 'attribute' => 'descripcion', 'filter' => FALSE],
+                    ['label' => 'Descripcion', 'attribute' => 'descripcion', 'filter' => TRUE],
+                    [
+                        'label' => 'Estado',
+                        'attribute' => 'estado',
+                        'value' => function ($data) {
+
+                            if($data['estado'] == 0){
+                                return 'Inactivo';
+                            }
+                            if($data['estado'] == 1){
+                                return 'Activo';
+                            }
+                            return 'Error';
+                        },
+                        'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
+                        'contentOptions' => ['style' => 'width:5px;'],
+                    ],
                     [
                         'class'=>'kartik\grid\ActionColumn',
                         'template' => '{update}{delete}',
@@ -46,8 +62,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]);
                             },
                         ]
-                    ],
-                ],
+                    ],            
+                ],                 
                 'toolbar' => [
                         ['content' =>
                         Html::a('<i class="glyphicon glyphicon-plus"></i> Agregar Departamento', '#', [

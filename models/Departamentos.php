@@ -4,12 +4,13 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "departamentos".
- *
+/** 
+ * This is the model class for table "departamentos". 
+ * 
  * @property string $departamento_id
  * @property string $descripcion
- *
+ * @property string $estado
+ * 
  * @property Requerimientos[] $requerimientos
  * @property Usuarios[] $usuarios
  */
@@ -32,6 +33,7 @@ class Departamentos extends \yii\db\ActiveRecord
             [['departamento_id'], 'required'],
             [['departamento_id'], 'string', 'max' => 4],
             [['descripcion'], 'string', 'max' => 60],
+            [['estado'], 'string', 'max' => 1],
         ];
     }
 
@@ -43,6 +45,7 @@ class Departamentos extends \yii\db\ActiveRecord
         return [
             'departamento_id' => 'Departamento ID',
             'descripcion' => 'Descripcion',
+            'estado' => 'Estado',
         ];
     }
 

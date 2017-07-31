@@ -125,7 +125,12 @@ class RequerimientosController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->estado = '0';
+        
+        $model->save();
+        
+        
         return $this->redirect(['index']);
     }
 

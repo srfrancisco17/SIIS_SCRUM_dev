@@ -149,8 +149,11 @@ public function actionCreate($submit = false)
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id)->delete();
+        /*
+        $model->estado = '0';
+        $model->save(); 
+        */
         return $this->redirect(['index']);
     }
 

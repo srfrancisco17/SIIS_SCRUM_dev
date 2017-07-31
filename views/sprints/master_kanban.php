@@ -119,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                             <tr>
                                 <td><?= $contador ?></td>
-                                <td> <?= Html::a($value->usuario->nombreCompleto, '#') ?> </td>
+                                <td> <?= Html::a($value->usuario->nombreCompleto, '#'.$value->usuario->usuario_id) ?> </td>
                                 <td style ='background-color: <?= $value->usuario->color ?>'><?= $value->usuario->color ?></td>
                                 <td><?= $suma_total ?> hr</td>
                             </tr>
@@ -186,7 +186,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //$variable_control = 0;
             
             $usuario_color = empty($consulta[$i]->usuarioAsignado->color) ? '#656565' : $consulta[$i]->usuarioAsignado->color;
-    
+            
+            $usuario_id = empty($consulta[$i]->usuarioAsignado->usuario_id) ? '' : $consulta[$i]->usuarioAsignado->usuario_id;
         
         foreach ($consulta1 as $objRequerimientos) {
             $items1 = array(); 
@@ -288,7 +289,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <!--<div class="row">-->
             <div class="col-lg-3">
                 
-                <div class="box box-default collapsed-box" style="background-color: <?= $usuario_color ?>;">
+                <div id="<?= $usuario_id ?>" class="box box-default collapsed-box" style="background-color: <?= $usuario_color ?>;">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?=  $objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">

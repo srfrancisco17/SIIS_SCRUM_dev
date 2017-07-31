@@ -66,6 +66,7 @@ use app\models\Usuarios;
                         [
                             'label' => 'Diagramas',
                             'icon' => 'folder-open',
+                            'visible' => FALSE,
                             'url' => ['#'],
                             'items' => [
                                 ['label' => 'Gantt', 'icon'=>'align-left', 'url' => ['diagramas/gantt']],
