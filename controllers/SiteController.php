@@ -193,7 +193,7 @@ class SiteController extends Controller
         
         //$sprint_id = 1;
         
-        $array_sprints = Sprints::find()->orderBy(['sprint_id'=>SORT_ASC])->asArray()->all();
+        $array_sprints = Sprints::find()->where(['>', 'estado', 0])->orderBy(['sprint_id'=>SORT_ASC])->asArray()->all();
         
 
  
@@ -384,7 +384,7 @@ class SiteController extends Controller
                                     srt1.requerimiento_id = rt1.requerimiento_id
                                     and rt1.tarea_id = srt1.tarea_id
                             )
-                            where sr1.sprint_id = 2 and srt1.estado = '4' and sr1.usuario_asignado = usu.usuario_id
+                            where sr1.sprint_id = ".$sprint_id." and srt1.estado = '4' and sr1.usuario_asignado = usu.usuario_id
                             group by sr1.usuario_asignado
                     ) as tiempo_terminado
             from
