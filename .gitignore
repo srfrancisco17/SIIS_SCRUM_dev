@@ -14,3 +14,6 @@ nbproject/*
 /web/assets
 /web/index.php
 config/db.php
+/nbproject
+/config/db.php
+/web/index.php
