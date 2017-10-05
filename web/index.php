@@ -1,5 +1,9 @@
 <?php
 
+//Modo Desarrollador
+//defined('YII_DEBUG') or define('YII_DEBUG', true);
+//defined('YII_ENV') or define('YII_ENV', 'dev');
+
 //Modo Produccion
 defined('YII_ENV_PROD') or define('YII_ENV_PROD', 'prod');
 defined('YII_DEBUG') or define('YII_DEBUG', FALSE);

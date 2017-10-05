@@ -322,7 +322,6 @@ $last_position = end($array_sprints);
     $datos_barChart = arreglo_barchart($barChart, $grafica2);
 
     $datos_barChart2 =  json_encode($grafica2);
-    
 
     $this->registerJs("
 

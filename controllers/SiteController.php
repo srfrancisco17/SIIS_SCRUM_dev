@@ -384,7 +384,7 @@ class SiteController extends Controller
                                     srt1.requerimiento_id = rt1.requerimiento_id
                                     and rt1.tarea_id = srt1.tarea_id
                             )
-                            where sr1.sprint_id = 2 and srt1.estado = '4' and sr1.usuario_asignado = usu.usuario_id
+                            where sr1.sprint_id = ".$sprint_id." and srt1.estado = '4' and sr1.usuario_asignado = usu.usuario_id
                             group by sr1.usuario_asignado
                     ) as tiempo_terminado
             from
