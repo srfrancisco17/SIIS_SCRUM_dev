@@ -4,17 +4,17 @@ return [
     'class' => 'yii\db\Connection',
     
     //Configuracion Postgres-CDO
-    /*
-        'dsn' => 'pgsql:host=192.168.101.76;port=5434;dbname=desarrollo',
+    
+        'dsn' => 'pgsql:host=192.168.101.76;port=5434;dbname=desarrollo_siis',
         'username' => 'admin',
         'password' => 'coc70a',
-    */
-    //Configuracion Postgres-Casa
     
+    //Configuracion Postgres-Casa
+    /*
         'dsn' => 'pgsql:host=localhost;port=5432;dbname=desarrollo',
         'username' => 'postgres',
         'password' => '123456',
-    
+    */
     //Configuracion MySQL-CDO
     /*
     'dsn' => 'mysql:host=localhost;dbname=desarrollo',
