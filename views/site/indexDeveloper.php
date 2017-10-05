@@ -11,13 +11,6 @@
     $this->params['breadcrumbs'][] = $this->title;
     
     $last_position = end($array_sprints);
-/*
-    echo '<pre>';
-    print_r($consulta_acutal_burn);
-    echo '</pre>';
-    exit();
- * 
- */
 ?>
 <?php Pjax::begin(); ?>
 <div class="row">

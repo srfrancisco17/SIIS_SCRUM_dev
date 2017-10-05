@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 return [
     'class' => 'yii\db\Connection',
     
@@ -22,4 +23,12 @@ return [
     'password' => '',   
     'charset' => 'utf8',
     */
+=======
+//Configuracion Postgres-CDO
+return [
+    'class' => 'yii\db\Connection',
+	'dsn' => 'pgsql:host=192.168.101.76;port=5434;dbname=desarrollo_siis',
+	'username' => 'admin',
+	'password' => 'coc70a'
+>>>>>>> c0e9523c33d80f33bc96fe1f0dce9d6d8bbde5ef
 ];
