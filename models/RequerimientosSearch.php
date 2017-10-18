@@ -93,7 +93,7 @@ class RequerimientosSearch extends Requerimientos
             'requerimientos.tiempo_desarrollo' => $this->tiempo_desarrollo,
         ]);
 
-        $query->andFilterWhere(['like', 'requerimiento_titulo', $this->requerimiento_titulo])
+        $query->andFilterWhere(['ilike', 'requerimiento_titulo', $this->requerimiento_titulo])
             ->andFilterWhere(['like', 'requerimiento_descripcion', $this->requerimiento_descripcion])
             ->andFilterWhere(['like', 'requerimiento_justificacion', $this->requerimiento_justificacion])
             ->andFilterWhere(['like', 'departamento_solicita', $this->departamento_solicita])

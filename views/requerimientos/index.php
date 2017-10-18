@@ -48,15 +48,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     //'comite_id',
                     'requerimiento_titulo',
+                    /*
                     [
                         'attribute' => 'usuario_asignado',
                         'value' => 'sprintRequerimientos2.usuarioAsignado.nombreCompleto',
                         'contentOptions' => ['style' => ' width:150px;'],
-                    ],
+                    ], 
+                    */
                     [
-                            'label' => 'Tiempo Desarrollo',
-                            'attribute' => 'tiempo_desarrollo',
-                            'contentOptions' => ['style' => 'width:10px;'],
+                        'label' => 'Tiempo Desarrollo',
+                        'attribute' => 'tiempo_desarrollo',
+                        'contentOptions' => ['style' => 'width:10px;'],
                     ],
                     //'requerimiento_descripcion:ntext',
                     //'requerimiento_justificacion:ntext',

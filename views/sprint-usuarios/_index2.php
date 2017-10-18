@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
-use kartik\grid\FormulaColumn;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -26,11 +25,11 @@ use yii\helpers\Url;
             //'requerimiento_id',
             [
                 'class'=>'kartik\grid\SerialColumn',
-                'contentOptions'=>['class'=>'kartik-sheet-style'],
-                'width'=>'36px',
+                'width'=>'1%',
                 'header'=>'#',
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
-                //'contentOptions' => ['style' => 'background-color:red; '],
+                //'contentOptions' => ['style' => 'width: 1%;'],
+
             ],
             [
                 'attribute' => 'requerimiento_id',
@@ -39,6 +38,7 @@ use yii\helpers\Url;
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 //'contentOptions' => ['style' => 'background-color:red; '],
+                'contentOptions' => ['style' => 'width:20%;'],
                 
             ],
             [
@@ -52,6 +52,7 @@ use yii\helpers\Url;
                 'format' => 'text',
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 //'contentOptions' => ['style' => 'background-color:red; '],
+                'contentOptions' => ['style' => 'width:40%;'],
             ],
             [
                 'attribute' => 'requerimiento_id',
@@ -60,6 +61,7 @@ use yii\helpers\Url;
                 'value' => function($model) { return $model->requerimiento->usuarioSolicita->nombres.' '.$model->requerimiento->usuarioSolicita->apellidos;},
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                'contentOptions' => ['style' => 'width:10%;'],
                 //'contentOptions' => ['style' => 'background-color:red; '],
             ],
             /*
@@ -76,6 +78,7 @@ use yii\helpers\Url;
                 'label' => 'Hr',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                'contentOptions' => ['style' => 'width:1%;'],
             ],
 
 
@@ -84,7 +87,7 @@ use yii\helpers\Url;
             [
                 'class'=>'yii\grid\ActionColumn',
                 'headerOptions'=>['style' => 'background-color:#3cbcab;'],
-                //'contentOptions' => ['style' => 'background-color:red; '],
+                'contentOptions' => ['style' => 'width:5%;'],
                 'template' => '{requerimientos}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
@@ -98,7 +101,7 @@ use yii\helpers\Url;
                             'title' => Yii::t('yii', 'Asignar Tareas'),
                         ]);
                     }else{
-                        return 'No Disponilbe';
+                        return '<b style="font-size: 8pt;">No Disponible</b>';
                     }
                     
                 },

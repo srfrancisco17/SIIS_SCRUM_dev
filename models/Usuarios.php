@@ -54,6 +54,8 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public $new_password;
     public $password_repeat;
     
+    public $prueba;
+    
     public static function tableName()
     {
         return 'usuarios';

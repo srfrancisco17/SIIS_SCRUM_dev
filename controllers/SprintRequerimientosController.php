@@ -69,7 +69,7 @@ class SprintRequerimientosController extends Controller
         
         $usuariosSearchModel = new UsuariosSearch();
         $usuariosDataProvider = $usuariosSearchModel->search(Yii::$app->request->queryParams,2,$sprint_id);
-        
+       
         $sprintUsuariosSearchModel = new SprintUsuariosSearch();
         $sprintUsuariosDataProvider = $sprintUsuariosSearchModel->search(Yii::$app->request->queryParams,$sprint_id);
 
@@ -245,19 +245,26 @@ class SprintRequerimientosController extends Controller
         }
     }
     
-    public function actionPeticion1($id, $k){
-
+     public function actionPeticion1(){
+         
+         
+        $request = Yii::$app->request;
+        $sprint_id = $request->post("sprint_id");
+        $horas_planificadas = $request->post("horas_planificadas");
+        
         $model = new \app\models\SprintUsuarios();
         
-        if (Yii::$app->request->isAjax){
-                        
-        
-            $model->insertarSprintUsuarios($id, $k);
-            
-            return $this->redirect(['index','sprint_id'=>$id]);
-        } 
-    }
-    
+        foreach ($horas_planificadas as $clave => $valor) {
+
+            if (!empty($sprint_id) && !empty($valor)){
+                
+                $model->insertarSprintUsuarios($sprint_id, $clave, $valor);
+                
+            }
+
+        }
+     }
+
     public function actionPeticion2($id, $k){
        //CAMBIOS (*-*)\_
         $model = new \app\models\SprintUsuarios();

@@ -13,7 +13,7 @@ use app\models\Requerimientos;
  *
  * @property int $sprint_id
  * @property int $usuario_id
- * @property int $horas_desarrollo
+ * @property int $horas_establecidas
  * @property string $observacion
  * @property string $estado
  *
@@ -41,8 +41,8 @@ class SprintUsuarios extends \yii\db\ActiveRecord
     {
         return [
             [['sprint_id', 'usuario_id'], 'required'],
-            [['sprint_id', 'usuario_id', 'horas_desarrollo'], 'default', 'value' => null],
-            [['sprint_id', 'usuario_id', 'horas_desarrollo'], 'integer'],
+            [['sprint_id', 'usuario_id', 'horas_establecidas'], 'default', 'value' => null],
+            [['sprint_id', 'usuario_id', 'horas_establecidas'], 'integer'],
             [['observacion'], 'string'],
             [['estado'], 'string', 'max' => 1],
             [['sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sprints::className(), 'targetAttribute' => ['sprint_id' => 'sprint_id']],
@@ -58,7 +58,7 @@ class SprintUsuarios extends \yii\db\ActiveRecord
         return [
             'sprint_id' => 'Sprint ID',
             'usuario_id' => 'Usuario ID',
-            'horas_desarrollo' => 'Horas Desarrollo',
+            'horas_establecidas' => 'Horas Desarrollo',
             'observacion' => 'Observacion',
             'estado' => 'Estado',
             'sprintName' => 'Sprint Alias',
@@ -90,32 +90,29 @@ class SprintUsuarios extends \yii\db\ActiveRecord
         return $this->hasOne(Usuarios::className(), ['usuario_id' => 'usuario_id']);
     }
     
-    public function insertarSprintUsuarios($id, $key){
-        
-        $conexion = Yii::$app->db;
-        $usuarios = explode(",",$key);
+    public function insertarSprintUsuarios($sprint_id, $usuario_id, $horas){
         
         
-        $sprint_alias = Sprints::find()->select('sprint_alias')->where(['sprint_id' => $id])->one()->sprint_alias;
+        $obj_sprintUsuarios = SprintUsuarios::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_id' => $usuario_id])->one();
         
-        $prioridad_id = $conexion->createCommand("select prioridad_id from prioridad_sprint_requerimientos order by prioridad_id DESC limit 1")->queryScalar();
-        
-        foreach ($usuarios as $value) {
+        if (is_null($obj_sprintUsuarios)){
             
-
-            $conexion->createCommand(" 
-                UPDATE sprint_usuarios SET sprint_id=".$id.", usuario_id=".$value.", estado='1' WHERE sprint_id=".$id." and usuario_id=".$value.";
-            ")->execute();
+            $obj_sprintUsuarios = new SprintUsuarios();
             
-            $conexion->createCommand(" 
-                INSERT INTO sprint_usuarios (sprint_id, usuario_id, estado)
-                    SELECT ".$id.", ".$value.", '1'
-                    WHERE NOT EXISTS (SELECT 1 FROM sprint_usuarios WHERE sprint_id=".$id." and usuario_id=".$value.");
-            ")->execute();
-            
-            self::requerimiento_soporte($value, $id, $sprint_alias, $prioridad_id);
-          
-        }     
+        }
+        
+        $obj_sprintUsuarios->sprint_id = $sprint_id;
+        $obj_sprintUsuarios->usuario_id = $usuario_id;
+        $obj_sprintUsuarios->horas_establecidas = $horas;
+        $obj_sprintUsuarios->estado = '1';
+        $obj_sprintUsuarios->save();
+        
+        
+        /*
+         * Linea Comentada por varias razones la principal es que se debe mejor el funcionamiento al momento de 
+         * crear un requerimiento de soporte
+         */
+        //self::requerimiento_soporte($value, $id, $sprint_alias, $prioridad_id);
         
         return true;  
         
@@ -130,7 +127,7 @@ class SprintUsuarios extends \yii\db\ActiveRecord
         foreach ($usuarios as $value) {
             
             
-            $conexion->createCommand()->update('sprint_usuarios', ['estado' => '0'], ['sprint_id' => $id, 'usuario_id' => $value])->execute();  
+            $conexion->createCommand()->update('sprint_usuarios', ['horas_establecidas' => 0, 'estado' => '0'], ['sprint_id' => $id, 'usuario_id' => $value])->execute();  
             
             /*
             $conexion->createCommand()->delete('sprint_usuarios', [
