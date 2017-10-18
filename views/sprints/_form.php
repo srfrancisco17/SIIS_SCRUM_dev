@@ -22,7 +22,7 @@ use yii\helpers\ArrayHelper;
             <?= $form->field($model, 'sprint_alias')->textInput()->label('(*) Sprint Alias')?>
         </div>
         <div class="col-lg-3">
-            <?= $form->field($model, 'horas_desarrollo')->textInput(['type' => 'number', 'disabled' => true])?>
+            <?= $form->field($model, 'horas_desarrollo')->textInput(['type' => 'number', 'disabled' => true])?> 
         </div>
         <div class="col-lg-3">
         <?php 

@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use yii\helpers\ArrayHelper;
 
 use Yii;
 
@@ -14,6 +15,7 @@ use Yii;
  * @property int $horas_desarrollo
  * @property string $observaciones
  * @property string $estado
+
  * 
  * @property SprintRequerimientos[] $sprintRequerimientos
  * @property Requerimientos[] $requerimientos
@@ -152,7 +154,15 @@ class Sprints extends \yii\db\ActiveRecord
         
         $sprint_activo = Sprints::findOne(['estado' => '1']);
         return $sprint_activo ? $sprint_activo : NULL;
-    }    
+    }
+
+    public static function getListaSprints(){
+        
+        $opciones = Sprints::find()->orderBy(['sprint_id' => SORT_ASC])->all();
+        
+        return ArrayHelper::map($opciones, 'sprint_id', 'sprint_alias');
+ 
+    }
     
     
     public function actualizarHorasSprints($sprint_id, $horas){

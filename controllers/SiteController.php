@@ -191,31 +191,33 @@ class SiteController extends Controller
     public function actionIndexScrumMaster()
     {
         
-        //$sprint_id = 1;
+        /*
+         * Modificacion 06/10/2017 
+         * SCRUM_MASTER
+         */
         
-        $array_sprints = Sprints::find()->where(['>', 'estado', 0])->orderBy(['sprint_id'=>SORT_ASC])->asArray()->all();
+        $obj_sprint = NULL;
         
-
- 
-        if (is_null(Yii::$app->request->post('sprint_id'))){
+        if (is_null(Yii::$app->request->post("sprint_id"))){
             
-            $last_position = end($array_sprints);
-            $sprint_id = $last_position['sprint_id'];
+            /*
+             * Si no llega por POST el dato de sprint_id 
+             * Por defecto tomara el ultimo sprint
+             */
+            
+            $obj_sprint = Sprints::find()->where(['estado' => 1])->orderBy(['sprint_id'=>SORT_DESC])->asArray()->limit(1)->one();
             
         }else{
-            $sprint_id = Yii::$app->request->post('sprint_id');
+            /*
+             * Si Llega por POST el sprint id se busca especificamente ese sprint
+             */
+            
+            $obj_sprint = Sprints::find()->where(['sprint_id' => Yii::$app->request->post("sprint_id")])->asArray()->one();
+  
         }
         
-        
-        foreach ($array_sprints as $index => $value){
-            if($value['sprint_id'] == $sprint_id){
-                
-               //$ubicacion = $index;
-               $array_actual = $value;
-               break;
-               
-            }
-        }
+        $sprint_id = $obj_sprint['sprint_id'];
+       
         
         $array_sprints_usuarios = SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all();
 
@@ -224,22 +226,23 @@ class SiteController extends Controller
         $titulo = '';
         $subtitulo = '---';
         
+        
         if(empty($usuario_id)){
             
             // Diagrama De Todos Los Usuarios
 
-            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->sum('requerimientos.tiempo_desarrollo');
-            $titulo = 'Total horas programas = '.$consulta_tiempo_desarrollo;
-        
+            $total_tiempo_calculado = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->sum('requerimientos.tiempo_desarrollo');
+            $titulo = 'Total horas del grupo = '.$obj_sprint['horas_desarrollo']." Horas";
             
         }else{
             
             // Diagrama Por Usuario
             
-            $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
+            $total_tiempo_calculado = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
             $whereUsuario= "and sr.usuario_asignado = ".$usuario_id." ";
             
-            $titulo = 'Total horas asignadas = '.$consulta_tiempo_desarrollo;
+            //$titulo = 'Total horas asignadas = '.$last_position['horas_establecidas'];
+            $titulo = "Total Horas = ".$total_tiempo_calculado." Horas";
            
         }
             
@@ -266,10 +269,7 @@ class SiteController extends Controller
                                             ->bindValue(':sprint_id', $sprint_id)
                                             ->queryAll(); 
         
-        
-        //$subtitulo = $consulta_ideal_burn->sprint->sprint_alias.' | ('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_hasta.')';
-        
-        $subtitulo = $array_actual['sprint_alias'].' | ('.$array_actual['fecha_desde'].') - ('.$array_actual['fecha_hasta'].')';
+        $subtitulo = $obj_sprint['sprint_alias'].' | ('.$obj_sprint['fecha_desde'].') - ('.$obj_sprint['fecha_hasta'].')';
 
         $consulta_total_tareas = $connection->createCommand("
             select 
@@ -366,49 +366,59 @@ class SiteController extends Controller
         }
 
         $barChart = $connection->createCommand(" 
-
-            select
-                    usu.usuario_id, usu.nombres, usu.apellidos, sum(r.tiempo_desarrollo) as tiempo_total,
+            SELECT
+                    usu.usuario_id,
+                    usu.nombres,
+                    usu.apellidos,
+                    sprusu.horas_establecidas,
                     (
-                            select
-                                    sum(rt1.horas_desarrollo)
-                            from sprint_requerimientos as sr1
-                            left join sprint_requerimientos_tareas srt1
-                            on(
-                                    sr1.sprint_id = srt1.sprint_id
-                                    and
-                                    sr1.requerimiento_id = srt1.requerimiento_id
-                            )
-                            left join requerimientos_tareas as rt1
-                            on(
-                                    srt1.requerimiento_id = rt1.requerimiento_id
-                                    and rt1.tarea_id = srt1.tarea_id
-                            )
-                            where sr1.sprint_id = ".$sprint_id." and srt1.estado = '4' and sr1.usuario_asignado = usu.usuario_id
-                            group by sr1.usuario_asignado
-                    ) as tiempo_terminado
-            from
-                    sprint_requerimientos as sr
-            inner join requerimientos as r
-            on (
-                    r.requerimiento_id = sr.requerimiento_id
-            )
-            inner join usuarios as usu
-            on (
-                    usu.usuario_id = sr.usuario_asignado
-            )
-            where
+                            SELECT
+                                    SUM( rt1.horas_desarrollo )
+                            FROM
+                                    sprint_requerimientos AS sr1
+                            LEFT JOIN sprint_requerimientos_tareas srt1 ON
+                                    (
+                                            sr1.sprint_id = srt1.sprint_id
+                                            AND sr1.requerimiento_id = srt1.requerimiento_id
+                                    )
+                            LEFT JOIN requerimientos_tareas AS rt1 ON
+                                    (
+                                            srt1.requerimiento_id = rt1.requerimiento_id
+                                            AND rt1.tarea_id = srt1.tarea_id
+                                    )
+                            WHERE
+                                    sr1.sprint_id = ".$sprint_id."
+                                    AND srt1.estado = '4'
+                                    AND sr1.usuario_asignado = usu.usuario_id
+                            GROUP BY
+                                    sr1.usuario_asignado
+                    ) AS tiempo_terminado
+            FROM
+                    sprint_requerimientos AS sr
+
+            INNER JOIN sprint_usuarios AS sprusu ON
+                    (
+                            sprusu.sprint_id = sr.sprint_id
+                    )	
+            INNER JOIN usuarios AS usu ON
+                    (
+                            usu.usuario_id = sr.usuario_asignado
+                    )
+            WHERE
                     sr.sprint_id = $sprint_id
-            group by 1, 2, 3, sr.usuario_asignado
-            having 
-                    sum(r.tiempo_desarrollo) > 0
-            order by usu.usuario_id desc
-        
+            GROUP BY
+                    1,
+                    2,
+                    3,
+                    sr.usuario_asignado,
+                    sprusu.horas_establecidas
+            ORDER BY
+                    usu.usuario_id DESC
         ")->queryAll();        
         
         return $this->render('indexScrumMaster', [
-            'array_actual' => $array_actual,
-            'consulta_tiempo_desarrollo' => $consulta_tiempo_desarrollo,
+            //'array_actual' => $array_actual,
+            'total_tiempo_calculado' => $total_tiempo_calculado,
             'consulta_acutal_burn' => $consulta_acutal_burn,
             'titulo' => $titulo,
             'subtitulo' => $subtitulo,
@@ -419,7 +429,8 @@ class SiteController extends Controller
             'porcentaje_requerimientos' => $porcentaje_requerimientos,
             'html_span_requerimientos' => $html_span_requerimientos,
             'html_span_tareas' => $html_span_tareas,
-            'array_sprints' => $array_sprints,
+            //'array_sprints' => $array_sprints,
+            'obj_sprint' => $obj_sprint,
             'array_sprints_usuarios' => $array_sprints_usuarios,
             'barChart' => $barChart,
         ]);
@@ -431,24 +442,46 @@ class SiteController extends Controller
     public function actionIndexDeveloper()
     {
         
+        /*
+         * Modificacion 05/10/2017 
+         *
+         */
+        $obj_sprint = "";
         
-        $array_sprints = Sprints::find()->orderBy(['sprint_id'=>SORT_ASC])->asArray()->all();
-        $usuario_id = Yii::$app->user->identity->usuario_id;
-        //$sprint_id = 2;
-        
-        
-        if (is_null(Yii::$app->request->post('sprint_id'))){
+        if (is_null(Yii::$app->request->post("sprint_id"))){
             
-            $last_position = end($array_sprints);
-            $sprint_id = $last_position['sprint_id'];
+            /*
+             * Si no llega por POST el dato de sprint_id 
+             * Por defecto tomara el ultimo sprint
+             */
+            
+            $obj_sprint = Sprints::find()->orderBy(['sprint_id'=>SORT_DESC])->asArray()->limit(1)->one();
             
         }else{
-            $sprint_id = Yii::$app->request->post('sprint_id');
-        }        
+            /*
+             * Si Llega por POST el sprint id se busca especificamente ese sprint
+             */
+            
+            $obj_sprint = Sprints::find()->where(['sprint_id' => Yii::$app->request->post("sprint_id")])->asArray()->one();
+        }
         
-        $consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => $usuario_id]);
-        $consulta_tiempo_desarrollo = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
+        $sprint_id = $obj_sprint['sprint_id'];
+        $usuario_id = Yii::$app->user->identity->usuario_id;
+        
+        $obj_sprint_usuario = SprintUsuarios::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_id' => $usuario_id])->asArray()->one();
+        
+        //$consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => $usuario_id]);
+        
+        
+        $total_tiempo_calculado = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
     
+        /*
+        echo '<pre>';
+        var_dump($consulta_ideal_burn);
+        echo '</pre>';
+        exit; 
+        */
+        
         $connection = Yii::$app->db;
         $consulta_acutal_burn = $connection->createCommand("select 
                                             sum(rt.horas_desarrollo) as sum_horas,
@@ -562,15 +595,16 @@ class SiteController extends Controller
         ")->queryOne();
         
         return $this->render('indexDeveloper',[
-            'consulta_ideal_burn' => $consulta_ideal_burn,
-            'consulta_tiempo_desarrollo' => $consulta_tiempo_desarrollo,
+            //'consulta_ideal_burn' => $consulta_ideal_burn,
+            'total_tiempo_calculado' => $total_tiempo_calculado,
             'consulta_acutal_burn' => $consulta_acutal_burn,
             'consulta_total_requerimientos' => $consulta_total_requerimientos,
             'consulta_total_requerimientos_terminados' => $consulta_total_requerimientos_terminados,
             'consulta_total_tareas' => $consulta_total_tareas,
             'consulta_total_tareas_terminadas' => $consulta_total_tareas_terminadas,
-            'array_sprints' => $array_sprints,
+            'obj_sprint' => $obj_sprint,
             'barChart' => $barChart,
+            'obj_sprint_usuario' => $obj_sprint_usuario,
         ]);
     }
 }

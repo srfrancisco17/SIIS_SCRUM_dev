@@ -13,6 +13,7 @@ use app\models\SprintUsuarios;
 class SprintUsuariosSearch extends SprintUsuarios
 {
     public $sprintName;
+    //public $prueba;
     
     /**
      * @inheritdoc
@@ -20,7 +21,7 @@ class SprintUsuariosSearch extends SprintUsuarios
     public function rules()
     {
         return [
-            [['usuario_id', 'horas_desarrollo'], 'integer'],
+            [['usuario_id', 'horas_establecidas'], 'integer'],
             [['sprint_id', 'observacion', 'estado'], 'safe'],
             [['sprintName'], 'safe'],
         ];
@@ -81,7 +82,7 @@ class SprintUsuariosSearch extends SprintUsuarios
         $query->andFilterWhere([
             //'sprint_id' => $this->sprint_id,
             'usuario_id' => $this->usuario_id,
-            'horas_desarrollo' => $this->horas_desarrollo,
+            'horas_establecidas' => $this->horas_establecidas,
         ]);
 
         $query->andFilterWhere(['ilike', 'observacion', $this->observacion])

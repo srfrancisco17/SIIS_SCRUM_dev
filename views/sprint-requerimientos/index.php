@@ -1,9 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use kartik\grid\GridView;
 use yii\bootstrap\Modal;
-use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'usuario_asignado',
                     //'tiempo_desarrollo',
                     'prioridad',
-                        [
+                    [
                         'label' => 'Estado',
                         'attribute' => 'estado',
                         'filter' => Html::activeDropDownList($sprintRequerimientosSearchModel, 'estado', ['2' => 'En Espera', '3' => 'En progreso', '4' => 'Terminado', '5' => 'No Cumplida'], ['class' => 'form-control', 'prompt' => '']),
@@ -127,7 +127,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'pjax' => true,
                 'toolbar' => [
-                        ['content' =>
+                    [
+                        'content' =>
                         Html::a('<i class="glyphicon glyphicon-plus"></i> Asociar Requerimiento', '#', [
                             'id' => 'activity-index-link',
                             'class' => 'btn btn-success',
@@ -171,26 +172,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 }));                
                     
                 $('#enviar_datos').click(function(e){
-                    var keys = $('#kv-grid-listausuarios').yiiGridView('getSelectedRows');
-                    var form = $('#sprint-usuarios-form');
+                
+                    //var keys = $('#kv-grid-listausuarios').yiiGridView('getSelectedRows');
 
-                    $.post(
-                        form.action = 'index.php?r=sprint-requerimientos/peticion1&id='+'$sprint_id'+'&k='+keys,
-                        form.serialize()
-                    ).done(function(result) {
-                        form.parent().html(result.message);
-                        $.pjax.reload({container:'#sprint-usuarios-form'}); 
+                    
+                    var form = $('#form_save_sprintUsuarios');
+                    var formData = form.serialize();
 
-                    });
-
-                    e.preventDefault();    
-                    return false;
-
+                    $.ajax({
+                           url: form.attr(\"action\"),
+                           type: form.attr(\"method\"),
+                           data: formData,
+                           success: function (data) {
+                            $.pjax.reload({container:'#sprint-usuarios-form'});
+                           },
+                           error: function () {
+                               alert(\"Error Al Insertar Desarrolladores\");
+                           }
+                       });
                 });
                 
                 $('#enviar_datos2').click(function(e){
                     var keys2 = $('#kv-grid3').yiiGridView('getSelectedRows');
-                    var form = $('#sprint-usuarios-form');
+                    var form = $('#form_save_sprintUsuarios');
+                    
+   
                     
                     var id_usuarios = new Array();
                     for (i = 0; i < keys2.length; i++) {
@@ -272,6 +278,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     <h4 class="modal-title" id="myModalLabel">Agregar Desarrolladores</h4>
                 </div>
                 <div class="modal-body2">
+                    <?php
+                    
+                    $action = Url::to(['sprint-requerimientos/peticion1']);
+                    $method = 'post';
+                    $options = [ 'id' => 'form_save_sprintUsuarios'];
+                    
+                    echo Html::beginForm($action, $method, $options);
+                    echo Html::hiddenInput('sprint_id', $sprint_id );
+                    
+                    ?>
                     <?=
                         GridView::widget([
                             'id' => 'kv-grid-listausuarios',
@@ -282,21 +298,37 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'label' => 'Nombres',
                                     'attribute' => 'nombres',
-                                    'filter' => FALSE
+                                    'filter' => FALSE,
+                                    'contentOptions' => ['style' => ' width:150px;'],
                                 ],
                                 [
                                     'label' => 'Apellidos',
                                     'attribute' => 'apellidos',
-                                    'filter' => FALSE
+                                    'filter' => FALSE,
+                                    'contentOptions' => ['style' => ' width:150px;'],
                                 ],
+                                [
+                                    'attribute' => 'Establecer Horas',
+                                    'value' => function($model){
+                                        //return Html::input('number', 'horas_planificadas_'.$model->usuario_id, null, ['class' => 'form-control', 'id'=>'horas_planificadas_'.$model->usuario_id]);
+                                        return Html::input('number', 'horas_planificadas['.$model->usuario_id.']', null, ['class' => 'form-control', 'id'=>'horas_planificadas_'.$model->usuario_id]);
+                                    },
+                                    'contentOptions' => ['style' => ' width:5px;'],        
+                                    'format' => 'raw'
+                                ],
+                                /*
                                 [
                                     'class' => 'kartik\grid\CheckboxColumn',
                                     'rowSelectedClass' => GridView::TYPE_SUCCESS,
                                 ],
+                                 * 
+                                 */
                             ],
                             'pjax' => true,
                         ])
                     ?>
+                    <?= Html::endForm() ?>
+                    <!--</form>-->   
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

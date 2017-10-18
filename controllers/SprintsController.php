@@ -155,10 +155,18 @@ class SprintsController extends Controller
     {
         $model = $this->findModel($id);
         
-        $model->estado = '0';
-        $model->save(); 
+        /*
+         * Cambio al momento de eliminar un sprint
+         * Intetara eliminarlo si lanza una excepcion, actualiza el estado a 0 = Inactivo
+         */
         
-
+        try {
+            $model->delete();
+        } catch (\yii\db\IntegrityException $e) {
+            $model->estado = '0';
+            $model->save(); 
+        }
+        
         return $this->redirect(['index']);
     }
 

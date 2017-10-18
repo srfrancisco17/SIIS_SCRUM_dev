@@ -3,14 +3,30 @@
     use app\assets\HighchartsAssets;
     use yii\helpers\Html;
     use yii\widgets\Pjax;
-    use yii\helpers\ArrayHelper;
     use kartik\select2\Select2;
+    use app\models\Sprints;
     
     HighchartsAssets::register($this);
     $this->title = 'Dashboard';
     $this->params['breadcrumbs'][] = $this->title;
     
-    $last_position = end($array_sprints);
+    /*
+     * $sprint_horas_desarrollo = 
+     * El calculo es el tiempo total de las tareas de los requerimientos dentro de un sprint especifico
+     */
+    $sprint_id = $obj_sprint['sprint_id'];
+    $sprint_alias = $obj_sprint['sprint_alias'];
+    $sprint_horas_desarrollo = $obj_sprint['horas_desarrollo'];
+    $sprint_fecha_desde = $obj_sprint['fecha_desde'];
+    $sprint_fecha_hasta = $obj_sprint['fecha_hasta'];
+    
+    $horas_establecidas = $obj_sprint_usuario['horas_establecidas'];
+    // $total_tiempo_calculado
+    
+//    echo '<pre>';
+//    var_dump($total_tiempo_calculado);
+//    exit;
+    
 ?>
 <?php Pjax::begin(); ?>
 <div class="row">
@@ -20,35 +36,22 @@
               <!--<h3 class="box-title">Burndown</h3>-->
                 <div class="row">
                     <?= Html::beginForm(['site/index-developer'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>
-
                     <div class="col-lg-3">
                         <?= Select2::widget([
                             'name' => 'sprint_id',
                             'size' => Select2::MEDIUM,
                             //'value' => Yii::$app->request->post('sprint_id', $array_sprints[sizeof($array_sprints)-1]['sprint_id']), // value to initialize
-                            'value' => Yii::$app->request->post('sprint_id', $last_position['sprint_id']),
-                            'data' => ArrayHelper::map($array_sprints, 'sprint_id', 'sprint_alias'),
+                            'value' => Yii::$app->request->post('sprint_id', $sprint_id),
+                            'data' => Sprints::getListaSprints(),
                         ])?>
                     </div>
                     <div class="col-lg-2">
-                            <?= Html::submitButton('Cargar', ['class' => 'btn btn-md btn-primary', 'name' => 'hash-button']) ?>
+                        <?= Html::submitButton('Cargar', ['class' => 'btn btn-md btn-primary', 'name' => 'hash-button']) ?>
                     </div>
                     <?= Html::endForm() ?>
                 </div>  
               <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-wrench"></i></button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
               </div>
             </div>
@@ -57,7 +60,7 @@
                 <div class="col-md-12">
                     <?php
                     
-                        if (!empty($consulta_ideal_burn)){
+                        if (!empty($consulta_acutal_burn)){
                             
                     ?>
                         <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -67,7 +70,7 @@
                         <div class="alert alert-warning alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                             <h4><i class="icon fa fa-warning"></i> Advertencia!</h4>
-                            Oops algo a salido mal (๏̯๏).
+                            Actualmente no esta disponible la grafica
                         </div>
                         
                     <?php    
@@ -124,65 +127,93 @@
               </div>
             </div>
             <div class="box-body">
-              <div id="container3" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                    <?php
+                        if (!empty($barChart)){
+                    ?>
+                            <div id="container3" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                    <?php
+                        }else{
+                    ?>
+                        <div class="alert alert-warning alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-warning"></i> Advertencia!</h4>
+                            Actualmente no esta disponible la grafica
+                        </div>
+                    <?php    
+                        }
+                    ?>
             </div>
         </div>
     </div>
 </div>
 <?php
 
-    if (!empty($consulta_ideal_burn)){
+if (!empty($consulta_acutal_burn)){
     
-        $dias_festivos = array('2017-07-20', '2017-08-07', '2017-08-21', '2017-10-16', '2017-11-06', '2017-11-13', '2017-12-08', '2017-12-25', '2018-01-01', '2018-01-08');
+    $dias_festivos = array(
+        '2017-07-20', 
+        '2017-08-07', 
+        '2017-08-21', 
+        '2017-10-16', 
+        '2017-11-06',
+        '2017-11-13', 
+        '2017-12-08', 
+        '2017-12-25', 
+        '2018-01-01', 
+        '2018-01-08'
+    );
     
-        function intervalo_dias($fecha_inicial, $fecha_final, $sw_control, $dias_festivos_p) {
-            $dias = array('Mon'=>'Lun', 'Tue'=>'Mar', 'Wed'=>'Mie', 'Thu'=>'Jue', 'Fri'=>'Vie');
-            $fecha1 = strtotime($fecha_inicial); 
-            $fecha2 = strtotime($fecha_final);
-            $array_data = array();
+    function intervalo_dias($fecha_inicial, $fecha_final, $sw_control, $dias_festivos_p) {
 
-            $j = 0;
-            for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
-                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){  
-                    if (!(in_array(date('Y-m-d',$fecha1), $dias_festivos_p))) {
-                        array_push($array_data, date('m-d',$fecha1)." ".$dias[date('D',$fecha1)]);
-                        $j++;
-                    }
+        $dias = array('Mon'=>'Lun', 'Tue'=>'Mar', 'Wed'=>'Mie', 'Thu'=>'Jue', 'Fri'=>'Vie');
+        $fecha1 = strtotime($fecha_inicial); 
+        $fecha2 = strtotime($fecha_final);
+        $array_data = array();
+
+        $j = 0;
+
+        for($fecha1; $fecha1 <= $fecha2; $fecha1 = strtotime('+1 day ' . date('Y-m-d', $fecha1))){ 
+            if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){  
+                if (!(in_array(date('Y-m-d',$fecha1), $dias_festivos_p))) {
+                    array_push($array_data, date('m-d',$fecha1)." ".$dias[date('D',$fecha1)]);
+                    $j++;
                 }
             }
-            if ($sw_control == 1) {
-                
-                return $j;
-                
-            }else if ($sw_control == 2) {
-                
-               return json_encode($array_data);
-               
-            }
         }
-
-        function ideal_burn($horas, $fecha_inicial, $fecha_final, $dias_festivos_p) {
-
-            $datos = array();
-            $suma_horas = $horas;
-
-
-            $dias = intervalo_dias($fecha_inicial, $fecha_final, 1, $dias_festivos_p);
-            $resta = ($horas / $dias);
-
-            for ($i = 1; $i <= $dias; $i++) {
-
-                $suma_horas = round($suma_horas - $resta, 2);
-
-
-                array_push($datos, $suma_horas);
-            }
-
-            return json_encode($datos);
+        if ($sw_control == 1) {
+            return $j;
+            
+        }else if ($sw_control == 2) {
+           return json_encode($array_data);   
         }
+    }
+    
+    /*
+     * funcion ideal_burn
+     */
+    function ideal_burn($horas, $fecha_inicial, $fecha_final, $dias_festivos_p) {
+
+        $datos = array();
+        $suma_horas = $horas;
+
+
+        $dias = intervalo_dias($fecha_inicial, $fecha_final, 1, $dias_festivos_p);
+        $resta = ($horas / $dias);
+
+        for ($i = 1; $i <= $dias; $i++) {
+
+            $suma_horas = round($suma_horas - $resta, 2);
+
+
+            array_push($datos, $suma_horas);
+        }
+        return json_encode($datos);
+    }
+    
+    function actual_burn($consulta_acutal_burn , $fecha_desde, $dias_festivos, $sprint_total_dias, $horas) {
         
         foreach ($consulta_acutal_burn as $key => $value) {
-            $fecha1 = strtotime($consulta_ideal_burn->sprint->fecha_desde); 
+            $fecha1 = strtotime($fecha_desde); 
             $fecha2 = strtotime($value['fecha_terminado']);
             $j = 0;
             for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
@@ -194,50 +225,127 @@
             }
             $consulta_acutal_burn[$key]['dias'] = $j;            
         }
-
+         
         $arreglo_actual_burn = array();
-        $total_tiempo_desarrollo = $consulta_tiempo_desarrollo; //120 Horas
         $contador = 0;
-        $total_dias_sprint = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 1, $dias_festivos); // 17 Dias
-
-
-        for ($i = 1; $i <= $total_dias_sprint; $i++) {
+        
+        for ($i = 1; $i <= $sprint_total_dias; $i++) {
 
             foreach ($consulta_acutal_burn as $value2) {
 
                 if ($i == $value2['dias']) {
 
 
-                    $total_tiempo_desarrollo = $total_tiempo_desarrollo - $value2['sum_horas'];
+                    $horas = $horas - $value2['sum_horas'];
                     $contador++;
                 }
             }
 
-            $arreglo_actual_burn[] = (int) $total_tiempo_desarrollo;
+            $arreglo_actual_burn[] = (int) $horas;
 
             if ($contador == count($consulta_acutal_burn)) {
 
                 break;
             }
         }
+
+        return json_encode($arreglo_actual_burn);
         
+    }
+    
+/*
+     * GRAFICA DEL BURNDOWN 
+     */
         
-        function arreglo_barchart($barChart){
+    $sprint_total_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 1, $dias_festivos);
+    
+    $datos_ideal_burn = ideal_burn($total_tiempo_calculado, $sprint_fecha_desde, $sprint_fecha_hasta, $dias_festivos);
+    $datos_actual_burn = actual_burn($consulta_acutal_burn, $sprint_fecha_desde, $dias_festivos, $sprint_total_dias, $total_tiempo_calculado);
+    $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $dias_festivos);
+    
+    $titulo = 'Sprint: '.$sprint_alias.' - '.$total_tiempo_calculado.' Horas';
+    $subtitulo = '('.$sprint_fecha_desde.') - ('.$sprint_fecha_hasta.')';  
+    
+    $this->registerJs("
+        $('#container').highcharts({
+        title: {
+          text: '$titulo',
+          x: -20 //center
+        },
+        colors: ['blue', 'red'],
+        plotOptions: {
+          line: {
+            lineWidth: 3
+          },
+          tooltip: {
+            hideDelay: 200
+          }
+        },
+        subtitle: {
+          text: '$subtitulo',
+          x: -20
+        },
+        xAxis: {
+          categories: $arreglo_dias
+        },
+        yAxis: {
+          title: {
+            text: 'Horas'
+          },
+          plotLines: [{
+            value: 0,
+            width: 1
+          }]
+        },
+        tooltip: {
+          valueSuffix: ' hrs',
+          crosshairs: true,
+          shared: true
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+        series: [{
+          name: 'Ideal Burn',
+          color: 'rgba(255,0,0,0.25)',
+          lineWidth: 2,
+          data: $datos_ideal_burn
+        },
+        {
+          name: 'Actual Burn',
+          color: 'rgba(0,120,200,0.75)',
+          marker: {
+            radius: 6
+          },
+          //data: [100, 110, 85, 60, 60, 30, 32, 23, 9, 2]
+         data:$datos_actual_burn 
+        }]
+      });
+
+        ");
+ 
+}
+
+if (!empty($barChart)){
+    
+    function arreglo_barchart($barChart, $horas_establecidas){
             
             $grafica = array();
 
             $tiempo_terminado = $barChart['tiempo_terminado'];
-            $tiempo_total = $barChart['tiempo_total'];
             
-            if (is_null($tiempo_terminado) || is_null($tiempo_total)){
+            if (is_null($tiempo_terminado) || is_null($horas_establecidas)){
                 
                 $grafica[] = array('', 0);
                 
             }else{
                 
                 $grafica[] = array(
-                    $barChart['nombres'].' '.$barChart['apellidos'],
-                    (($tiempo_terminado*100)/$tiempo_total)
+                    $barChart['nombres'].' '.$barChart['apellidos'].'-'.$horas_establecidas.'-'.$tiempo_terminado,
+                    (($tiempo_terminado*100)/$horas_establecidas)
                 );
                 
             }
@@ -245,81 +353,13 @@
             return json_encode($grafica);
               
         }
+    
+    
+    /*
+     * GRAFICA DEL BARCHART EL PORCENTAJE DE HORAS TERMINADAS
+     */
+    $datos_barChart = arreglo_barchart($barChart, $horas_establecidas);
 
-
-        $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, $dias_festivos);
-        $arreglo_dias = intervalo_dias($consulta_ideal_burn->sprint->fecha_desde, $consulta_ideal_burn->sprint->fecha_hasta, 2, $dias_festivos);
-        $json_actual_burn = json_encode($arreglo_actual_burn);
-
-        $titulo = $consulta_ideal_burn->sprint->sprint_alias.' = '.$consulta_tiempo_desarrollo. ' horas ';
-   
-        $subtitulo = '('.$consulta_ideal_burn->sprint->fecha_desde.') - ('.$consulta_ideal_burn->sprint->fecha_hasta.')';
-        
-        $datos_barChart = arreglo_barchart($barChart);
-
-        $this->registerJs("
-
-            $('#container').highcharts({
-            title: {
-              text: '$titulo',
-              x: -20 //center
-            },
-            colors: ['blue', 'red'],
-            plotOptions: {
-              line: {
-                lineWidth: 3
-              },
-              tooltip: {
-                hideDelay: 200
-              }
-            },
-            subtitle: {
-              text: '$subtitulo',
-              x: -20
-            },
-            xAxis: {
-              categories: $arreglo_dias
-            },
-            yAxis: {
-              title: {
-                text: 'Horas'
-              },
-              plotLines: [{
-                value: 0,
-                width: 1
-              }]
-            },
-            tooltip: {
-              valueSuffix: ' hrs',
-              crosshairs: true,
-              shared: true
-            },
-            legend: {
-              layout: 'vertical',
-              align: 'right',
-              verticalAlign: 'middle',
-              borderWidth: 0
-            },
-            series: [{
-              name: 'Ideal Burn',
-              color: 'rgba(255,0,0,0.25)',
-              lineWidth: 2,
-              data: $datos_ideal_burn
-            },
-            {
-              name: 'Actual Burn',
-              color: 'rgba(0,120,200,0.75)',
-              marker: {
-                radius: 6
-              },
-              //data: [100, 110, 85, 60, 60, 30, 32, 23, 9, 2]
-             data:$json_actual_burn 
-            }]
-          });
-
-        ");
-        
-         
     $this->registerJs("
             Highcharts.chart('container3', {
                 chart: {
@@ -372,7 +412,10 @@
                     }
                 }]
             });   
-    ");  
-    } 
+    ");
+ 
+}
+
+  
 ?>
 <?php Pjax::end(); ?>

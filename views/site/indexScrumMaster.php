@@ -6,33 +6,48 @@ use yii\widgets\Pjax;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
 use app\assets\HighchartsAssets;
+use app\models\Sprints;
 
 
 HighchartsAssets::register($this);
 $this->title = 'Dashboard Scrum Master';
 $this->params['breadcrumbs'][] = $this->title;
 
-$last_position = end($array_sprints);
-
 //$this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
 
+    /*
+     * DATOS SPRINT - SELECCIONADO
+     * El calculo es el tiempo total de las tareas de los requerimientos dentro de un sprint especifico
+     */
+    $sprint_id = $obj_sprint['sprint_id'];
+    $sprint_alias = $obj_sprint['sprint_alias'];
+    $sprint_horas_desarrollo = $obj_sprint['horas_desarrollo'];
+    $sprint_fecha_desde = $obj_sprint['fecha_desde'];
+    $sprint_fecha_hasta = $obj_sprint['fecha_hasta'];
+    
+    // total_tiempo_calculado
+    
+//    echo '<pre>';
+//    var_dump(total_tiempo_calculado);
+//    exit;
+    
 ?>
 <?php Pjax::begin(); ?>
 <div class="row">
     <div class="col-lg-8">
           <div class="box box-primary">
             <div class="box-header with-border">
-                <!--<h3 class="box-title"></h3>-->
                     <div class="row">
                         <?= Html::beginForm(['site/index-scrum-master'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>
-                        
                         <div class="col-lg-2">
                             <?= Select2::widget([
                                 'name' => 'sprint_id',
                                 'size' => Select2::MEDIUM,
                                 //'value' => Yii::$app->request->post('sprint_id', $array_sprints[sizeof($array_sprints)-1]['sprint_id']), // value to initialize
-                                'value' => Yii::$app->request->post('sprint_id', $last_position['sprint_id']),
-                                'data' => ArrayHelper::map($array_sprints, 'sprint_id', 'sprint_alias'),
+                                //'value' => Yii::$app->request->post('sprint_id', $last_position['sprint_id']),
+                                //'data' => ArrayHelper::map($array_sprints, 'sprint_id', 'sprint_alias'),
+                                'value' => Yii::$app->request->post('sprint_id', $sprint_id),
+                                'data' => Sprints::getListaSprints(),
                             ])?>
                         </div>
                         
@@ -105,8 +120,7 @@ $last_position = end($array_sprints);
                   <div class="description-block">
                     <?= $html_span_tareas ?>
                     <h5 class="description-header"><?= $consulta_total_tareas_terminadas ?></h5>
-                    <span class="description-text">Total Tareas Terminadas</span>
-                    
+                    <span class="description-text">Total Tareas Terminadas</span> 
                   </div>
                 </div>
               </div>
@@ -120,40 +134,28 @@ $last_position = end($array_sprints);
                 <div class="box box-success">
                     <div class="box-header with-border">
                       <h3 class="box-title"></h3>
-
                       <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                       </div>
-                      <!-- /.box-tools -->
                     </div>
-                    <!-- /.box-header -->
                     <div class="box-body">
-
                       <div id="container2" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-
                     </div>
-                    <!-- /.box-body -->
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="box box-success">
                     <div class="box-header with-border">
                       <h3 class="box-title"></h3>
-
                       <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                       </div>
-                      <!-- /.box-tools -->
                     </div>
-                    <!-- /.box-header -->
                     <div class="box-body">
-
                       <div id="container3" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-
                     </div>
-                    <!-- /.box-body -->
                 </div>
             </div>
         </div>
@@ -161,32 +163,6 @@ $last_position = end($array_sprints);
 
     </div>
 </div>
-
-<!-- Diagrama de Barras -->
-<!--
-<div class="row">
-    <div class="col-lg-4">
-        <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">Grafico de barras</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-          
-            </div>
-         
-            <div class="box-body">
-                
-              <div id="container2" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-              
-            </div>
-          
-          </div>
-    </div>
-</div>
--->
 <?php   
 
     $dias_festivos = array('2017-07-20', '2017-08-07', '2017-08-21', '2017-10-16', '2017-11-06', '2017-11-13', '2017-12-08', '2017-12-25', '2018-01-01', '2018-01-08');
@@ -207,7 +183,6 @@ $last_position = end($array_sprints);
                     }                      
                 }
             }
-            
             if ($sw_control == 1) {
                 
                 return $j;
@@ -238,91 +213,62 @@ $last_position = end($array_sprints);
 
         return json_encode($datos);
     }
-
-    foreach ($consulta_acutal_burn as $key => $value) {
-
-        $fecha1 = strtotime($array_actual['fecha_desde']); 
-        $fecha2 = strtotime($value['fecha_terminado']);
-        $j = 0;
+    
+    function actual_burn($consulta_acutal_burn , $fecha_desde, $dias_festivos, $sprint_total_dias, $horas) {
         
-        for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
-            if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){	
-                if (!(in_array(date('Y-m-d',$fecha1), $dias_festivos))) {
-                    $j++;
+        foreach ($consulta_acutal_burn as $key => $value) {
+
+            $fecha1 = strtotime($fecha_desde); 
+            $fecha2 = strtotime($value['fecha_terminado']);
+            $j = 0;
+
+            for($fecha1;$fecha1<=$fecha2;$fecha1=strtotime('+1 day ' . date('Y-m-d',$fecha1))){ 
+                if((strcmp(date('D',$fecha1),'Sun')!=0) and (strcmp(date('D',$fecha1),'Sat')!=0)){	
+                    if (!(in_array(date('Y-m-d',$fecha1), $dias_festivos))) {
+                        $j++;
+                    }
                 }
             }
+
+            $consulta_acutal_burn[$key]['dias'] = $j;
         }
-         
-        $consulta_acutal_burn[$key]['dias'] = $j;
-    }
-
-    $arreglo_actual_burn = array();
-    $total_tiempo_desarrollo = $consulta_tiempo_desarrollo; //120 Horas
-
-    $contador = 0;
-    $total_dias_sprint = intervalo_dias($array_actual['fecha_desde'], $array_actual['fecha_hasta'], 1, $dias_festivos); // 17 Dias
-
-
-    for ($i = 1; $i <= $total_dias_sprint; $i++) {
-
-        foreach ($consulta_acutal_burn as $value2) {
-
-            if ($i == $value2['dias']) {
-
-
-                $total_tiempo_desarrollo = $total_tiempo_desarrollo - $value2['sum_horas'];
-                $contador++;
-            }
-        }
-
-        $arreglo_actual_burn[] = (int) $total_tiempo_desarrollo;
-
-        if ($contador == count($consulta_acutal_burn)) {
-
-            break;
-        }
-    }
-    
-    $grafica2 = array();
-    
-    function arreglo_barchart($barChart, &$grafica2) {
         
-        $tiempo_terminado_todos = 0;
-        $tiempo_total_todos = 0;
+        $arreglo_actual_burn = array();
+        $contador = 0;
 
 
+        for ($i = 1; $i <= $sprint_total_dias; $i++) {
 
-        $grafica = array();
+            foreach ($consulta_acutal_burn as $value2) {
 
-            foreach ($barChart as $value2) {
-                $grafica[] = array(
-                    $value2['nombres'],
-                    (($value2['tiempo_terminado']*100)/$value2['tiempo_total'])
-                ); 
+                if ($i == $value2['dias']) {
 
-                $tiempo_terminado_todos += $value2['tiempo_terminado'];
-                $tiempo_total_todos += $value2['tiempo_total'];
 
+                    $horas = $horas - $value2['sum_horas'];
+                    $contador++;
+                }
             }
 
-        $grafica2[] = array(
-            'Equipo Desarrollo',
-            (($tiempo_terminado_todos*100)/$tiempo_total_todos)
-        );
+            $arreglo_actual_burn[] = (int) $horas;
 
-        return json_encode($grafica);
+            if ($contador == count($consulta_acutal_burn)) {
+
+                break;
+            }
+        }
+
+            return json_encode($arreglo_actual_burn);
+        }
     
-    }
+        
+    $sprint_total_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 1, $dias_festivos);
     
+    $datos_ideal_burn = ideal_burn($total_tiempo_calculado, $sprint_fecha_desde, $sprint_fecha_hasta, $dias_festivos);
+    $datos_actual_burn = actual_burn($consulta_acutal_burn, $sprint_fecha_desde, $dias_festivos, $sprint_total_dias, $total_tiempo_calculado);
     
-    $datos_ideal_burn = ideal_burn($consulta_tiempo_desarrollo, $array_actual['fecha_desde'], $array_actual['fecha_hasta'], $dias_festivos);
-    $arreglo_dias = intervalo_dias($array_actual['fecha_desde'], $array_actual['fecha_hasta'], 2, $dias_festivos);
-    $json_actual_burn = json_encode($arreglo_actual_burn);
-
-    $datos_barChart = arreglo_barchart($barChart, $grafica2);
-
-    $datos_barChart2 =  json_encode($grafica2);
-
+    $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $dias_festivos);
+    
+    //echo '<pre>';var_dump($arreglo_dias);exit;
     $this->registerJs("
 
         $('#container').highcharts({
@@ -379,11 +325,56 @@ $last_position = end($array_sprints);
             radius: 6
           },
           //data: [100, 110, 85, 60, 60, 30, 32, 23, 9, 2]
-         data:$json_actual_burn 
+         data:$datos_actual_burn 
         }]
       });
 
-    ");  
+    "); 
+    
+//    echo '<pre>';
+//    print_r($barChart);exit;
+    
+    $grafica2 = array();
+    
+    function arreglo_barchart($barChart, &$grafica2) {
+        
+        $tiempo_terminado_todos = 0;
+        $tiempo_total_todos = 0;
+
+
+
+        $grafica = array();
+
+            foreach ($barChart as $value2) {
+                $grafica[] = array(
+                    $value2['nombres'].'-'.$value2['horas_establecidas'].'-'.$value2['tiempo_terminado'],
+                    (($value2['tiempo_terminado']*100)/$value2['horas_establecidas'])
+                ); 
+
+                $tiempo_terminado_todos += $value2['tiempo_terminado'];
+                $tiempo_total_todos += $value2['horas_establecidas'];
+
+            }
+
+        $grafica2[] = array(
+            'Equipo Desarrollo'.'-'.$tiempo_total_todos.'-'.$tiempo_terminado_todos,
+            (($tiempo_terminado_todos*100)/$tiempo_total_todos)
+        );
+
+        return json_encode($grafica);
+    
+    }  
+    
+    $datos_barChart = arreglo_barchart($barChart, $grafica2);
+    
+//    echo '<pre>';
+//    print_r($datos_barChart);exit;
+    
+    
+    $datos_barChart2 =  json_encode($grafica2);
+    
+
+    
     
     $this->registerJs("
             Highcharts.chart('container2', {
@@ -494,4 +485,3 @@ $last_position = end($array_sprints);
     ");
 ?>
 <?php Pjax::end(); ?>
-
