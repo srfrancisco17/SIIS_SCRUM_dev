@@ -130,7 +130,9 @@ $this->params['breadcrumbs'][] = $this->title;
         if (!empty(Yii::$app->user->identity->color)){
             $usuario_color = Yii::$app->user->identity->color;
         }
-       
+        
+//        echo '<pre>';
+//        print_r($consulta);exit;
         
         for ($i = 0; $i < count($consulta); $i++) {
             $consulta1 = $consulta[$i]->getRequerimiento()->with('sprintRequerimientosTareas')->all();

@@ -194,7 +194,11 @@ class SiteController extends Controller
         /*
          * Modificacion 06/10/2017 
          * SCRUM_MASTER
+         * Cambio pendiente limpiar y purificar el codigo y reutilizable
          */
+        
+        $datos = NULL;
+        
         
         $obj_sprint = NULL;
         
@@ -223,7 +227,7 @@ class SiteController extends Controller
 
         $whereUsuario = "";
         $usuario_id = Yii::$app->request->post('list');
-        $titulo = '';
+        //$titulo = '';
         $subtitulo = '---';
         
         
@@ -231,23 +235,26 @@ class SiteController extends Controller
             
             // Diagrama De Todos Los Usuarios
 
-            $total_tiempo_calculado = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->sum('requerimientos.tiempo_desarrollo');
-            $titulo = 'Total horas del grupo = '.$obj_sprint['horas_desarrollo']." Horas";
+            $datos['total_tiempo_calculado'] = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->sum('requerimientos.tiempo_desarrollo');
+            
+            $datos['titulo'] = 'Total horas del grupo = '.$obj_sprint['horas_desarrollo']." Horas";
             
         }else{
             
             // Diagrama Por Usuario
             
-            $total_tiempo_calculado = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
+            
+            
+            $datos['total_tiempo_calculado'] = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
             $whereUsuario= "and sr.usuario_asignado = ".$usuario_id." ";
             
-            //$titulo = 'Total horas asignadas = '.$last_position['horas_establecidas'];
-            $titulo = "Total Horas = ".$total_tiempo_calculado." Horas";
+            $datos['titulo'] = "Total Horas = ".$datos['total_tiempo_calculado']." Horas";
            
         }
             
         $connection = Yii::$app->db;
-        $consulta_acutal_burn = $connection->createCommand("select 
+        
+        $datos['consulta_acutal_burn'] = $connection->createCommand("select 
                                             sum(rt.horas_desarrollo) as sum_horas,
                                             rt.fecha_terminado::date
                                             from sprint_requerimientos as sr
@@ -269,7 +276,7 @@ class SiteController extends Controller
                                             ->bindValue(':sprint_id', $sprint_id)
                                             ->queryAll(); 
         
-        $subtitulo = $obj_sprint['sprint_alias'].' | ('.$obj_sprint['fecha_desde'].') - ('.$obj_sprint['fecha_hasta'].')';
+        $datos['subtitulo'] = $obj_sprint['sprint_alias'].' | ('.$obj_sprint['fecha_desde'].') - ('.$obj_sprint['fecha_hasta'].')';
 
         $consulta_total_tareas = $connection->createCommand("
             select 
@@ -332,6 +339,7 @@ class SiteController extends Controller
         }
         
         $porcentaje_requerimientos =  number_format($consulta_total_requerimientos_terminados*100/$consulta_total_requerimientos, 2); 
+        
         
         //Porcentaje Span Requerimientos
         
@@ -417,11 +425,13 @@ class SiteController extends Controller
         ")->queryAll();        
         
         return $this->render('indexScrumMaster', [
+            
+            'datos' => $datos,
             //'array_actual' => $array_actual,
-            'total_tiempo_calculado' => $total_tiempo_calculado,
-            'consulta_acutal_burn' => $consulta_acutal_burn,
-            'titulo' => $titulo,
-            'subtitulo' => $subtitulo,
+            //'total_tiempo_calculado' => $total_tiempo_calculado,
+            //'consulta_acutal_burn' => $consulta_acutal_burn,
+            //'titulo' => $titulo,
+            //'subtitulo' => $subtitulo,
             'consulta_total_requerimientos' => $consulta_total_requerimientos,
             'consulta_total_requerimientos_terminados' => $consulta_total_requerimientos_terminados,
             'consulta_total_tareas' => $consulta_total_tareas,

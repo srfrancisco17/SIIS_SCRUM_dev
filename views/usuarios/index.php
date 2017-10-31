@@ -22,11 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn','contentOptions' => ['style' => 'width:10px;']],
-            //'usuario_id',
-            //'num_documento',
-            //'tipo_documento',
-            //'nombres',
-            //'apellidos',
             [
                 'label' => 'Documento',
                 'attribute' => 'num_documento',
@@ -36,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Tipo De Documento',
                 'attribute' => 'tipo_documento',
                 'filter' => FALSE,
-                //'value' => 'tipoDocumento.descripcion',
                 'width' => '10px'
             ],
             [
@@ -49,18 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'apellidos',
                 'width' => '150px'
             ],
-            /*
-            [
-                'label' => 'Correo Electronico',
-                'attribute' => 'correo',
-                'width' => '150px'
-            ],
-            */
             [            
                 'attribute' => 'tipo_usuario',
                 'contentOptions' => ['style' => 'width:150px;'],
                 'value' => 'tipoUsuario.descripcion',
-                //'filter' => Html::activeDropDownList($searchModel, 'tipo_usuario', ArrayHelper::map(app\models\TiposUsuarios::find()->asArray()->all(), 'tipo_usuario_id', 'descripcion'),['class'=>'form-control','prompt' => 'Seleccione']),
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter' => ArrayHelper::map(app\models\TiposUsuarios::find()->asArray()->all(), 'tipo_usuario_id', 'descripcion'),
                 'filterWidgetOptions' => [
@@ -77,7 +63,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'departamento',
                 'contentOptions' => ['style' => 'width:150px;'],
                 'value' => 'departamento0.descripcion',
-                //'filter' => Html::activeDropDownList($searchModel, 'tipo_usuario', ArrayHelper::map(app\models\TiposUsuarios::find()->asArray()->all(), 'tipo_usuario_id', 'descripcion'),['class'=>'form-control','prompt' => 'Seleccione']),
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter' => ArrayHelper::map(app\models\Departamentos::find()->asArray()->all(), 'departamento_id', 'descripcion'),
                 'filterWidgetOptions' => [
@@ -93,7 +78,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Estado',
                 'attribute' => 'estado',
                 'value' => function ($data) {
-                    //print_r($data);
 
                     if($data['estado'] == 0){
                         return 'Inactivo';
@@ -106,22 +90,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo'],['class'=>'form-control','prompt' => '']),
                 'contentOptions' => ['style' => 'width:5px;'],
             ],
-            // 'descripcion',
-            // 'correo',
-            // 'telefono',
-            // 'contrasena',
-            // 'departamento',
-            // 'tipo_usuario',
-            // 'color',
-            // 'estado',
             ['class' => 'yii\grid\ActionColumn','contentOptions' => ['style' => 'width:8%;'],],
         ],
         'toolbar' => [
             ['content' =>
                 Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Usuarios', ['create'], ['class' => 'btn btn-success'])
             ],
-
         ],
-
     ]); ?>
 </div>

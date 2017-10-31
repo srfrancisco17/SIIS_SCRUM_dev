@@ -14,10 +14,11 @@ use kartik\select2\Select2;
 <div class="sprint-requerimientos-form">
     <?php
         $form = ActiveForm::begin([
+                //'action' =>['sprint-requerimientos/create', 'sprint_id' => $sprint_id, 'submit' => 10],
                 'id' => 'sprintRequerimientos-form',
-                'enableAjaxValidation' => true,
-                'enableClientScript' => true,
-                'enableClientValidation' => true,
+                //'enableAjaxValidation' => true,
+                //'enableClientScript' => true,
+                //'enableClientValidation' => true,
         ]);
     ?>
     <?php
@@ -99,9 +100,13 @@ use kartik\select2\Select2;
     <?php ActiveForm::end(); ?>
     </div>
     <?php
+    
         $this->registerJs('
         // obtener la id del formulario y establecer el manejador de eventos
             $("form#sprintRequerimientos-form").on("beforeSubmit", function(e) {
+            
+                console.log("estoy aqui");
+
                 var form = $(this);
                 $.post(
                     form.attr("action")+"&submit=true",
@@ -118,5 +123,6 @@ use kartik\select2\Select2;
                 return false;
             });
         ');
+
     ?>
 </div>

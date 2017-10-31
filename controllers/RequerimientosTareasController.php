@@ -49,6 +49,7 @@ class RequerimientosTareasController extends Controller
         $searchModel = new RequerimientosTareasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $requerimiento_id);
         
+        /*
         $count = 0;
         
         foreach ($dataProvider->getModels() as $variable ){
@@ -57,13 +58,19 @@ class RequerimientosTareasController extends Controller
                 $count++;
             }
         }
+         * 
+         */
         
         $modelRequerimiento = Requerimientos::findOne(['requerimiento_id'=>$requerimiento_id]);
-        
+        /*
         if (empty($modelRequerimiento) || $count > 0){
             return $this->redirect(['requerimientos/index']);
         }
-
+        */
+        if (empty($modelRequerimiento)){
+            return $this->redirect(['requerimientos/index']);
+        }
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

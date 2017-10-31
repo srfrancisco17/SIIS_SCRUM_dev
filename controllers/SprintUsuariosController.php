@@ -171,13 +171,6 @@ class SprintUsuariosController extends Controller
                 
                 $model->actualizarEstadoTareas($id, $estado, 2);
                 
-                /*
-                $sw_var = \app\models\SprintRequerimientosTareas::find()
-                ->where(['sprint_id' => $sprint_id])
-                ->andWhere(['requerimiento_id' => $requerimiento_id])
-                ->andWhere(['estado' => '3'])
-                ->count();
-                */ 
 
                 $sw_var = \app\models\SprintRequerimientosTareas::find()
                 ->where(['between', 'estado','3', '4'])
@@ -195,6 +188,8 @@ class SprintUsuariosController extends Controller
                 
                 
                 \app\models\SprintRequerimientos::actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, '3');
+                
+                
             }
             else if ($estado == 4){
                 echo 'estoy en el 4';
@@ -211,6 +206,11 @@ class SprintUsuariosController extends Controller
                     
                     echo 'estoy en el bet';
                    \app\models\SprintRequerimientos::actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, '4');
+                   
+                   /*
+                    * Actualizar el ultimo estado en terminado
+                    * Requerimientos_tareas
+                    */
                 }
                 
             }

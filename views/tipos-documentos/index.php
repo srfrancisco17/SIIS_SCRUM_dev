@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-//use yii\grid\GridView;
 use kartik\grid\GridView;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
@@ -13,13 +12,9 @@ use yii\widgets\Pjax;
 $this->title = 'Tipos Documentos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
 <div class="row"> 
     <div class="col-md-8 col-md-offset-2">
-        <div class="tipos-documentos-index">
-
-            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-            <?php Pjax::begin(); ?>
+        <?php Pjax::begin(); ?>
             <?=
             GridView::widget([
                 'id' => 'TipoDocumentos-grid',
@@ -30,9 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     'heading' => '<i class="fa fa-folder"></i> Tipos Documentos'
                 ],
                 'columns' => [
-                    //['class' => 'yii\grid\SerialColumn'],
-                    ['label' => 'ID','attribute' => 'documento_id', 'filter' => FALSE],
-                    ['label' => 'Descripcion','attribute' => 'descripcion', 'filter' => FALSE],
+                    [
+                        'label' => 'ID Documento',
+                        'attribute' => 'documento_id', 
+                        'filter' => FALSE,
+                        'contentOptions' => ['style' => 'width:10px;']
+                    ],
+                    [
+                        'label' => 'Descripcion',
+                        'attribute' => 'descripcion',
+                        'filter' => FALSE
+                    ],
                     [
                         'class'=>'kartik\grid\ActionColumn',
                         'template' => '{update}{delete}',
@@ -64,28 +67,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]);
             ?>
-            <?php Pjax::end(); ?>
-            <?php
-            $this->registerJs(
-                    "$(document).on('click', '#activity-index-link', (function() {
-                    $.get(
-                        $(this).data('url'),
-                        function (data) {
-                            $('.modal-body').html(data);
-                            $('#modal').modal();
-                        }
-                    );
-                }));"
-            );
-            ?>
-            <?php
-            Modal::begin([
-                'id' => 'modal',
-                'header' => '<h4 class="modal-title">MODULO: Tipo De Documentos</h4>',
-            ]);
-            echo "<div class='well'></div>";
-            Modal::end();
-            ?>
-        </div>
+        <?php Pjax::end(); ?>
+        <?php
+        $this->registerJs(
+                "$(document).on('click', '#activity-index-link', (function() {
+                $.get(
+                    $(this).data('url'),
+                    function (data) {
+                        
+                        $('.modal-body').html(data);
+                        $('#modal').modal();
+                    }
+                );
+            }));"
+        );
+        ?>
+        <?php
+        Modal::begin([
+            'id' => 'modal',
+            'header' => '<h4 id="titulo_modal" class="modal-title"></h4>',
+        ]);
+        echo "<div class='well'></div>";
+        Modal::end();
+        ?>
     </div>
 </div>

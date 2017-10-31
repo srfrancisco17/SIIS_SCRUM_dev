@@ -80,8 +80,8 @@ use app\models\Usuarios;
                             'url' => ['#'],
                             'items' => [
                                 ['label' => 'Usuarios', 'icon'=>'users', 'url' => ['usuarios/index']],
-                                ['label' => 'Tipo Usuarios', 'icon'=>'user-secret', 'url' => ['tipos-usuarios/index']],
-                                ['label' => 'Tipo Documentos', 'icon'=>'folder', 'url' => ['tipos-documentos/index']],
+                                ['label' => 'Tipos Usuarios', 'icon'=>'user-secret', 'url' => ['tipos-usuarios/index']],
+                                ['label' => 'Tipos Documentos', 'icon'=>'folder', 'url' => ['tipos-documentos/index']],
                                 ['label' => 'Departamentos', 'icon'=>'building', 'url' => ['departamentos/index']],
                             ],
                         ],
