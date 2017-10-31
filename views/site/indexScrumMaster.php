@@ -28,9 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
     // total_tiempo_calculado
     
 //    echo '<pre>';
-//    var_dump(total_tiempo_calculado);
-//    exit;
-    
+//    var_dump($datos['total_tiempo_calculado']);
+//    exit;  
 ?>
 <?php Pjax::begin(); ?>
 <div class="row">
@@ -263,8 +262,8 @@ $this->params['breadcrumbs'][] = $this->title;
         
     $sprint_total_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 1, $dias_festivos);
     
-    $datos_ideal_burn = ideal_burn($total_tiempo_calculado, $sprint_fecha_desde, $sprint_fecha_hasta, $dias_festivos);
-    $datos_actual_burn = actual_burn($consulta_acutal_burn, $sprint_fecha_desde, $dias_festivos, $sprint_total_dias, $total_tiempo_calculado);
+    $datos_ideal_burn = ideal_burn($datos['total_tiempo_calculado'], $sprint_fecha_desde, $sprint_fecha_hasta, $dias_festivos);
+    $datos_actual_burn = actual_burn($datos['consulta_acutal_burn'], $sprint_fecha_desde, $dias_festivos, $sprint_total_dias, $datos['total_tiempo_calculado']);
     
     $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $dias_festivos);
     
@@ -273,7 +272,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         $('#container').highcharts({
         title: {
-          text: '$titulo',
+          text: '".$datos['titulo']."',
           x: -20 //center
         },
         colors: ['blue', 'red'],
@@ -286,7 +285,7 @@ $this->params['breadcrumbs'][] = $this->title;
           }
         },
         subtitle: {
-          text: '$subtitulo',
+          text: '".$datos['subtitulo']."',
           x: -20
         },
         xAxis: {

@@ -174,12 +174,123 @@ class Sprints extends \yii\db\ActiveRecord
         ->bindValue(':sprint_id', $sprint_id)   
         ->execute();
         
+        
     }
     
     public function terminarSprint($sprint_id){
 
-        $conexion = Yii::$app->db;
+        $connection = Yii::$app->db;
+        
+        $transaction = $connection->beginTransaction();
+        
+        /*
+         * Consultas Utilizadas
+         */
+        
+        
+        /*
+         * Cambiar el estado del sprint en 4(terminado)
+         */ 
+        $terminarSprint_sql = " 
+            UPDATE
+                sprints
+            SET
+                estado = '4'
+            WHERE
+                sprint_id = ".$sprint_id."
+        ";
+        
+        /*
+         * Buscar las tareas no terminadas del sprint
+         */
+        $tareasNoTerminadas_sql = "
+            SELECT
+                tarea_id,
+                requerimiento_id
+            FROM
+                sprint_requerimientos_tareas
+            WHERE
+                sprint_id = ".$sprint_id."
+                AND
+                estado BETWEEN '2' AND '3'
+        ";
+        
+        /*
+         * Actualizacion de sprint_requerimientos cuando el estado se encuentre entre 2 y 3 
+         */
+        $requerimiento_noTerminado_sql = "
+            UPDATE
+                requerimientos AS re
+            SET
+                estado = '1'
+            FROM
+                sprint_requerimientos AS sr
+            WHERE
+                sr.estado BETWEEN '2' AND '3'
+                AND sr.sprint_id = ".$sprint_id."
+                AND sr.requerimiento_id = re.requerimiento_id
+        ";
+        
+        /*
+         * Actualizacion de sprint_requerimientos cuando el estado se encuentre entre 2 y 3 
+         */
+        $sprintRequerimiento_noTerminado_sql = "
+            UPDATE
+                sprint_requerimientos
+            SET
+                estado = '5'
+            WHERE
+                estado BETWEEN '2' AND '3'
+                AND sprint_id = ".$sprint_id."
+        ";
+        
 
+        try {
+            
+            //Ejecutar $terminarSprint_sql  
+            $connection->createCommand($terminarSprint_sql)->execute();
+            
+            //Ejecutar $sprintRequerimiento_noTerminado_sql  
+            $result_tareasNoTerminadas = $connection->createCommand($tareasNoTerminadas_sql)->queryAll();
+            
+            foreach ($result_tareasNoTerminadas as $value_tareas) {
+
+                $update_requerimientosTareas_sql = "
+                    UPDATE
+                        requerimientos_tareas
+                    SET
+                        ultimo_estado = '5'
+                    WHERE
+                        tarea_id = ".$value_tareas['tarea_id']."
+                        AND requerimiento_id = ".$value_tareas['requerimiento_id']."
+                ";
+
+                $connection->createCommand($update_requerimientosTareas_sql)->execute();
+            }
+             
+            //Ejecutar $requerimiento_noTerminado_sql       
+            $connection->createCommand($requerimiento_noTerminado_sql)->execute();  
+            
+            //Ejecutar $sprintRequerimiento_noTerminado_sql       
+            $connection->createCommand($sprintRequerimiento_noTerminado_sql)->execute();  
+
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+
+        //$query = SprintRequerimientosTareas::find()->select('tarea_id, requerimiento_id')->where(['sprint_id' => $sprint_id])->andWhere(['between', 'estado','2', '3'])->asArray()->all(); 
+        
+        
+//        echo '<pre>';
+//        print_r($result_tareasNoTerminadas);
+//        exit;
+        
+        /*
         $conexion->createCommand("UPDATE sprints SET estado = 4 WHERE sprint_id=:sprint_id")
         ->bindValue(':sprint_id', $sprint_id)   
         ->execute();
@@ -202,6 +313,10 @@ class Sprints extends \yii\db\ActiveRecord
                     $conexion->createCommand($sql)->execute();
                 }
         }
-        SprintRequerimientos::actualizarNoCumplido($sprint_id); 
+         * 
+         */
+        //SprintRequerimientos::actualizarNoCumplido($sprint_id); 
+         
+         
     }
 }

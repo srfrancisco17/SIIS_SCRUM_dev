@@ -4,14 +4,15 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "tipos_documentos".
- *
+/** 
+ * This is the model class for table "tipos_documentos". 
+ * 
  * @property string $documento_id
  * @property string $descripcion
- *
+ * @property integer $orden
+ * 
  * @property Usuarios[] $usuarios
- */
+ */ 
 class TiposDocumentos extends \yii\db\ActiveRecord
 {
     /**
@@ -28,7 +29,8 @@ class TiposDocumentos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['documento_id'], 'required'],
+            [['documento_id', 'descripcion', 'orden'], 'required'],
+            [['orden'], 'integer'],
             [['documento_id'], 'string', 'max' => 3],
             [['descripcion'], 'string', 'max' => 60],
         ];

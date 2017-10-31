@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models;
+namespace app\models; 
 
-use Yii;
-use yii\base\Model;
-use yii\data\ActiveDataProvider;
-use app\models\TiposDocumentos;
+use Yii; 
+use yii\base\Model; 
+use yii\data\ActiveDataProvider; 
+use app\models\TiposDocumentos; 
 
 /**
  * TiposDocumentosSearch represents the model behind the search form of `app\models\TiposDocumentos`.
@@ -19,6 +19,7 @@ class TiposDocumentosSearch extends TiposDocumentos
     {
         return [
             [['documento_id', 'descripcion'], 'safe'],
+            [['orden'], 'integer'], 
         ];
     }
 
@@ -42,21 +43,21 @@ class TiposDocumentosSearch extends TiposDocumentos
     {
         $query = TiposDocumentos::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['orden'=>SORT_ASC]]
         ]);
 
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
-
-        // grid filtering conditions
+        
+        $query->andFilterWhere([
+            'orden' => $this->orden,
+        ]);
+        
         $query->andFilterWhere(['ilike', 'documento_id', $this->documento_id])
             ->andFilterWhere(['ilike', 'descripcion', $this->descripcion]);
 

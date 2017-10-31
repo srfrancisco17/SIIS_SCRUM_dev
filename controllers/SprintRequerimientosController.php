@@ -103,33 +103,120 @@ class SprintRequerimientosController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($sprint_id, $submit = false)
+    public function actionCreate($sprint_id)
     {
+        
+        
         $model = new SprintRequerimientos();
-
+/*
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
-
-        if ($model->load(Yii::$app->request->post())) {
+*/        
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
            
+            //var_dump($model);exit;
             
+            /*
             if ($model->save()) {
+            */    
+                $connection = Yii::$app->db;
+
+                $transaction = $connection->beginTransaction(); 
                 
-                //Cuando se asocia un requerimiento al sprint este pasa de estado (Activo = 1) a (En Espera = 2) 
-                Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
-                
+                try {
+                    
+                    $insert_sprintRequerimientos_sql = "
+                        
+                        INSERT
+                            INTO
+                                sprint_requerimientos(
+                                    sprint_id,
+                                    requerimiento_id,
+                                    usuario_asignado,
+                                    prioridad
+                                )
+                            VALUES(
+                                ".$model->sprint_id.",
+                                ".$model->requerimiento_id.",
+                                ".$model->usuario_asignado.",
+                                ".$model->prioridad."
+                            );
+                    ";
+                    
+                    $tareasNoTerminadas_sql = "
+                        SELECT
+                            tarea_id,
+                            requerimiento_id,
+                            tarea_titulo,
+                            tarea_descripcion,
+                            ultimo_estado,
+                            horas_desarrollo,
+                            fecha_terminado
+                        FROM
+                            requerimientos_tareas
+                        WHERE 
+                            requerimiento_id = ".$model->requerimiento_id."
+                        AND
+                            ultimo_estado = '5';
+                    ";
+
+                    
+                    //echo $insert_sprintRequerimientos_sql;exit;
+                    
+                    $connection->createCommand($insert_sprintRequerimientos_sql)->execute();
+                    
+
+                    $result_tareasNoTerminadas = $connection->createCommand($tareasNoTerminadas_sql)->queryAll();
+
+
+                    foreach ($result_tareasNoTerminadas as $value_tareasNoTerminadas){
+
+                        $connection->createCommand()->insert('sprint_requerimientos_tareas', [
+                            'tarea_id' => $value_tareasNoTerminadas['tarea_id'],
+                            'sprint_id' => $model->sprint_id,
+                            'requerimiento_id' => $model->requerimiento_id,
+                            'estado' => '2',
+                        ])->execute();
+
+                    }
+                    
+                    //Cuando se asocia un requerimiento al sprint este pasa de estado (Activo = 1) a (En Espera = 2) 
+                    Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
+                   
+                    ValorHelpers::actualizarTiempos($model->sprint_id);
+                    
+                    $model->refresh();
+     
+                    $transaction->commit();
+                    
+                } catch (\Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                } catch (\Throwable $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                } 
+                /*
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return [
+                    'message' => '¡Éxito al vincular requerimiento al sprint!',
+                ];
+                */
+                /*
+                echo 'EXITO';
+                exit;
+                   
                 $query = SprintRequerimientosTareas::find()->select('tarea_id, requerimiento_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->all();               
 
-                
                 if (!empty($query)){                
                     
                     $conexion = Yii::$app->db;
                     
                     foreach ($query as $objTareas) {
                         
-                        $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id='.$model->sprint_id.' WHERE tarea_id='.$objTareas->tarea_id.' AND requerimiento_id ='.$objTareas->requerimiento_id.' AND sprint_id is null');
+                        $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id = '.$model->sprint_id.' WHERE tarea_id='.$objTareas->tarea_id.' AND requerimiento_id ='.$objTareas->requerimiento_id.' AND sprint_id is null');
                         $command->execute();
                          
                     }
@@ -138,23 +225,22 @@ class SprintRequerimientosController extends Controller
                     ValorHelpers::actualizarTiempos($model->sprint_id);
 
                 }
+                */
                 
-                $model->refresh();
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return [
-                    'message' => '¡Éxito al vincular requerimiento al sprint!',
-                ];
-                
+            /*    
             } else {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
             }
-        }
+             * 
+             */
+        }else{
 
-        return $this->renderAjax('create', [
-            'model' => $model,
-            'sprint_id' => $sprint_id,
-        ]);
+            return $this->renderAjax('create', [
+                'model' => $model,
+                'sprint_id' => $sprint_id,
+            ]);
+        }
     }
 
     /**

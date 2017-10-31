@@ -6,8 +6,22 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\TiposDocumentos */
 /* @var $form yii\widgets\ActiveForm */
-?>
 
+    if($model->isNewRecord){
+
+        $mensaje = "Crear tipos documentos";
+
+    }else{
+        $mensaje = "Actualizar  tipos documentos";
+    }
+
+    $this->registerJs(
+        "$(document).ready(function(){
+            $(\"#titulo_modal\").text('".$mensaje."');
+        });"
+    );
+
+?>
 <?php $form = ActiveForm::begin([
     'id' => 'TipoDocumentos-form',
       'enableAjaxValidation' => true,
@@ -16,11 +30,14 @@ use yii\widgets\ActiveForm;
     ]); 
 ?>
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <?= $form->field($model, 'documento_id')->textInput(['maxlength' => true]) ?>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
+    </div>
+    <div class="col-lg-4">
+        <?= $form->field($model, 'orden')->textInput(['maxlength' => true]) ?>
     </div>
 </div>
 <div class="row">
@@ -31,11 +48,9 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 </div>
-
 <?php ActiveForm::end(); ?>
 <?php
     $this->registerJs('
-    // obtener la id del formulario y establecer el manejador de eventos
         $("form#TipoDocumentos-form").on("beforeSubmit", function(e) {
             var form = $(this);
             $.post(
@@ -54,4 +69,3 @@ use yii\widgets\ActiveForm;
         });
     ');
 ?>
-

@@ -10,9 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
-/**
- * UsuariosController implements the CRUD actions for Usuarios model.
- */
+use yii\web\Response;
+use yii\widgets\ActiveForm;
+
 class UsuariosController extends Controller
 {
     /**
@@ -52,17 +52,15 @@ class UsuariosController extends Controller
     public function actionIndex()
     {
         $searchModel = new UsuariosSearch();
-        //Establecer Filtro Por Defecto Que No Esten Inhabilitados
         $searchModel->estado = 1;
         
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination->pageSize=30;
+        $dataProvider->pagination->pageSize=15;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-
     /**
      * Displays a single Usuarios model.
      * @param integer $id
@@ -74,42 +72,35 @@ class UsuariosController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
     /**
      * Creates a new Usuarios model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new Usuarios();
+    public function actionCreate() 
+    { 
+        $model = new Usuarios(); 
 
-        if ($model->load(Yii::$app->request->post())) {
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        
+        if ($model->load(Yii::$app->request->post())){
             
-//            echo '<pre>';
-//            print_r(Yii::$app->request->post('Usuarios')['contrasena']);
-//            echo '</pre>';
-                
             $model->contrasena = Yii::$app->security->generatePasswordHash(Yii::$app->request->post('Usuarios')['contrasena']);
-
-            if ($model->save()){
-                
-                
+            
+            if  ($model->save()){
                 return $this->redirect(['index']);
-                
             }
             
-            //return $this->redirect(['view', 'id' => $model->usuario_id]);
-            //return $this->redirect(['index']);
-   
         }
-        else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+        else { 
+            return $this->render('create', [ 
+                'model' => $model, 
+            ]); 
+        } 
     }
-
     /**
      * Updates an existing Usuarios model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -120,18 +111,13 @@ class UsuariosController extends Controller
     {
         $model = $this->findModel($id);
 
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        
         if ($model->load(Yii::$app->request->post())) {
             
-            /*
-            if (!empty(Yii::$app->request->post('Usuarios')['new_password'])){
-                
-                $nueva_contrasena = Yii::$app->request->post('Usuarios')['new_password'];
-                
-                $model->updatePassword($nueva_contrasena);
-                
-            }
-            */
-
             if ($model->save()){
                 return $this->redirect(['index']);
             }

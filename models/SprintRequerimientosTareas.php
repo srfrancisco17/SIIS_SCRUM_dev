@@ -109,15 +109,32 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
                 'estado' => $estado,
             ],  'tarea_id ='.$id)->execute();      
             
+            /*
+             * NUEVO 19/10/2017
+             * Cambio actualizar el ultimo estado a terminado
+             * 
+             */
             $conexion->createCommand()->update('requerimientos_tareas', [
                 'fecha_terminado' => $now,
+                'ultimo_estado' => '4',
             ],  'tarea_id ='.$id)->execute(); 
             
         }else{
             
             $conexion->createCommand()->update('sprint_requerimientos_tareas', [
                 'estado' => $estado,
-            ],  'tarea_id ='.$id)->execute();         
+            ],  'tarea_id ='.$id)->execute(); 
+            
+            /*
+             * NUEVO 19/10/2017
+             * Cambio para cambiar el ultimo_estado y fecha_terminado a NULL
+             * 
+             */
+            
+            $conexion->createCommand()->update('requerimientos_tareas', [
+                'fecha_terminado' => NULL,
+                'ultimo_estado' => NULL,
+            ],  'tarea_id ='.$id)->execute(); 
 
         }     
 

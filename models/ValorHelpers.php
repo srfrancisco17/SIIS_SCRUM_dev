@@ -27,5 +27,43 @@ class ValorHelpers
                     
         Sprints::actualizarHorasSprints($sprint_id, $tiempo_desarrollo);
     }
-}
+    
+    public static function modalFormularios($titulo_modal){
+        
+        
+        Yii::$app->view->registerJs("
 
+            $(document).on('click', '.link_modal', (function(b) {
+
+                var opcion_modal = $(this).data('opcion');
+                var titulo_modal = $(this).data('titulo');
+
+                if (opcion_modal == '1'){
+
+                    $(\"#titulo_modal\").text('Crear ".$titulo_modal."');
+
+                }else{
+                    $(\"#titulo_modal\").text('Actualizar ".$titulo_modal."');
+                }
+
+                $.get(
+                    $(this).data('url'),
+                    function (data) {
+                        $('.modal-body').html(data);
+                        $('#modal').modal();
+                    }
+                );
+            }));
+            
+        ");
+
+        \yii\bootstrap\Modal::begin([
+            'id' => 'modal',
+            'header' => '<h4 id="titulo_modal" class="modal-title"></h4>',
+        ]);
+        echo "<div class='well'></div>";
+        \yii\bootstrap\Modal::end();        
+  
+    }     
+ 
+}

@@ -238,7 +238,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-2">
             <?php
-            echo Html::a('<span class="badge bg-blue">' . $usuariosDataProvider->getCount() . '</span><i class="fa fa-users"></i> Agregar Desarrollador', '#', [
+            echo Html::a('<span class="badge bg-blue">'.$usuariosDataProvider->getCount().'</span><i class="fa fa-users"></i> Agregar Desarrollador', '#', [
                 'id' => 'activity-index-link2',
                 'class' => 'btn btn-app',
                 'data-toggle' => 'modal2',
@@ -332,7 +332,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <input type="submit"  class="btn btn-primary" name="enviar_datos" id="enviar_datos" value="Agregar">
+                    <input type="submit" name="btn_prueba" class="btn btn-primary" name="enviar_datos" id="enviar_datos" value="Agregar">
                 </div>
             </div>
         </div>

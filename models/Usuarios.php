@@ -4,10 +4,10 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-/**
- * This is the model class for table "usuarios".
- *
- * @property int $usuario_id
+/** 
+ * This is the model class for table "usuarios". 
+ * 
+ * @property integer $usuario_id
  * @property string $num_documento
  * @property string $tipo_documento
  * @property string $nombres
@@ -19,9 +19,9 @@ use yii\helpers\ArrayHelper;
  * @property string $departamento
  * @property string $tipo_usuario
  * @property string $color
- * @property int $estado
+ * @property integer $estado
  * @property string $skin
- *
+ * 
  * @property ComitesAsistentes[] $comitesAsistentes
  * @property Comites[] $comites
  * @property Requerimientos[] $requerimientos
@@ -67,14 +67,11 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public function rules()
     {
         return [
-            //['new_password', 'required'],
             ['new_password', 'string', 'min' => 6],
-            //[['tipo_usuario', 'num_documento', 'tipo_documento', 'nombres', 'apellidos', 'correo', 'contrasena', 'departamento', 'tipo_documento', 'tipo_usuario', 'estado'], 'required'],
-            [['tipo_usuario', 'num_documento', 'tipo_documento', 'contrasena', 'departamento', 'tipo_documento' ], 'required'],
-            ['num_documento', 'unique', 'targetAttribute' => ['num_documento'], 'message' => 'Numero documento ya existe!'],
+            [['num_documento', 'tipo_documento', 'nombres', 'apellidos', 'contrasena', 'tipo_usuario'], 'required'],
             [['tipo_usuario'], 'number'],
-            [['estado'], 'default', 'value' => null],
             [['estado'], 'integer'],
+            [['estado'], 'default', 'value' => null],
             [['num_documento'], 'integer', 'message' => 'Documento debe ser numerico'],
             [['tipo_documento'], 'string', 'max' => 3],
             [['nombres', 'apellidos', 'color'], 'string', 'max' => 30],
@@ -82,13 +79,14 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             [['correo'], 'string', 'max' => 50],
             [['telefono'], 'string', 'max' => 10],
             [['contrasena'], 'string', 'max' => 225],
-            ['password_repeat', 'compare', 'compareAttribute' => 'new_password'],
-            ['new_password', 'compare', 'compareAttribute' => 'password_repeat'],
             [['departamento'], 'string', 'max' => 4],
             [['skin'], 'string', 'max' => 20],
+            [['num_documento', 'tipo_documento'], 'unique', 'targetAttribute' => ['num_documento', 'tipo_documento'], 'message' => 'El tipo de documento y el documento ya existen!'],
             [['departamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamentos::className(), 'targetAttribute' => ['departamento' => 'departamento_id']],
             [['tipo_documento'], 'exist', 'skipOnError' => true, 'targetClass' => TiposDocumentos::className(), 'targetAttribute' => ['tipo_documento' => 'documento_id']],
             [['tipo_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => TiposUsuarios::className(), 'targetAttribute' => ['tipo_usuario' => 'tipo_usuario_id']],
+            ['password_repeat', 'compare', 'compareAttribute' => 'new_password'],
+            ['new_password', 'compare', 'compareAttribute' => 'password_repeat'], 
         ];
     }
 
@@ -99,7 +97,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return [
             'usuario_id' => 'Usuario ID',
-            'num_documento' => 'Num Documento',
+            'num_documento' => 'Documento',
             'tipo_documento' => 'Tipo Documento',
             'nombres' => 'Nombres',
             'apellidos' => 'Apellidos',

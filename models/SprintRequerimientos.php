@@ -212,6 +212,7 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
  
     }
     
+    /*
     public function actualizarNoCumplido($sprint_id){
         
         $conexion = Yii::$app->db;
@@ -232,6 +233,6 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         return true;
         
     }
-    
+    */
 
 }
