@@ -209,7 +209,7 @@ class SiteController extends Controller
              * Por defecto tomara el ultimo sprint
              */
             
-            $obj_sprint = Sprints::find()->where(['estado' => 1])->orderBy(['sprint_id'=>SORT_DESC])->asArray()->limit(1)->one();
+            $obj_sprint = Sprints::find()->orderBy(['sprint_id'=>SORT_DESC])->asArray()->limit(1)->one();
             
         }else{
             /*
@@ -221,6 +221,8 @@ class SiteController extends Controller
         }
         
         $sprint_id = $obj_sprint['sprint_id'];
+        
+        //var_dump($sprint_id);exit;
        
         
         $array_sprints_usuarios = SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all();
@@ -338,7 +340,13 @@ class SiteController extends Controller
             $porcentaje_tareas = 0;
         }
         
-        $porcentaje_requerimientos =  number_format($consulta_total_requerimientos_terminados*100/$consulta_total_requerimientos, 2); 
+        if ($consulta_total_requerimientos_terminados != 0){
+            $porcentaje_requerimientos =  number_format($consulta_total_requerimientos_terminados*100/$consulta_total_requerimientos, 2); 
+        }else{
+            $porcentaje_requerimientos = 0; 
+        }
+        
+        
         
         
         //Porcentaje Span Requerimientos

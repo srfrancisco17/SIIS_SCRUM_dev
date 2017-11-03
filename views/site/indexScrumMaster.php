@@ -24,12 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $sprint_horas_desarrollo = $obj_sprint['horas_desarrollo'];
     $sprint_fecha_desde = $obj_sprint['fecha_desde'];
     $sprint_fecha_hasta = $obj_sprint['fecha_hasta'];
-    
-    // total_tiempo_calculado
-    
-//    echo '<pre>';
-//    var_dump($datos['total_tiempo_calculado']);
-//    exit;  
+
 ?>
 <?php Pjax::begin(); ?>
 <div class="row">
