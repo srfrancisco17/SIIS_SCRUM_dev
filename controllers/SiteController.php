@@ -224,7 +224,6 @@ class SiteController extends Controller
         
         //var_dump($sprint_id);exit;
        
-        
         $array_sprints_usuarios = SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->andWhere(['estado'=>'1'])->all();
 
         $whereUsuario = "";

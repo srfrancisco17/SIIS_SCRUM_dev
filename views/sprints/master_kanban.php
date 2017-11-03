@@ -10,6 +10,14 @@ use yii\widgets\ActiveForm;
 $this->title = 'Sprint Kanban';
 $this->params['breadcrumbs'][] = ['label' => 'Sprints', 'url' => ['sprint/index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerJs("
+    $(document).ready(function(){
+        $('[data-toggle=\"tooltip\"]').tooltip();   
+    });
+");
+
+
 ?>
 <style>
     .sortable.grid li {
@@ -84,6 +92,15 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>  
 <div class="kanban">
 <div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="box-header with-border">
+                <p class="text-center" style="margin: 0 0 0px;">
+                    <?= "<b><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"sprint_id: ".$sprint_id."\">".$sprint_alias."</a></b> <br>".$fecha_desde." / ".$fecha_hasta ?> 
+                </p>
+            </div>
+        </div>
+    </div>
     <div class="col-md-12">
         <div class="box box-default box-solid collapsed-box">
             <div class="box-header with-border">

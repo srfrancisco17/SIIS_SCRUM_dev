@@ -188,6 +188,12 @@ class SprintsController extends Controller
     
     public function actionMasterKanban($sprint_id){
         
+        
+
+//        echo '<pre>';
+//        var_dump(Yii::$app->request->post('sprint_alias', null));
+//        exit;
+        
         $consulta = SprintRequerimientos::find()->where(['sprint_id'=>$sprint_id])->orderBy(['usuario_asignado'=>SORT_DESC, 'prioridad' => SORT_ASC])->all();
         
         $consulta_usuarios = SprintUsuarios::find()->where(['sprint_id'=>$sprint_id])->orderBy(['usuario_id'=>SORT_DESC])->all();
@@ -195,7 +201,10 @@ class SprintsController extends Controller
         return $this->render('master_kanban', [
             'consulta' => $consulta,
             'consulta_usuarios' => $consulta_usuarios,
-            'sprint_id' => $sprint_id
+            'sprint_id' => $sprint_id,
+            'sprint_alias' => Yii::$app->request->post('sprint_alias', null),
+            'fecha_desde' => Yii::$app->request->post('fecha_desde', null),
+            'fecha_hasta' => Yii::$app->request->post('fecha_hasta', null),
         ]);
        
     }
