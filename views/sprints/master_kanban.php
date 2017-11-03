@@ -139,9 +139,9 @@ $this->params['breadcrumbs'][] = $this->title;
 //$consulta2 = $consulta_usuarios[1]->sprintRequerimientos[0]->requerimiento->tiempo_desarrollo;
 //    
 //echo '<pre>';
-//print_r($consulta2);
+//print_r($sprint_id);
 //echo '</pre>';
-
+//exit;
 //foreach ($consulta_usuarios as $value){
 //    echo $value->usuario->color.'<br>';
 //}
@@ -197,79 +197,76 @@ $this->params['breadcrumbs'][] = $this->title;
             
             foreach ($objRequerimientos->sprintRequerimientosTareas as $objTareas){
                 
-//                echo '<pre>';
-//                print_r($objTareas->tarea->tarea_titulo);
-//                echo '</pre>';
-//                exit();
-                  
-                switch ($objTareas->estado){
-                    case 2: 
-                     
-                            $items1[$objTareas->tarea_id] = [
-                            //'content' => $objTareas->tarea_descripcion,
-                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
-                                    <div class="box-header">
-                                      <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
-                                      <div class="box-tools pull-right">
-                                        <span class="label label-default">'.$objTareas->tarea->horas_desarrollo.'</span>
-                                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                                      </div><!-- /.box-tools -->
-                                    </div><!-- /.box-header -->
-                                    <div class="box-body">
-                                    ' . str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion) . '
-                                    </div><!-- /.box-body -->
-                                    </div><!-- /.box -->',
-                            'options' => ['id' => $objTareas->tarea_id],
-                                //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
-                        ];  
-                        
-                        break;
-                        //------------------------------------------------------------
-                        case 3: 
-                     
-                            $items2[$objTareas->tarea_id] = [
-                            //'content' => $objTareas->tarea_descripcion,
-                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
-                                    <div class="box-header">
-                                      <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
-                                      <div class="box-tools pull-right">
-                                        <span class="label label-default">'.$objTareas->tarea->horas_desarrollo.'</span>
-                                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                                      </div><!-- /.box-tools -->
-                                    </div><!-- /.box-header -->
-                                    <div class="box-body">
-                                    ' . str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion) . '
-                                    </div><!-- /.box-body -->
-                                    </div><!-- /.box -->',
-                            'options' => ['id' => $objTareas->tarea_id],
-                                //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
-                        ];  
-                        
-                        break;
-                        //----------------------------------------------------------------
-                        case 4: 
-                     
-                            $items3[$objTareas->tarea_id] = [
-                            //'content' => $objTareas->tarea_descripcion,
-                            'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
-                                    <div class="box-header">
-                                      <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
-                                      <div class="box-tools pull-right">
-                                        <span class="label label-default">'.$objTareas->tarea->horas_desarrollo.'</span>
-                                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                                      </div><!-- /.box-tools -->
-                                    </div><!-- /.box-header -->
-                                    <div class="box-body">
-                                    ' . str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion) . '
-                                    </div><!-- /.box-body -->
-                                    </div><!-- /.box -->',
-                            'options' => ['id' => $objTareas->tarea_id],
-                                //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
-                        ];  
-                        
-                        break;
+                if ($objTareas->sprint_id == $sprint_id){
+                    switch ($objTareas->estado){
+                        case 2: 
+
+                                $items1[$objTareas->tarea_id] = [
+                                //'content' => $objTareas->tarea_descripcion,
+                                'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                                        <div class="box-header">
+                                          <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
+                                          <div class="box-tools pull-right">
+                                            <span class="label label-default">'.$objTareas->tarea->horas_desarrollo.'</span>
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                          </div><!-- /.box-tools -->
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                        ' . str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion) . '
+                                        </div><!-- /.box-body -->
+                                        </div><!-- /.box -->',
+                                'options' => ['id' => $objTareas->tarea_id],
+                                    //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
+                            ];  
+
+                            break;
+                            //------------------------------------------------------------
+                            case 3: 
+
+                                $items2[$objTareas->tarea_id] = [
+                                //'content' => $objTareas->tarea_descripcion,
+                                'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                                        <div class="box-header">
+                                          <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
+                                          <div class="box-tools pull-right">
+                                            <span class="label label-default">'.$objTareas->tarea->horas_desarrollo.'</span>
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                          </div><!-- /.box-tools -->
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                        ' . str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion) . '
+                                        </div><!-- /.box-body -->
+                                        </div><!-- /.box -->',
+                                'options' => ['id' => $objTareas->tarea_id],
+                                    //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
+                            ];  
+
+                            break;
+                            //----------------------------------------------------------------
+                            case 4: 
+
+                                $items3[$objTareas->tarea_id] = [
+                                //'content' => $objTareas->tarea_descripcion,
+                                'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                                        <div class="box-header">
+                                          <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
+                                          <div class="box-tools pull-right">
+                                            <span class="label label-default">'.$objTareas->tarea->horas_desarrollo.'</span>
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                          </div><!-- /.box-tools -->
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                        ' . str_replace("\n", "<br>", $objTareas->tarea->tarea_descripcion) . '
+                                        </div><!-- /.box-body -->
+                                        </div><!-- /.box -->',
+                                'options' => ['id' => $objTareas->tarea_id],
+                                    //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
+                            ];  
+
+                            break;
+                    }  
+                    
                 }
-                
             }
         ?>
         

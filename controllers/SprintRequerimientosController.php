@@ -106,27 +106,16 @@ class SprintRequerimientosController extends Controller
     public function actionCreate($sprint_id)
     {
         
-        
         $model = new SprintRequerimientos();
-/*
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
-        }
-*/        
+      
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
            
-            //var_dump($model);exit;
-            
-            /*
-            if ($model->save()) {
-            */    
+
                 $connection = Yii::$app->db;
 
                 $transaction = $connection->beginTransaction(); 
                 
                 try {
-                    
                     $insert_sprintRequerimientos_sql = "
                         
                         INSERT
@@ -144,7 +133,6 @@ class SprintRequerimientosController extends Controller
                                 ".$model->prioridad."
                             );
                     ";
-                    
                     $tareasNoTerminadas_sql = "
                         SELECT
                             tarea_id,
@@ -162,14 +150,9 @@ class SprintRequerimientosController extends Controller
                             ultimo_estado = '5';
                     ";
 
-                    
-                    //echo $insert_sprintRequerimientos_sql;exit;
-                    
                     $connection->createCommand($insert_sprintRequerimientos_sql)->execute();
-                    
 
                     $result_tareasNoTerminadas = $connection->createCommand($tareasNoTerminadas_sql)->queryAll();
-
 
                     foreach ($result_tareasNoTerminadas as $value_tareasNoTerminadas){
 
@@ -179,9 +162,7 @@ class SprintRequerimientosController extends Controller
                             'requerimiento_id' => $model->requerimiento_id,
                             'estado' => '2',
                         ])->execute();
-
-                    }
-                    
+                    }  
                     //Cuando se asocia un requerimiento al sprint este pasa de estado (Activo = 1) a (En Espera = 2) 
                     Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
                    
@@ -198,42 +179,7 @@ class SprintRequerimientosController extends Controller
                     $transaction->rollBack();
                     throw $e;
                 } 
-                /*
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return [
-                    'message' => '¡Éxito al vincular requerimiento al sprint!',
-                ];
-                */
-                /*
-                echo 'EXITO';
-                exit;
-                   
-                $query = SprintRequerimientosTareas::find()->select('tarea_id, requerimiento_id')->where(['requerimiento_id' => $model->requerimiento_id])->andWhere('sprint_id is NULL')->all();               
 
-                if (!empty($query)){                
-                    
-                    $conexion = Yii::$app->db;
-                    
-                    foreach ($query as $objTareas) {
-                        
-                        $command = $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET sprint_id = '.$model->sprint_id.' WHERE tarea_id='.$objTareas->tarea_id.' AND requerimiento_id ='.$objTareas->requerimiento_id.' AND sprint_id is null');
-                        $command->execute();
-                         
-                    }
-                    
-                    //Actualizacion del tiempo en los sprints
-                    ValorHelpers::actualizarTiempos($model->sprint_id);
-
-                }
-                */
-                
-            /*    
-            } else {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            }
-             * 
-             */
         }else{
 
             return $this->renderAjax('create', [

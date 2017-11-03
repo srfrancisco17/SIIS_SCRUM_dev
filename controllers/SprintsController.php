@@ -195,6 +195,7 @@ class SprintsController extends Controller
         return $this->render('master_kanban', [
             'consulta' => $consulta,
             'consulta_usuarios' => $consulta_usuarios,
+            'sprint_id' => $sprint_id
         ]);
        
     }
