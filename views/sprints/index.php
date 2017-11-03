@@ -13,8 +13,6 @@ use yii\widgets\Pjax;
 
 $this->title = 'Sprints';
 $this->params['breadcrumbs'][] = $this->title;
-
-
 ?>
 <style> 
     .panel-default > .panel-heading {
@@ -45,13 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'fecha_desde',
                     'fecha_hasta',
                     'horas_desarrollo',
-                    /*
-                    [
-                        'attribute' => 'observaciones',
-                        'filter'=>FALSE
-                    ],
-                     */
-                    //'estado',
                     [
                         'label' => 'Estado',
                         'attribute' => 'estado',
@@ -96,6 +87,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Html::a('<span class="fa fa-table"></span>', Url::to(['sprints/master-kanban', 'sprint_id' => $model->sprint_id]), [
                                             'id' => 'activity-index-link2',
                                             'title' => 'kanban',
+                                            'data-method' => 'POST',
+                                            'data-params' => [
+                                                'sprint_alias' => $model->sprint_alias, 
+                                                'fecha_desde' => $model->fecha_desde,
+                                                'fecha_hasta' => $model->fecha_hasta,
+                                            ],
                                 ]);
                             },
                             'terminar-sprint' => function ($url, $model, $key) {
