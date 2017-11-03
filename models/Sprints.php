@@ -199,7 +199,6 @@ class Sprints extends \yii\db\ActiveRecord
             WHERE
                 sprint_id = ".$sprint_id."
         ";
-        
         /*
          * Buscar las tareas no terminadas del sprint
          */
@@ -211,10 +210,9 @@ class Sprints extends \yii\db\ActiveRecord
                 sprint_requerimientos_tareas
             WHERE
                 sprint_id = ".$sprint_id."
-                AND
+            AND
                 estado BETWEEN '2' AND '3'
         ";
-        
         /*
          * Actualizacion de sprint_requerimientos cuando el estado se encuentre entre 2 y 3 
          */
