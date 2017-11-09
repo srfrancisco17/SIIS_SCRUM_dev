@@ -46,9 +46,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'ID Tarea',
                             'attribute' => 'tarea_id',
                             'contentOptions' => ['style' => 'width:10px;'],
+                            'filter' => FALSE
                         ],
                         */
-                        //'tarea_id',
                         //'requerimiento_id',
                         'tarea_titulo',
                         'tarea_descripcion:ntext',

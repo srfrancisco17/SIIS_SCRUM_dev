@@ -47,6 +47,7 @@ class RequerimientosTareasSearch extends RequerimientosTareas
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['tarea_id'=>SORT_ASC]]
         ]);
 
         $this->load($params);
