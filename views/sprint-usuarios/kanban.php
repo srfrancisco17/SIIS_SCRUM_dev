@@ -172,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                     $items1[$objTareas->tarea_id] = [
                         //'content' => $objTareas->tarea_descripcion,
-                        'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                        'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                 <div class="box-header with-border">
                                   <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                   <div class="box-tools pull-right">
@@ -211,7 +211,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     $items2[$objTareas->tarea_id] = [
                         //'content' => $objTareas->tarea_descripcion,
-                        'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                        'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                 <div class="box-header with-border">
                                   <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                   <div class="box-tools pull-right">
@@ -250,7 +250,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                     $items3[$objTareas->tarea_id] = [
                         //'content' => $objTareas->tarea_descripcion,
-                        'content' => '<div class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                        'content' => '<div data-toggle="tooltip" data-placement="left" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                 <div class="box-header with-border">
                                   <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                   <div class="box-tools pull-right">
@@ -271,27 +271,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ];   
                 } 
             }
-            /*    
-                switch ($objTareas->estado){
-                    case 2: 
-                     
-  
-                        
-                        break;
-                        //------------------------------------------------------------
-                    case 3: 
-                     
-                            
-                        
-                        break;
-                        //----------------------------------------------------------------
-                    case 4: 
-                     
-                            
-                        
-                        break;
-                }
-            */    
+ 
             }
         ?>
          <!-- CAMBIAR EL COLOR A LAS ROWS -->
@@ -306,11 +286,11 @@ $this->params['breadcrumbs'][] = $this->title;
                   echo '<br>';
             }
          ?>
-         <!-- ------------------------------------- -->
+         <!-- --------------------------------------->
             <div class="col-lg-3">
                 <div class="box box-default collapsed-box" style="background-color: <?= $usuario_color?>;">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><?= $objRequerimientos->requerimiento_titulo ?></h3>
+                        <h3 class="box-title"><?= "[".$objRequerimientos->requerimiento_id."] ".$objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
                             <span class="label label-default"><?= $objRequerimientos->tiempo_desarrollo ?></span>
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>

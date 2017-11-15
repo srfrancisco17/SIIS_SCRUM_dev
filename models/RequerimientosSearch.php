@@ -85,7 +85,7 @@ class RequerimientosSearch extends Requerimientos
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'requerimiento_id' => $this->requerimiento_id,
+            'requerimientos.requerimiento_id' => $this->requerimiento_id,
             'comite_id' => $this->comite_id,
             'usuario_solicita' => $this->usuario_solicita,
             'fecha_requerimiento' => $this->fecha_requerimiento,

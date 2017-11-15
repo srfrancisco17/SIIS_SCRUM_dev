@@ -33,6 +33,15 @@ use yii\helpers\Url;
             ],
             [
                 'attribute' => 'requerimiento_id',
+                'label' => 'id',
+                'filter' => FALSE,
+                'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                //'contentOptions' => ['style' => 'background-color:red; '],
+                'contentOptions' => ['style' => 'width:2%;'],
+                
+            ],
+            [
+                'attribute' => 'requerimiento_id',
                 'label' => 'Requerimiento',
                 'value' => 'requerimiento.requerimiento_titulo',
                 'filter' => FALSE,
