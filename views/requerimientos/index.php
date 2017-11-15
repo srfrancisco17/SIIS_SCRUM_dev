@@ -38,8 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'bordered' => true,
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-                    //'requerimiento_id',
+                    //['class' => 'yii\grid\SerialColumn'],
+                    [
+                        'label' => 'ID',
+                        'attribute' => 'requerimiento_id',
+                        'contentOptions' => ['style' => 'width:80px;'],
+                    ],
                     [
                         'attribute' => 'comite_id',
                         'label' => 'Comite',
