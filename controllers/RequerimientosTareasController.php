@@ -43,30 +43,20 @@ class RequerimientosTareasController extends Controller
     public function actionIndex($sprint_id = FALSE, $requerimiento_id)// $requerimiento_id
     {
         
-
+        /*
+        echo "<pre>";
+        var_dump($sprint_id);
+        exit;
+        */
         //$requerimiento_id = Yii::$app->request->post('param1', null);
         
         $searchModel = new RequerimientosTareasSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $requerimiento_id);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $sprint_id, $requerimiento_id);
         
-        /*
-        $count = 0;
-        
-        foreach ($dataProvider->getModels() as $variable ){
-            
-            if ($variable->ultimo_estado == 5){
-                $count++;
-            }
-        }
-         * 
-         */
+
         
         $modelRequerimiento = Requerimientos::findOne(['requerimiento_id'=>$requerimiento_id]);
-        /*
-        if (empty($modelRequerimiento) || $count > 0){
-            return $this->redirect(['requerimientos/index']);
-        }
-        */
+
         if (empty($modelRequerimiento)){
             return $this->redirect(['requerimientos/index']);
         }

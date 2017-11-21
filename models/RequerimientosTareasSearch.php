@@ -39,12 +39,19 @@ class RequerimientosTareasSearch extends RequerimientosTareas
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $requerimiento_id)
+    public function search($params, $sprint_id, $requerimiento_id)
     {
-        $query = RequerimientosTareas::find()->where(['requerimiento_id' => $requerimiento_id]);
-
-        // add conditions that should always apply here
-
+        // sprint_id -> si se envia este parametro entonces se realiza la condicion con el sprint
+        if (!empty($sprint_id)){
+            
+            $query = RequerimientosTareas::find()
+                ->innerJoinWith('sprintRequerimientosTareas')
+                ->where(['sprint_requerimientos_tareas.sprint_id' => $sprint_id])
+                ->andWhere(['requerimientos_tareas.requerimiento_id' => $requerimiento_id]);            
+        }else{
+            $query = RequerimientosTareas::find()->where(['requerimiento_id' => $requerimiento_id]);
+        }
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort'=> ['defaultOrder' => ['tarea_id'=>SORT_ASC]]
@@ -60,15 +67,15 @@ class RequerimientosTareasSearch extends RequerimientosTareas
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'tarea_id' => $this->tarea_id,
-            'requerimiento_id' => $this->requerimiento_id,
-            'horas_desarrollo' => $this->horas_desarrollo,
-            'fecha_terminado' => $this->fecha_terminado,
+            'requerimientos_tareas.tarea_id' => $this->tarea_id,
+            'requerimientos_tareas.requerimiento_id' => $this->requerimiento_id,
+            'requerimientos_tareas.horas_desarrollo' => $this->horas_desarrollo,
+            'requerimientos_tareas.fecha_terminado' => $this->fecha_terminado,
         ]);
 
-        $query->andFilterWhere(['like', 'tarea_titulo', $this->tarea_titulo])
-            ->andFilterWhere(['like', 'tarea_descripcion', $this->tarea_descripcion])
-            ->andFilterWhere(['like', 'ultimo_estado', $this->ultimo_estado]);
+        $query->andFilterWhere(['like', 'requerimientos_tareas.tarea_titulo', $this->tarea_titulo])
+            ->andFilterWhere(['like', 'requerimientos_tareas.tarea_descripcion', $this->tarea_descripcion])
+            ->andFilterWhere(['like', 'requerimientos_tareas.ultimo_estado', $this->ultimo_estado]);
 
         return $dataProvider;
     }
