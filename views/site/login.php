@@ -227,7 +227,6 @@ $this->registerJs('
     });
 ');
 */
-
 $this->registerJs('
 //<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>-->
     $.getScript("'.Yii::getAlias('@web').'/js/particles.min.js", function(){
@@ -350,6 +349,7 @@ $this->registerJs('
 <div class="container">
 	<div id="login-box">
             <div class="login-logo"> 
+                
                 <?= Html::img('@web/img/icono-cdo.png', ['alt' => 'My logo', 'style' => ['width' => '150px', 'height' => '150px']]) ?>
                 <br>
                 <a href="#"><b>SIIS</b>-SCRUM</a>
@@ -372,3 +372,6 @@ $this->registerJs('
 	</div>
 </div>
 <div id="particles-js"></div>
+<!-- Santa Claus volando por el blog -->
+<script type="text/javascript" src="http://blogparts.giffy.me/0017/parts.js" />
+<!-- Santa Claus volando por el blog -->
