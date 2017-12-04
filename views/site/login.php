@@ -235,7 +235,7 @@ $this->registerJs('
 {
   "particles": {
     "number": {
-      "value": 400,
+      "value": 150,
       "density": {
         "enable": true,
         "value_area": 800
