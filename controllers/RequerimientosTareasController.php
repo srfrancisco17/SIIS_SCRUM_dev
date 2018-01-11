@@ -145,12 +145,7 @@ class RequerimientosTareasController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing RequerimientosTareas model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
+
     public function actionUpdate($sprint_id = FALSE, $tarea_id, $submit = false)
     {
         $model = $this->findModel($tarea_id);

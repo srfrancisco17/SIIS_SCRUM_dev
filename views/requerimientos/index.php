@@ -3,13 +3,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
-//use yii\grid\GridView;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
-/* @var $this yii\web\View */
-/* @var $searchModel backend\models\RequerimientosSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Requerimientos';
 $this->params['breadcrumbs'][] = $this->title;
