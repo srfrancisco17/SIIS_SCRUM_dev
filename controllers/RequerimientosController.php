@@ -27,6 +27,10 @@ use app\models\PerfilesUsuariosImpactadosSearch;
 use app\models\ValorHelpers;
 use app\models\SprintRequerimientosTareas;
 
+use app\models\HelpersFAOF;
+
+
+
 class RequerimientosController extends Controller
 {
 
@@ -99,26 +103,24 @@ class RequerimientosController extends Controller
     
 
     
-    public function actionUpdate($requerimiento_id)
+    public function actionUpdate($sprint_id = FALSE, $requerimiento_id)
     {
+        
         $model = $this->findModel($requerimiento_id);
         
-        // requerimientos-tareas
-        
         $RT_searchModel = new RequerimientosTareasSearch();
-        $RT_dataProvider = $RT_searchModel->search(Yii::$app->request->queryParams, FALSE, $requerimiento_id);
+        $RT_dataProvider = $RT_searchModel->search(Yii::$app->request->queryParams, $sprint_id, $requerimiento_id);
         
         $PI_searchModel = new ProcesosInvolucradosSearch();
-        $PI_dataProvider = $PI_searchModel->search(Yii::$app->request->queryParams);
+        $PI_dataProvider = $PI_searchModel->search(Yii::$app->request->queryParams, $requerimiento_id);
         
         $PUI_searchModel = new PerfilesUsuariosImpactadosSearch();
-        $PUI_dataProvider = $PUI_searchModel->search(Yii::$app->request->queryParams);
+        $PUI_dataProvider = $PUI_searchModel->search(Yii::$app->request->queryParams, $requerimiento_id);
         
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['index']);
             
-            return $this->redirect(['update', 'requerimiento_id' => $requerimiento_id]);
+            return $this->redirect(['update', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
             
         } else {
             return $this->render('update', [
@@ -129,6 +131,7 @@ class RequerimientosController extends Controller
                 'PI_dataProvider' => $PI_dataProvider,
                 'PUI_searchModel' => $PUI_searchModel,
                 'PUI_dataProvider' => $PUI_dataProvider,
+                'sprint_id' => $sprint_id
             ]);
         }
     }
@@ -153,67 +156,86 @@ class RequerimientosController extends Controller
      * REQUERIMIENTOS-TAREAS
      */
     
-    public function actionCreateRequerimientosTareas($requerimiento_id, $sprint_id = FALSE, $submit = false)
+    public function actionCreateRequerimientosTareas($sprint_id = FALSE, $requerimiento_id, $submit = FALSE)
     {
+        
+        //var_dump($sprint_id);exit;
         
         $model = new RequerimientosTareas();
 
-        if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false)
+        if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == FALSE)
         {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }    
+        
+        
         if($model->load(Yii::$app->request->post()))
         {
             
-            $model->requerimiento_id = $requerimiento_id;
+            $connection = \Yii::$app->db;
+            $transaction = $connection->beginTransaction();
             
-            if($model->save())
-            {
-                
-                $model_sprintRequerimientosTareas = new SprintRequerimientosTareas();
-                $model_sprintRequerimientosTareas->tarea_id = $model->tarea_id;
-                $model_sprintRequerimientosTareas->requerimiento_id = $requerimiento_id;
-                
-                
-                if ($sprint_id != FALSE){
-                    $model_sprintRequerimientosTareas->sprint_id = $sprint_id;
+            /* BEGIN TRANSACTION */
+            $model->requerimiento_id = $requerimiento_id;
 
-                }else{
-                    $model_sprintRequerimientosTareas->sprint_id = NULL;
+
+            try {
+                
+                if ($model->save()) {
+                    
+                    /* Crear registro en sprint-requerimientos-tareas */
+                    
+                    $model2 = new SprintRequerimientosTareas();
+                    $model2->tarea_id = $model->tarea_id;
+                    $model2->requerimiento_id = $requerimiento_id;
+                    $model2->sprint_id = ($sprint_id == FALSE) ? NULL : $sprint_id;
+                    $model2->save();
+                    
+
+                    HelpersFAOF::actualizarTiempos($connection, $sprint_id, $requerimiento_id);
+                    
+                    $transaction->commit();
+                    
+                    
+                    $model->refresh();
+                    $model2->refresh();
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ['message' => '<p align=center><b>¡Tarea creada exitosamente!</b></p>',];
+                    
+                    
+                } else {
+                    
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ['message' => '<p align=center><b>¡ERROR al momento de crear la tarea!</b></p>',];
+                    
+                    //Yii::$app->response->format = Response::FORMAT_JSON;
+                    //return ActiveForm::validate($model);
+                    //throw Exception('Unable to save record.');
+    
                 }
                 
-                if ( $model_sprintRequerimientosTareas->save() ){
-                    
-                    Requerimientos::updateTiempoDesarrollo($requerimiento_id);
-
-                    if ($sprint_id != FALSE){
-                        ValorHelpers::actualizarTiempos($sprint_id);
-                    }
-                    
-                    
-                    $model_sprintRequerimientosTareas->refresh();
-                }
-                
-                $model->refresh();
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return[
-                    'message' => '<p align=center><b>¡Tarea creada exitosamente!</b></p>',
-                ];
-            } else{
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
+            } catch(\yii\db\Exception $e) {
+                $transaction->rollback();   
             }
+            
         }
+        
         return $this->renderAjax('form_requerimientos_tareas',[
            'model'=>$model, 
         ]);
     }
     
     
-    public function actionUpdateRequerimientosTareas($id, $sprint_id = FALSE, $submit = FALSE){
+    public function actionUpdateRequerimientosTareas($tarea_id, $sprint_id = FALSE, $submit = FALSE){
         
-        $model = $this->findModelRequerimientosTareas($id);
+        /*
+        echo '<pre>';
+        var_dump($sprint_id);
+        exit;
+        */
+        
+        $model = $this->findModelRequerimientosTareas($tarea_id);
 
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == FALSE) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -221,23 +243,37 @@ class RequerimientosController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
+             
+            $connection = \Yii::$app->db;
+            $transaction = $connection->beginTransaction();
+            /* BEGIN TRANSACTION */
+            
+            try {
                 
-                Requerimientos::updateTiempoDesarrollo($model->requerimiento_id);
-                
-                if ($sprint_id != FALSE){
-                    ValorHelpers::actualizarTiempos($sprint_id);
-                }
+                if ($model->save()) {
 
-                $model->refresh();
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return [
-                    'message' => '<p align=center><b>¡Tarea actualizada exitosamente!</b></p>',
-                ];
-            } else {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
+                    HelpersFAOF::actualizarTiempos($connection, $sprint_id, $model->requerimiento_id);
+                    $transaction->commit();
+                    $model->refresh();
+
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return [
+                        'message' => '<p align=center><b>¡Tarea actualizada exitosamente!</b></p>',
+                    ];
+                    
+                } else {
+                    
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ['message' => '<p align=center><b>¡ERROR al momento de actualizar la tarea!</b></p>',];
+                    
+                    //Yii::$app->response->format = Response::FORMAT_JSON;
+                    //return ActiveForm::validate($model);
+                }
+                
+            } catch(\yii\db\Exception $e) {
+                $transaction->rollback();   
             }
+            
         }
 
         return $this->renderAjax('form_requerimientos_tareas', [
@@ -247,6 +283,33 @@ class RequerimientosController extends Controller
         
     }
     
+    public function actionDeleteRequerimientosTareas($tarea_id, $sprint_id = FALSE)
+    {
+
+            $model = $this->findModelRequerimientosTareas($tarea_id);
+            $requerimiento_id = $model->requerimiento_id;
+
+            if ( !empty($sprint_id) ){
+
+                $model2 = SprintRequerimientosTareas::find()->where(['tarea_id'=> $tarea_id])->andWhere(['requerimiento_id'=>$requerimiento_id])->andWhere(['sprint_id'=> $sprint_id])->one();
+
+                $model2->delete();
+
+            }
+
+            $model->delete();
+
+            /* Actualizar */
+            
+            $connection = \Yii::$app->db;
+            HelpersFAOF::actualizarTiempos($connection, $sprint_id, $requerimiento_id);
+            
+
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect(['requerimientos/update', 'requerimiento_id' => $requerimiento_id]);
+        }
+
+    }
     
     /*
      * FIN REQUERIMIENTOS-TAREAS

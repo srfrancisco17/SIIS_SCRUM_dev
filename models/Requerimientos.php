@@ -51,7 +51,7 @@ class Requerimientos extends \yii\db\ActiveRecord
     {
         return [
             [['comite_id', 'usuario_solicita', 'tiempo_desarrollo', 'soporte_id'], 'integer'],
-            [['requerimiento_titulo', 'usuario_solicita', 'fecha_requerimiento', 'estado'], 'required'],
+            [['requerimiento_titulo', 'usuario_solicita', 'fecha_requerimiento', 'estado', 'requerimiento_descripcion', 'requerimiento_justificacion', 'requerimiento_funcionalidad'], 'required'],
             [['requerimiento_descripcion', 'requerimiento_justificacion', 'observaciones', 'requerimiento_funcionalidad'], 'string'],
             [['fecha_requerimiento'], 'safe'],
             [['requerimiento_titulo'], 'string', 'max' => 60],
@@ -74,8 +74,8 @@ class Requerimientos extends \yii\db\ActiveRecord
             'requerimiento_id' => 'Requerimiento ID',
             'comite_id' => 'Comite ID',
             'requerimiento_titulo' => 'Requerimiento Titulo',
-            'requerimiento_descripcion' => 'Requerimiento Descripcion',
-            'requerimiento_justificacion' => 'Requerimiento Justificacion',
+            'requerimiento_descripcion' => 'El Como',
+            'requerimiento_justificacion' => 'El Para',
             'usuario_solicita' => 'Usuario Solicita',
             'departamento_solicita' => 'Departamento Solicita',
             'observaciones' => 'Observaciones',
@@ -83,7 +83,7 @@ class Requerimientos extends \yii\db\ActiveRecord
             'estado' => 'Estado',
             'tiempo_desarrollo' => 'Tiempo Desarrollo',
             'sw_soporte' => 'Sw Soporte',
-            'requerimiento_funcionalidad' => 'Requerimiento Funcionalidad',
+            'requerimiento_funcionalidad' => 'El Necesito',
             'soporte_id' => 'Soporte ID',
             'divulgacion' => 'Divulgacion',
         ]; 

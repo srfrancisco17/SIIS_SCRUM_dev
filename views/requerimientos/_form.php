@@ -16,20 +16,32 @@ use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
+date_default_timezone_set('America/Bogota');
+$estado_field_requerimiento = TRUE;
 
-    $estado_field_requerimiento = TRUE;
 
-    if($model->isNewRecord){
-        date_default_timezone_set('America/Bogota');
-        $model->fecha_requerimiento = date('Y-m-d');
-        $estado_field_requerimiento = FALSE;
-    }  
+if($model->isNewRecord || Yii::$app->user->identity->tipo_usuario == Usuarios::USUARIO_SCRUM_MASTER){
+    
+    $model->fecha_requerimiento = date('Y-m-d');
+    $estado_field_requerimiento = FALSE;
+}
+
+
+$this->registerCss("
+    
+    .panel-default > .panel-heading-custom {
+        background: #5A6D82; color: #fff;
+    }
+
+");
+
+
 ?>
 <!-- NUEVOS CAMBIOS 09/01/2018 -->
 <?php $form = ActiveForm::begin(); ?>
-       
+    
 <div class="panel panel-default">
-    <div class="panel-heading">
+    <div class="panel-heading panel-heading-custom">
         <h3 class="panel-title">
             <b>HISTORIA DE USUARIO:</b>
         </h3>
@@ -116,16 +128,16 @@ use yii\widgets\Pjax;
         </div>
         <div class="row">
             <div class="col-lg-3">
-                  <?= $form->field($model, 'requerimiento_descripcion')->textarea(['rows' => '3', 'disabled' => $estado_field_requerimiento])->label('* Como(Rol):') ?>
+                  <?= $form->field($model, 'requerimiento_descripcion')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento])->label('* Como(Rol):') ?>
             </div>
             <div class="col-lg-3">
-                  <?= $form->field($model, 'requerimiento_funcionalidad')->textarea(['rows' => '3', 'disabled' => $estado_field_requerimiento])->label('* Necesito(Funcionalidad):') ?>
+                  <?= $form->field($model, 'requerimiento_funcionalidad')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento])->label('* Necesito(Funcionalidad):') ?>
             </div>
             <div class="col-lg-3">
-                  <?= $form->field($model, 'requerimiento_justificacion')->textarea(['rows' => '3', 'disabled' => $estado_field_requerimiento])->label('* Para(Finalidad):') ?>
+                  <?= $form->field($model, 'requerimiento_justificacion')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento])->label('* Para(Finalidad):') ?>
             </div>
             <div class="col-lg-3">
-                  <?= $form->field($model, 'observaciones')->textarea(['rows' => '3', 'disabled' => $estado_field_requerimiento]) ?>
+                  <?= $form->field($model, 'observaciones')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento]) ?>
             </div>
         </div>
         <div class="row">
@@ -153,17 +165,16 @@ use yii\widgets\Pjax;
             'filterModel' => $RT_searchModel,
             'panel' => [
                 'heading' => '<b>CRITERIOS DE ACEPTACION (TAREAS):</b>',
+                'headingOptions' => ['class'=>'panel-heading panel-heading-custom'],
                 'type' => GridView::TYPE_DEFAULT,
             ],
             'toolbar' => [
-                
                 'content' => 
-
                     Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Tarea', '#', [
                     'class' => 'btn btn-success botones',
                     'data-toggle' => 'modal',
                     'data-target' => '#modal',
-                    'data-url' => Url::to(['create-requerimientos-tareas', 'requerimiento_id' => $model->requerimiento_id]),
+                    'data-url' => Url::to(['create-requerimientos-tareas', 'sprint_id' => $sprint_id ,'requerimiento_id' => $model->requerimiento_id]),
                     'data-pjax' => '0',
                     'data-opcion' => 'modal1-create'
                 ]),
@@ -182,35 +193,38 @@ use yii\widgets\Pjax;
                     'class'=>'kartik\grid\ActionColumn',
                     'template' => '{update}{delete}',
                     'buttons' => [
-                        'update' => function ($url, $model, $key) {
+                        'update' => 
+                        function ($url, $model, $key) {
+ 
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
                                         'class' => 'botones',
                                         'title' => Yii::t('yii', 'Actualizar'),
                                         'data-toggle' => 'modal',
                                         'data-target' => '#modal',
-                                        'data-url' => Url::to(['update-requerimientos-tareas', 'id' => $model->tarea_id]),
+                                        'data-url' => Url::to(['update-requerimientos-tareas', 'tarea_id' => $model->tarea_id, 'sprint_id' => $model->sprintRequerimientosTareas->sprint_id]),
                                         'data-pjax' => '0',
                                         'data-opcion' => 'modal1-update'
                             ]);
-                        },     
-                        /*        
+                        },    
+                                
                         'delete' => function ($url, $model, $key) {
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', '#', [
                                 'title' => Yii::t('yii', 'Delete'),
                                 'aria-label' => Yii::t('yii', 'Delete'),
                                 'onclick' => "
                                     if (confirm('Esta seguro de eliminar este registro?')) {
-                                        $.ajax('".Url::to(['delete-procesos-involucrados', 'id' => $model->id, 'requerimiento_id' => $model->requerimiento_id])."', {
+                                         $.ajax('".Url::to(['delete-requerimientos-tareas', 'tarea_id' => $model->tarea_id, 'sprint_id' => $model->sprintRequerimientosTareas->sprint_id])."', {
                                             type: 'POST'
                                         }).done(function(data) {
-                                            $.pjax.reload({container: '#grid_procesos_involucrados'});
+                                            $.pjax.reload({container: '#grid_tareas'});
+                                        }).fail( function() {
+                                            alert('ERROR AL INTENTAR ELIMINAR UNA TAREA!');
                                         });
                                     }
                                     return false;
                                 ",
                             ]);
-                        }, 
-                        */      
+                        },               
                     ]
                 ],
             ],
@@ -226,6 +240,7 @@ use yii\widgets\Pjax;
             //'filterModel' => $PI_searchModel,
             'panel' => [
                 'heading' => '<b>PROCESOS INVOLUCRADOS:</b>',
+                'headingOptions' => ['class'=>'panel-heading panel-heading-custom'],
                 'type' => GridView::TYPE_DEFAULT,
             ],
             'toolbar' => [
@@ -289,6 +304,7 @@ use yii\widgets\Pjax;
             //'filterModel' => $PUI_searchModel,
             'panel' => [
                 'heading' => '<b>PERFILES DE USUARIOS IMPACTADOS:</b>',
+                'headingOptions' => ['class'=>'panel-heading panel-heading-custom'],
                 'type' => GridView::TYPE_DEFAULT,
             ],
             'toolbar' => [

@@ -39,9 +39,9 @@ class PerfilesUsuariosImpactadosSearch extends PerfilesUsuariosImpactados
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $requerimiento_id)
     {
-        $query = PerfilesUsuariosImpactados::find();
+        $query = PerfilesUsuariosImpactados::find()->where(['requerimiento_id' => $requerimiento_id]);
 
         // add conditions that should always apply here
 

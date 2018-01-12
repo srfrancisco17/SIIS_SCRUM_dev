@@ -100,26 +100,12 @@ use yii\helpers\Url;
                 'template' => '{requerimientos}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
-                    
-                    if ($model->sprint->estado == 0 || $model->requerimiento->sw_soporte == 1){
-                        
-//                        return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index','sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
-//                            'id' => 'activity-index-link2',
-//                            'class' => 'btn btn-success',
-//                         
-//                            'title' => Yii::t('yii', 'Asignar Tareas'),
-//                        ]);
-                        return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos/update', 'requerimiento_id' => $model->requerimiento_id]), [
-                            'id' => 'activity-index-link2',
+
+                        return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos/update', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
                             'class' => 'btn btn-success',
-                            'title' => Yii::t('yii', 'Detalle Requerimiento'),
+                            'title' => 'Detalle Requerimiento',
                         ]);
-                        
-                    }else{
-                        return '<b style="font-size: 8pt;">No Disponible</b>';
-                    }
-                    
-                },
+                    },
                 ]
             ],
         ],

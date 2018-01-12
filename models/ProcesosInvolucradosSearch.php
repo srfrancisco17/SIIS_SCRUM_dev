@@ -39,9 +39,9 @@ class ProcesosInvolucradosSearch extends ProcesosInvolucrados
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $requerimiento_id)
     {
-        $query = ProcesosInvolucrados::find();
+        $query = ProcesosInvolucrados::find()->where(['requerimiento_id' => $requerimiento_id]);
         
         
 
