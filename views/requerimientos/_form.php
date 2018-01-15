@@ -47,7 +47,6 @@ $this->registerCss("
         </h3>
     </div>
     <div class="panel-body">
-  
         <div class="row">
             <div class="col-lg-4">
                 <?= $form->field($model, 'requerimiento_titulo')->textInput(['maxlength' => true, 'disabled' => $estado_field_requerimiento])->label('* Titulo del requerimiento:') ?>
@@ -65,10 +64,8 @@ $this->registerCss("
                     ],
                     ])->label("* Usuario solicitante:");
                 ?>
-              
             </div>
             <div class="col-lg-4">
-               
                 <?= $form->field($model, 'departamento_solicita')->widget(Select2::className(),[
                     'data' => ArrayHelper::map(Departamentos::find()->all(), 'departamento_id', 'descripcion'),
                     'theme' => Select2::THEME_DEFAULT,
@@ -100,7 +97,6 @@ $this->registerCss("
             </div>
             <div class="col-lg-4">
                 <?php
-
                     if ($model->isNewRecord){
                         $arreglo = array('0'=>'Inactivo', '1' => 'Activo');
                         echo $form->field($model, 'estado')->dropDownList($arreglo)->label('* Estado requerimiento');
@@ -108,7 +104,6 @@ $this->registerCss("
                         echo $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_requerimiento'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Estado' ,'disabled' => $estado_field_requerimiento])->label('* Estado requerimiento');
                     }
                 ?>
-                
             </div>
             <div class="col-lg-4">
                 
@@ -153,8 +148,53 @@ $this->registerCss("
  <?php ActiveForm::end(); ?>
 
 <?php
-    if( !$model->isNewRecord && !empty($sprint_id) ){
 
+    $toolbar_tareas = array("content" => NULL); 
+    $action_template_tareas = ""; 
+
+
+    if(!empty($sprint_id)){
+
+        $sprint_estado = app\models\Sprints::getSprintEstado($sprint_id)->estado;
+
+        if ($sprint_estado == '0'){
+
+            $toolbar_tareas = array(
+                "content" => Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Tarea', '#', [
+                                'class' => 'btn btn-success botones',
+                                'data-toggle' => 'modal',
+                                'data-target' => '#modal',
+                                'data-url' => Url::to(['create-requerimientos-tareas', 'sprint_id' => $sprint_id ,'requerimiento_id' => $model->requerimiento_id]),
+                                'data-pjax' => '0',
+                                'data-opcion' => 'modal1-create'
+                            ]),
+            );
+
+            $action_template_tareas = "{update}{delete}"; 
+
+        }else if ($sprint_estado == '1' && $model->sw_soporte == '1'){
+
+
+            $toolbar_tareas = array(
+                "content" => Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Tarea', '#', [
+                                'class' => 'btn btn-success botones',
+                                'data-toggle' => 'modal',
+                                'data-target' => '#modal',
+                                'data-url' => Url::to(['create-requerimientos-tareas', 'sprint_id' => $sprint_id ,'requerimiento_id' => $model->requerimiento_id]),
+                                'data-pjax' => '0',
+                                'data-opcion' => 'modal1-create'
+                            ]),
+            );
+
+            $action_template_tareas = "{update}{delete}"; 
+
+        }
+
+    }
+
+    if( !$model->isNewRecord ){
+        
+              
 ?>
 <div class="row">
     <div class="col-lg-12">
@@ -169,16 +209,7 @@ $this->registerCss("
                 'type' => GridView::TYPE_DEFAULT,
             ],
             'toolbar' => [
-                'content' => 
-                    Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Tarea', '#', [
-                    'class' => 'btn btn-success botones',
-                    'data-toggle' => 'modal',
-                    'data-target' => '#modal',
-                    'data-url' => Url::to(['create-requerimientos-tareas', 'sprint_id' => $sprint_id ,'requerimiento_id' => $model->requerimiento_id]),
-                    'data-pjax' => '0',
-                    'data-opcion' => 'modal1-create'
-                ]),
-                
+                'content' => $toolbar_tareas
             ],
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
@@ -191,7 +222,7 @@ $this->registerCss("
                 ],
                 [
                     'class'=>'kartik\grid\ActionColumn',
-                    'template' => '{update}{delete}',
+                    'template' => $action_template_tareas,
                     'buttons' => [
                         'update' => 
                         function ($url, $model, $key) {
@@ -205,8 +236,7 @@ $this->registerCss("
                                         'data-pjax' => '0',
                                         'data-opcion' => 'modal1-update'
                             ]);
-                        },    
-                                
+                        },           
                         'delete' => function ($url, $model, $key) {
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', '#', [
                                 'title' => Yii::t('yii', 'Delete'),

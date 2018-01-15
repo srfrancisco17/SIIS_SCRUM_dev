@@ -107,7 +107,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class'=>'kartik\grid\ActionColumn',
-                        'template' => Yii::$app->user->identity->tipo_usuario == 1 ? '{view}{update}{delete}{tareas}' : '{tareas}',
+                        'template' => '{view}{update}{delete}',
                         'buttons' => [
 
                             'update' => function ($url, $model, $key) {
@@ -115,23 +115,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     //'id' => 'activity-index-link2',
                                     'title' => 'Actualizar Requerimiento',
                                 ]);
-                            },
-                            
-                            'tareas' => function ($url, $model, $key) {
-                                $count = 0;
-                                foreach ($model->requerimientosTareas as $valor) {
-                                    
-                                    if ($valor->ultimo_estado == 5){
-                                       $count++;
-                                    }
-                                }
-                                
-                                if ($count > 0){
-                                    return '---';
-                                }else{
-                                    return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index', 'requerimiento_id' => $model->requerimiento_id]), []); 
-                                }
-                                
                             },
                         ]
                     ],
