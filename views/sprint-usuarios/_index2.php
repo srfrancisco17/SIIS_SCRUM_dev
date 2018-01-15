@@ -29,7 +29,6 @@ use yii\helpers\Url;
                 'header'=>'#',
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 //'contentOptions' => ['style' => 'width: 1%;'],
-
             ],
             [
                 'attribute' => 'requerimiento_id',
@@ -52,17 +51,39 @@ use yii\helpers\Url;
             ],
             [
                 'attribute' => 'requerimiento_id',
-                'label' => 'H.U DESCRIPCION',
-                //'value' => 'requerimiento.requerimiento_descripcion',
+                'label' => 'H.U COMO',
                 'value' => function ($data) {
                     return html_entity_decode(strip_tags($data->requerimiento->requerimiento_descripcion));
                 },
                 'filter' => FALSE,
                 'format' => 'text',
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
-                //'contentOptions' => ['style' => 'background-color:red; '],
-                'contentOptions' => ['style' => 'width:40%;'],
+                'contentOptions' => ['style' => 'width:20%;'],
             ],
+            [
+                'attribute' => 'requerimiento_id',
+                'label' => 'H.U NECESITO',
+                'value' => function ($data) {
+                    return html_entity_decode(strip_tags($data->requerimiento->requerimiento_funcionalidad));
+                },
+                'filter' => FALSE,
+                'format' => 'text',
+                'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                'contentOptions' => ['style' => 'width:20%;'],
+            ],           
+            [
+                'attribute' => 'requerimiento_id',
+                'label' => 'H.U PARA',
+                'value' => function ($data) {
+                    return html_entity_decode(strip_tags($data->requerimiento->requerimiento_justificacion));
+                },
+                'filter' => FALSE,
+                'format' => 'text',
+                'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                'contentOptions' => ['style' => 'width:20%;'],
+            ], 
+                        
+                        
             [
                 'attribute' => 'requerimiento_id',
                 'label' => 'USUARIO SOLICITANTE',
@@ -87,10 +108,9 @@ use yii\helpers\Url;
                 'template' => '{requerimientos}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
-
                         return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos/update', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
                             'class' => 'btn btn-success',
-                            'title' => 'Detalle Requerimiento',
+                            'title' => 'Detalle H.U',
                         ]);
                     },
                 ]

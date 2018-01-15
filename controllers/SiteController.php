@@ -236,7 +236,8 @@ class SiteController extends Controller
             
             // Diagrama De Todos Los Usuarios
 
-            $datos['total_tiempo_calculado'] = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->sum('requerimientos.tiempo_desarrollo');
+           // $datos['total_tiempo_calculado'] = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->sum('requerimientos.tiempo_desarrollo'); 
+            $datos['total_tiempo_calculado'] = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->sum('tiempo_desarrollo');
             
             $datos['titulo'] = 'Total horas del grupo = '.$obj_sprint['horas_desarrollo']." Horas";
             
@@ -244,9 +245,9 @@ class SiteController extends Controller
             
             // Diagrama Por Usuario
             
+            //$datos['total_tiempo_calculado'] = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
+            $datos['total_tiempo_calculado'] = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('tiempo_desarrollo');
             
-            
-            $datos['total_tiempo_calculado'] = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
             $whereUsuario= "and sr.usuario_asignado = ".$usuario_id." ";
             
             $datos['titulo'] = "Total Horas = ".$datos['total_tiempo_calculado']." Horas";
@@ -489,11 +490,13 @@ class SiteController extends Controller
         //$consulta_ideal_burn = SprintRequerimientos::findOne(['sprint_id' => $sprint_id, 'usuario_asignado' => $usuario_id]);
         
         
-        $total_tiempo_calculado = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
-    
+        //$total_tiempo_calculado = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
+        $total_tiempo_calculado = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('tiempo_desarrollo');
+        
+        
         /*
         echo '<pre>';
-        var_dump($consulta_ideal_burn);
+        var_dump($total_tiempo_calculado);
         echo '</pre>';
         exit; 
         */

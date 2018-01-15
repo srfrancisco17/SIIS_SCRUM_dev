@@ -21,12 +21,12 @@ class HelpersFAOF
         
         $connection->createCommand()->update('requerimientos', ['tiempo_desarrollo' => $total_horas_requerimiento])->execute();
         
-        
         if ( !empty($sprint_id) ){
   
             $update_sprint_requerimientos = "
                 UPDATE sprint_requerimientos
-                SET tiempo_desarrollo = subquery.total_horas
+                SET tiempo_desarrollo = subquery.total_horas,
+                    estado = '3'
                 FROM (
                                 SELECT
                                         SUM(RT.horas_desarrollo) AS total_horas
@@ -41,8 +41,11 @@ class HelpersFAOF
                       ) AS subquery
                 WHERE sprint_id = ".$sprint_id." AND requerimiento_id = ".$requerimiento_id.";
             ";
-            
-            
+            /*
+            echo '<pre>';
+            var_dump($update_sprint_requerimientos);
+            exit;
+            */  
             $update_sprints = " 
                 
                 UPDATE sprints
@@ -67,7 +70,6 @@ class HelpersFAOF
             
         }
         
-
         return true;
         
     }

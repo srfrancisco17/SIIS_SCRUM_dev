@@ -153,7 +153,7 @@ $this->registerCss("
  <?php ActiveForm::end(); ?>
 
 <?php
-    if(!$model->isNewRecord){
+    if( !$model->isNewRecord && !empty($sprint_id) ){
 
 ?>
 <div class="row">

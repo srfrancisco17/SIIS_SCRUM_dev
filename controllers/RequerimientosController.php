@@ -24,9 +24,7 @@ use app\models\ProcesosInvolucradosSearch;
 use app\models\PerfilesUsuariosImpactados;
 use app\models\PerfilesUsuariosImpactadosSearch;
 
-use app\models\ValorHelpers;
 use app\models\SprintRequerimientosTareas;
-
 use app\models\HelpersFAOF;
 
 
@@ -140,7 +138,6 @@ class RequerimientosController extends Controller
     {
         $model = $this->findModel($id);
         $model->estado = '0';
-        
         $model->save();
         
         
