@@ -33,7 +33,7 @@ use yii\helpers\Url;
             ],
             [
                 'attribute' => 'requerimiento_id',
-                'label' => 'id',
+                'label' => 'H.U ID',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 //'contentOptions' => ['style' => 'background-color:red; '],
@@ -42,7 +42,7 @@ use yii\helpers\Url;
             ],
             [
                 'attribute' => 'requerimiento_id',
-                'label' => 'Requerimiento',
+                'label' => 'H.U TITULO',
                 'value' => 'requerimiento.requerimiento_titulo',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
@@ -52,7 +52,7 @@ use yii\helpers\Url;
             ],
             [
                 'attribute' => 'requerimiento_id',
-                'label' => 'Descripcion Requerimiento',
+                'label' => 'H.U DESCRIPCION',
                 //'value' => 'requerimiento.requerimiento_descripcion',
                 'value' => function ($data) {
                     return html_entity_decode(strip_tags($data->requerimiento->requerimiento_descripcion));
@@ -65,7 +65,7 @@ use yii\helpers\Url;
             ],
             [
                 'attribute' => 'requerimiento_id',
-                'label' => 'Usuario Que Solicita',
+                'label' => 'USUARIO SOLICITANTE',
                 //'value' => 'requerimiento.usuarioSolicita.nombres',
                 'value' => function($model) { return $model->requerimiento->usuarioSolicita->nombres.' '.$model->requerimiento->usuarioSolicita->apellidos;},
                 'filter' => FALSE,
@@ -73,26 +73,13 @@ use yii\helpers\Url;
                 'contentOptions' => ['style' => 'width:10%;'],
                 //'contentOptions' => ['style' => 'background-color:red; '],
             ],
-            /*
             [
-                'label' => 'Usuario Asignado',
-                'attribute' => 'usuario_asignado',
-                'value' => 'usuarioAsignado.nombres',
-                'filter' => FALSE,
-            ],
-            */
-            [
-                'attribute' => 'requerimiento.tiempo_desarrollo',
-                'value' => 'requerimiento.tiempo_desarrollo',
-                'label' => 'Hr',
+                'attribute' => 'tiempo_desarrollo',
+                'label' => 'H.U TIEMPO',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 'contentOptions' => ['style' => 'width:1%;'],
             ],
-
-
-            //'usuario_asignado',
-            //'tiempo_desarrollo',
             [
                 'class'=>'yii\grid\ActionColumn',
                 'headerOptions'=>['style' => 'background-color:#3cbcab;'],

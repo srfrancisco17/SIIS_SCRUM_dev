@@ -137,9 +137,7 @@ $this->params['breadcrumbs'][] = $this->title;
         for ($i = 0; $i < count($consulta); $i++) {
             $consulta1 = $consulta[$i]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
         
-        
-        //echo $consulta[$i]->usuarioAsignado->color;
-        
+ 
         //$requerimientos = \app\models\Requerimientos::find()->with('sprintRequerimientosTareas')->all();
           
         foreach ($consulta1 as $objRequerimientos) {
@@ -152,7 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
             if ($objTareas->sprint_id == $sprint_id){
                 
                 if($objTareas->estado == 2){
-                          
+                    /*     
                     if ($objRequerimientos->sw_soporte == 1){
                         
                         $buttons_pull_right = '
@@ -169,7 +167,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 .'
                             </div>';          
                     }
-                    
+                    */
                     $items1[$objTareas->tarea_id] = [
                         //'content' => $objTareas->tarea_descripcion,
                         'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
@@ -191,7 +189,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ];
   
                 }else if($objTareas->estado == 3){
-                    
+                    /* 
                     if ($objRequerimientos->sw_soporte  == 1){
                         
                         $buttons_pull_right = '
@@ -208,7 +206,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 .'
                             </div>';          
                     }
-
+                    */
                     $items2[$objTareas->tarea_id] = [
                         //'content' => $objTareas->tarea_descripcion,
                         'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
@@ -231,7 +229,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                 }else if ($objTareas->estado == 4){
                     
-                    if ($objRequerimientos->sw_soporte == 1){
+                    /*if ($objRequerimientos->sw_soporte == 1){
                         
                         $buttons_pull_right = '
                             <div class="box-tools pull-right">
@@ -246,7 +244,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ])
                                 .'
                             </div>';          
-                    }
+                    }*/
                     
                     $items3[$objTareas->tarea_id] = [
                         //'content' => $objTareas->tarea_descripcion,
@@ -292,7 +290,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box-header with-border">
                         <h3 class="box-title"><?= "[".$objRequerimientos->requerimiento_id."] ".$objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
-                            <span class="label label-default"><?= $objRequerimientos->tiempo_desarrollo ?></span>
+                            <span class="label label-default"><?= $consulta[$i]['tiempo_desarrollo'] ?></span>
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                         </div>
                     </div>
@@ -392,9 +390,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 console.log(b.item[0].id); 
                              
                         var1 = b.item[0].id;
-                          
+                      
                         $.post(
                             form.action = "index.php?r=sprint-usuarios/respuesta&id="+var1+"&estado="+4+"&sprint_id="+"'.$sprint_id.'"+"&requerimiento_id="+"'.$objRequerimientos->requerimiento_id.'",
+                           
+                            
                             form.serialize()
                         ).done(function(result) {
                             form.parent().html(result.message);
