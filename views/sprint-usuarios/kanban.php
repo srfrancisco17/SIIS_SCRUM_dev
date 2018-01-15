@@ -301,6 +301,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php
                         if ($objRequerimientos->sw_soporte == 1){
                         ?>
+                        <!--
                             <div class="box-tools pull-right">    
                                 <?= Html::a('<span class="glyphicon glyphicon-list-alt" style="color: #d9d9d9;"></span>', ['#'], [
                                                 'title' => 'Crear Tarea',
@@ -311,6 +312,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'data-pjax' => '0',
                                 ]) ?> 
                             </div>
+                        -->
                         <?php
                         }
                         ?>
