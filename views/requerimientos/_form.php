@@ -367,7 +367,7 @@ $this->registerCss("
 <?php
     
     /*
-     * MODAL PERFILES DE USUARIOS IMPACTADOS
+     * MODAL
      */
     
     $this->registerJs("
