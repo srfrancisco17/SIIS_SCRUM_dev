@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use kartik\sortable\Sortable;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
+use yii\bootstrap\Modal;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel2 app\models\SprintRequerimientosSearch */
@@ -89,22 +92,36 @@ $this->registerJs("
        color: #d9d9d9; 
     }
     
-</style>  
-<div class="kanban">
+</style> 
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="box-header with-border">
-                <p class="text-center" style="margin: 0 0 0px;">
-                    <?= "<b><a href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"sprint_id: ".$sprint_id."\">".$sprint_alias."</a></b> <br>".$fecha_desde." / ".$fecha_hasta ?> 
+                <p class="text-center" style="margin: 0 0 0px;">                  
+                    <?php
+
+                    $html = "";
+                    $html .= "<a href='javascript:void(0)' data-toggle='tooltip' data-placement='right' title='' >";
+                    $html .= "  <b>";
+                    $html .=        $consulta[0]->sprint->sprint_alias;
+                    $html .= "  </b>";
+                    $html .= "</a>";    
+                    $html .= "[".$consulta[0]->sprint->fecha_desde." / ".$consulta[0]->sprint->fecha_hasta."]";
+                    
+                    echo $html;
+                    
+                    ?>
                 </p>
             </div>
         </div>
     </div>
+</div>
+<div class="kanban">
+<div class="row">
     <div class="col-md-12">
         <div class="box box-default box-solid collapsed-box">
             <div class="box-header with-border">
-                <p class="text-center" style="margin: 0 0 0px;"><b>Desarrolladores</b></p>
+                <p class="text-center" style="margin: 0 0 0px;"><b>DESARROLLADORES</b></p>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
@@ -116,9 +133,10 @@ $this->registerJs("
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Desarrollador</th>
-                            <th>Color</th>
-                            <th>Total de horas</th>
+                            <th>DESARROLLADOR</th>
+                            <th>COLOR</th>
+                            <th>HORAS DE SOPORTE</th>
+                            <th>TOTAL DE HORAS</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -128,9 +146,8 @@ $this->registerJs("
                                 
                                 $suma_total = 0;
                                 
-                                foreach ($value->sprintRequerimientos as $algo ){
-                                    $suma_total = $suma_total+ $algo->requerimiento->tiempo_desarrollo;
-                                    //print_r($algo->requerimiento->tiempo_desarrollo);
+                                foreach ($value->sprintRequerimientos as $sprint_requerimientos ){
+                                    $suma_total = $suma_total+ $sprint_requerimientos->tiempo_desarrollo;
                                     
                                 }
                         ?>
@@ -138,7 +155,8 @@ $this->registerJs("
                                 <td><?= $contador ?></td>
                                 <td> <?= Html::a($value->usuario->nombreCompleto, '#'.$value->usuario->usuario_id) ?> </td>
                                 <td style ='background-color: <?= $value->usuario->color ?>'><?= $value->usuario->color ?></td>
-                                <td><?= $suma_total ?> hr</td>
+                                <td><?= $value->horas_establecidas_soporte ?></td>
+                                <td><?= $suma_total ?></td>
                             </tr>
                             
                         <?php
@@ -151,59 +169,31 @@ $this->registerJs("
         </div>
     </div>
 </div>
-<?php
-
-//$consulta2 = $consulta_usuarios[1]->sprintRequerimientos[0]->requerimiento->tiempo_desarrollo;
-//    
-//echo '<pre>';
-//print_r($sprint_id);
-//echo '</pre>';
-//exit;
-//foreach ($consulta_usuarios as $value){
-//    echo $value->usuario->color.'<br>';
-//}
-
-?>
-    
     <br>
     <div class="row" style="background-color: #5A6E83; color: #f0f0f0;">
         <div class="col-lg-3">
-            <h4 class="text-center">Requerimiento</h4>
+            <h4 class="text-center" style="font-family: Century Gothic;">REQUERIMIENTO</h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">Pendiente</h4>
+            <h4 class="text-center" style="font-family: Century Gothic;">PENDIENTE</h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">En Curso</h4>
+            <h4 class="text-center" style="font-family: Century Gothic;">EN CURSO</h4>
         </div>
         <div class="col-lg-3" style="border-left: 1px solid;">
-            <h4 class="text-center">Finalizado</h4>
+            <h4 class="text-center" style="font-family: Century Gothic;">FINALIZADO</h4>
         </div>
-        <!--<hr>-->
         <br>
     </div>
-    
-    <?php
-    $form = ActiveForm::begin([
-                'id' => 'tareas-form',
-                'enableAjaxValidation' => true,
-                'enableClientScript' => true,
-                'enableClientValidation' => true,
-    ]);
-    ?>
     <?php
         
-        $this->registerJs("var form = $('#tareas-form');");
-        //$usuario_color = '';
-        
-        
+        Pjax::begin(['id' => 'grid_tareas']);
+
+        //$this->registerJs("var form = $('#tareas-form');");
         for ($i = 0; $i < count($consulta); $i++) {
             $consulta1 = $consulta[$i]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
-        
-            //$variable_control = 0;
-            
+
             $usuario_color = empty($consulta[$i]->usuarioAsignado->color) ? '#656565' : $consulta[$i]->usuarioAsignado->color;
-            
             $usuario_id = empty($consulta[$i]->usuarioAsignado->usuario_id) ? '' : $consulta[$i]->usuarioAsignado->usuario_id;
         
         foreach ($consulta1 as $objRequerimientos) {
@@ -233,7 +223,6 @@ $this->registerJs("
                                         </div><!-- /.box-body -->
                                         </div><!-- /.box -->',
                                 'options' => ['id' => $objTareas->tarea_id],
-                                    //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
                             ];  
 
                             break;
@@ -241,7 +230,6 @@ $this->registerJs("
                             case 3: 
 
                                 $items2[$objTareas->tarea_id] = [
-                                //'content' => $objTareas->tarea_descripcion,
                                 'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                         <div class="box-header">
                                           <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
@@ -255,7 +243,6 @@ $this->registerJs("
                                         </div><!-- /.box-body -->
                                         </div><!-- /.box -->',
                                 'options' => ['id' => $objTareas->tarea_id],
-                                    //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
                             ];  
 
                             break;
@@ -263,7 +250,6 @@ $this->registerJs("
                             case 4: 
 
                                 $items3[$objTareas->tarea_id] = [
-                                //'content' => $objTareas->tarea_descripcion,
                                 'content' => '<div data-toggle="tooltip" data-placement="left" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
                                         <div class="box-header">
                                           <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
@@ -277,7 +263,6 @@ $this->registerJs("
                                         </div><!-- /.box-body -->
                                         </div><!-- /.box -->',
                                 'options' => ['id' => $objTareas->tarea_id],
-                                    //'options' => ['data' => ['id'=>$$objTareas->tarea_id]],
                             ];  
 
                             break;
@@ -286,7 +271,6 @@ $this->registerJs("
                 }
             }
         ?>
-        
          <!-- CAMBIAR EL COLOR A LAS ROWS -->
          <?php
             if ($i%2==0){
@@ -299,11 +283,10 @@ $this->registerJs("
                   echo '<br>';
             }
          ?>
-        <!--<div class="row">-->
             <div class="col-lg-3">
                 
                 <div id="<?= $usuario_id ?>" class="box box-default collapsed-box" style="background-color: <?= $usuario_color ?>;">
-                    <div class="box-header with-border">
+                    <div class="box-header">
                         <h3 class="box-title"><?= "[".$objRequerimientos->requerimiento_id."] ".$objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
                             <span class="label label-default"><?= $consulta[$i]['tiempo_desarrollo'] ?></span>
@@ -313,8 +296,25 @@ $this->registerJs("
                     <div class="box-body">
                         <?=  strip_tags($objRequerimientos->requerimiento_descripcion) ?>
                     </div>
-                </div>
+                    <?php
+                    if ($objRequerimientos->sw_soporte == 1){
 
+                        echo '<div class="box-footer" style="background-color: '.$usuario_color.'; text-align: right;">';
+
+                        echo Html::a('<span class="glyphicon glyphicon-list-alt" style="color: #d9d9d9;"></span>', '#', [
+                            'class' => 'botones',
+                            'data-toggle' => 'modal',
+                            'data-target' => '#modal',
+                            'data-url' => Url::to(['requerimientos/create-requerimientos-tareas', 'sprint_id' => $sprint_id ,'requerimiento_id' => $objRequerimientos->requerimiento_id]),
+                            'data-pjax' => '0',
+                            'data-opcion' => 'modal1-create'
+                        ]);
+
+                        echo '</div>';
+
+                    }
+                    ?>
+                </div>
             </div>
             <div class="col-lg-3 columna-sortable">
  
@@ -324,7 +324,6 @@ $this->registerJs("
                         'type' => 'list',
                         'items'=> $items1,
                         'disabled'=>true,
-                        //'options' => ['class' => 'color:red'],
                     ]);
                     echo '<div class="clearfix"></div>';
                 ?>                
@@ -337,7 +336,6 @@ $this->registerJs("
                         'type' => 'list',
                         'items'=> $items2,
                         'disabled'=>true,
-                        //'options' => ['class' => 'color:red'],
                     ]);
                     echo '<div class="clearfix"></div>';
                 ?>  
@@ -349,7 +347,6 @@ $this->registerJs("
                         'type' => 'list',
                         'items'=> $items3,
                         'disabled'=>true,
-                        //'options' => ['class' => 'color:red'],
                     ]);
                     echo '<div class="clearfix"></div>';
                 ?> 
@@ -358,16 +355,47 @@ $this->registerJs("
     <?php
 
         }
-        
         }
-    ?>    
-    <?php ActiveForm::end() ?>
-   
-<?php
-//$items2_options = ['style' => ['background-color' => 'blue', 'color'=>'white', 'width' => '100px', 'height' => '100px']];
-$options2 = ['style' => ['background-color' => 'blue', 'min-height' => '100px', 'padding-bottom' => '30px']];
-//$options3 = ['style' => ['background-color' => 'red']];
-// Two connected Sortable lists with custom styles.
 
-?>
-</div>
+  
+        Pjax::end();
+        
+        /*MODAL*/
+        $this->registerJs("
+            $(document).on('click', '.botones', (function() {   
+                var texto_titulo = '';
+                var propiedades_modal = $(this).data('opcion').split('-');
+
+                if (propiedades_modal[0] === 'modal1'){
+
+                    if (propiedades_modal[1] === 'create'){
+                        texto_titulo = 'CREAR TAREA';
+                        $('#modal').find('.modal-header').css('background-color','#008C4D');
+                    }else if (propiedades_modal[1] === 'update'){
+                        $('#modal').find('.modal-header').css('background-color','#367EA8');
+                        texto_titulo = 'ACTUALIZAR TAREA';
+                    }
+                }
+
+                $('#titulo_modal').text(texto_titulo);
+
+                $.get(
+                    $(this).data('url'),
+                    function (data) {
+
+                        $('.modal-body').html(data);
+                        $('#modal').modal();
+                    }
+                );
+            }));
+        ");    
+
+        Modal::begin([
+            'id' => 'modal',
+            'header' => '<h5 style="font-weight: bold; color:white;" id="titulo_modal" class="modal-title"></h5>',
+        ]);
+        echo "<div class='well'></div>";
+        Modal::end();
+        
+        
+    ?>    

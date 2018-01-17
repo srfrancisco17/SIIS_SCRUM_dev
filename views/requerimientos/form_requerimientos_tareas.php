@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 
 if($model->isNewRecord){
-    $model->horas_desarrollo = 0;
+    $model->horas_desarrollo = 1;
 }
 
 ?>
@@ -23,11 +23,13 @@ $form = ActiveForm::begin([
 ]); 
 ?>
 
+<?= $form->field($model, 'requerimiento_id')->hiddenInput(['value'=> ($model->isNewRecord) ? $requerimiento_id : $model->requerimiento_id])->label(false); ?>
+
 <div class="row">
-    <div class="col-lg-9">
+    <div class="col-lg-8">
         <?= $form->field($model, 'tarea_titulo')->textInput(['maxlength' => true])->label('(*) Titulo') ?>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-4">
             <?= $form->field($model, 'horas_desarrollo')->textInput(['type' => 'number'])->label('Horas') ?>
     </div>
 </div>

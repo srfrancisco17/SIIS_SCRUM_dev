@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
     <?php
     
     if($model->isNewRecord){
-        $model->horas_desarrollo = 0;
+        $model->horas_desarrollo = 1;
     }
     
     $form = ActiveForm::begin([
