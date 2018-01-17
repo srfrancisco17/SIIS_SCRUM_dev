@@ -91,6 +91,32 @@ $this->params['breadcrumbs'][] = $this->title;
        color: #d9d9d9; 
     }
 </style> 
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="box-header with-border">
+                <p class="text-center" style="margin: 0 0 0px;">                  
+                    <?php
+
+                    $html = "";
+                    $html .= "<a href='javascript:void(0)' data-toggle='tooltip' data-placement='right' title='' >";
+                    $html .= "  <b>";
+                    $html .=        $sprint_usuarios->sprint->sprint_alias;
+                    $html .= "  </b>";
+                    $html .= "</a>";
+                    $html .= "[".$sprint_usuarios->sprint->fecha_desde." / ".$sprint_usuarios->sprint->fecha_hasta."]";
+                   
+                    $html .= "<br/>";
+                    $html .= "HORAS DE SOPORTE: ".$sprint_usuarios->horas_establecidas_soporte;
+                    
+                    echo $html;
+                    
+                    ?>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="kanban">
     <div class="row" style="background-color: #605ca8; color: #f5f5f5;">
         <div class="col-lg-3">
