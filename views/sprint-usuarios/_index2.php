@@ -29,11 +29,10 @@ use yii\helpers\Url;
                 'header'=>'#',
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 //'contentOptions' => ['style' => 'width: 1%;'],
-
             ],
             [
                 'attribute' => 'requerimiento_id',
-                'label' => 'id',
+                'label' => 'H.U ID',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 //'contentOptions' => ['style' => 'background-color:red; '],
@@ -42,7 +41,7 @@ use yii\helpers\Url;
             ],
             [
                 'attribute' => 'requerimiento_id',
-                'label' => 'Requerimiento',
+                'label' => 'H.U TITULO',
                 'value' => 'requerimiento.requerimiento_titulo',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
@@ -52,20 +51,42 @@ use yii\helpers\Url;
             ],
             [
                 'attribute' => 'requerimiento_id',
-                'label' => 'Descripcion Requerimiento',
-                //'value' => 'requerimiento.requerimiento_descripcion',
+                'label' => 'H.U COMO',
                 'value' => function ($data) {
                     return html_entity_decode(strip_tags($data->requerimiento->requerimiento_descripcion));
                 },
                 'filter' => FALSE,
                 'format' => 'text',
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
-                //'contentOptions' => ['style' => 'background-color:red; '],
-                'contentOptions' => ['style' => 'width:40%;'],
+                'contentOptions' => ['style' => 'width:20%;'],
             ],
             [
                 'attribute' => 'requerimiento_id',
-                'label' => 'Usuario Que Solicita',
+                'label' => 'H.U NECESITO',
+                'value' => function ($data) {
+                    return html_entity_decode(strip_tags($data->requerimiento->requerimiento_funcionalidad));
+                },
+                'filter' => FALSE,
+                'format' => 'text',
+                'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                'contentOptions' => ['style' => 'width:20%;'],
+            ],           
+            [
+                'attribute' => 'requerimiento_id',
+                'label' => 'H.U PARA',
+                'value' => function ($data) {
+                    return html_entity_decode(strip_tags($data->requerimiento->requerimiento_justificacion));
+                },
+                'filter' => FALSE,
+                'format' => 'text',
+                'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                'contentOptions' => ['style' => 'width:20%;'],
+            ], 
+                        
+                        
+            [
+                'attribute' => 'requerimiento_id',
+                'label' => 'USUARIO SOLICITANTE',
                 //'value' => 'requerimiento.usuarioSolicita.nombres',
                 'value' => function($model) { return $model->requerimiento->usuarioSolicita->nombres.' '.$model->requerimiento->usuarioSolicita->apellidos;},
                 'filter' => FALSE,
@@ -73,26 +94,13 @@ use yii\helpers\Url;
                 'contentOptions' => ['style' => 'width:10%;'],
                 //'contentOptions' => ['style' => 'background-color:red; '],
             ],
-            /*
             [
-                'label' => 'Usuario Asignado',
-                'attribute' => 'usuario_asignado',
-                'value' => 'usuarioAsignado.nombres',
-                'filter' => FALSE,
-            ],
-            */
-            [
-                'attribute' => 'requerimiento.tiempo_desarrollo',
-                'value' => 'requerimiento.tiempo_desarrollo',
-                'label' => 'Hr',
+                'attribute' => 'tiempo_desarrollo',
+                'label' => 'H.U TIEMPO',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 'contentOptions' => ['style' => 'width:1%;'],
             ],
-
-
-            //'usuario_asignado',
-            //'tiempo_desarrollo',
             [
                 'class'=>'yii\grid\ActionColumn',
                 'headerOptions'=>['style' => 'background-color:#3cbcab;'],
@@ -100,20 +108,11 @@ use yii\helpers\Url;
                 'template' => '{requerimientos}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
-                    
-                    if ($model->sprint->estado == 0 || $model->requerimiento->sw_soporte == 1){
-                        
-                        return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index','sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
-                            'id' => 'activity-index-link2',
+                        return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos/update', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
                             'class' => 'btn btn-success',
-                         
-                            'title' => Yii::t('yii', 'Asignar Tareas'),
+                            'title' => 'Detalle H.U',
                         ]);
-                    }else{
-                        return '<b style="font-size: 8pt;">No Disponible</b>';
-                    }
-                    
-                },
+                    },
                 ]
             ],
         ],

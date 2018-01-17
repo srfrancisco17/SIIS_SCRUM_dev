@@ -299,7 +299,6 @@ $this->registerJs("
                   echo '<br>';
             }
          ?>
-        <!-- ------------------------------------- -->
         <!--<div class="row">-->
             <div class="col-lg-3">
                 
@@ -307,7 +306,7 @@ $this->registerJs("
                     <div class="box-header with-border">
                         <h3 class="box-title"><?= "[".$objRequerimientos->requerimiento_id."] ".$objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
-                            <span class="label label-default"><?= $objRequerimientos->tiempo_desarrollo ?></span>
+                            <span class="label label-default"><?= $consulta[$i]['tiempo_desarrollo'] ?></span>
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                         </div>
                     </div>

@@ -110,11 +110,13 @@ use app\models\Usuarios;
                             'icon' => 'undo',
                             'url' => ['sprint-usuarios/index'],
                         ],
+                        /*
                         [
                             'label' => 'Requerimientos',
                             'icon' => 'check-square-o',
                             'url' => ['requerimientos/index'],
                         ],
+                        */
                         [
                             'label' => 'Acerca Del Proyecto',
                             'icon' => 'info-circle',

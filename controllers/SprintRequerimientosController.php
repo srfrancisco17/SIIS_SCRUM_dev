@@ -20,6 +20,9 @@ use yii\widgets\ActiveForm;
 use app\models\Usuarios;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
+
+use app\models\HelpersFAOF;
+
 /**
  * SprintRequerimientosController implements the CRUD actions for SprintRequerimientos model.
  */
@@ -164,12 +167,11 @@ class SprintRequerimientosController extends Controller
                         ])->execute();
                     }  
                     //Cuando se asocia un requerimiento al sprint este pasa de estado (Activo = 1) a (En Espera = 2) 
+        
+                    HelpersFAOF::actualizarTiempos($connection, $model->sprint_id, $model->requerimiento_id);
                     Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
                    
-                    ValorHelpers::actualizarTiempos($model->sprint_id);
-                    
                     $model->refresh();
-     
                     $transaction->commit();
                     
                 } catch (\Exception $e) {

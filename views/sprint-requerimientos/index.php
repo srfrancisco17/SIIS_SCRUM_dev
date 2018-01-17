@@ -62,30 +62,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    //'sprint_id',
                     [
-                        'label' => 'Usuario Asignado',
+                        'label' => 'USUARIO ASIGNADO',
                         'attribute' => 'usuario_asignado',
                         'value' => 'usuarioAsignado.nombreCompleto',
                         'filter' => Html::activeDropDownList($sprintRequerimientosSearchModel, 'usuario_asignado', \app\models\SprintUsuarios::getListaDesarrolladores($sprint_id),['class'=>'form-control','prompt' => 'Seleccione Desarrollador']),
                         'group'=>true,  // enable grouping
                     ],
                     [
+                        'label' => 'H.U ID',
                         'attribute' => 'requerimiento_id',
-                        'label' => 'Requerimiento',
+                        'filter' => FALSE,
+                    ],
+                    [
+                        'attribute' => 'requerimiento_id',
+                        'label' => 'HISTORIA DE USUARIO',
                         'value' => 'requerimiento.requerimiento_titulo',
                         'filter' => FALSE,
                     ],
                     [
-                        'attribute' => 'requerimiento.tiempo_desarrollo',
-                        'value' => 'requerimiento.tiempo_desarrollo',
+                        'label' => 'TIEMPO DESARROLLO',
+                        'attribute' => 'tiempo_desarrollo',
                         'filter' => FALSE,
                     ],
-                    //'usuario_asignado',
-                    //'tiempo_desarrollo',
-                    'prioridad',
                     [
-                        'label' => 'Estado',
+                        'label' => 'PRIORIDAD',
+                        'attribute' => 'prioridad',
+                        'filter' => FALSE,
+                    ],
+                    [
+                        'label' => 'ESTADO',
                         'attribute' => 'estado',
                         'filter' => Html::activeDropDownList($sprintRequerimientosSearchModel, 'estado', ['2' => 'En Espera', '3' => 'En progreso', '4' => 'Terminado', '5' => 'No Cumplida'], ['class' => 'form-control', 'prompt' => '']),
                         //'width' => '100px',

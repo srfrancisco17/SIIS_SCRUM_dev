@@ -103,7 +103,7 @@ $this->registerCss("
     }    
 ");
 
-/*
+
 $this->registerJs('
 //<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>-->
     $.getScript("'.Yii::getAlias('@web').'/js/particles.min.js", function(){
@@ -226,8 +226,8 @@ $this->registerJs('
         );
     });
 ');
-*/
 
+/*
 $this->registerJs('
 //<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>-->
     $.getScript("'.Yii::getAlias('@web').'/js/particles.min.js", function(){
@@ -345,7 +345,7 @@ $this->registerJs('
         );
     });
 ');
-
+*/
 ?>
 <div class="container">
 	<div id="login-box">
@@ -373,6 +373,6 @@ $this->registerJs('
 	</div>
 </div>
 <div id="particles-js"></div>
-<script type="text/javascript" src="http://blogparts.giffy.me/0017/parts.js"></script>
+<!--<script type="text/javascript" src="http://blogparts.giffy.me/0017/parts.js"></script>-->
 <!-- Santa Claus volando por el blog -->
 <!--<script src="/SIIS_SCRUM_dev/web/js/parts.js"></script>-->

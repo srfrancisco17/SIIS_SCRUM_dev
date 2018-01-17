@@ -3,13 +3,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
-//use yii\grid\GridView;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
-/* @var $this yii\web\View */
-/* @var $searchModel backend\models\RequerimientosSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Requerimientos';
 $this->params['breadcrumbs'][] = $this->title;
@@ -111,31 +107,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class'=>'kartik\grid\ActionColumn',
-                        'template' => Yii::$app->user->identity->tipo_usuario == 1 ? '{view}{update}{delete}{tareas}' : '{tareas}',
+                        'template' => '{view}{update}{delete}',
                         'buttons' => [
-//                            'tareas' => function ($url, $model, $key) {
-//                                return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index', 'requerimiento_id' => $model->requerimiento_id]), [
-//                                            'id' => 'activity-index-link2',
-//                                            'title' => Yii::t('yii', 'Tareas'),
-//                                ]);
-//                            },
-                            'tareas' => function ($url, $model, $key) {
-                                
-                                $count = 0;
-                            
-                                foreach ($model->requerimientosTareas as $valor) {
-                                    
-                                    if ($valor->ultimo_estado == 5){
-                                       $count++;
-                                    }
-                                }
-                                
-                                if ($count > 0){
-                                    return '---';
-                                }else{
-                                    return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos-tareas/index', 'requerimiento_id' => $model->requerimiento_id]), []); 
-                                }
-                                
+
+                            'update' => function ($url, $model, $key) {
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::to(['requerimientos/update', 'requerimiento_id' => $model->requerimiento_id]), [
+                                    //'id' => 'activity-index-link2',
+                                    'title' => 'Actualizar Requerimiento',
+                                ]);
                             },
                         ]
                     ],
