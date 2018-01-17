@@ -50,20 +50,68 @@ $this->registerJs($script);
 ?>
 
 <style>
-    /*
-.yii-debug-toolbar_position_bottom {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    margin: 0;
-}
+    svg {
+        display: block;
+        font: 10.5em 'Roboto';
+        font-family: 'Roboto', sans-serif;
+        width: 240px;
+        height: 75px;
+        margin: 0 auto;
+    }
 
-.yii-debug-toolbar {
-    font: 11px Verdana, Arial, sans-serif;
-    text-align: left;
-    width: 96px;
-    transition: width .3s ease;
-    z-index: 1000000;
-}   */
+    .web-coder-skull {
+        fill: none;
+        stroke: white;
+        stroke-dasharray: 6% 29%;
+        stroke-width: 5px;
+        stroke-dashoffset: 0%;
+        animation: stroke-offset 5.5s infinite linear;
+    }
+
+    .web-coder-skull:nth-child(6){
+        stroke: #0677B1;
+            animation-delay: -1;
+    }
+
+    .web-coder-skull:nth-child(2){
+            stroke: #0677B1;
+            animation-delay: -2s;
+    }
+
+    .web-coder-skull:nth-child(3){
+            stroke: #0677B1;
+            animation-delay: -3s;
+    }
+
+    .web-coder-skull:nth-child(4){
+            stroke: #0677B1;
+            animation-delay: -4s;
+    }
+
+    .web-coder-skull:nth-child(5){
+            stroke: #0677B1;
+            animation-delay: -5s;
+    }
+    .web-coder-skull:nth-child(1){ 
+    stroke: #0677B1;
+    animation-delay: -1s;
+    }
+
+    @keyframes stroke-offset{
+            100% {stroke-dashoffset: -35%;}
+    }
 </style>
-
+	<div class="row">
+            <svg viewBox="0 0 860 250">
+                <symbol id="web-coderskull">
+                    <text text-anchor="middle" x="50%" y="70%">SIIS_SCRUM</text>
+                </symbol>
+            <g class = "webcoderskull">
+                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>Raj Saini
+                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>
+                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>
+                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>
+                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>
+            </g>
+            </svg>
+	</div>
