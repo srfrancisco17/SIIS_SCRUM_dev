@@ -175,7 +175,46 @@ class RequerimientosController extends Controller
             
             /* BEGIN TRANSACTION */
             $model->requerimiento_id = $requerimiento_id;
-
+            
+            
+            /* Consulta para determinar si la tarea es urgente o no */ 
+            
+            if (Yii::$app->user->identity->tipo_usuario == '1'){
+                
+                $requerimiento = (new \yii\db\Query())
+                ->select('
+                    R.requerimiento_id,
+                    R.requerimiento_titulo,
+                    R.departamento_solicita,
+                    R.estado,
+                    R.sw_soporte,
+                    SU.usuario_id,
+                    SR.tiempo_desarrollo,
+                    SU.horas_establecidas_soporte
+                ')
+                ->from('requerimientos R')
+                ->innerJoin('sprint_requerimientos SR', '"SR"."requerimiento_id" = "R"."requerimiento_id"')
+                ->innerJoin('sprint_usuarios SU', '"SU"."sprint_id" = "SR"."sprint_id" AND "SU"."usuario_id" = "SR"."usuario_asignado"')
+                ->where(['R.requerimiento_id' => $requerimiento_id])
+                ->andWhere(['R.sw_soporte' => '1'])->one();
+                
+                
+                if (!empty($requerimiento)){
+                    
+                    if($requerimiento['tiempo_desarrollo'] > $requerimiento['horas_establecidas_soporte']){
+                        
+                        $model->sw_urgente = '1';
+ 
+                    }
+                    
+                }
+                
+            }
+            /*
+            echo '<pre>';
+            var_dump($model->sw_urgente);
+            exit;
+            */
 
             try {
                 
@@ -220,6 +259,7 @@ class RequerimientosController extends Controller
         
         return $this->renderAjax('form_requerimientos_tareas',[
            'model'=>$model, 
+           'requerimiento_id' => $requerimiento_id,
         ]);
     }
     
