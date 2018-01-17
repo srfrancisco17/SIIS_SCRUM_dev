@@ -1,12 +1,7 @@
 <?php
-
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\helpers\Url;
-
-/* @var $this yii\web\View */
-/* @var $searchModel2 app\models\SprintRequerimientosSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 ?>
 <br>
 <div class="row">
@@ -16,26 +11,19 @@ use yii\helpers\Url;
         'dataProvider' => $dataProvider2,
         //'filterModel' => $searchModel2,
         'summary'=>'',
-        //'showPageSummary' => true,
-        
-        //'tableOptions' => ['style' => 'background-color:black; border:1px solid black; '],
         'options' => ['style' => 'border:5px groove; '],
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-            //'requerimiento_id',
             [
                 'class'=>'kartik\grid\SerialColumn',
                 'width'=>'1%',
                 'header'=>'#',
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
-                //'contentOptions' => ['style' => 'width: 1%;'],
             ],
             [
                 'attribute' => 'requerimiento_id',
                 'label' => 'H.U ID',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
-                //'contentOptions' => ['style' => 'background-color:red; '],
                 'contentOptions' => ['style' => 'width:2%;'],
                 
             ],
@@ -45,7 +33,6 @@ use yii\helpers\Url;
                 'value' => 'requerimiento.requerimiento_titulo',
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
-                //'contentOptions' => ['style' => 'background-color:red; '],
                 'contentOptions' => ['style' => 'width:20%;'],
                 
             ],
@@ -81,18 +68,14 @@ use yii\helpers\Url;
                 'format' => 'text',
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 'contentOptions' => ['style' => 'width:20%;'],
-            ], 
-                        
-                        
+            ],             
             [
                 'attribute' => 'requerimiento_id',
                 'label' => 'USUARIO SOLICITANTE',
-                //'value' => 'requerimiento.usuarioSolicita.nombres',
                 'value' => function($model) { return $model->requerimiento->usuarioSolicita->nombres.' '.$model->requerimiento->usuarioSolicita->apellidos;},
                 'filter' => FALSE,
                 'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                 'contentOptions' => ['style' => 'width:10%;'],
-                //'contentOptions' => ['style' => 'background-color:red; '],
             ],
             [
                 'attribute' => 'tiempo_desarrollo',
@@ -104,12 +87,11 @@ use yii\helpers\Url;
             [
                 'class'=>'yii\grid\ActionColumn',
                 'headerOptions'=>['style' => 'background-color:#3cbcab;'],
-                'contentOptions' => ['style' => 'width:5%;'],
+                'contentOptions' => ['style' => 'width:5%;text-align:center;'],
                 'template' => '{requerimientos}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos/update', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
-                            'class' => 'btn btn-success',
                             'title' => 'Detalle H.U',
                         ]);
                     },
@@ -118,7 +100,6 @@ use yii\helpers\Url;
         ],
         'pjax' => true,                                                 
     ]);?>     
-        
     </div>
 </div>
            
