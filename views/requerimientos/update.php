@@ -6,9 +6,9 @@ use yii\helpers\Html;
 /* @var $model backend\models\Requerimientos */
 
 $this->title = 'Actualizar Requerimiento: [' . $model->requerimiento_id.']';
-$this->params['breadcrumbs'][] = ['label' => 'Requerimientos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->requerimiento_id.' - '.$model->requerimiento_titulo, 'url' => ['view', 'id' => $model->requerimiento_id]];
-$this->params['breadcrumbs'][] = 'Actualizar';
+//$this->params['breadcrumbs'][] = ['label' => 'Requerimientos', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => $model->requerimiento_id.' - '.$model->requerimiento_titulo, 'url' => ['view', 'id' => $model->requerimiento_id]];
+//$this->params['breadcrumbs'][] = 'Actualizar';
 ?>
 
 
@@ -20,6 +20,8 @@ $this->params['breadcrumbs'][] = 'Actualizar';
     'PI_dataProvider' => $PI_dataProvider,
     'PUI_searchModel' => $PUI_searchModel,
     'PUI_dataProvider' => $PUI_dataProvider,
+    'RP_searchModel' => $RP_searchModel,
+    'RP_dataProvider' => $RP_dataProvider,
     'RI_model' => $RI_model,
     'sprint_id' => $sprint_id,
 ]) ?>

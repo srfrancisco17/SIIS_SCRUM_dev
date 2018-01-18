@@ -114,7 +114,7 @@ use app\models\Usuarios;
                         [
                             'label' => 'Pruebas',
                             'icon' => 'slack',
-                            'url' => ['pruebas/index'],
+                            'url' => ['requerimientos-pruebas/index'],
                         ],
                         
                         [

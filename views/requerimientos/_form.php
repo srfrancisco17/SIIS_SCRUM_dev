@@ -402,95 +402,8 @@ $this->registerCss("
             </div>
             <?php
 
-                /*
-                 * MODAL
-                 */
-
-                $this->registerJs("
-
-                    $(document).on('click', '.botones', (function() {   
-                        var texto_titulo = '';
-
-
-                        var propiedades_modal = $(this).data('opcion').split('-');
-
-
-                        if (propiedades_modal[0] === 'modal1'){
-
-
-                            if (propiedades_modal[1] === 'create'){
-
-                                texto_titulo = 'CREAR TAREA';
-                                $('#modal').find('.modal-header').css('background-color','#008C4D');
-
-                            }else if (propiedades_modal[1] === 'update'){
-
-                                $('#modal').find('.modal-header').css('background-color','#367EA8');
-                                texto_titulo = 'ACTUALIZAR TAREA';
-
-                            }
-
-
-                        }else if(propiedades_modal[0] === 'modal2'){
-
-
-                            if (propiedades_modal[1] === 'create'){
-
-                                texto_titulo = 'AGREGAR PROCESO INVOLUCRADO';
-                                $('#modal').find('.modal-header').css('background-color','#008C4D');
-
-                            }else if (propiedades_modal[1] === 'update'){
-
-                                $('#modal').find('.modal-header').css('background-color','#367EA8');
-                                texto_titulo = 'MODIFICAR PROCESO INVOLUCRADO';
-
-                            }
-
-
-
-                        }else if(propiedades_modal[0] === 'modal3'){
-
-
-
-                            if (propiedades_modal[1] === 'create'){
-
-                                texto_titulo = 'AGREGAR EL PERFIL DEL USUARIO QUE IMPACTA';
-                                $('#modal').find('.modal-header').css('background-color','#008C4D');
-
-                            }else if (propiedades_modal[1] === 'update'){
-
-                                $('#modal').find('.modal-header').css('background-color','#367EA8');
-                                texto_titulo = 'MODIFICAR EL PERFIL DEL USUARIO QUE IMPACTA';
-
-                            }
-
-
-                        }
-
-                        $('#titulo_perfiles_usuario').text(texto_titulo);
-
-                        $.get(
-                            $(this).data('url'),
-                            function (data) {
-
-                                $('.modal-body').html(data);
-                                $('#modal').modal();
-                            }
-                        );
-
-                    }));
-
-                ");
-
-
-                Modal::begin([
-                    'id' => 'modal',
-                    'header' => '<h5 style="font-weight: bold; color:white;" id="titulo_perfiles_usuario" class="modal-title"></h5>',
-                ]);
-                echo "<div class='well'></div>";
-                Modal::end();
-
                 }
+  
             ?>
            
         </div>
@@ -500,12 +413,7 @@ $this->registerCss("
                 
                 $lista_usuarios = Usuarios::getListaUsuarios();
                 
-                /*
-                echo "<pre>";
-                var_dump($lista_usuarios);
-                exit;
-                */
-                
+  
                 
                 if (!$model->isNewRecord){
                     
@@ -515,15 +423,6 @@ $this->registerCss("
                         $RI_model->soporte_entregado_por = Yii::$app->user->identity->usuario_id;
                         $RI_model->produccion_entregado_por = Yii::$app->user->identity->usuario_id;
                     }
-                /*    
-                $this->registerJs(
-                   '$("document").ready(function(){ 
-                        $("#form-requerimientos_implementacion").on("pjax:end", function() {
-                            $.pjax.reload({container:"#form-requerimientos_implementacion"});  //Reload GridView
-                        });
-                    });'
-                );
-                */
                 
                 Pjax::begin(['id' => 'form-requerimientos_implementacion', 'enablePushState'=>false, 'enableReplaceState' => false]);
                 $form = ActiveForm::begin([
@@ -783,7 +682,206 @@ $this->registerCss("
             </div>
             <div id="sectionC" class="tab-pane fade">
                 <br>
-                HELLO
+                
+                <?php Pjax::begin(['id' => 'grid-requerimientos_pruebas']) ?>
+
+                    <?= GridView::widget([
+                        'dataProvider' => $RP_dataProvider,
+                        'filterModel' => $RP_searchModel,
+                        'panel' => [
+                            'heading' => '<b>PRUEBAS FUNCIONALES:</b>',
+                            'headingOptions' => ['class'=>'panel-heading panel-heading-custom'],
+                            'type' => GridView::TYPE_DEFAULT,
+                        ],
+                        'toolbar' => [
+                            'content' => 
+                                Html::a('<i class="glyphicon glyphicon-plus"></i> Agregar Prueba', '#', [
+                                'class' => 'btn btn-success botones',
+                                'data-toggle' => 'modal',
+                                'data-target' => '#modal',
+                                'data-url' => Url::to(['requerimientos-pruebas/create', 'requerimiento_id' => $model->requerimiento_id]),
+                                'data-pjax' => '0',
+                                'data-opcion' => 'modal4-create', 
+                            ]),
+                        ],
+                        'columns' => [
+                            [
+                                'class'=>'kartik\grid\SerialColumn',
+                                'width'=>'1%',
+                                'header'=>'#',
+                                //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                            ],
+                            [
+                                'attribute' => 'prueba_id',
+                                'label' => 'ID',
+                                'value' => 'prueba_id',
+                                'filter' => FALSE,
+                                //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                                'contentOptions' => ['style' => 'width:1%;'],
+                            ],
+                            [
+                                'attribute' => 'fecha_entrega',
+                                'label' => 'Fecha de entrega',
+                                'filter' => FALSE,
+                                //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                                'contentOptions' => ['style' => 'width:10%;'],
+                            ],
+                            [
+                                'attribute' => 'fecha_prueba',
+                                'label' => 'Fecha de pruebas',
+                                'filter' => FALSE,
+                                //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                                'contentOptions' => ['style' => 'width:10%;'],
+                            ],
+                            [
+                                'attribute' => 'usuario_pruebas',
+                                'label' => 'Ing. Pruebas',
+                                'value' => 'usuarioPruebas.nombreCompleto',
+                                'filter' => FALSE,
+                                //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                                'contentOptions' => ['style' => 'width:20%;'],
+                            ],
+                            [
+                                'attribute' => 'observaciones',
+                                'label' => 'Observaciones',
+                                'filter' => FALSE,
+                                //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                                'contentOptions' => ['style' => 'width:40%;'],
+                            ],
+                            [
+                                'attribute' => 'estado',
+                                'label' => 'Estado',
+                                'filter' => FALSE,
+                                //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
+                                'contentOptions' => ['style' => 'width:7%;'],
+                            ],
+                            [
+                                'class'=>'kartik\grid\ActionColumn',
+                                'template' => '{update}{delete}',
+                                'buttons' => [
+                                    'update' => function ($url, $model, $key) {
+                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
+                                                    'class' => 'botones',
+                                                    'title' => Yii::t('yii', 'Actualizar'),
+                                                    'data-toggle' => 'modal',
+                                                    'data-target' => '#modal',
+                                                    'data-url' => Url::to(['requerimientos-pruebas/update', 'prueba_id' => $model->prueba_id]),
+                                                    'data-pjax' => '0',
+                                                    'data-opcion' => 'modal4-update'
+                                        ]);
+                                    },                            
+
+                                    'delete' => function ($url, $model, $key) {
+                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', '#', [
+                                            'title' => Yii::t('yii', 'Delete'),
+                                            'aria-label' => Yii::t('yii', 'Delete'),
+                                            'onclick' => "
+                                                if (confirm('Esta seguro de eliminar este registro?')) {
+                                                    $.ajax('".Url::to(['requerimientos-pruebas/delete', 'prueba_id' => $model->prueba_id, 'requerimiento_id' => $model->requerimiento_id])."', {
+                                                        type: 'POST'
+                                                    }).done(function(data) {
+                                                        $.pjax.reload({container: '#grid-requerimientos_pruebas'});
+                                                    });
+                                                }
+                                                return false;
+                                            ",
+                                        ]);
+                                    },        
+
+                                ]
+                            ],  
+                        ],
+                    ]); ?>
+                  <?php Pjax::end(); ?>
             </div>
         </div>
 </div>
+<?php
+    /*
+    * MODAL
+    */
+    $this->registerJs("
+
+        $(document).on('click', '.botones', (function() {   
+            var texto_titulo = '';
+            var propiedades_modal = $(this).data('opcion').split('-');
+
+            if (propiedades_modal[0] === 'modal1'){
+
+                if (propiedades_modal[1] === 'create'){
+
+                    texto_titulo = 'CREAR TAREA';
+                    $('#modal').find('.modal-header').css('background-color','#008C4D');
+
+                }else if (propiedades_modal[1] === 'update'){
+
+                    $('#modal').find('.modal-header').css('background-color','#367EA8');
+                    texto_titulo = 'ACTUALIZAR TAREA';
+
+                }
+
+            }else if(propiedades_modal[0] === 'modal2'){
+
+                if (propiedades_modal[1] === 'create'){
+
+                    texto_titulo = 'AGREGAR PROCESO INVOLUCRADO';
+                    $('#modal').find('.modal-header').css('background-color','#008C4D');
+
+                }else if (propiedades_modal[1] === 'update'){
+
+                    $('#modal').find('.modal-header').css('background-color','#367EA8');
+                    texto_titulo = 'MODIFICAR PROCESO INVOLUCRADO';
+
+                }
+
+            }else if(propiedades_modal[0] === 'modal3'){
+
+                if (propiedades_modal[1] === 'create'){
+
+                    texto_titulo = 'AGREGAR EL PERFIL DEL USUARIO QUE IMPACTA';
+                    $('#modal').find('.modal-header').css('background-color','#008C4D');
+
+                }else if (propiedades_modal[1] === 'update'){
+
+                    $('#modal').find('.modal-header').css('background-color','#367EA8');
+                    texto_titulo = 'MODIFICAR EL PERFIL DEL USUARIO QUE IMPACTA';
+
+                }
+
+            }
+            else if(propiedades_modal[0] === 'modal4'){
+
+                if (propiedades_modal[1] === 'create'){
+
+                    texto_titulo = 'CREAR PRUEBA FUNCIONAL';
+                    $('#modal').find('.modal-header').css('background-color','#008C4D');
+
+                }else if (propiedades_modal[1] === 'update'){
+
+                    $('#modal').find('.modal-header').css('background-color','#367EA8');
+                    texto_titulo = 'MODIFICAR PRUEBA FUNCIONAL';
+
+                }
+            }
+
+            $('#titulo_perfiles_usuario').text(texto_titulo);
+
+            $.get(
+                $(this).data('url'),
+                function (data) {
+
+                    $('.modal-body').html(data);
+                    $('#modal').modal();
+                }
+            );
+
+        }));
+
+    ");
+    Modal::begin([
+        'id' => 'modal',
+        'header' => '<h5 style="font-weight: bold; color:white;" id="titulo_perfiles_usuario" class="modal-title"></h5>',
+    ]);
+    echo "<div class='well'></div>";
+    Modal::end();
+?>
