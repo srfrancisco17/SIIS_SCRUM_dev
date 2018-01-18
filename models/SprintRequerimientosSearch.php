@@ -39,7 +39,7 @@ class SprintRequerimientosSearch extends SprintRequerimientos
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $sprint_id, $sw_control)
+    public function search($params, $sprint_id = FALSE, $sw_control)
     {
         // add conditions that should always apply here
         
@@ -48,6 +48,11 @@ class SprintRequerimientosSearch extends SprintRequerimientos
             //$query = SprintUsuarios::find();
         }else if($sw_control == 1){
             $query = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->orderBy(['usuario_asignado' => SORT_DESC, 'prioridad'=>SORT_ASC]);
+        }
+        else if ($sw_control == 3){
+            
+            $query = SprintRequerimientos::find()->orderBy(['usuario_asignado' => SORT_DESC, 'prioridad'=>SORT_ASC]);
+            
         }
 
         $dataProvider = new ActiveDataProvider([

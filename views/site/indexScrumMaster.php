@@ -376,7 +376,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     type: 'column'
                 },
                 title: {
-                    text: 'Grafico indivudual'
+                    text: 'Productividad'
                 },
                 subtitle: {
 

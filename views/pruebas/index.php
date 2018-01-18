@@ -1,117 +1,122 @@
 <?php
 /* @var $this yii\web\View */
+use yii\helpers\Html;
+use kartik\grid\GridView;
+use yii\helpers\Url;
 
-use app\models\Usuarios;
 
-
+$this->title = 'PRUEBAS';
 
 ?>
-<?php
-        
-$script = <<< JS
-$(document).ready(function(){
-   var i = 1;
-       
-   $('#add').click(function(){
-      i++; 
-        
-        $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" id="name" placeholder="Enter Name" class="form-control name_list"/></td><td><input type="text" name="lugar[]" id="lugar" placeholder="Enter Lugar" class="form-control name_list"/></td><td><button name="remove" id="'+i+'" class = "btn btn-danger btn_remove">X</button></td></tr>');
-        
-   });
-        
-   $(document).on('click', '.btn_remove', function(){
-    
-        var button_id = $(this).attr("id");
-        $("#row"+button_id+"").remove();
-   
-   });
-   
-   /*
-   $('#submit').click(function(){
-        $.ajax({
-        
-            url:"index.php?r=pruebas/insertar",
-            method:"POST",
-            data:$('#add_name').serialize(),
-            succes: function(data)
-            {
-                alert(data);
-                $('#add_name')[0].reset();
-            }
-   
-        });
-   });
-   */     
-});
-JS;
-  
-
-$this->registerJs($script);
-?>
-
-<style>
-    svg {
-        display: block;
-        font: 10.5em 'Roboto';
-        font-family: 'Roboto', sans-serif;
-        width: 240px;
-        height: 75px;
-        margin: 0 auto;
-    }
-
-    .web-coder-skull {
-        fill: none;
-        stroke: white;
-        stroke-dasharray: 6% 29%;
-        stroke-width: 5px;
-        stroke-dashoffset: 0%;
-        animation: stroke-offset 5.5s infinite linear;
-    }
-
-    .web-coder-skull:nth-child(6){
-        stroke: #0677B1;
-            animation-delay: -1;
-    }
-
-    .web-coder-skull:nth-child(2){
-            stroke: #0677B1;
-            animation-delay: -2s;
-    }
-
-    .web-coder-skull:nth-child(3){
-            stroke: #0677B1;
-            animation-delay: -3s;
-    }
-
-    .web-coder-skull:nth-child(4){
-            stroke: #0677B1;
-            animation-delay: -4s;
-    }
-
-    .web-coder-skull:nth-child(5){
-            stroke: #0677B1;
-            animation-delay: -5s;
-    }
-    .web-coder-skull:nth-child(1){ 
-    stroke: #0677B1;
-    animation-delay: -1s;
-    }
-
-    @keyframes stroke-offset{
-            100% {stroke-dashoffset: -35%;}
+<style> 
+    .panel-default > .panel-heading {
+        color: #FFFFFF;
+        background-color: #f56954;
+        border-color: #ddd;
     }
 </style>
-	<div class="row">
-            <svg viewBox="0 0 860 250">
-                <symbol id="web-coderskull">
-                    <text text-anchor="middle" x="50%" y="70%">SIIS_SCRUM</text>
-                </symbol>
-            <g class = "webcoderskull">
-                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>Raj Saini
-                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>
-                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>
-                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>
-                    <use xlink:href="#web-coderskull" class="web-coder-skull"></use>
-            </g>
-            </svg>
-	</div>
+    <div class="row">
+        <div class="col-lg-12">
+            <?= 
+                GridView::widget([
+                'id' => 'requerimientos-grid',
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'panel' => [
+                    'heading' => '<h3 class="panel-title"><i class="fa fa-check-square-o"></i> Historias de usuario </h3>',
+                    'type' => GridView::TYPE_DEFAULT,
+                ],
+                'bordered' => true,
+                'columns' => [
+                    //['class' => 'yii\grid\SerialColumn'],
+                    [
+                        'label' => 'H.U ID',
+                        'attribute' => 'requerimiento_id',
+                        'contentOptions' => ['style' => 'width:10px;'],
+                    ],
+                    [
+                        'attribute' => 'sprint_alias',
+                        'label' => 'SPRINT',
+                        'value' => 'sprint.sprint_alias',
+                        'contentOptions' => ['style' => 'width:10px;'],
+                        //'filter' => FALSE,
+                    ],
+                    [
+                        'attribute' => 'requerimiento_titulo',
+                        'label' => 'HISTORIA USUARIO',
+                        'value' => 'requerimiento.requerimiento_titulo',
+                        'contentOptions' => ['style' => 'width:150px;'],
+                        //'filter' => FALSE,
+                    ],       
+                    [
+                        'label' => 'TIEMPO DESARROLLO',
+                        'attribute' => 'tiempo_desarrollo',
+                        'contentOptions' => ['style' => 'width:10px;'],
+                    ],
+                    [
+                        'label' => 'USUARIO ASIGNADO',
+                        'attribute' => 'nombre_usuario_asignado',
+                        'value' => 'usuarioAsignado.nombreCompleto',
+                        'contentOptions' => ['style' => 'width:10px;'],
+                    ],
+                    [
+                        'label' => 'FECHA REQUERIMIENTO',
+                        'attribute' => 'fecha_requerimiento',
+                        'value' => 'requerimiento.fecha_requerimiento',
+                        'filterType'=> GridView::FILTER_DATE, 
+                        'filterWidgetOptions' => [
+                            'options' => ['placeholder' => 'Seleccione Fecha'],
+                            'type' => 3,
+                            'pluginOptions' => [
+                                'format' => 'yyyy-mm-dd',
+                                'autoclose'=>true,
+                                ]
+                            ],
+                        'contentOptions' => ['style' => 'width:200px;'],
+                    ],
+                    [
+                        'label' => 'ESTADO',
+                        'attribute' => 'estado',
+                        'value' => function ($data) {
+                            if($data['estado'] == 0){
+                                return 'Inactivo';
+                            }
+                            if($data['estado'] == 1){
+                                return 'Activo';
+                            }
+                            if($data['estado'] == 2){
+                                return 'En Espera';
+                            }
+                            if($data['estado'] == 3){
+                                return 'En Progreso';
+                            }
+                            if($data['estado'] == 4){
+                                return 'Terminado';
+                            }
+                            if($data['estado'] == 5){
+                                return 'No Cumplida';
+                            }
+                            return 'Error';
+                        },
+                        'filter' => Html::activeDropDownList($searchModel, 'estado', ['0'=>'Inactivo', '1'=>'Activo', '2' => 'En Espera', '3' => 'En Progreso', '4' => 'Terminado'],['class'=>'form-control','prompt' => '']),
+                        'contentOptions' => ['style' => 'width:100px;'],
+                    ],
+                                
+                    [
+                        'class'=>'kartik\grid\ActionColumn',
+                        'contentOptions' => ['style' => 'width:10px;'],
+                        'template' => '{update}',
+                        'buttons' => [
+                            'update' => function ($url, $model, $key) {
+                                return Html::a('<span class="glyphicon glyphicon-search"></span>', Url::to(['requerimientos/update', 'requerimiento_id' => $model->requerimiento_id]), [
+                                    'title' => 'Detalle H.U',
+                                ]);
+                            },
+                        ]
+                    ],
+                ],              
+                'toolbar' => FALSE,
+            ]); 
+            ?>
+        </div>
+    </div>

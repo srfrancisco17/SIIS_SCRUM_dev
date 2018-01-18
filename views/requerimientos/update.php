@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = 'Actualizar';
     'PI_dataProvider' => $PI_dataProvider,
     'PUI_searchModel' => $PUI_searchModel,
     'PUI_dataProvider' => $PUI_dataProvider,
+    'RI_model' => $RI_model,
     'sprint_id' => $sprint_id,
 ]) ?>
 

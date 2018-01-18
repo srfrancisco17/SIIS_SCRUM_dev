@@ -206,6 +206,17 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return ArrayHelper::map($opciones, 'usuario_id', 'nombres');
     }
     
+    
+    public static function getListaUsuarios(){
+        
+        $opciones = Usuarios::find()->where(['estado' => 1])->all();
+        //return ArrayHelper::map($opciones, 'usuario_id', 'nombreCompleto');
+        
+        
+        return ArrayHelper::map($opciones, 'usuario_id', 'nombreCompleto');
+    }
+    
+    
     //Metodos Abstractos de indentity interfaces
     
     public function getAuthKey()

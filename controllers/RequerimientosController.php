@@ -27,7 +27,7 @@ use app\models\PerfilesUsuariosImpactadosSearch;
 use app\models\SprintRequerimientosTareas;
 use app\models\HelpersFAOF;
 
-
+use app\models\RequerimientosImplementacion;
 
 class RequerimientosController extends Controller
 {
@@ -115,7 +115,17 @@ class RequerimientosController extends Controller
         $PUI_searchModel = new PerfilesUsuariosImpactadosSearch();
         $PUI_dataProvider = $PUI_searchModel->search(Yii::$app->request->queryParams, $requerimiento_id);
         
-
+        /* --- */
+        
+        if ( empty($RI_model = $this->findModelRequerimientosImplementacion($requerimiento_id)) ){
+            $RI_model = new RequerimientosImplementacion();
+        }
+        
+        /*
+        echo "<pre>";
+        var_dump($RI_model); 
+        exit;
+        */
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             
             return $this->redirect(['update', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
@@ -129,6 +139,7 @@ class RequerimientosController extends Controller
                 'PI_dataProvider' => $PI_dataProvider,
                 'PUI_searchModel' => $PUI_searchModel,
                 'PUI_dataProvider' => $PUI_dataProvider,
+                'RI_model' => $RI_model,
                 'sprint_id' => $sprint_id
             ]);
         }
@@ -560,4 +571,15 @@ class RequerimientosController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    /* P */
+    protected function findModelRequerimientosImplementacion($requerimiento_id)
+    {
+        if (($model = RequerimientosImplementacion::findOne($requerimiento_id)) !== null) {
+            return $model;
+        } else {
+            return FALSE;
+        }
+    }
+    
 }
