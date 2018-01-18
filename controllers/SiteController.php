@@ -198,8 +198,6 @@ class SiteController extends Controller
          */
         
         $datos = NULL;
-        
-        
         $obj_sprint = NULL;
         
         if (is_null(Yii::$app->request->post("sprint_id"))){

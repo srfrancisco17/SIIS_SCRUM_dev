@@ -100,7 +100,7 @@ $this->registerCss("
             background-color: #1D1F20;
             top: 0px;
             z-index:1;
-    }    
+    }
 ");
 
 
@@ -353,7 +353,8 @@ $this->registerJs('
                 
                 <?= Html::img('@web/img/icono-cdo.png', ['alt' => 'My logo', 'style' => ['width' => '150px', 'height' => '150px']]) ?>
                 <br>
-                <a href="#"><b>SIIS</b>-SCRUM</a>
+
+                <a href="#"><b>SIIS</b>_SCRUM</a>
             </div>
             <div class="controls">
                 <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>

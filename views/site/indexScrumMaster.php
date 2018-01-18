@@ -37,9 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= Select2::widget([
                                 'name' => 'sprint_id',
                                 'size' => Select2::MEDIUM,
-                                //'value' => Yii::$app->request->post('sprint_id', $array_sprints[sizeof($array_sprints)-1]['sprint_id']), // value to initialize
-                                //'value' => Yii::$app->request->post('sprint_id', $last_position['sprint_id']),
-                                //'data' => ArrayHelper::map($array_sprints, 'sprint_id', 'sprint_alias'),
                                 'value' => Yii::$app->request->post('sprint_id', $sprint_id),
                                 'data' => Sprints::getListaSprints(),
                             ])?>
@@ -250,8 +247,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 break;
             }
         }
-
-            return json_encode($arreglo_actual_burn);
+        
+            return $arreglo_actual_burn;
         }
     
         
@@ -262,7 +259,10 @@ $this->params['breadcrumbs'][] = $this->title;
     
     $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $dias_festivos);
     
-    //echo '<pre>';var_dump($arreglo_dias);exit;
+    $porcentaje_productividad = number_format(((count($datos_actual_burn))*100)/$sprint_total_dias, 1);
+
+    //var_dump($porcentaje_productividad);exit;
+    
     $this->registerJs("
 
         $('#container').highcharts({
@@ -319,7 +319,7 @@ $this->params['breadcrumbs'][] = $this->title;
             radius: 6
           },
           //data: [100, 110, 85, 60, 60, 30, 32, 23, 9, 2]
-         data:$datos_actual_burn 
+         data:".json_encode($datos_actual_burn)." 
         }]
       });
 
@@ -361,14 +361,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     $datos_barChart = arreglo_barchart($barChart, $grafica2);
     
-//    echo '<pre>';
-//    print_r($datos_barChart);exit;
-    
-    
     $datos_barChart2 =  json_encode($grafica2);
-    
-
-    
     
     $this->registerJs("
             Highcharts.chart('container2', {
@@ -376,7 +369,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     type: 'column'
                 },
                 title: {
-                    text: 'Grafico indivudual'
+                    text: 'Productividad ".$porcentaje_productividad."%'
                 },
                 subtitle: {
 

@@ -366,7 +366,7 @@ if (!empty($barChart)){
                     type: 'column'
                 },
                 title: {
-                    text: 'Grafico Individual'
+                    text: 'Productividad'
                 },
                 colors: ['#F56954'],
                 subtitle: {
