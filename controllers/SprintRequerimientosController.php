@@ -23,6 +23,9 @@ use yii\helpers\Json;
 
 use app\models\HelpersFAOF;
 
+//--------
+use kartik\mpdf\Pdf;
+
 /**
  * SprintRequerimientosController implements the CRUD actions for SprintRequerimientos model.
  */
@@ -358,34 +361,47 @@ class SprintRequerimientosController extends Controller
         echo Json::encode(['output'=>'', 'selected'=>'']);
     }
     
-    /*
-    public function actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id){
-        
-        $total_tareas = SprintRequerimientosTareas::find()->select('tiempo_desarrollo')->where(['sprint_id'=>$sprint_id])->andWhere(['sprint_requerimientos_tareas.requerimiento_id'=>$requerimiento_id])->joinWith('tarea')->sum('tiempo_desarrollo'); 
-        
-        SprintRequerimientos::actualizarHorasSprintRequerimientos($sprint_id, $requerimiento_id, $total_tareas);
-        
-    }    
-    */
     
-//    public function actualizarTiempos($sprint_id){
-//        
-//        $conexion = Yii::$app->db;
-//        
-//        $tiempo_desarrollo = $conexion->createCommand('
-//        select
-//            sum(r.tiempo_desarrollo) as sum_horas
-//            from sprint_requerimientos as sr
-//            left join requerimientos as r
-//            on (
-//                r.requerimiento_id = sr.requerimiento_id
-//            )      
-//            where sr.sprint_id = :sprint_id
-//        ')
-//        ->bindValue(':sprint_id', $sprint_id)      
-//        ->queryScalar();
-//                    
-//        Sprints::actualizarHorasSprints($sprint_id, $tiempo_desarrollo);
-//    }
+    /* PDF */
+    
+    public function actionPrintHistoria($sprint_id, $requerimiento_id) {
+
+        
+        //echo 'HELLO WORD';
+        //exit;
+        
+        $content = "<b>HELLO WORD</b>";
+
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            // A4 paper format
+            'format' => Pdf::FORMAT_A4, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+            // your html content input
+            'content' => $content,  
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px}', 
+             // set mPDF properties on the fly
+            'options' => ['title' => 'Krajee Report Title'],
+             // call mPDF methods on the fly
+            'methods' => [ 
+                'SetHeader'=>['Krajee Report Header'], 
+                'SetFooter'=>['{PAGENO}'],
+            ]
+        ]);
+
+        // return the pdf output as per the destination setting
+        return $pdf->render(); 
+    }
+    
+   
     
 }
