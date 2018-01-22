@@ -6,13 +6,21 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'FPDF_TPL' => $vendorDir . '/setasign/fpdi/fpdf_tpl.php',
+    'FPDI' => $vendorDir . '/setasign/fpdi/fpdi.php',
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',
     'File_Iterator_Facade' => $vendorDir . '/phpunit/php-file-iterator/src/Facade.php',
     'File_Iterator_Factory' => $vendorDir . '/phpunit/php-file-iterator/src/Factory.php',
+    'FilterASCII85' => $vendorDir . '/setasign/fpdi/filters/FilterASCII85.php',
+    'FilterASCIIHexDecode' => $vendorDir . '/setasign/fpdi/filters/FilterASCIIHexDecode.php',
+    'FilterLZW' => $vendorDir . '/setasign/fpdi/filters/FilterLZW.php',
     'PHPUnit\\Framework\\Assert' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
+    'PHPUnit\\Framework\\AssertionFailedError' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/AssertionFailedError.php',
     'PHPUnit\\Framework\\BaseTestListener' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',
+    'PHPUnit\\Framework\\Test' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/Test.php',
     'PHPUnit\\Framework\\TestCase' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/TestCase.php',
     'PHPUnit\\Framework\\TestListener' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/TestListener.php',
+    'PHPUnit\\Framework\\TestSuite' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/TestSuite.php',
     'PHPUnit_Exception' => $vendorDir . '/phpunit/phpunit/src/Exception.php',
     'PHPUnit_Extensions_GroupTestSuite' => $vendorDir . '/phpunit/phpunit/src/Extensions/GroupTestSuite.php',
     'PHPUnit_Extensions_PhptTestCase' => $vendorDir . '/phpunit/phpunit/src/Extensions/PhptTestCase.php',
@@ -468,4 +476,6 @@ return array(
     'SebastianBergmann\\ResourceOperations\\ResourceOperations' => $vendorDir . '/sebastian/resource-operations/src/ResourceOperations.php',
     'SebastianBergmann\\Version' => $vendorDir . '/sebastian/version/src/Version.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/src/Template.php',
+    'fpdi_pdf_parser' => $vendorDir . '/setasign/fpdi/fpdi_pdf_parser.php',
+    'pdf_context' => $vendorDir . '/setasign/fpdi/pdf_context.php',
 );

@@ -1,13 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-//use yii\grid\GridView;
 use kartik\grid\GridView;
 use yii\helpers\Url;
 use app\models\SprintRequerimientosSearch;
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\SprintUsuariosSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Mis Sprints';
 $this->params['breadcrumbs'][] = $this->title;
@@ -18,19 +14,12 @@ $this->params['breadcrumbs'][] = $this->title;
         background-color: #3c8dbc;
         border-color: #ddd;
     }
-    /*
-    .kv-expanded-row{
-        background-color: red;
-    }
-    */
-
 </style>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'panel' => [
-            'heading' => '<h3 class="panel-title"><i class="fa fa-undo"></i> Sprints-Usuarios </h3>',
+            'heading' => '<h3 class="panel-title"><i class="fa fa-undo"></i> SPRINTS </h3>',
             'type' => GridView::TYPE_DEFAULT,
         ],
         'columns' => [
@@ -53,20 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
 
                 },
-            ],
-            /*
-            [
-                'attribute' => 'sprint_id',
-                'contentOptions' => ['style' => 'width:0px;'],
-                'filter'=>FALSE
-            ],
-            */                              
+            ],                             
             [
                 'attribute' => 'sprintName'
             ],
-            //'usuario_id',
-            //'horas_desarrollo',
-            //'observacion:ntext',
             [
               'attribute' => 'sprint.fecha_desde', 
               'contentOptions' => ['style' => 'width:100px;'],
@@ -75,23 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
               'attribute' => 'sprint.fecha_hasta', 
               'contentOptions' => ['style' => 'width:100px;'],
             ],
-            /*
-            [
-                'attribute' => 'estado',
-                'value' => function ($data) {
-                    
-                        if($data['estado'] == 0){
-                            return 'Inactivo';
-                        }
-                        if($data['estado'] == 1){
-                            return 'Activo';
-                        }
-                        return 'Error';
-                 },
-                'filter'=>FALSE,
-                'contentOptions' => ['style' => 'width:10px;'],
-            ], 
-            */
             [
                 'attribute' => 'sprint.estado',
                 'value' => function ($data) {

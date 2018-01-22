@@ -88,17 +88,23 @@ use yii\helpers\Url;
                 'class'=>'yii\grid\ActionColumn',
                 'headerOptions'=>['style' => 'background-color:#3cbcab;'],
                 'contentOptions' => ['style' => 'width:5%;text-align:center;'],
-                'template' => '{requerimientos}',
+                'template' => '{requerimientos} {print_HU}',
                 'buttons' => [
                     'requerimientos' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', Url::to(['requerimientos/update', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
                             'title' => 'Detalle H.U',
                         ]);
                     },
+                    'print_HU' => function ($url, $model, $key) {
+                        return Html::a('<span class="glyphicon glyphicon-print"></span>', Url::to(['sprint-requerimientos/print-historia-usuario', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
+                            'title' => 'Imprimir HU',
+                            'target'=>'_blank',
+                            'data-toggle'=>'tooltip', 
+                        ]);
+                    },   
                 ]
             ],
-        ],
-        'pjax' => true,                                                 
+        ],                                                 
     ]);?>     
     </div>
 </div>

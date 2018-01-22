@@ -6,11 +6,9 @@ use yii\widgets\ActiveForm;
 use app\models\Usuarios;
 use app\models\Departamentos;
 use app\models\Comites;
-//use dosamigos\tinymce\TinyMce;
 use kartik\select2\Select2;
 use kartik\date\DatePicker;
 use kartik\grid\GridView;
-
 
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
@@ -128,17 +126,19 @@ $this->registerCss("
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                               <?= $form->field($model, 'requerimiento_descripcion')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento])->label('* Como(Rol):') ?>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                               <?= $form->field($model, 'requerimiento_funcionalidad')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento])->label('* Necesito(Funcionalidad):') ?>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                               <?= $form->field($model, 'requerimiento_justificacion')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento])->label('* Para(Finalidad):') ?>
                         </div>
-                        <div class="col-lg-3">
-                              <?= $form->field($model, 'observaciones')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento]) ?>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                             <?= $form->field($model, 'observaciones')->textarea(['rows' => '3']) ?>
                         </div>
                     </div>
                     <div class="row">
@@ -401,20 +401,15 @@ $this->registerCss("
                 </div>
             </div>
             <?php
-
                 }
-  
             ?>
-           
         </div>
         <div id="sectionB" class="tab-pane fade">
             <br>
                 <?php 
                 
                 $lista_usuarios = Usuarios::getListaUsuarios();
-                
-  
-                
+ 
                 if (!$model->isNewRecord){
                     
                     if ($RI_model->isNewRecord){
@@ -805,6 +800,8 @@ $this->registerCss("
         $(document).on('click', '.botones', (function() {   
             var texto_titulo = '';
             var propiedades_modal = $(this).data('opcion').split('-');
+            var width_modal = '30%';
+
 
             if (propiedades_modal[0] === 'modal1'){
 
@@ -850,7 +847,9 @@ $this->registerCss("
 
             }
             else if(propiedades_modal[0] === 'modal4'){
-
+                
+                width_modal = '80%';
+               
                 if (propiedades_modal[1] === 'create'){
 
                     texto_titulo = 'CREAR PRUEBA FUNCIONAL';
@@ -863,7 +862,8 @@ $this->registerCss("
 
                 }
             }
-
+            
+            $('#modal').children().css('width', width_modal);
             $('#titulo_perfiles_usuario').text(texto_titulo);
 
             $.get(

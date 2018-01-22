@@ -23,6 +23,8 @@ use yii\helpers\Json;
 
 use app\models\HelpersFAOF;
 
+//MPDF
+use Mpdf\Mpdf;
 /**
  * SprintRequerimientosController implements the CRUD actions for SprintRequerimientos model.
  */
@@ -358,34 +360,39 @@ class SprintRequerimientosController extends Controller
         echo Json::encode(['output'=>'', 'selected'=>'']);
     }
     
-    /*
-    public function actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id){
-        
-        $total_tareas = SprintRequerimientosTareas::find()->select('tiempo_desarrollo')->where(['sprint_id'=>$sprint_id])->andWhere(['sprint_requerimientos_tareas.requerimiento_id'=>$requerimiento_id])->joinWith('tarea')->sum('tiempo_desarrollo'); 
-        
-        SprintRequerimientos::actualizarHorasSprintRequerimientos($sprint_id, $requerimiento_id, $total_tareas);
-        
-    }    
-    */
     
-//    public function actualizarTiempos($sprint_id){
-//        
-//        $conexion = Yii::$app->db;
-//        
-//        $tiempo_desarrollo = $conexion->createCommand('
-//        select
-//            sum(r.tiempo_desarrollo) as sum_horas
-//            from sprint_requerimientos as sr
-//            left join requerimientos as r
-//            on (
-//                r.requerimiento_id = sr.requerimiento_id
-//            )      
-//            where sr.sprint_id = :sprint_id
-//        ')
-//        ->bindValue(':sprint_id', $sprint_id)      
-//        ->queryScalar();
-//                    
-//        Sprints::actualizarHorasSprints($sprint_id, $tiempo_desarrollo);
-//    }
+    public function actionPrintHistoriaUsuario($sprint_id, $requerimiento_id) {
+        
+        $content = "<b>HELLO WORD</b>";
+
+
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8', 
+            'format' => 'Letter', 
+            'orientation' => 'P'
+        ]);
+        
+        
+        
+        
+        // Document Metadata
+        $mpdf->SetTitle("HU120");
+        $mpdf->SetAuthor('Desarrollo8');
+        $mpdf->SetCreator('FAOF');  
+        $mpdf->SetSubject("Historias de usuario CDO CALI");
+        $mpdf->SetKeywords('HU, CDO, SIIS, FAOF');
+
+        
+        // Encryption & Passwords
+        $mpdf->SetProtection(array('copy','print'), 'ñ2018', '123456');
+        
+        $mpdf->WriteHTML($content);
+        // return the pdf output as per the destination setting
+        $mpdf->Output();
+        exit;
+        
+    }
+    
+   
     
 }

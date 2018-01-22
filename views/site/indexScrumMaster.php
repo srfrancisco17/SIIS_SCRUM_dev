@@ -13,8 +13,6 @@ HighchartsAssets::register($this);
 $this->title = 'Dashboard Scrum Master';
 $this->params['breadcrumbs'][] = $this->title;
 
-//$this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
-
     /*
      * DATOS SPRINT - SELECCIONADO
      * El calculo es el tiempo total de las tareas de los requerimientos dentro de un sprint especifico
@@ -24,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
     $sprint_horas_desarrollo = $obj_sprint['horas_desarrollo'];
     $sprint_fecha_desde = $obj_sprint['fecha_desde'];
     $sprint_fecha_hasta = $obj_sprint['fecha_hasta'];
-
 ?>
 <?php Pjax::begin(); ?>
 <div class="row">
@@ -150,8 +147,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
         </div>
-        
-
     </div>
 </div>
 <?php   
@@ -253,16 +248,11 @@ $this->params['breadcrumbs'][] = $this->title;
     
         
     $sprint_total_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 1, $dias_festivos);
-    
     $datos_ideal_burn = ideal_burn($datos['total_tiempo_calculado'], $sprint_fecha_desde, $sprint_fecha_hasta, $dias_festivos);
     $datos_actual_burn = actual_burn($datos['consulta_acutal_burn'], $sprint_fecha_desde, $dias_festivos, $sprint_total_dias, $datos['total_tiempo_calculado']);
-    
     $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $dias_festivos);
-    
     $porcentaje_productividad = number_format(((count($datos_actual_burn))*100)/$sprint_total_dias, 1);
 
-    //var_dump($porcentaje_productividad);exit;
-    
     $this->registerJs("
 
         $('#container').highcharts({
@@ -325,9 +315,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     "); 
     
-//    echo '<pre>';
-//    print_r($barChart);exit;
-    
     $grafica2 = array();
     
     function arreglo_barchart($barChart, &$grafica2) {
@@ -360,7 +347,6 @@ $this->params['breadcrumbs'][] = $this->title;
     }  
     
     $datos_barChart = arreglo_barchart($barChart, $grafica2);
-    
     $datos_barChart2 =  json_encode($grafica2);
     
     $this->registerJs("
