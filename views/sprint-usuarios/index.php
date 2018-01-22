@@ -89,12 +89,3 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
-<?php
-echo Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Privacy Statement',  Url::to(['sprint-requerimientos/print-historia', 'sprint_id' => 9, 'requerimiento_id' => 0]), [
-    'class'=>'btn btn-danger', 
-    //'target'=>'_blank', 
-    'data-toggle'=>'tooltip', 
-    'title'=>'Will open the generated PDF file in a new window'
-]);
-?>

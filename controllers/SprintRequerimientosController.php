@@ -23,9 +23,8 @@ use yii\helpers\Json;
 
 use app\models\HelpersFAOF;
 
-//--------
-use kartik\mpdf\Pdf;
-
+//MPDF
+use Mpdf\Mpdf;
 /**
  * SprintRequerimientosController implements the CRUD actions for SprintRequerimientos model.
  */
@@ -362,44 +361,36 @@ class SprintRequerimientosController extends Controller
     }
     
     
-    /* PDF */
-    
-    public function actionPrintHistoria($sprint_id, $requerimiento_id) {
-
-        
-        //echo 'HELLO WORD';
-        //exit;
+    public function actionPrintHistoriaUsuario($sprint_id, $requerimiento_id) {
         
         $content = "<b>HELLO WORD</b>";
 
-        // setup kartik\mpdf\Pdf component
-        $pdf = new Pdf([
-            // set to use core fonts only
-            'mode' => Pdf::MODE_CORE, 
-            // A4 paper format
-            'format' => Pdf::FORMAT_A4, 
-            // portrait orientation
-            'orientation' => Pdf::ORIENT_PORTRAIT, 
-            // stream to browser inline
-            'destination' => Pdf::DEST_FILE, 
-            // your html content input
-            'content' => $content,  
-            // format content from your own css file if needed or use the
-            // enhanced bootstrap css built by Krajee for mPDF formatting 
-            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
-            // any css to be embedded if required
-            'cssInline' => '.kv-heading-1{font-size:18px}', 
-             // set mPDF properties on the fly
-            'options' => ['title' => 'Krajee Report Title'],
-             // call mPDF methods on the fly
-            'methods' => [ 
-                'SetHeader'=>['Krajee Report Header'], 
-                'SetFooter'=>['{PAGENO}'],
-            ]
-        ]);
 
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8', 
+            'format' => 'Letter', 
+            'orientation' => 'P'
+        ]);
+        
+        
+        
+        
+        // Document Metadata
+        $mpdf->SetTitle("HU120");
+        $mpdf->SetAuthor('Desarrollo8');
+        $mpdf->SetCreator('FAOF');  
+        $mpdf->SetSubject("Historias de usuario CDO CALI");
+        $mpdf->SetKeywords('HU, CDO, SIIS, FAOF');
+
+        
+        // Encryption & Passwords
+        $mpdf->SetProtection(array('copy','print'), 'ñ2018', '123456');
+        
+        $mpdf->WriteHTML($content);
         // return the pdf output as per the destination setting
-        return $pdf->render(); 
+        $mpdf->Output();
+        exit;
+        
     }
     
    
