@@ -10,7 +10,7 @@ nbproject/*
 # Yii 2 
 /runtime/debug
 /runtime
-/vendor
+#/vendor
 /web/assets
 /web/index.php
 config/db.php
