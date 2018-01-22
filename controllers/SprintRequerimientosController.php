@@ -381,7 +381,7 @@ class SprintRequerimientosController extends Controller
             // portrait orientation
             'orientation' => Pdf::ORIENT_PORTRAIT, 
             // stream to browser inline
-            'destination' => Pdf::DEST_BROWSER, 
+            'destination' => Pdf::DEST_FILE, 
             // your html content input
             'content' => $content,  
             // format content from your own css file if needed or use the

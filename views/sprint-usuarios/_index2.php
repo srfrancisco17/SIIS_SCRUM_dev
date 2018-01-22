@@ -98,14 +98,13 @@ use yii\helpers\Url;
                     'print_HU' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-print"></span>', Url::to(['sprint-requerimientos/print-historia', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
                             'title' => 'Imprimir HU',
-                            'target'=>'_blank',
+                            //'target'=>'_blank',
                             'data-toggle'=>'tooltip', 
                         ]);
                     },   
                 ]
             ],
-        ],
-        'pjax' => true,                                                 
+        ],                                                 
     ]);?>     
     </div>
 </div>

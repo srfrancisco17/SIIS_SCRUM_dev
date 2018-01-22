@@ -44,3 +44,13 @@ $this->title = 'PRUEBAS';
         </div>
     </div>
 </div>
+
+
+<?php
+echo Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Privacy Statement', ['/pruebas/report'], [
+    'class'=>'btn btn-danger', 
+    'target'=>'_blank', 
+    'data-toggle'=>'tooltip', 
+    'title'=>'Will open the generated PDF file in a new window'
+]);
+?>
