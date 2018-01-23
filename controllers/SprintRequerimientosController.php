@@ -366,7 +366,15 @@ class SprintRequerimientosController extends Controller
         /* * Pag 1 * */
         
         $obj_requerimiento = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->one();
-
+        
+        
+        $obj_tareas = SprintRequerimientosTareas::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->all();
+        
+        echo '<pre>';
+        var_dump($obj_tareas[0]->tareasPruebas);
+        exit;
+        
+        
         $obj_procesos_involucrados = \app\models\ProcesosInvolucrados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
         $obj_perfiles_impactados = \app\models\PerfilesUsuariosImpactados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
         
@@ -452,5 +460,16 @@ class SprintRequerimientosController extends Controller
     }
     
    
+    public function obtenerTareasPruebas(){
+        
+        $connection = Yii::$app->db;
+        
+        /*
+        $query = "
+            
+        $users = $connection->createCommand('SELECT * FROM user')->queryAll();
+        */
+    }
+    
     
 }

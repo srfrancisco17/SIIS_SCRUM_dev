@@ -142,4 +142,5 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
         
     }
     
+    
 }

@@ -82,9 +82,12 @@ class RequerimientosPruebas extends \yii\db\ActiveRecord
     /** 
      * @return \yii\db\ActiveQuery 
      */ 
-    public function getTareasPruebas() 
+    public function getTarea() 
     { 
         return $this->hasMany(TareasPruebas::className(), ['prueba_id' => 'prueba_id']);
     }
+    
+    
+    
     
 }
