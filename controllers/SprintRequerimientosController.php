@@ -363,16 +363,48 @@ class SprintRequerimientosController extends Controller
     
     public function actionPrintHistoriaUsuario($sprint_id, $requerimiento_id) {
         
-        $content = "<b>HELLO WORD</b>";
+        /* * Pag 1 * */
+        
+        $obj_requerimiento = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->one();
+
+        $obj_procesos_involucrados = \app\models\ProcesosInvolucrados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
+        $obj_perfiles_impactados = \app\models\PerfilesUsuariosImpactados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
+        
+        /* * Pag 2 * */
+        
+        $obj_pruebas = \app\models\RequerimientosPruebas::find()->where(['requerimiento_id' => $requerimiento_id])->all();
+        
+        $obj_requerimientos_implementacion = \app\models\RequerimientosImplementacion::findOne($requerimiento_id);
+        
+
+        
+        
+        
 
 
+//        echo '<pre>';
+//        var_dump(end($obj_pruebas)->usuarioPruebas->nombreCompleto);
+//        exit;
+       
+        
+        $content1 = $this->renderPartial('_reportHU_pag1', [
+            'sprint_id' => $sprint_id,
+            'obj_requerimiento' => $obj_requerimiento,
+            'obj_procesos_involucrados' => $obj_procesos_involucrados,
+            'obj_perfiles_impactados' => $obj_perfiles_impactados,
+        ]);
+        
+        $content2 =  $this->renderPartial('_reportHU_pag2', [
+            'sprint_id' => $sprint_id,
+            'obj_pruebas' => $obj_pruebas,
+            'obj_requerimientos_implementacion' => $obj_requerimientos_implementacion,
+        ]);
+        
         $mpdf = new Mpdf([
             'mode' => 'utf-8', 
             'format' => 'Letter', 
             'orientation' => 'P'
         ]);
-        
-        
         
         
         // Document Metadata
@@ -384,9 +416,22 @@ class SprintRequerimientosController extends Controller
 
         
         // Encryption & Passwords
-        $mpdf->SetProtection(array('copy','print'), 'ñ2018', '123456');
+        //$mpdf->SetProtection(array('copy','print'), 'ñ2018', '123456');
         
-        $mpdf->WriteHTML($content);
+        
+        $mpdf->SetHeader('HISTORIA DE USUARIO 120');
+        $mpdf->SetFooter('Pagina # {PAGENO}');
+        
+        
+        
+        $mpdf->WriteHTML($content1);
+        
+        // Two PAGE
+        $mpdf->AddPage();
+        
+        $mpdf->WriteHTML($content2);
+       
+        
         // return the pdf output as per the destination setting
         $mpdf->Output();
         exit;

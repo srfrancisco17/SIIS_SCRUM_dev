@@ -80,4 +80,70 @@ class RequerimientosImplementacion extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Requerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
+    
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getSoporteEntregadoPor() 
+    { 
+        return $this->hasOne(Usuarios::className(), ['usuario_id' => 'soporte_entregado_por']);
+    } 
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getSoporte1RecibioCapacitacion() 
+    { 
+        return $this->hasOne(Usuarios::className(), ['usuario_id' => 'soporte1_recibio_capacitacion']);
+    } 
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getSoporte2RecibioCapacitacion() 
+    { 
+        return $this->hasOne(Usuarios::className(), ['usuario_id' => 'soporte2_recibio_capacitacion']);
+    } 
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getUsuarioApruebaProduccion() 
+    { 
+        return $this->hasOne(Usuarios::className(), ['usuario_id' => 'usuario_aprueba_produccion']);
+    } 
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getProduccionEntregadoPor() 
+    { 
+        return $this->hasOne(Usuarios::className(), ['usuario_id' => 'produccion_entregado_por']);
+    } 
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getProduccion1RecibioCapacitacion() 
+    { 
+        return $this->hasOne(Usuarios::className(), ['usuario_id' => 'produccion1_recibio_capacitacion']);
+    } 
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getProduccion2RecibioCapacitacion() 
+    { 
+        return $this->hasOne(Usuarios::className(), ['usuario_id' => 'produccion2_recibio_capacitacion']);
+    } 
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getUsuarioRecibe() 
+    { 
+        return $this->hasOne(Usuarios::className(), ['usuario_id' => 'usuario_recibe']);
+    } 
+
+    
 }
