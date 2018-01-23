@@ -20,7 +20,7 @@ use yii\helpers\Html;
     
     #div-encabezado{
         height: 8%;
-        background-color: yellow;
+        /*background-color: yellow;*/
     }
     
     #div-informacionHU{
@@ -118,7 +118,7 @@ use yii\helpers\Html;
  
     <table border="1" style="width:100%">
       <tr>
-          <th colspan="3">Historia de usuario:</th>
+          <th colspan="3" style="background-color: #B4BAC7;">Historia de usuario:</th>
       </tr>
       <tr>
           <td colspan="3"><?= $obj_requerimiento->requerimiento->requerimiento_titulo ?></td>
@@ -147,8 +147,8 @@ use yii\helpers\Html;
     <table border="1" style="width:100%">
         <thead>
             <tr>
-                <th colspan="2" style="text-align:left;">Criterios de Aceptación</th>
-                <th colspan="3">Aprobado</th>
+                <th colspan="2" style="text-align:left;background-color: #B4BAC7;">Criterios de Aceptación</th>
+                <th colspan="3" style="text-align:center;background-color: #B4BAC7;">Aprobado</th>
             </tr>
         </thead>
         <tbody>
@@ -192,7 +192,7 @@ use yii\helpers\Html;
     <table border="1" style="width:100%">
         <thead>
             <tr>
-                <th colspan="3" style="text-align:left;"> Procesos Involucrados</th>
+                <th colspan="3" style="text-align:left; background-color: #B4BAC7;"> Procesos Involucrados</th>
             </tr>
         </thead>
         <tbody>
@@ -234,7 +234,7 @@ use yii\helpers\Html;
     <table border="1" style="width:100%">
         <thead>
             <tr>
-                <th colspan="3" style="text-align:left;"> Perfil de Usuarios que impacta</th>
+                <th colspan="3" style="text-align:left;background-color: #B4BAC7;"> Perfil de Usuarios que impacta</th>
             </tr>
         </thead>
         <tbody>
@@ -277,7 +277,7 @@ use yii\helpers\Html;
     <table border="1" style="width:100%">
         <thead>
             <tr>
-                <th colspan="3" style="text-align:left;">Plan de divulgación</th>
+                <th colspan="3" style="text-align:left;background-color: #B4BAC7;">Plan de divulgación</th>
             </tr>
         </thead>
         <tbody>

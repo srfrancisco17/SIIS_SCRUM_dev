@@ -69,7 +69,7 @@ class RequerimientosPruebasController extends Controller
      */
     
     
-    public function actionCreate($requerimiento_id, $submit = false)
+    public function actionCreate($sprint_id, $requerimiento_id, $submit = false)
     {
         
         $model = new RequerimientosPruebas();
@@ -82,7 +82,9 @@ class RequerimientosPruebasController extends Controller
         if($model->load(Yii::$app->request->post()))
         {
             
+            $model->sprint_id = $sprint_id;
             $model->requerimiento_id = $requerimiento_id;
+            
             $model->usuario_pruebas = Yii::$app->user->identity->usuario_id;
             
             if($model->save())

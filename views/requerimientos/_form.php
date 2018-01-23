@@ -694,7 +694,7 @@ $this->registerCss("
                                 'class' => 'btn btn-success botones',
                                 'data-toggle' => 'modal',
                                 'data-target' => '#modal',
-                                'data-url' => Url::to(['requerimientos-pruebas/create', 'requerimiento_id' => $model->requerimiento_id]),
+                                'data-url' => Url::to(['requerimientos-pruebas/create', 'sprint_id' => $sprint_id, 'requerimiento_id' => $model->requerimiento_id]),
                                 'data-pjax' => '0',
                                 'data-opcion' => 'modal4-create', 
                             ]),

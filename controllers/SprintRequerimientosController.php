@@ -378,14 +378,27 @@ class SprintRequerimientosController extends Controller
         
 
         
+        $limite_texto = 140;
+
+        
+        $obj_requerimiento->requerimiento->requerimiento_descripcion = ( 
+            strlen($obj_requerimiento->requerimiento->requerimiento_descripcion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_descripcion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_descripcion 
+        ); 
+        
+        $obj_requerimiento->requerimiento->requerimiento_funcionalidad = ( 
+            strlen($obj_requerimiento->requerimiento->requerimiento_funcionalidad) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_funcionalidad, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_funcionalidad 
+        ); 
+        
+        $obj_requerimiento->requerimiento->requerimiento_justificacion = ( 
+            strlen($obj_requerimiento->requerimiento->requerimiento_justificacion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_justificacion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_justificacion 
+        );
         
         
-
-
-//        echo '<pre>';
-//        var_dump(end($obj_pruebas)->usuarioPruebas->nombreCompleto);
-//        exit;
-       
+        /*
+        echo '<pre>';
+        var_dump($obj_requerimiento->requerimiento->requerimiento_descripcion);
+        exit;
+        */
         
         $content1 = $this->renderPartial('_reportHU_pag1', [
             'sprint_id' => $sprint_id,
@@ -408,7 +421,7 @@ class SprintRequerimientosController extends Controller
         
         
         // Document Metadata
-        $mpdf->SetTitle("HU120");
+        $mpdf->SetTitle("HU-".$requerimiento_id."(".date('Y-m-d').")");
         $mpdf->SetAuthor('Desarrollo8');
         $mpdf->SetCreator('FAOF');  
         $mpdf->SetSubject("Historias de usuario CDO CALI");
