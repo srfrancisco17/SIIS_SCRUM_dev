@@ -152,21 +152,53 @@ use yii\helpers\Html;
             </tr>
         </thead>
         <tbody>
-            
             <?php
             
-            /*
+                $html = "";
+                $contador = 1;
             
-                foreach ($array as $clave => $valor) {
+                foreach ($datos_tareas as $clave_tareas => $valor_tareas) {
 
+                    $html .= "<tr>";
                     
+                    $html .= "  <td width='2%' style='text-align:center;'>";
+                    $html .=        ($clave_tareas+1);
+                    $html .= "  </td>";
                     
+                    $html .= "  <td width='85%'>";
+                    $html .=        $valor_tareas['tarea_titulo'];
+                    $html .= "  </td>";
                     
+     
+                    for ($i = 0; $i < 3; $i++) {
+                        
+                        $html .= "  <td width='2%' style='text-align:center;'>";
+                        
+                        if ( !empty( $valor_tareas['tareas_pruebas'][$i]['estado']) ){
+                            
+                            if ($valor_tareas['tareas_pruebas'][$i]['estado'] == '1'){
+                                $html .= "x";
+                            }else{
+                                
+                            }
+                            
+                        }else{
+                            $html .= "&nbsp;";
+                        }
+                        
+                        $html .= "  </td>";
+                    }
+ 
+                    $html .= "</tr>";
                     
+                    $contador++;
                 }
-            */
-            ?>
+                
+                
+                echo $html;
             
+            ?>
+            <!--
             <tr>
                 <td width="2%" style="text-align:center;">1</td>
                 <td width="85%">Titulo y descripcion de la tarea</td>
@@ -181,7 +213,7 @@ use yii\helpers\Html;
                 <td width="2%" style="text-align:center;">&nbsp;</td>
                 <td width="2%" style="text-align:center;">x</td>
             </tr>
-
+            -->
         </tbody>
     </table>
     

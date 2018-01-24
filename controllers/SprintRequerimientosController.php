@@ -365,15 +365,9 @@ class SprintRequerimientosController extends Controller
         
         /* * Pag 1 * */
         
+        $datos_tareas = $this->obtenerTareasPruebas($sprint_id, $requerimiento_id);
+        
         $obj_requerimiento = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->one();
-        
-        
-        $obj_tareas = SprintRequerimientosTareas::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->all();
-        
-        echo '<pre>';
-        var_dump($obj_tareas[0]->tareasPruebas);
-        exit;
-        
         
         $obj_procesos_involucrados = \app\models\ProcesosInvolucrados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
         $obj_perfiles_impactados = \app\models\PerfilesUsuariosImpactados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
@@ -411,6 +405,7 @@ class SprintRequerimientosController extends Controller
         $content1 = $this->renderPartial('_reportHU_pag1', [
             'sprint_id' => $sprint_id,
             'obj_requerimiento' => $obj_requerimiento,
+            'datos_tareas' => $datos_tareas,
             'obj_procesos_involucrados' => $obj_procesos_involucrados,
             'obj_perfiles_impactados' => $obj_perfiles_impactados,
         ]);
@@ -440,7 +435,7 @@ class SprintRequerimientosController extends Controller
         //$mpdf->SetProtection(array('copy','print'), 'ñ2018', '123456');
         
         
-        $mpdf->SetHeader('HISTORIA DE USUARIO 120');
+        $mpdf->SetHeader('HISTORIA DE USUARIO '.$requerimiento_id);
         $mpdf->SetFooter('Pagina # {PAGENO}');
         
         
@@ -460,15 +455,52 @@ class SprintRequerimientosController extends Controller
     }
     
    
-    public function obtenerTareasPruebas(){
+    protected function obtenerTareasPruebas($sprint_id, $requerimiento_id){
         
         $connection = Yii::$app->db;
-        
-        /*
+
         $query = "
+            SELECT
+                SRT.tarea_id,
+                SRT.sprint_id,
+                SRT.requerimiento_id,
+                SRT.estado,
+                    RT.tarea_id,
+                    RT.requerimiento_id,
+                    RT.tarea_titulo,
+                    RT.tarea_descripcion,
+                    RT.ultimo_estado,
+                    RT.horas_desarrollo,
+                    RT.fecha_terminado,
+                    RT.sw_urgente
+            FROM
+                sprint_requerimientos_tareas AS SRT
+            INNER JOIN requerimientos_tareas AS RT ON(
+                RT.tarea_id = SRT.tarea_id
+            )
+            WHERE SRT.sprint_id = ".$sprint_id." AND SRT.requerimiento_id = ".$requerimiento_id."
+            ORDER BY SRT.tarea_id DESC;
+        ";
             
-        $users = $connection->createCommand('SELECT * FROM user')->queryAll();
-        */
+        $datos1 = $connection->createCommand($query)->queryAll();
+        
+        $datos2 = array();
+        $i=0;
+        
+        foreach ($datos1 as $key => $value) {
+            
+            $datos2[$i] = $value;
+            
+            $datos2[$i]['tareas_pruebas']= $connection->createCommand("SELECT * FROM tareas_pruebas WHERE tarea_id = ".$value['tarea_id']." ORDER BY id DESC LIMIT 3")->queryAll();
+            
+            $i++;
+            
+        }
+            
+        //echo '<pre>';print_r($datos2);exit;
+        
+        return $datos2;
+        
     }
     
     
