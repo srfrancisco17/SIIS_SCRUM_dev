@@ -2,16 +2,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
-
-
-//tarea_titulo
-//tarea_descripcion
-//horas_desarrollo
-
-//echo '<pre>';
-//var_dump($obj_tareas[0]->tarea);
-//exit;
-
 ?>
 <?php $form = ActiveForm::begin([
       'id' => 'requerimientos_pruebas-form',
@@ -107,12 +97,12 @@ use kartik\date\DatePicker;
   
                 $html .= "
                     <td style='text-align:center;'>
-                        <label><input type='radio' name='radio_tareas[".$count."]' value='".$value->tarea->tarea_id."-1-".$tareas_pruebas_id."' ".$checked_aprobado."></label>  
+                        <label><input style='transform: scale(1.8); cursor: pointer;' type='radio' name='radio_tareas[".$count."]' value='".$value->tarea->tarea_id."-0-".$tareas_pruebas_id."' ".$checked_aprobado."></label>
                     </td>
                 ";
                 $html .= "
                     <td style='text-align:center;'>
-                        <label><input type='radio' name='radio_tareas[".$count."]' value='".$value->tarea->tarea_id."-0-".$tareas_pruebas_id."' ".$checked_Noaprobado."></label>
+                        <label><input style='transform: scale(1.8); cursor: pointer;' type='radio' name='radio_tareas[".$count."]' value='".$value->tarea->tarea_id."-0-".$tareas_pruebas_id."' ".$checked_Noaprobado."></label>
                     </td>
                 ";
                 

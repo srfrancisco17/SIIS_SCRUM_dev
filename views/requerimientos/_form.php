@@ -430,12 +430,12 @@ $this->registerCss("
                 <?= $form->field($RI_model, 'requerimiento_id')->hiddenInput(['value'=> $model->requerimiento_id ])->label(false); ?>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="box">
+                        <div class="box box-primary">
                             <div class="box-body">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-hover">
                                   <thead>
                                     <tr>
-                                        <th colspan="3">CAPACITACION A SOPORTE</th>
+                                        <th style="text-align: center;" colspan="3">CAPACITACION A SOPORTE</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -543,12 +543,12 @@ $this->registerCss("
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="box">
+                        <div class="box box-primary">
                             <div class="box-body">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-hover">
                                   <thead>
                                     <tr>
-                                        <th colspan="3">ACTUALIZACION EN PRODUCCION</th>
+                                        <th style="text-align: center;" colspan="3">ACTUALIZACION EN PRODUCCION</th>
                                     </tr>
                                   </thead>
                                   <tbody>
