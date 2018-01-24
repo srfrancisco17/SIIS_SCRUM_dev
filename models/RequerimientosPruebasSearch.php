@@ -15,12 +15,12 @@ class RequerimientosPruebasSearch extends RequerimientosPruebas
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
-        return [
-            [['prueba_id', 'usuario_pruebas', 'requerimiento_id'], 'integer'],
-            [['fecha_entrega', 'fecha_prueba', 'estado'], 'safe'],
-        ];
+    public function rules() 
+    { 
+        return [ 
+            [['prueba_id', 'usuario_pruebas', 'requerimiento_id', 'sprint_id'], 'integer'],
+            [['fecha_entrega', 'fecha_prueba', 'estado', 'observaciones'], 'safe'], 
+        ]; 
     }
 
     /**
@@ -57,16 +57,18 @@ class RequerimientosPruebasSearch extends RequerimientosPruebas
             return $dataProvider;
         }
 
-        // grid filtering conditions
+ // grid filtering conditions 
         $query->andFilterWhere([
             'prueba_id' => $this->prueba_id,
             'fecha_entrega' => $this->fecha_entrega,
             'fecha_prueba' => $this->fecha_prueba,
             'usuario_pruebas' => $this->usuario_pruebas,
             'requerimiento_id' => $this->requerimiento_id,
+            'sprint_id' => $this->sprint_id,
         ]);
 
-        $query->andFilterWhere(['like', 'estado', $this->estado]);
+        $query->andFilterWhere(['like', 'estado', $this->estado])
+            ->andFilterWhere(['like', 'observaciones', $this->observaciones]);
 
         return $dataProvider;
     }

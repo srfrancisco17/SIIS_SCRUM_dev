@@ -108,7 +108,7 @@ $this->title = 'PRUEBAS';
                         'template' => '{update}',
                         'buttons' => [
                             'update' => function ($url, $model, $key) {
-                                return Html::a('<span class="glyphicon glyphicon-search"></span>', Url::to(['requerimientos/update', 'requerimiento_id' => $model->requerimiento_id]), [
+                                return Html::a('<span class="glyphicon glyphicon-search"></span>', Url::to(['requerimientos/update', 'sprint_id' => $model->sprint_id, 'requerimiento_id' => $model->requerimiento_id]), [
                                     'title' => 'Detalle H.U',
                                 ]);
                             },

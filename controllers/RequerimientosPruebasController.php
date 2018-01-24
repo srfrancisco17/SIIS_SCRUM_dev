@@ -10,6 +10,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+
+use app\models\TareasPruebas;
+
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -69,10 +72,19 @@ class RequerimientosPruebasController extends Controller
      */
     
     
-    public function actionCreate($requerimiento_id, $submit = false)
+    public function actionCreate($sprint_id, $requerimiento_id, $submit = false)
     {
         
         $model = new RequerimientosPruebas();
+        
+        $obj_tareas = \app\models\SprintRequerimientosTareas::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' =>$requerimiento_id])->all();
+        
+        
+        
+//        echo '<pre>';
+//        var_dump($obj_tareas[0]->estado);exit;
+
+        
         
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false)
         {
@@ -82,41 +94,40 @@ class RequerimientosPruebasController extends Controller
         if($model->load(Yii::$app->request->post()))
         {
             
+            $model->sprint_id = $sprint_id;
             $model->requerimiento_id = $requerimiento_id;
             $model->usuario_pruebas = Yii::$app->user->identity->usuario_id;
             
-            if($model->save())
-            {
-                $model->refresh();
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return[
-                    'message' => '<p align=center><b>¡Registro creado exitosamente!</b></p>',
-                ];
-            } else{
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+
+                if($model->save())
+                {
+                    
+                    $this->guardarTareasPruebas($model->prueba_id, $_POST['radio_tareas']);
+                    $transaction->commit();
+                    
+                    $model->refresh();
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return[
+                        'message' => '<p align=center><b>¡Registro creado exitosamente!</b></p>',
+                    ];
+                } else{
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($model);
+                }
+
+            } catch (\Exception $e) {
+                $transaction->rollBack();
             }
+             
         }
         return $this->renderAjax('_form',[
-           'model'=>$model, 
+           'model'=>$model,
+           'obj_tareas' => $obj_tareas
         ]);
     }
     
-    
-    /*
-    public function actionCreate()
-    {
-        $model = new RequerimientosPruebas();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->prueba_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-    */
     /**
      * Updates an existing RequerimientosPruebas model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -126,30 +137,91 @@ class RequerimientosPruebasController extends Controller
     public function actionUpdate($prueba_id, $submit = false)
     {
         $model = $this->findModel($prueba_id);
-
+        
+        $obj_tareas = TareasPruebas::find()->where(['prueba_id' => $prueba_id])->all();
+              
+        /*
+        echo '<pre>';
+        var_dump($_POST['radio_tareas']);
+        exit;
+        */
+    
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                $model->refresh();
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return [
-                    'message' => '<p align=center><b>¡Prueba actualizada exitosamente!</b></p>',
-                ];
-            } else {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
+            
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                
+                if ($model->save()) {
+                    
+                    $this->actualizarTareasPruebas($_POST['radio_tareas']);
+                    $transaction->commit();
+
+                    $model->refresh();
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return [
+                        'message' => '<p align=center><b>¡Prueba actualizada exitosamente!</b></p>',
+                    ];
+                } else {
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($model);
+                }
+
+            }catch (\Exception $e) {
+                $transaction->rollBack();
             }
+             
         }
 
         return $this->renderAjax('_form', [
             'model' => $model,
+            'obj_tareas' => $obj_tareas,
         ]);
         
     }
+    
+    protected function guardarTareasPruebas($prueba_id, $datos_tarea){
+
+        
+        foreach ($datos_tarea as $value) {
+
+           $datos = explode("-", $value);
+
+           $model2 = new TareasPruebas();
+
+           $model2->prueba_id = $prueba_id;
+           $model2->tarea_id = $datos[0];
+           $model2->estado = $datos[1];
+           $model2->save();
+
+       }
+         
+        return true;
+        
+    }
+    
+    
+    protected function actualizarTareasPruebas($datos_tarea){
+
+
+        foreach ($datos_tarea as $value) {
+
+           $datos = explode("-", $value);
+           
+           $model2 = TareasPruebas::findOne($datos[2]);
+           $model2->estado = $datos[1];
+           $model2->save();
+
+       }
+
+        return true;
+        
+    }
+    
 
     /**
      * Deletes an existing RequerimientosPruebas model.

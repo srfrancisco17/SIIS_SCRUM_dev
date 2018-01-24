@@ -28,6 +28,9 @@ use yii\widgets\ActiveForm;
 
 <?php
     $this->registerJs('
+        
+        setTimeout(function(){ $("#'.Html::getInputId($model, 'descripcion').'").focus(); }, 275);
+
         $("form#perfiles_usuario-form").on("beforeSubmit", function(e) {
 
             var form = $(this);

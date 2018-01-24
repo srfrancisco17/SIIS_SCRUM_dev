@@ -251,6 +251,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $datos_ideal_burn = ideal_burn($datos['total_tiempo_calculado'], $sprint_fecha_desde, $sprint_fecha_hasta, $dias_festivos);
     $datos_actual_burn = actual_burn($datos['consulta_acutal_burn'], $sprint_fecha_desde, $dias_festivos, $sprint_total_dias, $datos['total_tiempo_calculado']);
     $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $dias_festivos);
+    
     $porcentaje_productividad = number_format(((count($datos_actual_burn))*100)/$sprint_total_dias, 1);
 
     $this->registerJs("

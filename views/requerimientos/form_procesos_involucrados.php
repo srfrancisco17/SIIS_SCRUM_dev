@@ -27,7 +27,11 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?> 
  
 <?php
+
     $this->registerJs('
+    
+        setTimeout(function(){ $("#'.Html::getInputId($model, 'descripcion').'").focus(); }, 275);
+
         $("form#procesos_involucrados-form").on("beforeSubmit", function(e) {
 
             var form = $(this);

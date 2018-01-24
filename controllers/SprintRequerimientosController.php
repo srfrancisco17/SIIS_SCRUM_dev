@@ -363,20 +363,68 @@ class SprintRequerimientosController extends Controller
     
     public function actionPrintHistoriaUsuario($sprint_id, $requerimiento_id) {
         
-        $content = "<b>HELLO WORD</b>";
+        /* * Pag 1 * */
+        
+        $datos_tareas = $this->obtenerTareasPruebas($sprint_id, $requerimiento_id);
+        
+        $obj_requerimiento = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->one();
+        
+        $obj_procesos_involucrados = \app\models\ProcesosInvolucrados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
+        $obj_perfiles_impactados = \app\models\PerfilesUsuariosImpactados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
+        
+        /* * Pag 2 * */
+        
+        $obj_pruebas = \app\models\RequerimientosPruebas::find()->where(['requerimiento_id' => $requerimiento_id])->all();
+        
+        $obj_requerimientos_implementacion = \app\models\RequerimientosImplementacion::findOne($requerimiento_id);
+        
 
+        
+        $limite_texto = 140;
 
+        
+        $obj_requerimiento->requerimiento->requerimiento_descripcion = ( 
+            strlen($obj_requerimiento->requerimiento->requerimiento_descripcion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_descripcion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_descripcion 
+        ); 
+        
+        $obj_requerimiento->requerimiento->requerimiento_funcionalidad = ( 
+            strlen($obj_requerimiento->requerimiento->requerimiento_funcionalidad) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_funcionalidad, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_funcionalidad 
+        ); 
+        
+        $obj_requerimiento->requerimiento->requerimiento_justificacion = ( 
+            strlen($obj_requerimiento->requerimiento->requerimiento_justificacion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_justificacion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_justificacion 
+        );
+        
+        
+        /*
+        echo '<pre>';
+        var_dump($obj_requerimiento->requerimiento->requerimiento_descripcion);
+        exit;
+        */
+        
+        $content1 = $this->renderPartial('_reportHU_pag1', [
+            'sprint_id' => $sprint_id,
+            'obj_requerimiento' => $obj_requerimiento,
+            'datos_tareas' => $datos_tareas,
+            'obj_procesos_involucrados' => $obj_procesos_involucrados,
+            'obj_perfiles_impactados' => $obj_perfiles_impactados,
+        ]);
+        
+        $content2 =  $this->renderPartial('_reportHU_pag2', [
+            'sprint_id' => $sprint_id,
+            'obj_pruebas' => $obj_pruebas,
+            'obj_requerimientos_implementacion' => $obj_requerimientos_implementacion,
+        ]);
+        
         $mpdf = new Mpdf([
             'mode' => 'utf-8', 
             'format' => 'Letter', 
             'orientation' => 'P'
         ]);
         
-        
-        
-        
+        $mpdf->useActiveForms = TRUE;
         // Document Metadata
-        $mpdf->SetTitle("HU120");
+        $mpdf->SetTitle("HU-".$requerimiento_id."(".date('Y-m-d').")");
         $mpdf->SetAuthor('Desarrollo8');
         $mpdf->SetCreator('FAOF');  
         $mpdf->SetSubject("Historias de usuario CDO CALI");
@@ -384,9 +432,22 @@ class SprintRequerimientosController extends Controller
 
         
         // Encryption & Passwords
-        $mpdf->SetProtection(array('copy','print'), 'ñ2018', '123456');
+        //$mpdf->SetProtection(array('copy','print'), 'ñ2018', '123456');
         
-        $mpdf->WriteHTML($content);
+        
+        $mpdf->SetHeader('HISTORIA DE USUARIO '.$requerimiento_id);
+        $mpdf->SetFooter('Pagina # {PAGENO}');
+        
+        
+        
+        $mpdf->WriteHTML($content1);
+        
+        // Two PAGE
+        $mpdf->AddPage();
+        
+        $mpdf->WriteHTML($content2);
+       
+        
         // return the pdf output as per the destination setting
         $mpdf->Output();
         exit;
@@ -394,5 +455,53 @@ class SprintRequerimientosController extends Controller
     }
     
    
+    protected function obtenerTareasPruebas($sprint_id, $requerimiento_id){
+        
+        $connection = Yii::$app->db;
+
+        $query = "
+            SELECT
+                SRT.tarea_id,
+                SRT.sprint_id,
+                SRT.requerimiento_id,
+                SRT.estado,
+                    RT.tarea_id,
+                    RT.requerimiento_id,
+                    RT.tarea_titulo,
+                    RT.tarea_descripcion,
+                    RT.ultimo_estado,
+                    RT.horas_desarrollo,
+                    RT.fecha_terminado,
+                    RT.sw_urgente
+            FROM
+                sprint_requerimientos_tareas AS SRT
+            INNER JOIN requerimientos_tareas AS RT ON(
+                RT.tarea_id = SRT.tarea_id
+            )
+            WHERE SRT.sprint_id = ".$sprint_id." AND SRT.requerimiento_id = ".$requerimiento_id."
+            ORDER BY SRT.tarea_id ASC;
+        ";
+            
+        $datos1 = $connection->createCommand($query)->queryAll();
+        
+        $datos2 = array();
+        $i=0;
+        
+        foreach ($datos1 as $key => $value) {
+            
+            $datos2[$i] = $value;
+            
+            $datos2[$i]['tareas_pruebas']= $connection->createCommand("SELECT * FROM tareas_pruebas WHERE tarea_id = ".$value['tarea_id']." ORDER BY id DESC LIMIT 3")->queryAll();
+            
+            $i++;
+            
+        }
+            
+        //echo '<pre>';print_r($datos2);exit;
+        
+        return $datos2;
+        
+    }
+    
     
 }

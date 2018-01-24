@@ -46,6 +46,9 @@ $form = ActiveForm::begin([
 
 <?php
     $this->registerJs('
+        
+        setTimeout(function(){ $("#'.Html::getInputId($model, 'tarea_titulo').'").focus(); }, 275);
+
         $("form#tareas-form").on("beforeSubmit", function(e) {
 
             var form = $(this);

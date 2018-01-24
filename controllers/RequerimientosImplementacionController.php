@@ -61,20 +61,24 @@ class RequerimientosImplementacionController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($requerimiento_id)
+    public function actionCreate($sprint_id, $requerimiento_id)
+            
     {
+        
+        /*
+        echo '<pre>';
+        var_dump($requerimiento_id);
+        exit;
+        */
+        
         $model = new RequerimientosImplementacion();
         
 
         if ($model->load(Yii::$app->request->post()) && $model->save() ) {
             
-            /*
-            echo '<pre>';
-            var_dump("SAVE");
-            exit;
-            */
+
             
-            return $this->redirect(['requerimientos/update', 'requerimiento' => $requerimiento_id]);
+            return $this->redirect(['requerimientos/update', 'sprint_id' => $sprint_id , 'requerimiento_id' => $requerimiento_id]);
             
 
         } else {
@@ -93,7 +97,7 @@ class RequerimientosImplementacionController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($requerimiento_id)
+    public function actionUpdate($sprint_id, $requerimiento_id)
     {
         $model = $this->findModel($requerimiento_id);
         
@@ -102,7 +106,7 @@ class RequerimientosImplementacionController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             
             
-            return $this->redirect(['requerimientos/update', 'requerimiento_id' => $requerimiento_id]);
+            return $this->redirect(['requerimientos/update', 'sprint_id' => $sprint_id , 'requerimiento_id' => $requerimiento_id]);
             
         } 
     }

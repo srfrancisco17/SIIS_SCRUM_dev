@@ -14,9 +14,11 @@ use Yii;
  * @property integer $usuario_pruebas
  * @property integer $requerimiento_id
  * @property string $observaciones
+ * @property integer $sprint_id
  *
- * @property Requerimientos $requerimiento
+ * @property SprintRequerimientos $requerimiento
  * @property Usuarios $usuarioPruebas
+ * @property TareasPruebas[] $tareasPruebas
  */
 class RequerimientosPruebas extends \yii\db\ActiveRecord
 {
@@ -34,14 +36,14 @@ class RequerimientosPruebas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha_entrega', 'fecha_prueba', 'estado', 'usuario_pruebas'], 'required'],
+            [['fecha_entrega', 'fecha_prueba', 'estado', 'usuario_pruebas', 'sprint_id'], 'required'],
             [['fecha_entrega', 'fecha_prueba'], 'safe'],
-            [['usuario_pruebas', 'requerimiento_id'], 'integer'],
+            [['usuario_pruebas', 'requerimiento_id', 'sprint_id'], 'integer'],
             [['observaciones'], 'string'],
             [['estado'], 'string', 'max' => 1],
-            [['requerimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id']],
+            [['requerimiento_id', 'sprint_id'], 'exist', 'skipOnError' => true, 'targetClass' => SprintRequerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id', 'sprint_id' => 'sprint_id']],
             [['usuario_pruebas'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_pruebas' => 'usuario_id']],
-        ];
+        ]; 
     }
 
     /**
@@ -57,6 +59,7 @@ class RequerimientosPruebas extends \yii\db\ActiveRecord
             'usuario_pruebas' => 'Usuario Pruebas',
             'requerimiento_id' => 'Requerimiento ID',
             'observaciones' => 'Observaciones',
+            'sprint_id' => 'Sprint ID',
         ];
     }
 
@@ -75,4 +78,16 @@ class RequerimientosPruebas extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Usuarios::className(), ['usuario_id' => 'usuario_pruebas']);
     }
+    
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getTarea() 
+    { 
+        return $this->hasMany(TareasPruebas::className(), ['prueba_id' => 'prueba_id']);
+    }
+    
+    
+    
+    
 }

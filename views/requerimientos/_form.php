@@ -127,13 +127,13 @@ $this->registerCss("
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
-                              <?= $form->field($model, 'requerimiento_descripcion')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento])->label('* Como(Rol):') ?>
+                              <?= $form->field($model, 'requerimiento_descripcion')->textarea(['rows' => '3'])->label('* Como(Rol):') ?>
                         </div>
                         <div class="col-lg-4">
-                              <?= $form->field($model, 'requerimiento_funcionalidad')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento])->label('* Necesito(Funcionalidad):') ?>
+                              <?= $form->field($model, 'requerimiento_funcionalidad')->textarea(['rows' => '3'])->label('* Necesito(Funcionalidad):') ?>
                         </div>
                         <div class="col-lg-4">
-                              <?= $form->field($model, 'requerimiento_justificacion')->textarea(['rows' => '3', 'readonly' => $estado_field_requerimiento])->label('* Para(Finalidad):') ?>
+                              <?= $form->field($model, 'requerimiento_justificacion')->textarea(['rows' => '3'])->label('* Para(Finalidad):') ?>
                         </div>
                     </div>
                     <div class="row">
@@ -163,7 +163,7 @@ $this->registerCss("
 
                     $sprint_estado = app\models\Sprints::getSprintEstado($sprint_id)->estado;
 
-                    if ($sprint_estado == '0'){
+                    if ($sprint_estado == '1'){
 
                         $toolbar_tareas = array(
                             "content" => Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Tarea', '#', [
@@ -421,7 +421,7 @@ $this->registerCss("
                 
                 Pjax::begin(['id' => 'form-requerimientos_implementacion', 'enablePushState'=>false, 'enableReplaceState' => false]);
                 $form = ActiveForm::begin([
-                    'action' => $RI_model->isNewRecord ? Url::to(['requerimientos-implementacion/create', 'requerimiento_id' => $model->requerimiento_id]) : Url::to(['requerimientos-implementacion/update', 'requerimiento_id' => $model->requerimiento_id]),
+                    'action' => $RI_model->isNewRecord ? Url::to(['requerimientos-implementacion/create', 'sprint_id' => $sprint_id , 'requerimiento_id' => $model->requerimiento_id]) : Url::to(['requerimientos-implementacion/update', 'sprint_id' => $sprint_id, 'requerimiento_id' => $model->requerimiento_id]),
                     //'id' => 'forum_post', 
                     'method' => 'post',
                     'options' => ['data-pjax' => true ],
@@ -430,12 +430,12 @@ $this->registerCss("
                 <?= $form->field($RI_model, 'requerimiento_id')->hiddenInput(['value'=> $model->requerimiento_id ])->label(false); ?>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="box">
+                        <div class="box box-primary">
                             <div class="box-body">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-hover">
                                   <thead>
                                     <tr>
-                                        <th colspan="3">CAPACITACION A SOPORTE</th>
+                                        <th style="text-align: center;" colspan="3">CAPACITACION A SOPORTE</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -543,12 +543,12 @@ $this->registerCss("
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="box">
+                        <div class="box box-primary">
                             <div class="box-body">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-hover">
                                   <thead>
                                     <tr>
-                                        <th colspan="3">ACTUALIZACION EN PRODUCCION</th>
+                                        <th style="text-align: center;" colspan="3">ACTUALIZACION EN PRODUCCION</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -697,7 +697,7 @@ $this->registerCss("
                                 'class' => 'btn btn-success botones',
                                 'data-toggle' => 'modal',
                                 'data-target' => '#modal',
-                                'data-url' => Url::to(['requerimientos-pruebas/create', 'requerimiento_id' => $model->requerimiento_id]),
+                                'data-url' => Url::to(['requerimientos-pruebas/create', 'sprint_id' => $sprint_id, 'requerimiento_id' => $model->requerimiento_id]),
                                 'data-pjax' => '0',
                                 'data-opcion' => 'modal4-create', 
                             ]),

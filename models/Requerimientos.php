@@ -138,7 +138,7 @@ class Requerimientos extends \yii\db\ActiveRecord
     {
         return $this->hasOne(SprintRequerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
-
+    
     /**
      * @return \yii\db\ActiveQuery
      */
