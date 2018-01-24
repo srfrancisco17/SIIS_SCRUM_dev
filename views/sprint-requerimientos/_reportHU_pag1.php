@@ -108,7 +108,7 @@ use yii\helpers\Html;
             </td>
             <td>Fecha Terminación:</td>
             <td>
-            -- NULL --
+                <input type="text" name="fecha_terminacion" size="17" style="border:0px;">       
             </td>
         </tr>
     </table>

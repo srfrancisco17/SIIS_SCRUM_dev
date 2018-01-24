@@ -422,7 +422,7 @@ class SprintRequerimientosController extends Controller
             'orientation' => 'P'
         ]);
         
-        
+        $mpdf->useActiveForms = TRUE;
         // Document Metadata
         $mpdf->SetTitle("HU-".$requerimiento_id."(".date('Y-m-d').")");
         $mpdf->SetAuthor('Desarrollo8');
@@ -479,7 +479,7 @@ class SprintRequerimientosController extends Controller
                 RT.tarea_id = SRT.tarea_id
             )
             WHERE SRT.sprint_id = ".$sprint_id." AND SRT.requerimiento_id = ".$requerimiento_id."
-            ORDER BY SRT.tarea_id DESC;
+            ORDER BY SRT.tarea_id ASC;
         ";
             
         $datos1 = $connection->createCommand($query)->queryAll();

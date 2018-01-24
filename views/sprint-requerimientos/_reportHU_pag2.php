@@ -182,7 +182,7 @@ use yii\helpers\Html;
 
                     }else{
                         
-                        echo '<td width="35%" class="td-placeholder">';
+                        echo '<td width="35%">';
                         echo    $obj_requerimientos_implementacion->usuarioRecibe->nombreCompleto;
                         echo '</td>';
                     }
@@ -228,7 +228,7 @@ use yii\helpers\Html;
 
                         }else{
 
-                            echo '<td width="90" class="td-placeholder" style="text-align:left;">';
+                            echo '<td width="90" style="text-align:left;">';
                             echo    $obj_requerimientos_implementacion->soporteEntregadoPor->nombreCompleto;
                             echo '</td>';
                         }
@@ -250,7 +250,7 @@ use yii\helpers\Html;
 
                         }else{
 
-                            echo '<td width="90" class="td-placeholder" style="text-align:left;">';
+                            echo '<td width="90" style="text-align:left;">';
                             echo    $obj_requerimientos_implementacion->soporte1RecibioCapacitacion->nombreCompleto;
                             echo '</td>';
                         }
@@ -271,7 +271,7 @@ use yii\helpers\Html;
 
                         }else{
 
-                            echo '<td width="90" class="td-placeholder" style="text-align:left;">';
+                            echo '<td width="90" style="text-align:left;">';
                             echo    $obj_requerimientos_implementacion->soporte2RecibioCapacitacion->nombreCompleto;
                             echo '</td>';
                         }
@@ -305,7 +305,7 @@ use yii\helpers\Html;
 
                         }else{
 
-                            echo '<td width="90" class="td-placeholder" style="text-align:left;">';
+                            echo '<td width="90" style="text-align:left;">';
                             echo    $obj_requerimientos_implementacion->usuarioApruebaProduccion->nombreCompleto;
                             echo '</td>';
                         }
@@ -337,7 +337,7 @@ use yii\helpers\Html;
 
                         }else{
 
-                            echo '<td width="90" class="td-placeholder" style="text-align:left;">';
+                            echo '<td width="90" style="text-align:left;">';
                             echo    $obj_requerimientos_implementacion->produccionEntregadoPor->nombreCompleto;
                             echo '</td>';
                         }
@@ -358,7 +358,7 @@ use yii\helpers\Html;
 
                         }else{
 
-                            echo '<td width="90" class="td-placeholder" style="text-align:left;">';
+                            echo '<td width="90" style="text-align:left;">';
                             echo    $obj_requerimientos_implementacion->produccion1RecibioCapacitacion->nombreCompleto;
                             echo '</td>';
                         }
@@ -379,7 +379,7 @@ use yii\helpers\Html;
 
                         }else{
 
-                            echo '<td width="90" class="td-placeholder" style="text-align:left;">';
+                            echo '<td width="90" style="text-align:left;">';
                             echo    $obj_requerimientos_implementacion->produccion2RecibioCapacitacion->nombreCompleto;
                             echo '</td>';
                         }
