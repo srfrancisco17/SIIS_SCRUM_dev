@@ -235,7 +235,9 @@ use yii\helpers\Html;
                     ?>
                     <td class="td-placeholder" width="5%">Firma</td>
                     <td width="5%" style="text-align:center;">
-                        <?= $obj_requerimientos_implementacion->soporte_entregado_fecha ?>
+                        
+                        <?= (empty($obj_requerimientos_implementacion->soporte_entregado_fecha) ? "" : $obj_requerimientos_implementacion->soporte_entregado_fecha) ?>
+ 
                     </td>
                 </tr>
                 <tr>
@@ -257,7 +259,10 @@ use yii\helpers\Html;
                     ?>
                     <td class="td-placeholder" width="5%">Firma</td>
                     <td width="5%" style="text-align:center;">
-                       <?= $obj_requerimientos_implementacion->soporte1_fecha_entrega ?>
+                        
+                        
+                        <?= (empty($obj_requerimientos_implementacion->soporte1_fecha_entrega) ? "" : $obj_requerimientos_implementacion->soporte1_fecha_entrega) ?>
+
                     </td>
                 </tr>
                 <tr>
@@ -278,7 +283,9 @@ use yii\helpers\Html;
                     ?>
                     <td class="td-placeholder" width="5%">Firma</td>
                     <td width="5%" style="text-align:center;">
-                        <?= $obj_requerimientos_implementacion->soporte2_fecha_entrega ?>
+                        
+                        <?= (empty($obj_requerimientos_implementacion->soporte2_fecha_entrega) ? "" : $obj_requerimientos_implementacion->soporte2_fecha_entrega) ?>
+
                     </td>
                 </tr>
             </tbody>
@@ -311,7 +318,9 @@ use yii\helpers\Html;
                         }
                     ?>
                     <td width="5%" style="text-align:center;">
-                        <?= $obj_requerimientos_implementacion->fecha_subida_produccion ?>
+                        
+                        <?= (empty($obj_requerimientos_implementacion->fecha_subida_produccion) ? "" : $obj_requerimientos_implementacion->fecha_subida_produccion) ?>
+             
                     </td>
                 </tr>
             </tbody>
@@ -344,7 +353,9 @@ use yii\helpers\Html;
                     ?>
                     <td class="td-placeholder" width="5%">Firma</td>
                     <td width="5%" style="text-align:center;">
-                        <?= $obj_requerimientos_implementacion->produccion_entregado_fecha ?>
+                        
+                        <?= (empty($obj_requerimientos_implementacion->produccion_entregado_fecha) ? "" : $obj_requerimientos_implementacion->produccion_entregado_fecha) ?>
+                        
                     </td>
                 </tr>
                 <tr>
@@ -365,7 +376,10 @@ use yii\helpers\Html;
                     ?>
                     <td class="td-placeholder" width="5%">Firma</td>
                     <td width="5%" style="text-align:center;">
-                        <?= $obj_requerimientos_implementacion->produccion1_fecha_entrega ?>
+                        
+                        
+                        <?= (empty($obj_requerimientos_implementacion->produccion1_fecha_entrega) ? "" : $obj_requerimientos_implementacion->produccion1_fecha_entrega) ?>
+
                     </td>
                 </tr>
                 <tr>
@@ -386,7 +400,9 @@ use yii\helpers\Html;
                     ?>   
                     <td class="td-placeholder" width="5%">Firma</td>
                     <td width="5%" style="text-align:center;">
-                        <?= $obj_requerimientos_implementacion->produccion2_fecha_entrega  ?>
+                        
+                        <?= (empty($obj_requerimientos_implementacion->produccion2_fecha_entrega) ? "" : $obj_requerimientos_implementacion->produccion2_fecha_entrega) ?>
+                        
                     </td>
                 </tr>
             </tbody>
