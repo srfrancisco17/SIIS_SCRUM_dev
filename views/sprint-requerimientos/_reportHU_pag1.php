@@ -54,12 +54,8 @@ use yii\helpers\Html;
         height: 9%;
         /*background-color: skyblue;*/   
     }
-    
 </style>
-
-
 <div id="div-encabezado">
-    
     <table border="1" style="width:100%">
       <tr>
           <td style="text-align:center;">
@@ -73,10 +69,8 @@ use yii\helpers\Html;
         <td style="text-align:center;font-size: 12px;">Fecha: <?= date("Y-m-d") ?></td>
       </tr>
     </table>
-      
 </div>
 <div id="div-informacionHU">
-    
     <table style="width:100%;border: 1px solid black;">
         <tr>
             <th width="350px"  colspan="2" style="text-align:left;">Solicitud:</th>
@@ -130,7 +124,7 @@ use yii\helpers\Html;
         <th>Para (Finalidad):</th>
       </tr>
       <tr>
-          <td>
+          <td style="height: 75px;">
               <?= $obj_requerimiento->requerimiento->requerimiento_descripcion ?>
           </td>
           <td>
@@ -144,7 +138,6 @@ use yii\helpers\Html;
     
 </div>
 <div id="div-criterios_aceptacion">
-
     <table border="1" style="width:100%">
         <thead>
             <tr>
@@ -155,7 +148,7 @@ use yii\helpers\Html;
         <tbody>
             <?php
                 $html = "";
-                if (empty($datos_tareas)){
+                if (!empty($datos_tareas)){
                     
                     foreach ($datos_tareas as $clave_tareas => $valor_tareas) {
 
@@ -208,18 +201,13 @@ use yii\helpers\Html;
                         $html .= "  <td width='2%' style='text-align:center;'>";
                         $html .= "      &nbsp;";
                         $html .= "  </td>";
-              
                     }  
                 }
-                
                 echo $html;
             ?>
         </tbody>
-    </table>
-    
-    
+    </table> 
 </div>
-
 <div id="div-procesos_involucrados">
     <table border="1" style="width:100%">
         <thead>
@@ -247,9 +235,6 @@ use yii\helpers\Html;
                     $html2 .= "</td>";
                     
                     if (($i % 3) == 0){
-                       
-                        
-
                         $html .= "<tr>";
                         $html .=    $html2; 
                         $html .= "</tr>";
@@ -270,14 +255,12 @@ use yii\helpers\Html;
             </tr>
         </thead>
         <tbody>
-            
             <?php
             
                 $html = "";
                 $html2 = "";
 
                 for ($i = 1; $i <= 9; $i++) {
-
                     
                     $html2 .= "<td width='33%'>";
                     if ( empty($obj_procesos_involucrados[($i-1)]) ){
@@ -300,7 +283,6 @@ use yii\helpers\Html;
                 
                 echo $html;
             ?>
-            
         </tbody>
     </table>  
 </div>
@@ -329,5 +311,4 @@ use yii\helpers\Html;
             </tr>
         </tbody>
     </table> 
-    
 </div>    
