@@ -378,6 +378,8 @@ class SprintRequerimientosController extends Controller
         
         $obj_requerimientos_implementacion = \app\models\RequerimientosImplementacion::findOne($requerimiento_id);
         
+        
+        //var_dump($obj_procesos_involucrados);exit;
 
         
         $limite_texto = 140;
@@ -395,12 +397,16 @@ class SprintRequerimientosController extends Controller
             strlen($obj_requerimiento->requerimiento->requerimiento_justificacion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_justificacion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_justificacion 
         );
         
+       
         
         /*
-        echo '<pre>';
-        var_dump($obj_requerimiento->requerimiento->requerimiento_descripcion);
-        exit;
-        */
+         * VALIDAR QUE LOS DATOS DEL REPORTE SE HALLAN CARGADO CORRECTAMENTE
+         */
+        
+        
+        
+        
+        
         
         $content1 = $this->renderPartial('_reportHU_pag1', [
             'sprint_id' => $sprint_id,
