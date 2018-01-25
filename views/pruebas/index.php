@@ -49,11 +49,9 @@ $this->title = 'PRUEBAS';
     background-color: rgba(255,255,255, .23);
     border-bottom-color: transparent;
 }    
-    
-    
+
 </style>
 <br>
-
 	<div class="row">
 		<div class="col-md-12">
             <div class="panel panel-primary">

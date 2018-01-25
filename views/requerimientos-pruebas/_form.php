@@ -10,9 +10,7 @@ $form = ActiveForm::begin([
       'enableClientValidation' => true,
 ]); 
 
-
 $model->fecha_prueba = ($model->isNewRecord ? date("Y-m-d") : $model->fecha_prueba);
-
 
 ?>
 <div class="row">
