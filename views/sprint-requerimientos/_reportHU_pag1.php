@@ -125,13 +125,19 @@ use yii\helpers\Html;
       </tr>
       <tr>
           <td style="height: 75px;">
-              <?= $obj_requerimiento->requerimiento->requerimiento_descripcion ?>
+            
+            <?= (is_null($obj_requerimiento->requerimiento->requerimiento_descripcion) ? "" : $obj_requerimiento->requerimiento->requerimiento_descripcion ) ?>
+
           </td>
           <td>
-                <?= $obj_requerimiento->requerimiento->requerimiento_funcionalidad ?>
+              
+            <?= (is_null($obj_requerimiento->requerimiento->requerimiento_funcionalidad) ? "" : $obj_requerimiento->requerimiento->requerimiento_funcionalidad ) ?>
+
           </td> 
           <td>
-                <?= $obj_requerimiento->requerimiento->requerimiento_justificacion ?>
+              
+            <?= (is_null($obj_requerimiento->requerimiento->requerimiento_justificacion) ? "" : $obj_requerimiento->requerimiento->requerimiento_justificacion ) ?>
+
           </td>
       </tr>
     </table>

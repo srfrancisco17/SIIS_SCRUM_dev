@@ -64,6 +64,11 @@ use app\models\Usuarios;
                             'url' => ['sprints/index'],
                         ],
                         [
+                            'label' => 'Pruebas',
+                            'icon' => 'slack',
+                            'url' => ['requerimientos-pruebas/index'],
+                        ],
+                        [
                             'label' => 'Diagramas',
                             'icon' => 'folder-open',
                             'visible' => FALSE,
@@ -110,13 +115,11 @@ use app\models\Usuarios;
                             'icon' => 'undo',
                             'url' => ['sprint-usuarios/index'],
                         ],
-                        
                         [
                             'label' => 'Pruebas',
                             'icon' => 'slack',
                             'url' => ['requerimientos-pruebas/index'],
                         ],
-                        
                         [
                             'label' => 'Acerca Del Proyecto',
                             'icon' => 'info-circle',
