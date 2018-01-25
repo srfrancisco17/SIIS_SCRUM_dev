@@ -719,21 +719,21 @@ $this->registerCss("
                             ],
                             [
                                 'attribute' => 'fecha_entrega',
-                                'label' => 'Fecha de entrega',
+                                'label' => 'FECHA DE ENTREGA',
                                 'filter' => FALSE,
                                 //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                                 'contentOptions' => ['style' => 'width:10%;'],
                             ],
                             [
                                 'attribute' => 'fecha_prueba',
-                                'label' => 'Fecha de pruebas',
+                                'label' => 'FECHA DE PRUEBA',
                                 'filter' => FALSE,
                                 //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                                 'contentOptions' => ['style' => 'width:10%;'],
                             ],
                             [
                                 'attribute' => 'usuario_pruebas',
-                                'label' => 'Ing. Pruebas',
+                                'label' => 'ING. PRUEBAS',
                                 'value' => 'usuarioPruebas.nombreCompleto',
                                 'filter' => FALSE,
                                 //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
@@ -741,20 +741,30 @@ $this->registerCss("
                             ],
                             [
                                 'attribute' => 'observaciones',
-                                'label' => 'Observaciones',
+                                'label' => 'OBSERVACIONES',
                                 'filter' => FALSE,
                                 //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
                                 'contentOptions' => ['style' => 'width:40%;'],
                             ],
                             [
                                 'attribute' => 'estado',
-                                'label' => 'Estado',
+                                'label' => 'ESTADO',
                                 'filter' => FALSE,
-                                //'headerOptions'=>['style' => 'background-color:#3cbcab; color:#245269;'],
-                                'contentOptions' => ['style' => 'width:7%;'],
+                                'contentOptions' => ['style' => 'width:10%;'],
+                                'value' => function ($data) {
+
+                                    if($data['estado'] == 0){
+                                        return 'No Aprobado';
+                                    }
+                                    if($data['estado'] == 1){
+                                        return 'Aprobado';
+                                    }
+                                    return 'Error';
+                                }, 
                             ],
                             [
                                 'class'=>'kartik\grid\ActionColumn',
+                                'header' => 'ACCIONES',
                                 'template' => '{update}{delete}',
                                 'buttons' => [
                                     'update' => function ($url, $model, $key) {

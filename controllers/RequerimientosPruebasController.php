@@ -75,17 +75,14 @@ class RequerimientosPruebasController extends Controller
     public function actionCreate($sprint_id, $requerimiento_id, $submit = false)
     {
         
+        
         $model = new RequerimientosPruebas();
         
         $obj_tareas = \app\models\SprintRequerimientosTareas::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' =>$requerimiento_id])->all();
         
         
         
-//        echo '<pre>';
-//        var_dump($obj_tareas[0]->estado);exit;
 
-        
-        
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false)
         {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -94,6 +91,8 @@ class RequerimientosPruebasController extends Controller
         if($model->load(Yii::$app->request->post()))
         {
             
+            
+
             $model->sprint_id = $sprint_id;
             $model->requerimiento_id = $requerimiento_id;
             $model->usuario_pruebas = Yii::$app->user->identity->usuario_id;
@@ -103,6 +102,7 @@ class RequerimientosPruebasController extends Controller
 
                 if($model->save())
                 {
+                    
                     
                     $this->guardarTareasPruebas($model->prueba_id, $_POST['radio_tareas']);
                     $transaction->commit();
@@ -119,6 +119,10 @@ class RequerimientosPruebasController extends Controller
 
             } catch (\Exception $e) {
                 $transaction->rollBack();
+                
+                var_dump($e);
+                exit;
+                
             }
              
         }
@@ -185,7 +189,7 @@ class RequerimientosPruebasController extends Controller
     }
     
     protected function guardarTareasPruebas($prueba_id, $datos_tarea){
-
+        
         
         foreach ($datos_tarea as $value) {
 

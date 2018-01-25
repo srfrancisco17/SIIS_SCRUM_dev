@@ -368,7 +368,6 @@ class SprintRequerimientosController extends Controller
         $datos_tareas = $this->obtenerTareasPruebas($sprint_id, $requerimiento_id);
         
         $obj_requerimiento = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->one();
-        
         $obj_procesos_involucrados = \app\models\ProcesosInvolucrados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
         $obj_perfiles_impactados = \app\models\PerfilesUsuariosImpactados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
         
@@ -378,13 +377,10 @@ class SprintRequerimientosController extends Controller
         
         $obj_requerimientos_implementacion = \app\models\RequerimientosImplementacion::findOne($requerimiento_id);
         
-        
-        //var_dump($obj_procesos_involucrados);exit;
-
-        
         $limite_texto = 140;
 
-        
+        //echo "<pre>";var_dump($obj_requerimiento->requerimiento->requerimiento_funcionalidad);exit;
+
         $obj_requerimiento->requerimiento->requerimiento_descripcion = ( 
             strlen($obj_requerimiento->requerimiento->requerimiento_descripcion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_descripcion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_descripcion 
         ); 
@@ -398,15 +394,13 @@ class SprintRequerimientosController extends Controller
         );
         
        
+       
+        
+        
         
         /*
          * VALIDAR QUE LOS DATOS DEL REPORTE SE HALLAN CARGADO CORRECTAMENTE
          */
-        
-        
-        
-        
-        
         
         $content1 = $this->renderPartial('_reportHU_pag1', [
             'sprint_id' => $sprint_id,

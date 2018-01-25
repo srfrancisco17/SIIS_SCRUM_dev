@@ -2,13 +2,18 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
-?>
-<?php $form = ActiveForm::begin([
+
+$form = ActiveForm::begin([
       'id' => 'requerimientos_pruebas-form',
       'enableAjaxValidation' => true,
       'enableClientScript' => true,
       'enableClientValidation' => true,
-    ]); 
+]); 
+
+
+$model->fecha_prueba = ($model->isNewRecord ? date("Y-m-d") : $model->fecha_prueba);
+
+
 ?>
 <div class="row">
     <div class="col-md-4">
@@ -51,14 +56,14 @@ use kartik\date\DatePicker;
 <div class="row">
     <div class="col-md-12">
         <table class="table table-bordered">
-            <thead>
+            <thead style="background-color: #a50048; color: #FEFEFE;">
                 <tr>
-                    <th width="2%">#</th>
-                    <th width="30%">Tarea Titulo</th>
-                    <th width="51%">Tarea Descripcion</th>
-                    <th>Horas</th>
-                    <th>Aprobar</th>
-                    <th>No Aprobar</th>
+                    <th style="text-align: center; border: 1px solid #b9b4b4;" width="2%">#</th>
+                    <th style='border: 1px solid #b9b4b4;' width="27%">TAREA TITULO</th>
+                    <th style='border: 1px solid #b9b4b4;' width="51%">TAREA DESCRIPCIÓN</th>
+                    <th style='border: 1px solid #b9b4b4;'>HORAS</th>
+                    <th style='border: 1px solid #b9b4b4;'>APROBAR</th>
+                    <th style='border: 1px solid #b9b4b4;'>NO APROBAR</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,10 +80,10 @@ use kartik\date\DatePicker;
                 $tareas_pruebas_id = (empty($value->id) ? "NULL": $value->id);    
                     
                 $html .= "<tr>";  
-                $html .= "  <td>".($count+1)."</td>";
-                $html .= "  <td>".$value->tarea->tarea_titulo."</td>";
-                $html .= "  <td>".$value->tarea->tarea_descripcion."</td>";
-                $html .= "  <td>".$value->tarea->horas_desarrollo."</td>";
+                $html .= "  <td style='text-align: center; border: 1px solid #b9b4b4;'>".($count+1)."</td>";
+                $html .= "  <td style='border: 1px solid #b9b4b4;'>".$value->tarea->tarea_titulo."</td>";
+                $html .= "  <td style='border: 1px solid #b9b4b4;'>".$value->tarea->tarea_descripcion."</td>";
+                $html .= "  <td style='text-align: center; border: 1px solid #b9b4b4;'>".$value->tarea->horas_desarrollo."</td>";
                 
                 $checked_aprobado = "";
                 $checked_Noaprobado = "";
@@ -96,12 +101,12 @@ use kartik\date\DatePicker;
                 }
   
                 $html .= "
-                    <td style='text-align:center;'>
-                        <label><input style='transform: scale(1.8); cursor: pointer;' type='radio' name='radio_tareas[".$count."]' value='".$value->tarea->tarea_id."-0-".$tareas_pruebas_id."' ".$checked_aprobado."></label>
+                    <td style='text-align:center; border: 1px solid #b9b4b4;'>
+                        <label><input style='transform: scale(1.8); cursor: pointer;' type='radio' name='radio_tareas[".$count."]' value='".$value->tarea->tarea_id."-1-".$tareas_pruebas_id."' ".$checked_aprobado."></label>
                     </td>
                 ";
                 $html .= "
-                    <td style='text-align:center;'>
+                    <td style='text-align:center; border: 1px solid #b9b4b4;'>
                         <label><input style='transform: scale(1.8); cursor: pointer;' type='radio' name='radio_tareas[".$count."]' value='".$value->tarea->tarea_id."-0-".$tareas_pruebas_id."' ".$checked_Noaprobado."></label>
                     </td>
                 ";
