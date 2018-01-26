@@ -15,7 +15,7 @@ use Yii;
  * @property int $horas_desarrollo
  * @property string $observaciones
  * @property string $estado
-
+ * @property string $sw_generar_soportes
  * 
  * @property SprintRequerimientos[] $sprintRequerimientos
  * @property Requerimientos[] $requerimientos
@@ -57,7 +57,7 @@ class Sprints extends \yii\db\ActiveRecord
             [['horas_desarrollo'], 'integer'],
             [['observaciones'], 'string'],
             [['sprint_alias'], 'string', 'max' => 60],
-            [['estado'], 'string', 'max' => 2],
+            [['estado', 'sw_generar_soportes'], 'string', 'max' => 1],
             [['estado'], 'checkEstado'],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
         ]; 
@@ -98,6 +98,7 @@ class Sprints extends \yii\db\ActiveRecord
             'horas_desarrollo' => 'Horas Desarrollo',
             'observaciones' => 'Observaciones',
             'estado' => 'Estado',
+            'sw_generar_soportes' => 'Generar Auto. Requerimientos Soporte',
         ]; 
     } 
 

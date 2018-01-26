@@ -7,6 +7,9 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Sprints */
 /* @var $form yii\widgets\ActiveForm */
+
+
+$model->sw_generar_soportes = ($model->isNewRecord ? 1 : $model->sw_generar_soportes);
 ?>
 
 <div class="sprints-form">
@@ -69,8 +72,12 @@ use yii\helpers\ArrayHelper;
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <br>
-            <?= $form->field($model, 'observaciones')->textarea(['rows' => 6]) ?>
+            <?= $form->field($model, 'sw_generar_soportes')->checkbox() ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <?= $form->field($model, 'observaciones')->textarea(['rows' => 3]) ?>
         </div>
     </div>
     <div class="modal-footer">
