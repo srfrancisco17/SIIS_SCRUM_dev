@@ -36,7 +36,7 @@ use app\models\Usuarios;
                 $menu = [
                     'options' => ['class' => 'sidebar-menu'],
                     'items' => [
-                        ['label' => 'Menu Scrum-Master', 'options' => ['class' => 'header']],
+                        ['label' => 'MENÚ SCRUM-MASTER', 'options' => ['class' => 'header']],
                         [
                             'label' => 'Dashboard',
                             'icon' => 'dashboard ',
@@ -62,6 +62,11 @@ use app\models\Usuarios;
                             'label' => 'Sprints',
                             'icon' => 'undo',
                             'url' => ['sprints/index'],
+                        ],
+                        [
+                            'label' => 'Pruebas',
+                            'icon' => 'slack',
+                            'url' => ['requerimientos-pruebas/index'],
                         ],
                         [
                             'label' => 'Diagramas',
@@ -98,7 +103,7 @@ use app\models\Usuarios;
                 $menu = [
                     'options' => ['class' => 'sidebar-menu'],
                     'items' => [
-                        ['label' => 'Menu Desarrollador', 'options' => ['class' => 'header']],
+                        ['label' => 'MENÚ DESARROLLADOR', 'options' => ['class' => 'header']],
                         [
                             'label' => 'Dashboard',
                             'icon' => 'dashboard ',
@@ -111,9 +116,9 @@ use app\models\Usuarios;
                             'url' => ['sprint-usuarios/index'],
                         ],
                         [
-                            'label' => 'Requerimientos',
-                            'icon' => 'check-square-o',
-                            'url' => ['requerimientos/index'],
+                            'label' => 'Pruebas',
+                            'icon' => 'slack',
+                            'url' => ['requerimientos-pruebas/index'],
                         ],
                         [
                             'label' => 'Acerca Del Proyecto',

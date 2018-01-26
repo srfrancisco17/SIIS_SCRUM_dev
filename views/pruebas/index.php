@@ -1,69 +1,84 @@
 <?php
 /* @var $this yii\web\View */
+use yii\helpers\Html;
+use kartik\grid\GridView;
+use yii\helpers\Url;
 
-use app\models\Usuarios;
 
-
+$this->title = 'PRUEBAS';
 
 ?>
-<?php
-        
-$script = <<< JS
-$(document).ready(function(){
-   var i = 1;
-       
-   $('#add').click(function(){
-      i++; 
-        
-        $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" id="name" placeholder="Enter Name" class="form-control name_list"/></td><td><input type="text" name="lugar[]" id="lugar" placeholder="Enter Lugar" class="form-control name_list"/></td><td><button name="remove" id="'+i+'" class = "btn btn-danger btn_remove">X</button></td></tr>');
-        
-   });
-        
-   $(document).on('click', '.btn_remove', function(){
-    
-        var button_id = $(this).attr("id");
-        $("#row"+button_id+"").remove();
-   
-   });
-   
-   /*
-   $('#submit').click(function(){
-        $.ajax({
-        
-            url:"index.php?r=pruebas/insertar",
-            method:"POST",
-            data:$('#add_name').serialize(),
-            succes: function(data)
-            {
-                alert(data);
-                $('#add_name')[0].reset();
-            }
-   
-        });
-   });
-   */     
-});
-JS;
-  
-
-$this->registerJs($script);
-?>
-
 <style>
-    /*
-.yii-debug-toolbar_position_bottom {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    margin: 0;
+    
+/*Panel tabs*/
+.panel-tabs {
+    position: relative;
+    bottom: 30px;
+    clear:both;
+    border-bottom: 1px solid transparent;
 }
 
-.yii-debug-toolbar {
-    font: 11px Verdana, Arial, sans-serif;
-    text-align: left;
-    width: 96px;
-    transition: width .3s ease;
-    z-index: 1000000;
-}   */
-</style>
+.panel-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+}
 
+.panel-tabs > li > a {
+    margin-right: 2px;
+    margin-top: 4px;
+    line-height: .85;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    color: #ffffff;
+}
+
+.panel-tabs > li > a:hover {
+    border-color: transparent;
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.panel-tabs > li.active > a,
+.panel-tabs > li.active > a:hover,
+.panel-tabs > li.active > a:focus {
+    color: #fff;
+    cursor: default;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background-color: rgba(255,255,255, .23);
+    border-bottom-color: transparent;
+}    
+
+</style>
+<br>
+	<div class="row">
+		<div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Panel title</h3>
+                    <span class="pull-right">
+                        <!-- Tabs -->
+                        <ul class="nav panel-tabs">
+                            <li class="active"><a href="#tab1" data-toggle="tab">DETALLE HISTORIA DE USUARIO</a></li>
+                            <li><a href="#tab2" data-toggle="tab">IMPLEMENTACION</a></li>
+                            <li><a href="#tab3" data-toggle="tab">PRUEBAS</a></li>
+                        </ul>
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            
+                        </div>
+                        <div class="tab-pane" id="tab3">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>

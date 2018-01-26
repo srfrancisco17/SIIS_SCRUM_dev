@@ -15,7 +15,7 @@ use Yii;
  * @property int $horas_desarrollo
  * @property string $observaciones
  * @property string $estado
-
+ * @property string $sw_generar_soportes
  * 
  * @property SprintRequerimientos[] $sprintRequerimientos
  * @property Requerimientos[] $requerimientos
@@ -57,7 +57,7 @@ class Sprints extends \yii\db\ActiveRecord
             [['horas_desarrollo'], 'integer'],
             [['observaciones'], 'string'],
             [['sprint_alias'], 'string', 'max' => 60],
-            [['estado'], 'string', 'max' => 2],
+            [['estado', 'sw_generar_soportes'], 'string', 'max' => 1],
             [['estado'], 'checkEstado'],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
         ]; 
@@ -98,6 +98,7 @@ class Sprints extends \yii\db\ActiveRecord
             'horas_desarrollo' => 'Horas Desarrollo',
             'observaciones' => 'Observaciones',
             'estado' => 'Estado',
+            'sw_generar_soportes' => 'Generar Auto. Requerimientos Soporte',
         ]; 
     } 
 
@@ -155,6 +156,15 @@ class Sprints extends \yii\db\ActiveRecord
         $sprint_activo = Sprints::findOne(['estado' => '1']);
         return $sprint_activo ? $sprint_activo : NULL;
     }
+    
+    public static function getSprintEstado($sprint_id)
+    {
+        
+        $estado = Sprints::findOne($sprint_id);
+        
+        return $estado;
+    }
+    
 
     public static function getListaSprints(){
         
@@ -163,8 +173,7 @@ class Sprints extends \yii\db\ActiveRecord
         return ArrayHelper::map($opciones, 'sprint_id', 'sprint_alias');
  
     }
-    
-    
+
     public function actualizarHorasSprints($sprint_id, $horas){
 
         $conexion = Yii::$app->db;
@@ -173,7 +182,6 @@ class Sprints extends \yii\db\ActiveRecord
         ->bindValue(':horas', $horas)
         ->bindValue(':sprint_id', $sprint_id)   
         ->execute();
-        
         
     }
     
@@ -280,41 +288,6 @@ class Sprints extends \yii\db\ActiveRecord
             $transaction->rollBack();
             throw $e;
         }
-
-        //$query = SprintRequerimientosTareas::find()->select('tarea_id, requerimiento_id')->where(['sprint_id' => $sprint_id])->andWhere(['between', 'estado','2', '3'])->asArray()->all(); 
-        
-        
-//        echo '<pre>';
-//        print_r($result_tareasNoTerminadas);
-//        exit;
-        
-        /*
-        $conexion->createCommand("UPDATE sprints SET estado = 4 WHERE sprint_id=:sprint_id")
-        ->bindValue(':sprint_id', $sprint_id)   
-        ->execute();
-        
-        //
-        $query = SprintRequerimientosTareas::find()->select('tarea_id, requerimiento_id')->where(['sprint_id' => $sprint_id])->andWhere(['between', 'estado','2', '3'])->all();
-        
-        if (!empty($query)){
-            
-                foreach ($query as $objTareas) {
-                        
-                    $conexion->createCommand()->insert('sprint_requerimientos_tareas', [
-                        'tarea_id' => $objTareas->tarea_id,
-                        'requerimiento_id' => $objTareas->requerimiento_id,
-                        'estado' => '2',
-                    ])->execute();
-                    
-
-                    $sql = "Update requerimientos_tareas set ultimo_estado = '5' Where tarea_id=".$objTareas->tarea_id." And requerimiento_id =".$objTareas->requerimiento_id;
-                    $conexion->createCommand($sql)->execute();
-                }
-        }
-         * 
-         */
-        //SprintRequerimientos::actualizarNoCumplido($sprint_id); 
-         
-         
+ 
     }
 }

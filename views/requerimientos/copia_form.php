@@ -1,0 +1,170 @@
+<?php
+
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveForm;
+use app\models\Usuarios;
+use app\models\Departamentos;
+use app\models\Comites;
+use dosamigos\tinymce\TinyMce;
+use kartik\select2\Select2;
+use kartik\date\DatePicker;
+//use yii\widgets\ActiveForm;
+
+/* @var $this yii\web\View */
+/* @var $model backend\models\Requerimientos */
+/* @var $form yii\widgets\ActiveForm */
+?>
+<script>
+    function validarBoton(){   
+
+            //$('#boton1').prop('disabled', true);
+        
+    }
+</script>
+            <div class="box-body">
+                <div class="requerimientos-form">
+
+                    <?php $form = ActiveForm::begin(); ?>
+                    <?php 
+                        
+                        if($model->isNewRecord){
+                        
+                            date_default_timezone_set('America/Bogota');
+                            $model->fecha_requerimiento = date('Y-m-d');
+                            
+                        }   
+                    ?>
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-12">
+                            <?= $form->field($model, 'requerimiento_titulo')->textInput(['maxlength' => true])->label('(*) Titulo Del Requerimiento:') ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-12">
+                            <?= $form->field($model, 'requerimiento_descripcion')->widget(TinyMce::className(), [
+                            'options' => ['rows' => 6],
+                            'language' => 'es',
+                            'clientOptions' => [
+                                'plugins' => [
+                                    "advlist autolink lists link charmap print preview anchor",
+                                    "searchreplace visualblocks code fullscreen",
+                                    "insertdatetime media table contextmenu paste"
+                                ],
+                                'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                            ]
+                            ])->label('Descripcion Del Requerimiento:');
+                            ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-12">
+                            <?= $form->field($model, 'requerimiento_justificacion')->widget(TinyMce::className(), [
+                            'options' => ['rows' => 6],
+                            'language' => 'es',
+                            'clientOptions' => [
+                                'plugins' => [
+                                    "advlist autolink lists link charmap print preview anchor",
+                                    "searchreplace visualblocks code fullscreen",
+                                    "insertdatetime media table contextmenu paste"
+                                ],
+                                'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                            ]
+                            ])->label('Justificacion Del Requerimiento:');
+                            ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-12">
+                            <?= $form->field($model, 'observaciones')->widget(TinyMce::className(), [
+                            'options' => ['rows' => 6],
+                            'language' => 'es',
+                            'clientOptions' => [
+                                'plugins' => [
+                                    "advlist autolink lists link charmap print preview anchor",
+                                    "searchreplace visualblocks code fullscreen",
+                                    "insertdatetime media table contextmenu paste"
+                                ],
+                                'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                            ]
+                            ])->label('Observacion Del Requerimiento:');
+                            ?>                           
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-6"> 
+                            <?= $form->field($model, 'usuario_solicita')->widget(Select2::className(),[
+                                'data' => ArrayHelper::map(Usuarios::find()->where(['estado' => 1])->all(), 'usuario_id', 'nombreCompleto'),
+                                'theme' => Select2::THEME_DEFAULT,
+                                'language'=>'es',
+                                'options' => ['placeholder'=>'Seleccione usuario'],
+                                'pluginOptions'=>[
+                                    'allowClear'=>true
+                                ],
+                                ])->label("(*) Usuario Que Solicita:");
+                            ?>
+                        </div>
+                        <div class="col-xs-12 col-lg-6">
+                            <?= $form->field($model, 'departamento_solicita')->widget(Select2::className(),[
+                                'data' => ArrayHelper::map(Departamentos::find()->all(), 'departamento_id', 'descripcion'),
+                                'theme' => Select2::THEME_DEFAULT,
+                                'language'=>'es',
+                                'options' => ['placeholder'=>'Seleccione Departamento'],
+                                'pluginOptions'=>[
+                                    'allowClear'=>true
+                                ],
+                                ])->label('Departamento Que Solicita:');
+                            ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-6">
+                            <?= $form->field($model, 'fecha_requerimiento')->widget(DatePicker::classname(), [
+                            'name' => 'dp_3',
+                            'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                            'size' => 'xs',
+                            'pluginOptions' => [
+                                'autoclose'=>true,
+                                'format' => 'yyyy-mm-dd',
+                                'startDate' => '2017-01-01'
+                            ]
+                            ])->label('(*) Fecha Del Requerimiento:'); 
+                            ?>
+                        </div>
+                        <div class="col-xs-12 col-lg-6">
+                        <?php
+                        /*
+                         * Condicion para cargar por defecto el requerimiento en inactivo 
+                         */
+                            if ($model->isNewRecord){
+                                $arreglo = array('0'=>'Inactivo', '1' => 'Activo');
+                                echo $form->field($model, 'estado')->dropDownList($arreglo)->label('(*) Estado Del Requerimiento');
+                            }else{
+                                echo $form->field($model, 'estado')->dropDownList(ArrayHelper::map(\app\models\EstadosReqSpr::find()->where(['sw_requerimiento'=>'1'])->asArray()->all(), 'req_spr_id', 'descripcion'), ['prompt' => 'Seleccione Estado'])->label('(*) Estado Del Requerimiento');
+                            }
+                        ?>
+                        </div>                       
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-12">
+                            <?= $form->field($model, 'comite_id')->widget(Select2::className(),[
+                                'data' => ArrayHelper::map(Comites::find()->where(['estado' => 1])->all(), 'comite_id', 'comite_alias'),
+                                'theme' => Select2::THEME_DEFAULT,
+                                'language'=>'es',
+                                'options' => ['placeholder'=>'Sin Comite'],
+                                'pluginOptions'=>[
+                                    'allowClear'=>true
+                                ],
+                                ])->label('Asociar Comite:');
+                            ?> 
+                        </div>
+                    </div>
+                </div>
+            </div>   
+              <div class="box-footer">
+                <?= Html::submitButton($model->isNewRecord ? 'Crear Requerimiento' : 'Actualizar Requerimiento', ['id'=>'boton1' , 'onclick' =>'validarBoton()', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+              </div>
+            <?php ActiveForm::end(); ?>
+        </div>
+    </div>
+</div>

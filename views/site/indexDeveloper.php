@@ -249,7 +249,7 @@ if (!empty($consulta_acutal_burn)){
             }
         }
 
-        return json_encode($arreglo_actual_burn);
+        return $arreglo_actual_burn;
         
     }
     
@@ -264,7 +264,12 @@ if (!empty($consulta_acutal_burn)){
     $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $dias_festivos);
     
     $titulo = 'Sprint: '.$sprint_alias.' - '.$total_tiempo_calculado.' Horas';
-    $subtitulo = '('.$sprint_fecha_desde.') - ('.$sprint_fecha_hasta.')';  
+    $subtitulo = '('.$sprint_fecha_desde.') - ('.$sprint_fecha_hasta.')'; 
+    
+    
+    $porcentaje_productividad = number_format(((count($datos_actual_burn))*100)/$sprint_total_dias, 1);
+    
+    
     
     $this->registerJs("
         $('#container').highcharts({
@@ -321,7 +326,7 @@ if (!empty($consulta_acutal_burn)){
             radius: 6
           },
           //data: [100, 110, 85, 60, 60, 30, 32, 23, 9, 2]
-         data:$datos_actual_burn 
+         data:".json_encode($datos_actual_burn)."  
         }]
       });
 
@@ -366,7 +371,7 @@ if (!empty($barChart)){
                     type: 'column'
                 },
                 title: {
-                    text: 'Grafico Individual'
+                    text: 'Productividad ".$porcentaje_productividad."%'
                 },
                 colors: ['#F56954'],
                 subtitle: {

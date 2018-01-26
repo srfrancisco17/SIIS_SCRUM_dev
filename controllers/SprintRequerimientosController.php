@@ -20,6 +20,11 @@ use yii\widgets\ActiveForm;
 use app\models\Usuarios;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
+
+use app\models\HelpersFAOF;
+
+//MPDF
+use Mpdf\Mpdf;
 /**
  * SprintRequerimientosController implements the CRUD actions for SprintRequerimientos model.
  */
@@ -164,12 +169,11 @@ class SprintRequerimientosController extends Controller
                         ])->execute();
                     }  
                     //Cuando se asocia un requerimiento al sprint este pasa de estado (Activo = 1) a (En Espera = 2) 
+        
+                    HelpersFAOF::actualizarTiempos($connection, $model->sprint_id, $model->requerimiento_id);
                     Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
                    
-                    ValorHelpers::actualizarTiempos($model->sprint_id);
-                    
                     $model->refresh();
-     
                     $transaction->commit();
                     
                 } catch (\Exception $e) {
@@ -286,15 +290,29 @@ class SprintRequerimientosController extends Controller
         
         $model = new \app\models\SprintUsuarios();
         
-        foreach ($horas_planificadas as $clave => $valor) {
+   
+        /* Inicio de la transaccion */
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
 
-            if (!empty($sprint_id) && !empty($valor)){
-                
-                $model->insertarSprintUsuarios($sprint_id, $clave, $valor);
+        try {
+            
+            foreach ($horas_planificadas as $clave => $valor) {
+
+                if (!empty($sprint_id) && !empty($valor)){
+
+                    $model->insertarSprintUsuarios($sprint_id, $clave, $valor);
+                    $this->verificarRequerimientoSoporte($sprint_id, $clave, $connection);
+                }
                 
             }
-
+            
+            $transaction->commit();
+                
+        }catch(\yii\db\Exception $e) {
+                $transaction->rollback();   
         }
+        
      }
 
     public function actionPeticion2($id, $k){
@@ -356,34 +374,200 @@ class SprintRequerimientosController extends Controller
         echo Json::encode(['output'=>'', 'selected'=>'']);
     }
     
-    /*
-    public function actualizarTiempoDesarrollo_SprintRequerimientos($sprint_id, $requerimiento_id){
-        
-        $total_tareas = SprintRequerimientosTareas::find()->select('tiempo_desarrollo')->where(['sprint_id'=>$sprint_id])->andWhere(['sprint_requerimientos_tareas.requerimiento_id'=>$requerimiento_id])->joinWith('tarea')->sum('tiempo_desarrollo'); 
-        
-        SprintRequerimientos::actualizarHorasSprintRequerimientos($sprint_id, $requerimiento_id, $total_tareas);
-        
-    }    
-    */
     
-//    public function actualizarTiempos($sprint_id){
-//        
-//        $conexion = Yii::$app->db;
-//        
-//        $tiempo_desarrollo = $conexion->createCommand('
-//        select
-//            sum(r.tiempo_desarrollo) as sum_horas
-//            from sprint_requerimientos as sr
-//            left join requerimientos as r
-//            on (
-//                r.requerimiento_id = sr.requerimiento_id
-//            )      
-//            where sr.sprint_id = :sprint_id
-//        ')
-//        ->bindValue(':sprint_id', $sprint_id)      
-//        ->queryScalar();
-//                    
-//        Sprints::actualizarHorasSprints($sprint_id, $tiempo_desarrollo);
-//    }
+    public function actionPrintHistoriaUsuario($sprint_id, $requerimiento_id) {
+        
+        /* * Pag 1 * */
+        
+        $datos_tareas = $this->obtenerTareasPruebas($sprint_id, $requerimiento_id);
+        
+        $obj_requerimiento = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' => $requerimiento_id])->one();
+        $obj_procesos_involucrados = \app\models\ProcesosInvolucrados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
+        $obj_perfiles_impactados = \app\models\PerfilesUsuariosImpactados::find()->where(['requerimiento_id' => $requerimiento_id])->limit(9)->asArray()->all();
+        
+        /* * Pag 2 * */
+        
+        $obj_pruebas = \app\models\RequerimientosPruebas::find()->where(['requerimiento_id' => $requerimiento_id])->all();
+        
+        $obj_requerimientos_implementacion = \app\models\RequerimientosImplementacion::findOne($requerimiento_id);
+        
+        $limite_texto = 140;
+
+        //echo "<pre>";var_dump($obj_requerimiento->requerimiento->requerimiento_funcionalidad);exit;
+
+        $obj_requerimiento->requerimiento->requerimiento_descripcion = ( 
+            strlen($obj_requerimiento->requerimiento->requerimiento_descripcion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_descripcion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_descripcion 
+        ); 
+        
+        $obj_requerimiento->requerimiento->requerimiento_funcionalidad = ( 
+            strlen($obj_requerimiento->requerimiento->requerimiento_funcionalidad) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_funcionalidad, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_funcionalidad 
+        ); 
+        
+        $obj_requerimiento->requerimiento->requerimiento_justificacion = ( 
+            strlen($obj_requerimiento->requerimiento->requerimiento_justificacion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_justificacion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_justificacion 
+        );
+        
+       
+       
+        
+        
+        
+        /*
+         * VALIDAR QUE LOS DATOS DEL REPORTE SE HALLAN CARGADO CORRECTAMENTE
+         */
+        
+        $content1 = $this->renderPartial('_reportHU_pag1', [
+            'sprint_id' => $sprint_id,
+            'obj_requerimiento' => $obj_requerimiento,
+            'datos_tareas' => $datos_tareas,
+            'obj_procesos_involucrados' => $obj_procesos_involucrados,
+            'obj_perfiles_impactados' => $obj_perfiles_impactados,
+        ]);
+        
+        $content2 =  $this->renderPartial('_reportHU_pag2', [
+            'sprint_id' => $sprint_id,
+            'obj_pruebas' => $obj_pruebas,
+            'obj_requerimientos_implementacion' => $obj_requerimientos_implementacion,
+        ]);
+        
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8', 
+            'format' => 'Letter', 
+            'orientation' => 'P'
+        ]);
+        
+        $mpdf->useActiveForms = TRUE;
+        // Document Metadata
+        $mpdf->SetTitle("HU-".$requerimiento_id."(".date('Y-m-d').")");
+        $mpdf->SetAuthor('Desarrollo8');
+        $mpdf->SetCreator('FAOF');  
+        $mpdf->SetSubject("Historias de usuario CDO CALI");
+        $mpdf->SetKeywords('HU, CDO, SIIS, FAOF');
+
+        
+        // Encryption & Passwords
+        //$mpdf->SetProtection(array('copy','print'), 'ñ2018', '123456');
+        
+        
+        $mpdf->SetHeader('HISTORIA DE USUARIO '.$requerimiento_id);
+        $mpdf->SetFooter('Pagina # {PAGENO}');
+        
+        
+        
+        $mpdf->WriteHTML($content1);
+        
+        // Two PAGE
+        $mpdf->AddPage();
+        
+        $mpdf->WriteHTML($content2);
+       
+        
+        // return the pdf output as per the destination setting
+        $mpdf->Output();
+        exit;
+        
+    }
     
+   
+    protected function obtenerTareasPruebas($sprint_id, $requerimiento_id){
+        
+        $connection = Yii::$app->db;
+
+        $query = "
+            SELECT
+                SRT.tarea_id,
+                SRT.sprint_id,
+                SRT.requerimiento_id,
+                SRT.estado,
+                    RT.tarea_id,
+                    RT.requerimiento_id,
+                    RT.tarea_titulo,
+                    RT.tarea_descripcion,
+                    RT.ultimo_estado,
+                    RT.horas_desarrollo,
+                    RT.fecha_terminado,
+                    RT.sw_urgente
+            FROM
+                sprint_requerimientos_tareas AS SRT
+            INNER JOIN requerimientos_tareas AS RT ON(
+                RT.tarea_id = SRT.tarea_id
+            )
+            WHERE SRT.sprint_id = ".$sprint_id." AND SRT.requerimiento_id = ".$requerimiento_id."
+            ORDER BY SRT.tarea_id ASC;
+        ";
+            
+        $datos1 = $connection->createCommand($query)->queryAll();
+        
+        $datos2 = array();
+        $i=0;
+        
+        foreach ($datos1 as $key => $value) {
+            
+            $datos2[$i] = $value;
+            
+            $datos2[$i]['tareas_pruebas']= $connection->createCommand("SELECT * FROM tareas_pruebas WHERE tarea_id = ".$value['tarea_id']." ORDER BY id DESC LIMIT 3")->queryAll();
+            
+            $i++;
+            
+        }
+            
+        //echo '<pre>';print_r($datos2);exit;
+        
+        return $datos2;
+        
+    }
+    
+ 
+    
+    
+    protected function verificarRequerimientoSoporte($sprint_id, $usuario_asignado, $connection){
+        
+        
+        $obj_sprint = \app\models\Sprints::findOne($sprint_id);
+        
+        
+        if ($obj_sprint->sw_generar_soportes == '1'){
+            
+            $count_soporte = $connection->createCommand("
+                SELECT
+                    COUNT(*)
+                FROM
+                    sprint_requerimientos AS SR
+                INNER JOIN requerimientos AS R ON(
+                    R.requerimiento_id = SR.requerimiento_id
+                )
+                WHERE
+                    SR.sprint_id = ".$sprint_id."
+                AND SR.usuario_asignado = ".$usuario_asignado."
+                AND R.sw_soporte = '1'
+            ")->queryScalar();
+
+
+            if ($count_soporte === '0'){
+
+
+                $model1 = new Requerimientos();
+
+                $model1->requerimiento_titulo = 'SOPORTE '.$obj_sprint->sprint_alias;
+                $model1->usuario_solicita = 1;
+                $model1->fecha_requerimiento = date("Y-m-d"); 
+                $model1->estado = '2';
+                $model1->sw_soporte = '1';
+
+                if ($model1->save(false)){
+
+                    $model2 = new SprintRequerimientos();
+
+                    $model2->sprint_id = $sprint_id;
+                    $model2->requerimiento_id = $model1->requerimiento_id;
+                    $model2->usuario_asignado = $usuario_asignado;
+                    $model2->tiempo_desarrollo = 0;
+                    $model2->prioridad = 20;
+
+                    $model2->save();
+
+                }
+            }  
+        }
+    }  
 }

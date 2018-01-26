@@ -13,8 +13,6 @@ HighchartsAssets::register($this);
 $this->title = 'Dashboard Scrum Master';
 $this->params['breadcrumbs'][] = $this->title;
 
-//$this->registerJsFile('@web/js/loader.js', ['position' => $this::POS_HEAD]);
-
     /*
      * DATOS SPRINT - SELECCIONADO
      * El calculo es el tiempo total de las tareas de los requerimientos dentro de un sprint especifico
@@ -24,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
     $sprint_horas_desarrollo = $obj_sprint['horas_desarrollo'];
     $sprint_fecha_desde = $obj_sprint['fecha_desde'];
     $sprint_fecha_hasta = $obj_sprint['fecha_hasta'];
-
 ?>
 <?php Pjax::begin(); ?>
 <div class="row">
@@ -37,9 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= Select2::widget([
                                 'name' => 'sprint_id',
                                 'size' => Select2::MEDIUM,
-                                //'value' => Yii::$app->request->post('sprint_id', $array_sprints[sizeof($array_sprints)-1]['sprint_id']), // value to initialize
-                                //'value' => Yii::$app->request->post('sprint_id', $last_position['sprint_id']),
-                                //'data' => ArrayHelper::map($array_sprints, 'sprint_id', 'sprint_alias'),
                                 'value' => Yii::$app->request->post('sprint_id', $sprint_id),
                                 'data' => Sprints::getListaSprints(),
                             ])?>
@@ -153,8 +147,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
         </div>
-        
-
     </div>
 </div>
 <?php   
@@ -250,19 +242,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 break;
             }
         }
-
-            return json_encode($arreglo_actual_burn);
+        
+            return $arreglo_actual_burn;
         }
     
         
     $sprint_total_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 1, $dias_festivos);
-    
     $datos_ideal_burn = ideal_burn($datos['total_tiempo_calculado'], $sprint_fecha_desde, $sprint_fecha_hasta, $dias_festivos);
     $datos_actual_burn = actual_burn($datos['consulta_acutal_burn'], $sprint_fecha_desde, $dias_festivos, $sprint_total_dias, $datos['total_tiempo_calculado']);
-    
     $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $dias_festivos);
     
-    //echo '<pre>';var_dump($arreglo_dias);exit;
+    $porcentaje_productividad = number_format(((count($datos_actual_burn))*100)/$sprint_total_dias, 1);
+
     $this->registerJs("
 
         $('#container').highcharts({
@@ -319,14 +310,11 @@ $this->params['breadcrumbs'][] = $this->title;
             radius: 6
           },
           //data: [100, 110, 85, 60, 60, 30, 32, 23, 9, 2]
-         data:$datos_actual_burn 
+         data:".json_encode($datos_actual_burn)." 
         }]
       });
 
     "); 
-    
-//    echo '<pre>';
-//    print_r($barChart);exit;
     
     $grafica2 = array();
     
@@ -360,15 +348,7 @@ $this->params['breadcrumbs'][] = $this->title;
     }  
     
     $datos_barChart = arreglo_barchart($barChart, $grafica2);
-    
-//    echo '<pre>';
-//    print_r($datos_barChart);exit;
-    
-    
     $datos_barChart2 =  json_encode($grafica2);
-    
-
-    
     
     $this->registerJs("
             Highcharts.chart('container2', {
@@ -376,7 +356,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     type: 'column'
                 },
                 title: {
-                    text: 'Grafico indivudual'
+                    text: 'Productividad ".$porcentaje_productividad."%'
                 },
                 subtitle: {
 

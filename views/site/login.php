@@ -100,10 +100,10 @@ $this->registerCss("
             background-color: #1D1F20;
             top: 0px;
             z-index:1;
-    }    
+    }
 ");
 
-/*
+
 $this->registerJs('
 //<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>-->
     $.getScript("'.Yii::getAlias('@web').'/js/particles.min.js", function(){
@@ -226,8 +226,8 @@ $this->registerJs('
         );
     });
 ');
-*/
 
+/*
 $this->registerJs('
 //<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>-->
     $.getScript("'.Yii::getAlias('@web').'/js/particles.min.js", function(){
@@ -345,7 +345,7 @@ $this->registerJs('
         );
     });
 ');
-
+*/
 ?>
 <div class="container">
 	<div id="login-box">
@@ -353,14 +353,15 @@ $this->registerJs('
                 
                 <?= Html::img('@web/img/icono-cdo.png', ['alt' => 'My logo', 'style' => ['width' => '150px', 'height' => '150px']]) ?>
                 <br>
-                <a href="#"><b>SIIS</b>-SCRUM</a>
+
+                <a href="#"><b>SIIS</b>_SCRUM</a>
             </div>
             <div class="controls">
                 <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
                     <?= $form
                         ->field($model, 'username', $fieldOptions1)
                         ->label(false)
-                        ->textInput(['autofocus' => true, 'placeholder' => $model->getAttributeLabel('Numero de documento')]) ?>
+                        ->textInput(['autofocus' => true, 'placeholder' => 'Numero de documento']) ?>
 
                     <?= $form
                         ->field($model, 'password', $fieldOptions2)
@@ -373,6 +374,6 @@ $this->registerJs('
 	</div>
 </div>
 <div id="particles-js"></div>
-<script type="text/javascript" src="http://blogparts.giffy.me/0017/parts.js"></script>
+<!--<script type="text/javascript" src="http://blogparts.giffy.me/0017/parts.js"></script>-->
 <!-- Santa Claus volando por el blog -->
 <!--<script src="/SIIS_SCRUM_dev/web/js/parts.js"></script>-->

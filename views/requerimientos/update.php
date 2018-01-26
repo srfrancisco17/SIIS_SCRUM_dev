@@ -6,20 +6,24 @@ use yii\helpers\Html;
 /* @var $model backend\models\Requerimientos */
 
 $this->title = 'Actualizar Requerimiento: [' . $model->requerimiento_id.']';
-$this->params['breadcrumbs'][] = ['label' => 'Requerimientos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->requerimiento_id.' - '.$model->requerimiento_titulo, 'url' => ['view', 'id' => $model->requerimiento_id]];
-$this->params['breadcrumbs'][] = 'Actualizar';
+//$this->params['breadcrumbs'][] = ['label' => 'Requerimientos', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => $model->requerimiento_id.' - '.$model->requerimiento_titulo, 'url' => ['view', 'id' => $model->requerimiento_id]];
+//$this->params['breadcrumbs'][] = 'Actualizar';
 ?>
 
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title"><?= Html::encode($this->title) ?></h3>
-            </div>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+<?= $this->render('_form', [
+    'model' => $model,
+    'RT_searchModel' => $RT_searchModel,
+    'RT_dataProvider' => $RT_dataProvider,
+    'PI_searchModel' => $PI_searchModel,
+    'PI_dataProvider' => $PI_dataProvider,
+    'PUI_searchModel' => $PUI_searchModel,
+    'PUI_dataProvider' => $PUI_dataProvider,
+    'RP_searchModel' => $RP_searchModel,
+    'RP_dataProvider' => $RP_dataProvider,
+    'RI_model' => $RI_model,
+    'sprint_id' => $sprint_id,
+]) ?>
 
 

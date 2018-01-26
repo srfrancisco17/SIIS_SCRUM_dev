@@ -26,7 +26,9 @@
         "kartik-v/yii2-field-range": "*",
         "2amigos/yii2-tinymce-widget" : "~1.1",
         "kartik-v/yii2-helpers": "*",
-        "kartik-v/bootstrap-fileinput": "dev-master"
+        "kartik-v/bootstrap-fileinput": "dev-master",
+        "kartik-v/yii2-mpdf": "*",
+        "mpdf/mpdf": "^7.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
