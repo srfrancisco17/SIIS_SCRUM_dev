@@ -290,15 +290,29 @@ class SprintRequerimientosController extends Controller
         
         $model = new \app\models\SprintUsuarios();
         
-        foreach ($horas_planificadas as $clave => $valor) {
+   
+        /* Inicio de la transaccion */
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
 
-            if (!empty($sprint_id) && !empty($valor)){
-                
-                $model->insertarSprintUsuarios($sprint_id, $clave, $valor);
+        try {
+            
+            foreach ($horas_planificadas as $clave => $valor) {
+
+                if (!empty($sprint_id) && !empty($valor)){
+
+                    $model->insertarSprintUsuarios($sprint_id, $clave, $valor);
+                    $this->verificarRequerimientoSoporte($sprint_id, $clave, $connection);
+                }
                 
             }
-
+            
+            $transaction->commit();
+                
+        }catch(\yii\db\Exception $e) {
+                $transaction->rollback();   
         }
+        
      }
 
     public function actionPeticion2($id, $k){
@@ -503,5 +517,57 @@ class SprintRequerimientosController extends Controller
         
     }
     
+ 
     
+    
+    protected function verificarRequerimientoSoporte($sprint_id, $usuario_asignado, $connection){
+        
+        
+        $obj_sprint = \app\models\Sprints::findOne($sprint_id);
+        
+        
+        if ($obj_sprint->sw_generar_soportes == '1'){
+            
+            $count_soporte = $connection->createCommand("
+                SELECT
+                    COUNT(*)
+                FROM
+                    sprint_requerimientos AS SR
+                INNER JOIN requerimientos AS R ON(
+                    R.requerimiento_id = SR.requerimiento_id
+                )
+                WHERE
+                    SR.sprint_id = ".$sprint_id."
+                AND SR.usuario_asignado = ".$usuario_asignado."
+                AND R.sw_soporte = '1'
+            ")->queryScalar();
+
+
+            if ($count_soporte === '0'){
+
+
+                $model1 = new Requerimientos();
+
+                $model1->requerimiento_titulo = 'SOPORTE '.$obj_sprint->sprint_alias;
+                $model1->usuario_solicita = 1;
+                $model1->fecha_requerimiento = date("Y-m-d"); 
+                $model1->estado = '2';
+                $model1->sw_soporte = '1';
+
+                if ($model1->save(false)){
+
+                    $model2 = new SprintRequerimientos();
+
+                    $model2->sprint_id = $sprint_id;
+                    $model2->requerimiento_id = $model1->requerimiento_id;
+                    $model2->usuario_asignado = $usuario_asignado;
+                    $model2->tiempo_desarrollo = 0;
+                    $model2->prioridad = 20;
+
+                    $model2->save();
+
+                }
+            }  
+        }
+    }  
 }
