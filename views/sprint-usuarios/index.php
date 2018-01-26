@@ -23,7 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'type' => GridView::TYPE_DEFAULT,
         ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'class' => 'yii\grid\SerialColumn',
+                'contentOptions' => ['style' => 'width:2px;'],
+            ],
             [
                 'class' => 'kartik\grid\ExpandRowColumn',
 
@@ -44,17 +47,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],                             
             [
+                'label' => 'SPRINT ALIAS',
                 'attribute' => 'sprintName'
             ],
             [
-              'attribute' => 'sprint.fecha_desde', 
-              'contentOptions' => ['style' => 'width:100px;'],
+                'label' => 'FECHA DESDE',
+                'attribute' => 'sprint.fecha_desde', 
+                'contentOptions' => ['style' => 'width:100px;'],
             ],
             [
-              'attribute' => 'sprint.fecha_hasta', 
-              'contentOptions' => ['style' => 'width:100px;'],
+                'label' => 'FECHA HASTA',
+                'attribute' => 'sprint.fecha_hasta', 
+                'contentOptions' => ['style' => 'width:100px;'],
             ],
             [
+                'label' => 'ESTADO',
                 'attribute' => 'sprint.estado',
                 'value' => function ($data) {
                         if($data['sprint']->estado == 0){
@@ -71,6 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width:100px;'],
             ],
             [
+                'header' => 'ACCIONES',
                 'class'=>'kartik\grid\ActionColumn',
                 'template' => '{kanban}',
                 'buttons' => [

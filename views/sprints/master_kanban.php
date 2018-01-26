@@ -14,11 +14,7 @@ $this->title = 'Sprint Kanban';
 $this->params['breadcrumbs'][] = ['label' => 'Sprints', 'url' => ['sprint/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->registerJs("
-    $(document).ready(function(){
-        $('[data-toggle=\"tooltip\"]').tooltip();   
-    });
-");
+$this->registerJs("$('[data-toggle=\"tooltip\"]').tooltip();");
 
 
 ?>
@@ -122,7 +118,6 @@ $this->registerJs("
         <div class="box box-default box-solid collapsed-box">
             <div class="box-header with-border">
                 <p class="text-center" style="margin: 0 0 0px;"><b>DESARROLLADORES</b></p>
-
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                     <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
@@ -189,14 +184,13 @@ $this->registerJs("
         
         Pjax::begin(['id' => 'grid_tareas']);
 
-        //$this->registerJs("var form = $('#tareas-form');");
         for ($i = 0; $i < count($consulta); $i++) {
             $consulta1 = $consulta[$i]->getRequerimiento()->with('sprintRequerimientosTareas')->all();
 
             $usuario_color = empty($consulta[$i]->usuarioAsignado->color) ? '#656565' : $consulta[$i]->usuarioAsignado->color;
             $usuario_id = empty($consulta[$i]->usuarioAsignado->usuario_id) ? '' : $consulta[$i]->usuarioAsignado->usuario_id;
         
-        foreach ($consulta1 as $objRequerimientos) {
+        foreach ($consulta1 as $objRequerimientos)  {
             $items1 = array(); 
             $items2 = array();
             $items3 = array();
@@ -264,7 +258,6 @@ $this->registerJs("
                                         </div><!-- /.box -->',
                                 'options' => ['id' => $objTareas->tarea_id],
                             ];  
-
                             break;
                     }  
                     

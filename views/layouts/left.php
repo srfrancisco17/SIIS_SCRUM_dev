@@ -36,7 +36,7 @@ use app\models\Usuarios;
                 $menu = [
                     'options' => ['class' => 'sidebar-menu'],
                     'items' => [
-                        ['label' => 'Menu Scrum-Master', 'options' => ['class' => 'header']],
+                        ['label' => 'MENÚ SCRUM-MASTER', 'options' => ['class' => 'header']],
                         [
                             'label' => 'Dashboard',
                             'icon' => 'dashboard ',
@@ -103,7 +103,7 @@ use app\models\Usuarios;
                 $menu = [
                     'options' => ['class' => 'sidebar-menu'],
                     'items' => [
-                        ['label' => 'Menu Desarrollador', 'options' => ['class' => 'header']],
+                        ['label' => 'MENÚ DESARROLLADOR', 'options' => ['class' => 'header']],
                         [
                             'label' => 'Dashboard',
                             'icon' => 'dashboard ',
