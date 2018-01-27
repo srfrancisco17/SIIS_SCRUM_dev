@@ -12,6 +12,6 @@
 /runtime
 #/vendor
 /web/assets
-/nbproject
+#/nbproject
 #/config/db.php
 #/web/index.php

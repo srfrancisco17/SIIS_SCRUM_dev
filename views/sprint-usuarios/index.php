@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'toolbar' => FALSE,
         'panel' => [
             'heading' => '<h3 class="panel-title"><i class="fa fa-undo"></i> SPRINTS </h3>',
             'type' => GridView::TYPE_DEFAULT,
