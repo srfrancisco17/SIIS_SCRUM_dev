@@ -1,6 +1,6 @@
 # netbeans project files
-nbproject/*
-/nbproject/*
+#nbproject/*
+#/nbproject/*
 
 # zend studio for eclipse project files
 .buildpath
@@ -12,8 +12,6 @@ nbproject/*
 /runtime
 #/vendor
 /web/assets
-/web/index.php
-config/db.php
 /nbproject
-/config/db.php
-/web/index.php
+#/config/db.php
+#/web/index.php
