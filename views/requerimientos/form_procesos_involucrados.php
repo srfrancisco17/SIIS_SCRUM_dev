@@ -46,7 +46,7 @@ use yii\widgets\ActiveForm;
                     $(".modal-body").html("");
                     
                 }, 1000);
-                $.pjax.reload({container:"#grid_procesos_involucrados"});
+                $.pjax.reload({container:"#grid_procesos_involucrados", timeout: false});
             });
             return false;
         }).on("submit", function(e){

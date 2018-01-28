@@ -183,7 +183,7 @@ $model->fecha_prueba = ($model->isNewRecord ? date("Y-m-d") : $model->fecha_prue
                     $(".modal-body").html("");
                     
                 }, 1000);
-                $.pjax.reload({container:"#grid-requerimientos_pruebas"});
+                $.pjax.reload({container:"#grid-requerimientos_pruebas", timeout: false});
             });
             return false;
         }).on("submit", function(e){

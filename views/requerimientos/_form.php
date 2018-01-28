@@ -204,7 +204,7 @@ $this->registerCss("
             ?>
             <div class="row">
                 <div class="col-lg-12">
-                    <?php Pjax::begin(['id' => 'grid_tareas']) ?>
+                    <?php Pjax::begin(['id' => 'grid_tareas', 'timeout' => FALSE]) ?>
                     <?= GridView::widget([
                         'id' => 'grid-requerimientos_tareas',
                         'dataProvider' => $RT_dataProvider,
@@ -270,7 +270,7 @@ $this->registerCss("
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <?php Pjax::begin(['id' => 'grid_procesos_involucrados']) ?>
+                    <?php Pjax::begin(['id' => 'grid_procesos_involucrados', 'timeout' => FALSE ]) ?>
                     <?= GridView::widget([
                         'dataProvider' => $PI_dataProvider,
                         //'filterModel' => $PI_searchModel,
@@ -333,7 +333,7 @@ $this->registerCss("
                 </div>
                 <div class="col-lg-6">
 
-                    <?php Pjax::begin(['id' => 'grid_perfiles_usuarios']) ?>
+                    <?php Pjax::begin(['id' => 'grid_perfiles_usuarios' , 'timeout' => FALSE]) ?>
 
                     <?= GridView::widget([
                         'dataProvider' => $PUI_dataProvider,
@@ -678,7 +678,7 @@ $this->registerCss("
             <div id="sectionC" class="tab-pane fade">
                 <br>
                 
-                <?php Pjax::begin(['id' => 'grid-requerimientos_pruebas']) ?>
+                <?php Pjax::begin(['id' => 'grid-requerimientos_pruebas' , 'timeout' => FALSE]) ?>
 
                     <?= GridView::widget([
                         'dataProvider' => $RP_dataProvider,

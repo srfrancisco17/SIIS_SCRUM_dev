@@ -53,7 +53,7 @@ $form = ActiveForm::begin([
                     $(".modal-body").html("");
                     
                 }, 1000);
-                $.pjax.reload({container:"#grid_tareas"});
+                $.pjax.reload({container:"#grid_tareas", timeout: false});
             });
             return false;
         }).on("submit", function(e){

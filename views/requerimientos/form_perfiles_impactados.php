@@ -44,7 +44,7 @@ use yii\widgets\ActiveForm;
                     $("#modal").modal("hide");
                     $(".modal-body").html("");
                 }, 1000);
-                $.pjax.reload({container:"#grid_perfiles_usuarios"});
+                $.pjax.reload({container:"#grid_perfiles_usuarios", timeout: false});
             });
             return false;
         }).on("submit", function(e){
