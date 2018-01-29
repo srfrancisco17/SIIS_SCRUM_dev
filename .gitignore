@@ -13,6 +13,6 @@
 /vendor/*
 /web/assets
 #/nbproject
-#/config/db.php
+/config/db.php
 #/web/index.php
 
