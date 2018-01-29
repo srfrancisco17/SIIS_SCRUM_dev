@@ -34,9 +34,9 @@ use app\models\Usuarios;
             if (Yii::$app->user->identity->tipo_usuario == Usuarios::USUARIO_SCRUM_MASTER){
                 
                 $menu = [
-                    'options' => ['class' => 'sidebar-menu'],
+                    'options' => ['class' => 'sidebar-menu', 'data-widget'=> 'tree'],
                     'items' => [
-                        ['label' => 'Menu Scrum-Master', 'options' => ['class' => 'header']],
+                        ['label' => 'MENÚ SCRUM-MASTER', 'options' => ['class' => 'header']],
                         [
                             'label' => 'Dashboard',
                             'icon' => 'dashboard ',
@@ -103,7 +103,7 @@ use app\models\Usuarios;
                 $menu = [
                     'options' => ['class' => 'sidebar-menu'],
                     'items' => [
-                        ['label' => 'Menu Desarrollador', 'options' => ['class' => 'header']],
+                        ['label' => 'MENÚ DESARROLLADOR', 'options' => ['class' => 'header']],
                         [
                             'label' => 'Dashboard',
                             'icon' => 'dashboard ',

@@ -25,7 +25,7 @@ use yii\helpers\Html;
     }
     
     #div-informacionHU{
-        height: 9%;
+        height: 10%;
         /*background-color: greenyellow;*/
     }
     
@@ -37,16 +37,16 @@ use yii\helpers\Html;
     }
     
     #div-criterios_aceptacion{
-        height: 40%;
+        height: 35%;
         /*background-color: red;*/
     }
     
     #div-procesos_involucrados{
-        height: 9%;
+        height: 10%;
         /*background-color: green;*/
     } 
     #div-usuarios_impactados{
-        height: 9%;
+        height: 12%;
         /*background-color: violet;*/
     }
     
@@ -71,17 +71,17 @@ use yii\helpers\Html;
     </table>
 </div>
 <div id="div-informacionHU">
-    <table style="width:100%;border: 1px solid black;">
+    <table style="width:100%; border: 1px solid black;">
         <tr>
-            <th width="350px"  colspan="2" style="text-align:left;">Solicitud:</th>
+            <th width="80%"  colspan="2" style="text-align:left;">Solicitud:</th>
             <th colspan="2" style="text-align:left;">Desarrollo:</th> 
         </tr>
         <tr>
             <td>Por:</td>
-            <td>
+            <td style="width:10px;">
                 <?= $obj_requerimiento->requerimiento->usuarioSolicita->nombreCompleto ?>
             </td>
-            <td>Por:</td>
+            <td style="width:130px;">Por:</td>
             <td>
               <?= $obj_requerimiento->usuarioAsignado->nombreCompleto ?>
             </td>

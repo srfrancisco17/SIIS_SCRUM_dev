@@ -3,17 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\RequerimientosTareas */
-/* @var $form yii\widgets\ActiveForm */
-
-if($model->isNewRecord){
-    $model->horas_desarrollo = 1;
-}
-
-?>
-
-<?php
+$model->horas_desarrollo = ($model->isNewRecord ? 1 : $model->horas_desarrollo);
 
 $form = ActiveForm::begin([
     'id' => 'tareas-form',
@@ -30,7 +20,7 @@ $form = ActiveForm::begin([
         <?= $form->field($model, 'tarea_titulo')->textInput(['maxlength' => true])->label('(*) Titulo') ?>
     </div>
     <div class="col-lg-4">
-            <?= $form->field($model, 'horas_desarrollo')->textInput(['type' => 'number'])->label('Horas') ?>
+        <?= $form->field($model, 'horas_desarrollo')->textInput(['type' => 'number'])->label('Horas') ?>
     </div>
 </div>
 <div class="row">
@@ -47,7 +37,7 @@ $form = ActiveForm::begin([
 <?php
     $this->registerJs('
         
-        setTimeout(function(){ $("#'.Html::getInputId($model, 'tarea_titulo').'").focus(); }, 275);
+        setTimeout(function(){ $("#'.Html::getInputId($model, 'tarea_titulo').'").focus(); }, 280);
 
         $("form#tareas-form").on("beforeSubmit", function(e) {
 
@@ -63,7 +53,7 @@ $form = ActiveForm::begin([
                     $(".modal-body").html("");
                     
                 }, 1000);
-                $.pjax.reload({container:"#grid_tareas"});
+                $.pjax.reload({container:"#grid_tareas", timeout: false});
             });
             return false;
         }).on("submit", function(e){
@@ -71,5 +61,6 @@ $form = ActiveForm::begin([
             e.stopImmediatePropagation();
             return false;
         });
+        
     ');
 ?>
