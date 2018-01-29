@@ -677,7 +677,11 @@ $this->registerCss("
             </div>
             <div id="sectionC" class="tab-pane fade">
                 <br>
-                
+
+                <?php
+                if (!$model->isNewRecord){
+                ?>
+
                 <?php Pjax::begin(['id' => 'grid-requerimientos_pruebas' , 'timeout' => FALSE]) ?>
 
                     <?= GridView::widget([
@@ -798,6 +802,10 @@ $this->registerCss("
                         ],
                     ]); ?>
                   <?php Pjax::end(); ?>
+                <?php
+                    }
+                ?>
+                
             </div>
         </div>
 </div>
