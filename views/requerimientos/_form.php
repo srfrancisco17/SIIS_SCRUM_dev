@@ -163,7 +163,7 @@ $this->registerCss("
 
                     $sprint_estado = app\models\Sprints::getSprintEstado($sprint_id)->estado;
 
-                    if ($sprint_estado == '1'){
+                    if ($sprint_estado == '0'){
 
                         $toolbar_tareas = array(
                             "content" => Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Tarea', '#', [
@@ -178,7 +178,7 @@ $this->registerCss("
 
                         $action_template_tareas = "{update}{delete}"; 
 
-                    }else if ($sprint_estado == '1' && $model->sw_soporte == '1'){
+                    }else if ($sprint_estado == '0' && $model->sw_soporte == '1'){
 
 
                         $toolbar_tareas = array(
@@ -197,6 +197,9 @@ $this->registerCss("
                     }
 
                 }
+                
+                
+                //var_dump($sprint_estado);exit;
 
                 if( !$model->isNewRecord ){
 

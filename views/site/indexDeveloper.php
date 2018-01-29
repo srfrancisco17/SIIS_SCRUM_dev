@@ -21,11 +21,8 @@
     $sprint_fecha_hasta = $obj_sprint['fecha_hasta'];
     
     $horas_establecidas = $obj_sprint_usuario['horas_establecidas'];
-    // $total_tiempo_calculado
-    
-//    echo '<pre>';
-//    var_dump($total_tiempo_calculado);
-//    exit;
+
+    $porcentaje_productividad = 0;
     
 ?>
 <?php Pjax::begin(); ?>
@@ -269,6 +266,10 @@ if (!empty($consulta_acutal_burn)){
     
     $porcentaje_productividad = number_format(((count($datos_actual_burn))*100)/$sprint_total_dias, 1);
     
+    
+    
+//    var_dump($porcentaje_productividad);
+//    exit;
     
     
     $this->registerJs("
