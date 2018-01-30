@@ -162,6 +162,8 @@ $this->registerCss("
                 if(!empty($sprint_id)){
 
                     $sprint_estado = app\models\Sprints::getSprintEstado($sprint_id)->estado;
+                    
+                    
 
                     if ($sprint_estado == '0'){
 
@@ -178,7 +180,7 @@ $this->registerCss("
 
                         $action_template_tareas = "{update}{delete}"; 
 
-                    }else if ($sprint_estado == '0' && $model->sw_soporte == '1'){
+                    }else if ($sprint_estado == '0' || $sprint_estado == '1' && $model->sw_soporte == '1'){
 
 
                         $toolbar_tareas = array(
