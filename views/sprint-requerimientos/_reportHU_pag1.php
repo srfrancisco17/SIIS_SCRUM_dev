@@ -231,12 +231,12 @@ use yii\helpers\Html;
 
                     
                     $html2 .= "<td width='33%'>";
-                    if ( empty($obj_perfiles_impactados[($i-1)]) ){
+                    if ( empty($obj_procesos_involucrados[($i-1)]) ){
                         
                         $html2 .= $i.".";
                         
                     }else{
-                        $html2 .= $i.". ".$obj_perfiles_impactados[($i-1)]["descripcion"];
+                        $html2 .= $i.". ".$obj_procesos_involucrados[($i-1)]["descripcion"];
                     }
                     $html2 .= "</td>";
                     
@@ -269,12 +269,12 @@ use yii\helpers\Html;
                 for ($i = 1; $i <= 9; $i++) {
                     
                     $html2 .= "<td width='33%'>";
-                    if ( empty($obj_procesos_involucrados[($i-1)]) ){
+                    if ( empty($obj_perfiles_impactados[($i-1)]) ){
                         
                         $html2 .= $i.".";
                         
                     }else{
-                        $html2 .= $i.". ".$obj_procesos_involucrados[($i-1)]["descripcion"];
+                        $html2 .= $i.". ".$obj_perfiles_impactados[($i-1)]["descripcion"];
                     }
                     $html2 .= "</td>";
                     
