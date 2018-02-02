@@ -35,8 +35,7 @@ if (Yii::$app->controller->action->id === 'login') {
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-        <link rel="shortcut icon" type="image/png" href="/SIIS_SCRUM_dev/web/img/favicon.ico"/>
-
+        <link rel="shortcut icon" type="image/png" href="<?= (Yii::getAlias('@web')."/img/favicon.ico") ?>"/>
         <?php $this->head() ?>
     </head>
     
