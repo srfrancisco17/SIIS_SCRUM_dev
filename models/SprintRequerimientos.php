@@ -137,6 +137,7 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         $consulta_requerimientos = Requerimientos::find()
                                    ->where(['NOT IN', 'requerimiento_id', $array_requerimientos ])
                                    ->andWhere(['estado' => '1'])
+                                   ->orderBy(['requerimiento_id'=>SORT_DESC])
                                    ->all();
         /*        
         echo '<pre>';

@@ -14,7 +14,7 @@ $fieldOptions2 = [
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
 
-$this->registerCssFile("@web/css/login.css");
+
 $this->registerCss("
     
     @import url('https://fonts.googleapis.com/css?family=Nunito');
@@ -350,10 +350,8 @@ $this->registerJs('
 <div class="container">
 	<div id="login-box">
             <div class="login-logo"> 
-                
                 <?= Html::img('@web/img/icono-cdo.png', ['alt' => 'My logo', 'style' => ['width' => '150px', 'height' => '150px']]) ?>
                 <br>
-
                 <a href="#"><b>SIIS</b>_SCRUM</a>
             </div>
             <div class="controls">
