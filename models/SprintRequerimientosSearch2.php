@@ -104,7 +104,7 @@ class SprintRequerimientosSearch2 extends SprintRequerimientos
         ]);
 
         $query->andFilterWhere(['ilike', 'sprint_requerimientos.estado', $this->estado]);
-        $query->andFilterWhere(['ilike', 'requerimientos.requerimiento_titulo', $this->requerimiento]);
+        $query->andFilterWhere(['ilike', 'requerimientos.requerimiento_titulo', $this->requerimiento_titulo]);
         $query->andFilterWhere(['ilike', 'sprints.sprint_alias', $this->sprint_alias]);
         
 

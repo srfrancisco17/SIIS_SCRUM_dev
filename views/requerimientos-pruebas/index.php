@@ -35,10 +35,11 @@ $this->title = 'PRUEBAS';
                         'contentOptions' => ['style' => 'width:10px;'],
                     ],
                     [
-                        'attribute' => 'sprint_alias',
+                        'attribute' => 'sprint_id',
                         'label' => 'SPRINT',
                         'value' => 'sprint.sprint_alias',
                         'contentOptions' => ['style' => 'width:10px;'],
+                        'filter' => Html::activeDropDownList($searchModel, 'sprint_id', \app\models\Sprints::getListaSprints(),['class'=>'form-control','prompt' => 'Seleccione Sprint']),
                         //'filter' => FALSE,
                     ],
                     [
@@ -57,6 +58,7 @@ $this->title = 'PRUEBAS';
                         'label' => 'USUARIO ASIGNADO',
                         'attribute' => 'nombre_usuario_asignado',
                         'value' => 'usuarioAsignado.nombreCompleto',
+                        'filter' => Html::activeDropDownList($searchModel, 'usuario_asignado', \app\models\Usuarios ::getListaDevelopers(),['class'=>'form-control','prompt' => 'Seleccione Desarrollador']),
                         'contentOptions' => ['style' => 'width:10px;'],
                     ],
                     [
