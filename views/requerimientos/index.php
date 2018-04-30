@@ -9,6 +9,11 @@ use yii\widgets\Pjax;
 
 $this->title = 'Requerimientos';
 $this->params['breadcrumbs'][] = $this->title;
+
+
+
+$template = (Yii::$app->user->identity->tipo_usuario == 1) ? "{view}{update}{delete}" : "{view}";
+
 ?>
 <style> 
     .panel-default > .panel-heading {
@@ -107,25 +112,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class'=>'kartik\grid\ActionColumn',
-                        'template' => '{view}{update}{delete}',
+                        'template' => $template,
                         'buttons' => [
-
                             'update' => function ($url, $model, $key) {
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::to(['requerimientos/update', 'requerimiento_id' => $model->requerimiento_id]), [
-                                    //'id' => 'activity-index-link2',
                                     'title' => 'Actualizar Requerimiento',
                                 ]);
                             },
                         ]
                     ],
                 ],              
-                'toolbar' =>  (Yii::$app->user->identity->tipo_usuario == 1) ?  
+                'toolbar' =>
                 [
                     ['content' =>
                         Html::a('<i class="glyphicon glyphicon-plus"></i> Crear Requerimientos', ['create'], ['class' => 'btn btn-success'])
                     ],
                 ]                                             
-                : FALSE,
             ]); 
             ?>
             <?php Pjax::end(); ?>

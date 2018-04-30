@@ -116,6 +116,11 @@ use app\models\Usuarios;
                             'url' => ['sprint-usuarios/index'],
                         ],
                         [
+                            'label' => 'Requerimientos',
+                            'icon' => 'check-square-o',
+                            'url' => ['requerimientos/index'],
+                        ],
+                        [
                             'label' => 'Pruebas',
                             'icon' => 'slack',
                             'url' => ['requerimientos-pruebas/index'],
