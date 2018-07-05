@@ -160,12 +160,11 @@ class SprintUsuariosController extends Controller
         $model = new \app\models\SprintRequerimientosTareas();
         
         if (Yii::$app->request->isAjax){
-            
-            //$model->actualizarEstadoTareas($id, $estado);
+
             
             if ($estado == 2){
                 
-                $model->actualizarEstadoTareas($id, $estado, 2);
+                $model->actualizarEstadoTareas($id, $sprint_id, $estado, 2);
                 
 
                 $sw_var = \app\models\SprintRequerimientosTareas::find()
@@ -180,7 +179,7 @@ class SprintUsuariosController extends Controller
                 }
                 
             }else if ($estado == 3){
-                $model->actualizarEstadoTareas($id, $estado, 3);
+                $model->actualizarEstadoTareas($id, $sprint_id, $estado, 3);
                 
                 
                 \app\models\SprintRequerimientos::actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, '3');
@@ -190,7 +189,7 @@ class SprintUsuariosController extends Controller
             else if ($estado == 4){
                 echo 'estoy en el 4';
                 
-                $model->actualizarEstadoTareas($id, $estado, 4);
+                $model->actualizarEstadoTareas($id, $sprint_id, $estado, 4);
 
                 $sw_var = \app\models\SprintRequerimientosTareas::find()
                 ->where(['between', 'estado','2', '3'])

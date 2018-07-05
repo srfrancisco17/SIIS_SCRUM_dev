@@ -95,7 +95,7 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
         return $this->hasOne(Sprints::className(), ['sprint_id' => 'sprint_id']);
     }
     
-    public function actualizarEstadoTareas($id, $estado, $sw_control = null){
+    public function actualizarEstadoTareas($id, $sprint_id, $estado, $sw_control = null){
         
         $conexion = Yii::$app->db;
         
@@ -105,9 +105,7 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
             $expression = new \yii\db\Expression('NOW()');
             $now = (new \yii\db\Query)->select('now()::timestamp')->scalar();
             
-            $conexion->createCommand()->update('sprint_requerimientos_tareas', [
-                'estado' => $estado,
-            ],  'tarea_id ='.$id)->execute();      
+            $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET estado='.$estado.' WHERE tarea_id='.$id.' AND sprint_id='.$sprint_id)->execute();
             
             /*
              * NUEVO 19/10/2017
@@ -121,9 +119,7 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
             
         }else{
             
-            $conexion->createCommand()->update('sprint_requerimientos_tareas', [
-                'estado' => $estado,
-            ],  'tarea_id ='.$id)->execute(); 
+            $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET estado='.$estado.' WHERE tarea_id='.$id.' AND sprint_id='.$sprint_id)->execute();
             
             /*
              * NUEVO 19/10/2017
