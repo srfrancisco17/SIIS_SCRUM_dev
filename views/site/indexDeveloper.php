@@ -164,7 +164,8 @@ if (!empty($consulta_acutal_burn)){
         '2018-03-30',
         '2018-04-01',
         '2018-05-01',
-        '2018-05-14'
+        '2018-05-14',
+        '2018-07-20'
     );
     
     function intervalo_dias($fecha_inicial, $fecha_final, $sw_control, $dias_festivos_p) {
