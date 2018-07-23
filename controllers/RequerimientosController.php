@@ -102,7 +102,7 @@ class RequerimientosController extends Controller
     
 
     
-    public function actionUpdate($sprint_id = FALSE, $requerimiento_id)
+    public function actionUpdate($sprint_id, $requerimiento_id)
     {
         
         $model = $this->findModel($requerimiento_id);
@@ -145,7 +145,8 @@ class RequerimientosController extends Controller
                 'RP_searchModel' => $PUI_searchModel,
                 'RP_dataProvider' => $RP_dataProvider,
                 'RI_model' => $RI_model,
-                'sprint_id' => $sprint_id
+                'sprint_id' => $sprint_id,
+                'requerimiento_id' => $requerimiento_id
             ]);
         }
     }

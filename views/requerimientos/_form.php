@@ -30,6 +30,20 @@ $this->registerCss("
     }
 ");
 
+$btn_print_html = "";
+
+if ( !empty($sprint_id) && !empty($requerimiento_id) ){
+    
+    $btn_print_html = Html::a('<span class="glyphicon glyphicon-print"></span>',
+        Url::to(['sprint-requerimientos/print-historia-usuario', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]), 
+        [
+            'title' => 'Imprimir HU',
+            'target'=>'_blank',
+            'data-toggle'=>'tooltip', 
+            'style' => 'color:white'
+        ]
+    );   
+}
 ?>
 
 <div class="bs-example">
@@ -47,7 +61,16 @@ $this->registerCss("
             <div class="panel panel-default">
                 <div class="panel-heading panel-heading-custom">
                     <h3 class="panel-title">
-                        <b>HISTORIA DE USUARIO:</b>
+                        
+                        <div class="row">
+                            <div class="col-lg-11">
+                                <b>HISTORIA DE USUARIO:</b>
+                            </div>
+                            <div class="col-lg-1" style="text-align: right;">
+                                <?= $btn_print_html ?>
+                            </div>
+                        </div>
+                      
                     </h3>
                 </div>
                 <div class="panel-body">
