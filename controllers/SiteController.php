@@ -254,6 +254,8 @@ class SiteController extends Controller
             
         $connection = Yii::$app->db;
         
+        $datos['dias_festivos'] = $connection->createCommand("SELECT dia FROM dias_festivos WHERE estado = '1' ORDER BY dia ASC")->queryColumn();
+        
         $datos['consulta_acutal_burn'] = $connection->createCommand("select 
                                             sum(rt.horas_desarrollo) as sum_horas,
                                             rt.fecha_terminado::date
@@ -491,15 +493,11 @@ class SiteController extends Controller
         //$total_tiempo_calculado = SprintRequerimientos::find()->joinWith('requerimiento')->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('requerimientos.tiempo_desarrollo');
         $total_tiempo_calculado = SprintRequerimientos::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_asignado' => $usuario_id])->sum('tiempo_desarrollo');
         
-        
-        /*
-        echo '<pre>';
-        var_dump($total_tiempo_calculado);
-        echo '</pre>';
-        exit; 
-        */
-        
+ 
         $connection = Yii::$app->db;
+        
+        $datos['dias_festivos'] = $connection->createCommand("SELECT dia FROM dias_festivos WHERE estado = '1' ORDER BY dia ASC")->queryColumn();
+        
         $consulta_acutal_burn = $connection->createCommand("select 
                                             sum(rt.horas_desarrollo) as sum_horas,
                                             rt.fecha_terminado::date
@@ -613,6 +611,7 @@ class SiteController extends Controller
         
         return $this->render('indexDeveloper',[
             //'consulta_ideal_burn' => $consulta_ideal_burn,
+            'datos' => $datos,
             'total_tiempo_calculado' => $total_tiempo_calculado,
             'consulta_acutal_burn' => $consulta_acutal_burn,
             'consulta_total_requerimientos' => $consulta_total_requerimientos,
@@ -621,7 +620,7 @@ class SiteController extends Controller
             'consulta_total_tareas_terminadas' => $consulta_total_tareas_terminadas,
             'obj_sprint' => $obj_sprint,
             'barChart' => $barChart,
-            'obj_sprint_usuario' => $obj_sprint_usuario,
+            'obj_sprint_usuario' => $obj_sprint_usuario
         ]);
     }
 }

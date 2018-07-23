@@ -151,6 +151,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php   
 
+/*
     $dias_festivos = array(
         '2017-07-20', 
         '2017-08-07', 
@@ -171,7 +172,8 @@ $this->params['breadcrumbs'][] = $this->title;
         '2018-05-14',
         '2018-07-20'
     );
-    
+    */
+
     function intervalo_dias($fecha_inicial, $fecha_final, $sw_control, $dias_festivos_p) {
         
             $dias = array('Mon'=>'Lun', 'Tue'=>'Mar', 'Wed'=>'Mie', 'Thu'=>'Jue', 'Fri'=>'Vie');
@@ -266,10 +268,10 @@ $this->params['breadcrumbs'][] = $this->title;
         }
     
         
-    $sprint_total_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 1, $dias_festivos);
-    $datos_ideal_burn = ideal_burn($datos['total_tiempo_calculado'], $sprint_fecha_desde, $sprint_fecha_hasta, $dias_festivos);
-    $datos_actual_burn = actual_burn($datos['consulta_acutal_burn'], $sprint_fecha_desde, $dias_festivos, $sprint_total_dias, $datos['total_tiempo_calculado']);
-    $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $dias_festivos);
+    $sprint_total_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 1, $datos['dias_festivos']);
+    $datos_ideal_burn = ideal_burn($datos['total_tiempo_calculado'], $sprint_fecha_desde, $sprint_fecha_hasta, $datos['dias_festivos']);
+    $datos_actual_burn = actual_burn($datos['consulta_acutal_burn'], $sprint_fecha_desde, $datos['dias_festivos'], $sprint_total_dias, $datos['total_tiempo_calculado']);
+    $arreglo_dias = intervalo_dias($sprint_fecha_desde, $sprint_fecha_hasta, 2, $datos['dias_festivos']);
     
     $porcentaje_productividad = number_format(((count($datos_actual_burn))*100)/$sprint_total_dias, 1);
 
