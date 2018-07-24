@@ -102,7 +102,7 @@ class RequerimientosController extends Controller
     
 
     
-    public function actionUpdate($sprint_id, $requerimiento_id)
+    public function actionUpdate($sprint_id = false, $requerimiento_id)
     {
         
         $model = $this->findModel($requerimiento_id);
