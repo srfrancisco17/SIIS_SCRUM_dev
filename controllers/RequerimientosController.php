@@ -127,24 +127,11 @@ class RequerimientosController extends Controller
         }
         
         
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             
-            $image = UploadedFile::getInstance($model, 'image');
-            $model->certificado_prueba = $image->name;
+
+            return $this->redirect(['update', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
             
-            $path = Yii::$app->basePath.'/web/uploads/certificados_pruebas/'.$image->name;
-
-//            echo "<pre>";var_dump($path);exit;
-
-            if($model->save()){
-                
-                $image->saveAs($path);
-                
-                return $this->redirect(['update', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
-            } else {
-                echo 'ERROR: Al momento de subir archivo.'; exit;
-            }
-
             
         } else {
             return $this->render('update', [
