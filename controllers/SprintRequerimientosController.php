@@ -393,8 +393,7 @@ class SprintRequerimientosController extends Controller
         $obj_requerimientos_implementacion = \app\models\RequerimientosImplementacion::findOne($requerimiento_id);
         
         $limite_texto = 140;
-
-        //echo "<pre>";var_dump($obj_requerimiento->requerimiento->requerimiento_funcionalidad);exit;
+        
 
         $obj_requerimiento->requerimiento->requerimiento_descripcion = ( 
             strlen($obj_requerimiento->requerimiento->requerimiento_descripcion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_descripcion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_descripcion 
@@ -407,12 +406,7 @@ class SprintRequerimientosController extends Controller
         $obj_requerimiento->requerimiento->requerimiento_justificacion = ( 
             strlen($obj_requerimiento->requerimiento->requerimiento_justificacion) > $limite_texto ? substr($obj_requerimiento->requerimiento->requerimiento_justificacion, 0, $limite_texto)."..." : $obj_requerimiento->requerimiento->requerimiento_justificacion 
         );
-        
-       
-       
-        
-        
-        
+
         /*
          * VALIDAR QUE LOS DATOS DEL REPORTE SE HALLAN CARGADO CORRECTAMENTE
          */
@@ -454,6 +448,7 @@ class SprintRequerimientosController extends Controller
         $mpdf->SetFooter('Pagina # {PAGENO}');
         
         
+       
         
         $mpdf->WriteHTML($content1);
         

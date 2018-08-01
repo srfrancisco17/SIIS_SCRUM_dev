@@ -103,11 +103,11 @@ use yii\helpers\Html;
             </td>
             <td>Fecha Terminación:</td>
             <td>
-                <input type="text" name="fecha_terminacion" size="17" style="border:0px;">       
+                <input type="text" name="fecha_terminacion" size="17" style="border:0px;" value="<?= empty($obj_requerimiento->fecha_terminado) ? '' : date("Y-m-d", strtotime($obj_requerimiento->fecha_terminado))  ?>">       
             </td>
         </tr>
     </table>
-    
+
 </div>
 <div id="div-historia_usuario">
  

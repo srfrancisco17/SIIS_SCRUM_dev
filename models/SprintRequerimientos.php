@@ -8,22 +8,25 @@ use yii\helpers\ArrayHelper;
 use app\models\Usuarios;
 use app\models\Sprints;
 use app\models\Requerimientos;
-/** 
- * This is the model class for table "sprint_requerimientos". 
- * 
+/**
+ * This is the model class for table "sprint_requerimientos".
+ *
  * @property int $sprint_id
  * @property int $requerimiento_id
  * @property int $usuario_asignado
  * @property int $tiempo_desarrollo
- * @property string $estado
+ * @property string $estado Por Defecto Se Crea en 2 = En Espera
  * @property int $prioridad
- * 
- * @property PrioridadSprintRequerimientos $prioridad0
+ * @property string $fecha_asignacion Fecha de asignación del requerimiento al desarrollador
+ * @property string $fecha_terminado Fecha de terminacion del requerimiento
+ *
+ * @property RequerimientosPruebas[] $requerimientosPruebas
  * @property EstadosReqSpr $estado0
+ * @property PrioridadSprintRequerimientos $prioridad0
  * @property Requerimientos $requerimiento
  * @property SprintUsuarios $sprint
  * @property Sprints $sprint0
- */ 
+ */
 class SprintRequerimientos extends \yii\db\ActiveRecord
 {
     /**
@@ -49,6 +52,7 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
             [['prioridad'], 'integer', 'message' => 'No existen mas prioridades'],
             [['estado'], 'string', 'max' => 2],
             [['estado'], 'default', 'value' => '2'],
+            [['fecha_asignacion', 'fecha_terminado'], 'safe'],
             [['prioridad'], 'exist', 'skipOnError' => true, 'targetClass' => PrioridadSprintRequerimientos::className(), 'targetAttribute' => ['prioridad' => 'prioridad_id']],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
             [['requerimiento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requerimientos::className(), 'targetAttribute' => ['requerimiento_id' => 'requerimiento_id']],
@@ -69,6 +73,8 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
             'tiempo_desarrollo' => 'Tiempo Desarrollo',
             'estado' => 'Estado',
             'prioridad' => 'Prioridad',
+            'fecha_asignacion' => 'Fecha Asignacion',
+            'fecha_terminado' => 'Fecha Terminado',
         ];
     }
     
