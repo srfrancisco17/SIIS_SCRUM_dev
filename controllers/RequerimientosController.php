@@ -30,6 +30,8 @@ use app\models\HelpersFAOF;
 use app\models\RequerimientosImplementacion;
 use app\models\RequerimientosPruebasSearch;
 
+use yii\web\UploadedFile;
+
 class RequerimientosController extends Controller
 {
 
@@ -124,14 +126,25 @@ class RequerimientosController extends Controller
             $RI_model = new RequerimientosImplementacion();
         }
         
-        /*
-        echo "<pre>";
-        var_dump($RI_model); 
-        exit;
-        */
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        
+        if ($model->load(Yii::$app->request->post())) {
             
-            return $this->redirect(['update', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
+            $image = UploadedFile::getInstance($model, 'image');
+            $model->certificado_prueba = $image->name;
+            
+            $path = Yii::$app->basePath.'/web/uploads/certificados_pruebas/'.$image->name;
+
+//            echo "<pre>";var_dump($path);exit;
+
+            if($model->save()){
+                
+                $image->saveAs($path);
+                
+                return $this->redirect(['update', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
+            } else {
+                echo 'ERROR: Al momento de subir archivo.'; exit;
+            }
+
             
         } else {
             return $this->render('update', [

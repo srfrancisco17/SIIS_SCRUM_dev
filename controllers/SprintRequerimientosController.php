@@ -116,9 +116,9 @@ class SprintRequerimientosController extends Controller
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
            
 
-                $connection = Yii::$app->db;
+                $db = Yii::$app->db;
 
-                $transaction = $connection->beginTransaction(); 
+                $transaction = $db->beginTransaction(); 
                 
                 try {
                     $insert_sprintRequerimientos_sql = "
@@ -138,6 +138,7 @@ class SprintRequerimientosController extends Controller
                                 ".$model->prioridad."
                             );
                     ";
+                    
                     $tareasNoTerminadas_sql = "
                         SELECT
                             tarea_id,
@@ -155,13 +156,13 @@ class SprintRequerimientosController extends Controller
                             ultimo_estado = '5';
                     ";
 
-                    $connection->createCommand($insert_sprintRequerimientos_sql)->execute();
+                    $db->createCommand($insert_sprintRequerimientos_sql)->execute();
 
-                    $result_tareasNoTerminadas = $connection->createCommand($tareasNoTerminadas_sql)->queryAll();
+                    $result_tareasNoTerminadas = $db->createCommand($tareasNoTerminadas_sql)->queryAll();
 
                     foreach ($result_tareasNoTerminadas as $value_tareasNoTerminadas){
 
-                        $connection->createCommand()->insert('sprint_requerimientos_tareas', [
+                        $db->createCommand()->insert('sprint_requerimientos_tareas', [
                             'tarea_id' => $value_tareasNoTerminadas['tarea_id'],
                             'sprint_id' => $model->sprint_id,
                             'requerimiento_id' => $model->requerimiento_id,
@@ -170,8 +171,9 @@ class SprintRequerimientosController extends Controller
                     }  
                     //Cuando se asocia un requerimiento al sprint este pasa de estado (Activo = 1) a (En Espera = 2) 
         
-                    HelpersFAOF::actualizarTiempos($connection, $model->sprint_id, $model->requerimiento_id);
-                    Requerimientos::actualizarEstadoRequerimientos($model->requerimiento_id, '2');
+                    HelpersFAOF::actualizarTiempos($db, $model->sprint_id, $model->requerimiento_id);
+                    
+                    Requerimientos::updateRequerimientos($db, $model->requerimiento_id, '2');
                    
                     $model->refresh();
                     $transaction->commit();
@@ -241,12 +243,11 @@ class SprintRequerimientosController extends Controller
         /*
         *   Comando Para Cambiar de estado
         */
+        $conexion = Yii::$app->db;
         
         $query = SprintRequerimientosTareas::find()->select('tarea_id')->where(['requerimiento_id' => $requerimiento_id])->andWhere(['sprint_id' => $sprint_id])->all();
                 
             if (!empty($query)){                
-                    
-                $conexion = Yii::$app->db;
                     
                 foreach ($query as $objTareas) {
                         
@@ -259,7 +260,7 @@ class SprintRequerimientosController extends Controller
         //Actualizacion del tiempo en los sprints
         ValorHelpers::actualizarTiempos($sprint_id);
             
-        Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, '1');
+        Requerimientos::updateRequerimientos($conexion, $requerimiento_id, '1');
 
         return $this->redirect(['index','sprint_id'=>$sprint_id]);
     }

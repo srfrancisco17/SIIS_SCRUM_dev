@@ -6,6 +6,7 @@ use Yii;
 use app\models\SprintUsuarios;
 use app\models\SprintUsuariosSearch;
 use app\models\SprintRequerimientos;
+use app\models\SprintRequerimientosTareas;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -155,61 +156,62 @@ class SprintUsuariosController extends Controller
        
     }
     
-    public function actionRespuesta($id, $estado, $sprint_id = false, $requerimiento_id = false){
-       //CAMBIOS (*-*)\_
-        $model = new \app\models\SprintRequerimientosTareas();
+    public function actionRespuesta($tarea_id, $estado, $sprint_id = false, $requerimiento_id = false){
+
+        $model = new SprintRequerimientosTareas();
+        
+//        var_dump($estado);exit;
+        
         
         if (Yii::$app->request->isAjax){
 
+            $db = Yii::$app->db;
+            $transaction = $db->beginTransaction();
             
-            if ($estado == 2){
+            try {
                 
-                $model->actualizarEstadoTareas($id, $sprint_id, $estado, 2);
-                
+                if ($estado == '2'){
 
-                $sw_var = \app\models\SprintRequerimientosTareas::find()
-                ->where(['between', 'estado','3', '4'])
-                ->andWhere(['requerimiento_id' => $requerimiento_id])
-                ->andWhere(['sprint_id' => $sprint_id])
-                ->count();                
-                
-                if ($sw_var == 0){
+                    $model->updateTareas($db, $tarea_id, $sprint_id, $requerimiento_id, $estado);
 
-                    \app\models\SprintRequerimientos::actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, '2');
-                }
-                
-            }else if ($estado == 3){
-                $model->actualizarEstadoTareas($id, $sprint_id, $estado, 3);
-                
-                
-                \app\models\SprintRequerimientos::actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, '3');
-                
-                
-            }
-            else if ($estado == 4){
-                echo 'estoy en el 4';
-                
-                $model->actualizarEstadoTareas($id, $sprint_id, $estado, 4);
+                    $contador = SprintRequerimientosTareas::find()->where(['between', 'estado', '3', '4'])->andWhere(['requerimiento_id' => $requerimiento_id])
+                    ->andWhere(['sprint_id' => $sprint_id])
+                    ->count();                
 
-                $sw_var = \app\models\SprintRequerimientosTareas::find()
-                ->where(['between', 'estado','2', '3'])
-                ->andWhere(['requerimiento_id' => $requerimiento_id])
-                ->andWhere(['sprint_id' => $sprint_id])
-                ->count();
-                
-                if ($sw_var == 0){
+                    if ($contador == 0){
+                        SprintRequerimientos::updateSprintRequerimientos($db, $sprint_id, $requerimiento_id, $estado);
+                    }
+
+                }else if ($estado == '3'){
                     
-                    echo 'estoy en el bet';
-                   \app\models\SprintRequerimientos::actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, '4');
-                   
-                   /*
-                    * Actualizar el ultimo estado en terminado
-                    * Requerimientos_tareas
-                    */
+                    $model->updateTareas($db, $tarea_id, $sprint_id, $requerimiento_id, $estado);
+
+                    SprintRequerimientos::updateSprintRequerimientos($db, $sprint_id, $requerimiento_id, $estado);
+
+                }
+                else if ($estado == '4'){
+
+                    $model->updateTareas($db, $tarea_id, $sprint_id, $requerimiento_id, $estado);
+
+                    $contador = SprintRequerimientosTareas::find()->where(['between', 'estado','2', '3'])->andWhere(['requerimiento_id' => $requerimiento_id])
+                    ->andWhere(['sprint_id' => $sprint_id])
+                    ->count();
+
+                    if ($contador == 0){
+
+                       SprintRequerimientos::updateSprintRequerimientos($db, $sprint_id, $requerimiento_id, $estado);
+
+                    }
+
                 }
                 
-            }
-            
+                $transaction->commit();
+
+            } catch(\Exception $e) {
+
+                $transaction->rollBack();
+                throw $e;
+            }   
         } 
     }
 

@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 //use backend\models\SprintUsuarios;
 use app\models\Usuarios;
 use app\models\Sprints;
+use app\models\Requerimientos;
 /** 
  * This is the model class for table "sprint_requerimientos". 
  * 
@@ -177,21 +178,16 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         return ArrayHelper::map($opciones, 'usuario_id', 'usuario.nombres');
     }
     
-    public function actualizarEstadoSprintRequerimientos($sprint_id, $requerimiento_id, $estado){
+    public function updateSprintRequerimientos($db, $sprint_id, $requerimiento_id, $estado){
         
-        $conexion = Yii::$app->db;
-        
-        $conexion->createCommand("UPDATE sprint_requerimientos SET estado=:estado WHERE sprint_id=:sprint_id AND requerimiento_id=:requerimiento_id")
-        ->bindValue(':estado', $estado)
-        ->bindValue(':sprint_id', $sprint_id)
-        ->bindValue(':requerimiento_id', $requerimiento_id)       
-        ->execute();
-        
-        
-        \app\models\Requerimientos::actualizarEstadoRequerimientos($requerimiento_id, $estado);
-        
-        //return true;  
- 
+        $fecha_terminado = ($estado == '4' ? 'NOW()' : NULL);
+
+        $db->createCommand()
+            ->update('sprint_requerimientos', ['estado' => $estado, 'fecha_terminado' => $fecha_terminado], ['sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id])
+            ->execute();
+
+        Requerimientos::updateRequerimientos($db, $requerimiento_id, $estado);
+  
     }
     
     public function actualizarHorasSprintRequerimientos($sprint_id, $requerimiento_id, $horas){

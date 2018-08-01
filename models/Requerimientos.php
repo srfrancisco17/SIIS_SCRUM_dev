@@ -22,6 +22,7 @@ use Yii;
  * @property string $requerimiento_funcionalidad
  * @property integer $soporte_id
  * @property string $divulgacion
+ * @property string $certificado_prueba
  * 
  * @property Comites $comite
  * @property Departamentos $departamentoSolicita
@@ -35,7 +36,7 @@ use Yii;
 class Requerimientos extends \yii\db\ActiveRecord
 {
     
-    
+    public $image;
     /**
      * @inheritdoc
      */
@@ -62,6 +63,9 @@ class Requerimientos extends \yii\db\ActiveRecord
             [['departamento_solicita'], 'exist', 'skipOnError' => true, 'targetClass' => Departamentos::className(), 'targetAttribute' => ['departamento_solicita' => 'departamento_id']],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
             [['usuario_solicita'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_solicita' => 'usuario_id']],
+            [['image'], 'safe'],
+            [['image'], 'file', 'extensions' => 'pdf'],
+            [['image'], 'file', 'maxSize' => '500000'],
         ]; 
     }
 
@@ -155,15 +159,19 @@ class Requerimientos extends \yii\db\ActiveRecord
         return $this->hasMany(SprintRequerimientosTareas::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
     
-    public function actualizarEstadoRequerimientos($requerimiento_id, $estado){
+    public function updateRequerimientos($db, $requerimiento_id, $estado){
         
-        $conexion = Yii::$app->db;
-           
-            $conexion->createCommand()->update('requerimientos', [
-                'estado' => $estado,
-            ],  'requerimiento_id ='.$requerimiento_id)->execute();         
+        $result = $db->createCommand()
+            ->update('requerimientos', ['estado' => $estado], ['requerimiento_id' => $requerimiento_id])
+            ->execute();
         
-        return true;  
+        /*
+        $result = $db->createCommand()->update('requerimientos', [
+            'estado' => $estado,
+        ],  'requerimiento_id ='.$requerimiento_id)->execute();         
+        */
+        
+        return $result;  
  
     }
     

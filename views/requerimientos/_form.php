@@ -10,6 +10,8 @@ use kartik\select2\Select2;
 use kartik\date\DatePicker;
 use kartik\grid\GridView;
 
+use kartik\file\FileInput;
+
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -56,12 +58,11 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
         <div id="sectionA" class="tab-pane fade in active">
             <br>
             <!-- NUEVOS CAMBIOS 09/01/2018 -->
-            <?php $form = ActiveForm::begin(); ?>
-
+            <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
+           
             <div class="panel panel-default">
                 <div class="panel-heading panel-heading-custom">
                     <h3 class="panel-title">
-                        
                         <div class="row">
                             <div class="col-lg-11">
                                 <b>HISTORIA DE USUARIO:</b>
@@ -70,7 +71,6 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
                                 <?= $btn_print_html ?>
                             </div>
                         </div>
-                      
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -79,7 +79,6 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
                             <?= $form->field($model, 'requerimiento_titulo')->textInput(['maxlength' => true, 'disabled' => $estado_field_requerimiento])->label('* Titulo del requerimiento:') ?>
                         </div>
                         <div class="col-lg-4">
-
                             <?= $form->field($model, 'usuario_solicita')->widget(Select2::className(),[
                                 'data' => ArrayHelper::map(Usuarios::find()->where(['estado' => 1])->all(), 'usuario_id', 'nombreCompleto'),
                                 'theme' => Select2::THEME_DEFAULT,
@@ -110,15 +109,15 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
                     <div class="row">
                         <div class="col-lg-4">
                             <?= $form->field($model, 'fecha_requerimiento')->widget(DatePicker::classname(), [
-                            'name' => 'dp_3',
-                            'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                            'size' => 'xs',
-                            'disabled' => $estado_field_requerimiento,
-                            'pluginOptions' => [
-                                'autoclose'=>true,
-                                'format' => 'yyyy-mm-dd',
-                                'startDate' => '2017-01-01'
-                            ]
+                                'name' => 'dp_3',
+                                'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                                'size' => 'xs',
+                                'disabled' => $estado_field_requerimiento,
+                                'pluginOptions' => [
+                                    'autoclose'=>true,
+                                    'format' => 'yyyy-mm-dd',
+                                    'startDate' => '2017-01-01'
+                                ]
                             ])->label('* Fecha requerimiento:'); 
                             ?>
                         </div>
@@ -133,7 +132,6 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
                             ?>
                         </div>
                         <div class="col-lg-4">
-
                             <?= $form->field($model, 'comite_id')->widget(Select2::className(),[
                                 'data' => ArrayHelper::map(Comites::find()->where(['estado' => 1])->all(), 'comite_id', 'comite_alias'),
                                 'theme' => Select2::THEME_DEFAULT,
@@ -144,37 +142,42 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
                                     'allowClear'=>true
                                 ],
                                 ])->label('Asociar Comite:');
-                            ?> 
-
+                            ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
-                              <?= $form->field($model, 'requerimiento_descripcion')->textarea(['rows' => '3'])->label('* Como(Rol):') ?>
+                            <?= $form->field($model, 'requerimiento_descripcion')->textarea(['rows' => '3'])->label('* Como(Rol):') ?>
                         </div>
                         <div class="col-lg-4">
-                              <?= $form->field($model, 'requerimiento_funcionalidad')->textarea(['rows' => '3'])->label('* Necesito(Funcionalidad):') ?>
+                            <?= $form->field($model, 'requerimiento_funcionalidad')->textarea(['rows' => '3'])->label('* Necesito(Funcionalidad):') ?>
                         </div>
                         <div class="col-lg-4">
-                              <?= $form->field($model, 'requerimiento_justificacion')->textarea(['rows' => '3'])->label('* Para(Finalidad):') ?>
+                            <?= $form->field($model, 'requerimiento_justificacion')->textarea(['rows' => '3'])->label('* Para(Finalidad):') ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                             <?= $form->field($model, 'observaciones')->textarea(['rows' => '3']) ?>
+                            <?= $form->field($model, 'observaciones')->textarea(['rows' => '3']) ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-3">
                             <?= $form->field($model, 'divulgacion')->dropDownList([ 0 => 'No requiere', 1 => 'Informativo',  2 => 'Capacitacion formal'], ['prompt' => 'Seleccione plan' ])->label('Plan de divulgación:') ?>
                         </div>
+                        <!--
+                        <div class="col-lg-4">
+                            Aqui
+                        </div>
+                        -->
                     </div>
                 </div>
                 <div class="panel-footer">
                     <?= Html::submitButton($model->isNewRecord ? 'Crear Requerimiento' : 'Actualizar HU', ['id'=>'boton1' , 'onclick' =>'validarBoton()', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                 </div>
             </div>
-             <?php ActiveForm::end(); ?>
+
+            <?php ActiveForm::end(); ?>
 
             <?php
 
@@ -229,7 +232,7 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
                 if( !$model->isNewRecord ){
 
 
-            ?>
+            ?>  
             <div class="row">
                 <div class="col-lg-12">
                     <?php Pjax::begin(['id' => 'grid_tareas', 'timeout' => FALSE]) ?>

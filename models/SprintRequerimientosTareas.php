@@ -95,31 +95,46 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
         return $this->hasOne(Sprints::className(), ['sprint_id' => 'sprint_id']);
     }
     
-    public function actualizarEstadoTareas($id, $sprint_id, $estado, $sw_control = null){
-        
-        $conexion = Yii::$app->db;
+    public function updateTareas($db, $tarea_id, $sprint_id, $requerimiento_id, $estado){
         
         
-        if ($sw_control == 4){
+        if ($estado == '4'){
             
-            $expression = new \yii\db\Expression('NOW()');
-            $now = (new \yii\db\Query)->select('now()::timestamp')->scalar();
+//            $expression = new \yii\db\Expression('NOW()');
+//            $now = (new \yii\db\Query)->select('now()::timestamp')->scalar();
             
-            $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET estado='.$estado.' WHERE tarea_id='.$id.' AND sprint_id='.$sprint_id)->execute();
+//            $db->createCommand('UPDATE sprint_requerimientos_tareas SET estado='.$estado.' WHERE tarea_id='.$tarea_id.' AND sprint_id='.$sprint_id)->execute();
             
+            $db->createCommand()
+                ->update('sprint_requerimientos_tareas', ['estado' => $estado], ['tarea_id' => $tarea_id, 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id])
+                ->execute();
+            
+
             /*
              * NUEVO 19/10/2017
              * Cambio actualizar el ultimo estado a terminado
              * 
              */
-            $conexion->createCommand()->update('requerimientos_tareas', [
+            
+            $db->createCommand()
+                ->update('requerimientos_tareas', ['fecha_terminado' => 'NOW()', 'ultimo_estado' => '4'], ['tarea_id' => $tarea_id])
+                ->execute();
+            
+            /*
+            $db->createCommand()->update('requerimientos_tareas', [
                 'fecha_terminado' => $now,
                 'ultimo_estado' => '4',
-            ],  'tarea_id ='.$id)->execute(); 
+            ],  'tarea_id ='.$tarea_id)->execute(); 
+            */
+            
             
         }else{
+
+            $db->createCommand()
+                ->update('sprint_requerimientos_tareas', ['estado' => $estado], ['tarea_id' => $tarea_id, 'sprint_id' => $sprint_id])
+                ->execute();
             
-            $conexion->createCommand('UPDATE sprint_requerimientos_tareas SET estado='.$estado.' WHERE tarea_id='.$id.' AND sprint_id='.$sprint_id)->execute();
+//            $db->createCommand('UPDATE sprint_requerimientos_tareas SET estado='.$estado.' WHERE tarea_id='.$tarea_id.' AND sprint_id='.$sprint_id)->execute();
             
             /*
              * NUEVO 19/10/2017
@@ -127,11 +142,17 @@ class SprintRequerimientosTareas extends \yii\db\ActiveRecord
              * 
              */
             
-            $conexion->createCommand()->update('requerimientos_tareas', [
+            $db->createCommand()
+                ->update('requerimientos_tareas', ['fecha_terminado' => NULL, 'ultimo_estado' => NULL], ['tarea_id' => $tarea_id])
+                ->execute();
+            
+            /*
+            $db->createCommand()->update('requerimientos_tareas', [
                 'fecha_terminado' => NULL,
                 'ultimo_estado' => NULL,
-            ],  'tarea_id ='.$id)->execute(); 
-
+            ],  'tarea_id ='.$tarea_id)->execute(); 
+            */
+            
         }     
 
         return true;  
