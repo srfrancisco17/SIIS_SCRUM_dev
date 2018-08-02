@@ -36,7 +36,7 @@ use Yii;
 class Requerimientos extends \yii\db\ActiveRecord
 {
     
-    public $image;
+    public $archivos;
     /**
      * @inheritdoc
      */
@@ -63,9 +63,10 @@ class Requerimientos extends \yii\db\ActiveRecord
             [['departamento_solicita'], 'exist', 'skipOnError' => true, 'targetClass' => Departamentos::className(), 'targetAttribute' => ['departamento_solicita' => 'departamento_id']],
             [['estado'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosReqSpr::className(), 'targetAttribute' => ['estado' => 'req_spr_id']],
             [['usuario_solicita'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_solicita' => 'usuario_id']],
-            [['image'], 'safe'],
-            [['image'], 'file', 'extensions' => 'pdf'],
-            [['image'], 'file', 'maxSize' => '500000'],
+            [['archivos'], 'safe'],
+//            [['archivos'], 'file', 'extensions' => 'jpg, png, pdf'],
+//            [['archivos'], 'file', 'maxFiles' => 5],
+//            [['archivos'], 'file', 'maxSize' => '1048576'],
         ]; 
     }
 

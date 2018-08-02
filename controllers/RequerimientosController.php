@@ -31,6 +31,7 @@ use app\models\RequerimientosImplementacion;
 use app\models\RequerimientosPruebasSearch;
 
 use yii\web\UploadedFile;
+use app\models\Archivos;
 
 class RequerimientosController extends Controller
 {
@@ -102,10 +103,10 @@ class RequerimientosController extends Controller
         }
     }
     
-
-    
     public function actionUpdate($sprint_id = false, $requerimiento_id)
     {
+        
+        $archivos = Archivos::find()->where(['requerimiento_id' => $requerimiento_id])->all();
         
         $model = $this->findModel($requerimiento_id);
         
@@ -120,18 +121,49 @@ class RequerimientosController extends Controller
         
         $RP_searchModel = new RequerimientosPruebasSearch();
         $RP_dataProvider = $RP_searchModel->search(Yii::$app->request->queryParams, $requerimiento_id);
-        /* --- */
         
         if ( empty($RI_model = $this->findModelRequerimientosImplementacion($requerimiento_id)) ){
             $RI_model = new RequerimientosImplementacion();
         }
         
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) ) {
             
+            if ( $model->save() ){
+                
+                $files = UploadedFile::getInstances($model, 'archivos');
 
-            return $this->redirect(['update', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
-            
+                foreach ($files as $key => $file) {
+
+                    $ext = $file->extension;
+                    
+                    $model_archivos = new Archivos();
+
+                    $model_archivos->archivo_nombre = $file->baseName;
+                    $model_archivos->archivo_alias = Yii::$app->security->generateRandomString().".{$ext}";
+                    $model_archivos->archivo_peso = $file->size.'';
+                    $model_archivos->archivo_tipo = $ext;
+                    $model_archivos->requerimiento_id = $requerimiento_id;
+
+                    if ($model_archivos->save()){
+
+                        $file->saveAs('uploads/' .$model_archivos->archivo_alias);  
+
+                    }else{
+                        echo 'ERROR AL ADJUNTAR ARCHIVOS AL REQUERIMIENTO:';
+                        echo '<pre>'; var_dump($model_archivos->getErrors()); echo '</pre>';
+                    }
+
+                }
+                
+                return $this->redirect(['update', 'sprint_id' => $sprint_id, 'requerimiento_id' => $requerimiento_id]);
+                
+            }else{
+                
+                echo 'ERROR AL ACTUALIZAR REQUERIMIENTO:';
+                echo '<pre>'; var_dump($model->getErrors()); echo '</pre>';
+                
+            }
             
         } else {
             return $this->render('update', [
@@ -146,7 +178,8 @@ class RequerimientosController extends Controller
                 'RP_dataProvider' => $RP_dataProvider,
                 'RI_model' => $RI_model,
                 'sprint_id' => $sprint_id,
-                'requerimiento_id' => $requerimiento_id
+                'requerimiento_id' => $requerimiento_id,
+                'archivos' => $archivos
             ]);
         }
     }
@@ -586,6 +619,29 @@ class RequerimientosController extends Controller
         } else {
             return FALSE;
         }
+    }
+    
+    
+    public function actionDeleteArchivo($archivo_id){
+        
+        $model = Archivos::findOne($archivo_id);
+        
+        if (!is_null($model)){
+            
+            $ruta_archivo = Yii::$app->basePath.'/web/uploads/'.$model->archivo_alias;
+
+            if ($model->delete()){
+
+                if (unlink($ruta_archivo)){
+
+                    return true;
+                }
+
+            }
+            
+            
+        }
+
     }
     
 }

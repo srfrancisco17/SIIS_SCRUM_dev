@@ -165,11 +165,65 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
                         <div class="col-lg-3">
                             <?= $form->field($model, 'divulgacion')->dropDownList([ 0 => 'No requiere', 1 => 'Informativo',  2 => 'Capacitacion formal'], ['prompt' => 'Seleccione plan' ])->label('Plan de divulgación:') ?>
                         </div>
-                        <!--
-                        <div class="col-lg-4">
-                            Aqui
+                        
+                        <div class="col-lg-9">
+                            <?php
+                                if (!$model->isNewRecord){
+                                    
+                                    $carpeta = Yii::getAlias('@web/uploads');
+
+                                    $initial_preview = array();
+                                    $initial_preview_config = array();
+
+                                    foreach ($archivos as $archivo) {
+
+                                        $initial_preview[] = $carpeta.'/'.$archivo["archivo_alias"];
+
+                                        if ($archivo["archivo_tipo"] == 'png' || $archivo["archivo_tipo"] == 'jpg'){
+
+                                            $initial_preview_config[] = ['filename' => $archivo["archivo_nombre"].".".$archivo["archivo_tipo"], 'caption' => $archivo["archivo_nombre"].".".$archivo["archivo_tipo"], 'size' => $archivo["archivo_peso"], 'url' => Url::to(['requerimientos/delete-archivo', 'archivo_id' => $archivo["archivo_id"]]) , 'key' => '3'];
+
+                                        }else{
+
+                                            $initial_preview_config[] = ['filename' => $archivo["archivo_nombre"].".".$archivo["archivo_tipo"], 'caption' => $archivo["archivo_nombre"].".".$archivo["archivo_tipo"], 'size' => $archivo["archivo_peso"], 'type' => $archivo["archivo_tipo"], 'url' => Url::to(['requerimientos/delete-archivo', 'archivo_id' => $archivo["archivo_id"]]) , 'key' => '3'];
+
+                                        }
+
+                                    }
+
+                                    //echo '<pre>';print_r($initial_preview_config); exit;
+
+                                    echo $form->field($model, 'archivos[]')->widget(FileInput::classname(), [
+                                        'options' => ['multiple' => true],
+                                        'pluginOptions' => [
+                                            'initialPreview'=> $initial_preview,
+                                            'initialPreviewAsData'=>true,
+                                            'initialPreviewFileType' => 'image',
+                                            'initialPreviewConfig' => $initial_preview_config,
+                                            'overwriteInitial'=>false,
+                                            'showPreview' => true,
+                                            'showCaption' => true,
+                                            'showRemove' => true,
+                                            'showUpload' => false,
+                                            'purifyHtml'=> true,
+                                            'preferIconicPreview' => true,
+                                            'previewFileIconSettings' => [
+                                                'pdf' => '<i class="fa fa-file-pdf-o text-danger"></i>',
+                                                'png' => '<i class="fa fa-file-photo-o text-primary"></i>',
+                                                'jpg' => '<i class="fa fa-file-photo-o text-danger"></i>'
+                                            ],
+                                            'previewFileType' => 'any',
+                                            'maxFileCount' => 5,
+                                            'maxFileSize'=> 10240,
+                                            'allowedFileExtensions'=>['jpg','png','pdf'],
+
+                                        ]
+                                    ])->label('Archivos:');
+
+                                }
+                            ?>
                         </div>
-                        -->
+                        
                     </div>
                 </div>
                 <div class="panel-footer">
