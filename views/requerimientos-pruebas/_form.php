@@ -155,22 +155,18 @@ $model->fecha_prueba = ($model->isNewRecord ? date("Y-m-d") : $model->fecha_prue
             }); 
 
             $("#requerimientospruebas-estado").val(estado_prueba);
-            
+                        
 
             
-//            console.log($("input[name^=\"radio_tareas\"]").length);
-//            alert(count_inputCheck);
-//            return false;
-            
-
+            /*
             if (  ($("input[name^=\"radio_tareas\"]").length)/2 != count_inputCheck){
                 
                 alert("Es obligatorio evaluar TODAS las tareas");
                 return false;
-            
-            }
-            
 
+            }
+            */
+            
             var form = $(this);
             $.post(
                 form.attr("action")+"&submit=true",

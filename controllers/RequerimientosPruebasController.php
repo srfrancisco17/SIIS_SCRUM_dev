@@ -75,27 +75,26 @@ class RequerimientosPruebasController extends Controller
     public function actionCreate($sprint_id, $requerimiento_id, $submit = false)
     {
         
-        
         $model = new RequerimientosPruebas();
         
         $obj_tareas = \app\models\SprintRequerimientosTareas::find()->where(['sprint_id' => $sprint_id])->andWhere(['requerimiento_id' =>$requerimiento_id])->all();
         
-        
-        
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false)
         {
+
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
+            
+           
         }    
         if($model->load(Yii::$app->request->post()))
         {
-            
-            
 
             $model->sprint_id = $sprint_id;
             $model->requerimiento_id = $requerimiento_id;
             $model->usuario_pruebas = Yii::$app->user->identity->usuario_id;
+            
             
             $transaction = Yii::$app->db->beginTransaction();
             try {
