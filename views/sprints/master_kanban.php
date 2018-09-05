@@ -204,7 +204,7 @@ $this->registerJs("$('[data-toggle=\"tooltip\"]').tooltip();");
 
                                 $items1[$objTareas->tarea_id] = [
                                 //'content' => $objTareas->tarea_descripcion,
-                                'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                                'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box_faof collapsed-box" style="background-color: '.$usuario_color.';">
                                         <div class="box-header">
                                           <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                           <div class="box-tools pull-right">
@@ -224,7 +224,7 @@ $this->registerJs("$('[data-toggle=\"tooltip\"]').tooltip();");
                             case 3: 
 
                                 $items2[$objTareas->tarea_id] = [
-                                'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                                'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box_faof collapsed-box" style="background-color: '.$usuario_color.';">
                                         <div class="box-header">
                                           <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                           <div class="box-tools pull-right">
@@ -244,7 +244,7 @@ $this->registerJs("$('[data-toggle=\"tooltip\"]').tooltip();");
                             case 4: 
 
                                 $items3[$objTareas->tarea_id] = [
-                                'content' => '<div data-toggle="tooltip" data-placement="left" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                                'content' => '<div data-toggle="tooltip" data-placement="left" title="'.$objTareas->tarea_id.'" class="box box_faof collapsed-box" style="background-color: '.$usuario_color.';">
                                         <div class="box-header">
                                           <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                           <div class="box-tools pull-right">
@@ -278,7 +278,7 @@ $this->registerJs("$('[data-toggle=\"tooltip\"]').tooltip();");
          ?>
             <div class="col-lg-3">
                 
-                <div id="<?= $usuario_id ?>" class="box box-default collapsed-box" style="background-color: <?= $usuario_color ?>;">
+                <div id="<?= $usuario_id ?>" class="box box_faof collapsed-box" style="background-color: <?= $usuario_color ?>;">
                     <div class="box-header">
                         <h3 class="box-title"><?= "[".$objRequerimientos->requerimiento_id."] ".$objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
@@ -350,7 +350,16 @@ $this->registerJs("$('[data-toggle=\"tooltip\"]').tooltip();");
         }
         }
 
-  
+		$this->registerJs("
+			$('.box_faof').boxWidget({
+			  animationSpeed: 500,
+			  collapseIcon: 'fa-minus',
+			  expandIcon: 'fa-plus',
+			  removeIcon: 'fa-times'
+			});
+			$('.box_faof').boxWidget('collapse');
+		");
+		
         Pjax::end();
         
         /*MODAL*/
