@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use kartik\sortable\Sortable;
-use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
@@ -133,15 +132,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <br>
     </div>
+	
     <?php Pjax::begin(['id' => 'grid_tareas']); ?>
-    <?php
-        $form = ActiveForm::begin([
-                    'id' => 'grid-requerimientos_tareas',
-                    'enableAjaxValidation' => true,
-                    'enableClientScript' => true,
-                    'enableClientValidation' => true,
-        ]);
-    ?>
     <?php
     
         $buttons_pull_right = '';
@@ -163,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $items3 = array();
             
             foreach ($objRequerimientos->sprintRequerimientosTareas as $objTareas){
-            
+        
             if ($objTareas->sprint_id == $sprint_id){
                 
                 if($objTareas->estado == 2){
@@ -193,7 +185,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     
                     $items1[$objTareas->tarea_id] = [
-                        'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                        'content' => '
+						<div title="'.$objTareas->tarea_id.'" class="box box_faof collapsed-box" style="background-color: '.$usuario_color.';">
                                 <div class="box-header with-border">
                                   <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                   <div class="box-tools pull-right">
@@ -207,7 +200,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="box-footer" style="background-color:'.$usuario_color.'">
                                 '.$buttons_pull_right.'
                                 </div>
-                                </div><!-- /.box -->',
+                                </div><!-- /.box -->
+						',
                         'options' => ['id' => $objTareas->tarea_id],
                     ];
   
@@ -236,7 +230,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>';          
                     }
                     $items2[$objTareas->tarea_id] = [
-                        'content' => '<div data-toggle="tooltip" data-placement="right" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                        'content' => '<div title="'.$objTareas->tarea_id.'" class="box box_faof collapsed-box" style="background-color: '.$usuario_color.';">
                                 <div class="box-header with-border">
                                   <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                   <div class="box-tools pull-right">
@@ -280,7 +274,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>';          
                     }
                     $items3[$objTareas->tarea_id] = [
-                        'content' => '<div data-toggle="tooltip" data-placement="left" title="'.$objTareas->tarea_id.'" class="box box-default collapsed-box" style="background-color: '.$usuario_color.';">
+                        'content' => '<div title="'.$objTareas->tarea_id.'" class="box box_faof collapsed-box" style="background-color: '.$usuario_color.';">
                                 <div class="box-header with-border">
                                   <h5 class="box-title">' . $objTareas->tarea->tarea_titulo . '</h5>
                                   <div class="box-tools pull-right">
@@ -316,7 +310,7 @@ $this->params['breadcrumbs'][] = $this->title;
             }
          ?>
             <div class="col-lg-3">
-                <div class="box box-default collapsed-box" style="background-color: <?= $usuario_color?>;">
+                <div class="box box_faof collapsed-box" style="background-color: <?= $usuario_color?>;">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?= "[".$objRequerimientos->requerimiento_id."] ".$objRequerimientos->requerimiento_titulo ?></h3>
                         <div class="box-tools pull-right">
@@ -350,24 +344,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?php
                     echo Sortable::widget([
-                        'connected' => $objRequerimientos->requerimiento_id.''  ,
+                        'connected' => 'HU'.$objRequerimientos->requerimiento_id,
                         'type' => 'list',
                         'items'=> $items1,
 
                         'pluginEvents' => [
                             'sortupdate' => 'function(e,b) { 
-                                console.log(b.item[0].id); 
+							
+                                console.log(e.detail.item.id);
                              
-                        var1 = b.item[0].id;
-                           
-                        $.post(
-                            form.action = "index.php?r=sprint-usuarios/respuesta&tarea_id="+var1+"&estado="+2+"&sprint_id="+"'.$sprint_id.'"+"&requerimiento_id="+"'.$objRequerimientos->requerimiento_id.'",
-                            form.serialize()
-                        ).done(function(result) {
-                            form.parent().html(result.message);
-                            //$.pjax.reload({container:"#tareas-form1"}); 
+								// var1 = b.item[0].id;
+								var1 = e.detail.item.id;
+								   
+								$.post(
+									form.action = "index.php?r=sprint-usuarios/respuesta&tarea_id="+var1+"&estado="+2+"&sprint_id="+"'.$sprint_id.'"+"&requerimiento_id="+"'.$objRequerimientos->requerimiento_id.'",
+									form.serialize()
+								).done(function(result) {
+									form.parent().html(result.message);
+									//$.pjax.reload({container:"#tareas-form1"}); 
 
-                        });
+								});
                                 
                             }',
                         ],
@@ -378,24 +374,25 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-3 columna-sortable">
                 <?php
                     echo Sortable::widget([
-                        'connected' => $objRequerimientos->requerimiento_id.'',
+                        'connected' => 'HU'.$objRequerimientos->requerimiento_id,
                         'type' => 'list',
                         'items'=> $items2,
-
                         'pluginEvents' => [
                             'sortupdate' => 'function(e,b) { 
-                                console.log(b.item[0].id); 
+							
+                                console.log(e.detail.item.id);
                              
-                        var1 = b.item[0].id;
-                          
-                        $.post(
-                            form.action = "index.php?r=sprint-usuarios/respuesta&tarea_id="+var1+"&estado="+3+"&sprint_id="+"'.$sprint_id.'"+"&requerimiento_id="+"'.$objRequerimientos->requerimiento_id.'",
-                            form.serialize()
-                        ).done(function(result) {
-                            form.parent().html(result.message);
-                            //$.pjax.reload({container:"#tareas-form1"}); 
+								// var1 = b.item[0].id;
+								var1 = e.detail.item.id;
+								  
+								$.post(
+									form.action = "index.php?r=sprint-usuarios/respuesta&tarea_id="+var1+"&estado="+3+"&sprint_id="+"'.$sprint_id.'"+"&requerimiento_id="+"'.$objRequerimientos->requerimiento_id.'",
+									form.serialize()
+								).done(function(result) {
+									form.parent().html(result.message);
+									//$.pjax.reload({container:"#tareas-form1"}); 
 
-                        });
+								});
                                 
                             }',
                         ],
@@ -406,26 +403,27 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-3 columna-sortable">
                 <?php
                     echo Sortable::widget([
-                        'connected' => $objRequerimientos->requerimiento_id.'',
+                        'connected' => 'HU'.$objRequerimientos->requerimiento_id,
                         'type' => 'list',
                         'items'=> $items3,
 
                         'pluginEvents' => [
                             'sortupdate' => 'function(e,b) { 
-                                console.log(b.item[0].id); 
+							
+                                console.log(e.detail.item.id);
                              
-                        var1 = b.item[0].id;
-                      
-                        $.post(
-                            form.action = "index.php?r=sprint-usuarios/respuesta&tarea_id="+var1+"&estado="+4+"&sprint_id="+"'.$sprint_id.'"+"&requerimiento_id="+"'.$objRequerimientos->requerimiento_id.'",
-                           
-                            
-                            form.serialize()
-                        ).done(function(result) {
-                            form.parent().html(result.message);
-                            //$.pjax.reload({container:"#tareas-form1"}); 
+								// var1 = b.item[0].id;
+								var1 = e.detail.item.id;
+							  
+								$.post(
+									form.action = "index.php?r=sprint-usuarios/respuesta&tarea_id="+var1+"&estado="+4+"&sprint_id="+"'.$sprint_id.'"+"&requerimiento_id="+"'.$objRequerimientos->requerimiento_id.'",
+		
+									form.serialize()
+								).done(function(result) {
+									form.parent().html(result.message);
+									//$.pjax.reload({container:"#tareas-form1"}); 
 
-                        });
+								});
                                 
                             }', 
                         ],
@@ -434,20 +432,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?> 
             </div>
         </div>
-
-
-
     <?php
 
         }
         
         }
+		
+		$this->registerJs("
+			$('.box_faof').boxWidget({
+			  animationSpeed: 500,
+			  collapseIcon: 'fa-minus',
+			  expandIcon: 'fa-plus',
+			  removeIcon: 'fa-times'
+			});
+			$('.box_faof').boxWidget('collapse');
+		");
     
-    ActiveForm::end();
-    Pjax::end();
 
+		Pjax::end();
 
-    /*MODAL*/
         $this->registerJs("
             $(document).on('click', '.botones', (function() {   
                 var texto_titulo = '';
@@ -482,6 +485,5 @@ $this->params['breadcrumbs'][] = $this->title;
             'header' => '<h5 style="font-weight: bold; color:white;" id="titulo_modal" class="modal-title"></h5>',
         ]);
         echo "<div class='well'></div>";
-        Modal::end();
-        
+        Modal::end(); 
     ?>

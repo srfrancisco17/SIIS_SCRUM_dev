@@ -19,21 +19,19 @@ use Yii;
  * @property Requerimientos $requerimiento
  * @property string $sw_urgente
  */
-class RequerimientosTareas extends \yii\db\ActiveRecord
-{
+class RequerimientosTareas extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'requerimientos_tareas';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['requerimiento_id', 'tarea_titulo'], 'required'],
             [['requerimiento_id'], 'integer'],
@@ -53,8 +51,7 @@ class RequerimientosTareas extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'tarea_id' => 'Tarea ID',
             'requerimiento_id' => 'Requerimiento ID',
@@ -70,109 +67,96 @@ class RequerimientosTareas extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUltimoEstado()
-    {
+    public function getUltimoEstado() {
         return $this->hasOne(EstadosReqSpr::className(), ['req_spr_id' => 'ultimo_estado']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRequerimiento()
-    {
+    public function getRequerimiento() {
         return $this->hasOne(Requerimientos::className(), ['requerimiento_id' => 'requerimiento_id']);
     }
-    
-    public function getSprintRequerimientosTareas() 
-    { 
+
+    public function getSprintRequerimientosTareas() {
         return $this->hasOne(SprintRequerimientosTareas::className(), ['tarea_id' => 'tarea_id']);
     }
-    
-    public function validateHoras($attribute, $params, $validator)
-    {
- 
+
+    public function validateHoras($attribute, $params, $validator) {
+
         $tipo_usuario = Yii::$app->user->identity->tipo_usuario;
         $requerimiento_id = $this->requerimiento_id;
-        
-        
-        if ($this->horas_desarrollo > 8){
-            
+        $sprint_id = $_REQUEST['sprint_id'];
+
+        if ($this->horas_desarrollo > 8) {
+
             $this->addError($attribute, "Las Horas no pueden ser MAYOR a 8.");
-            
-        }else if ($this->horas_desarrollo <= 0){
-            
+        } else if ($this->horas_desarrollo <= 0) {
+
             $this->addError($attribute, "Las Horas no pueden ser MENOR a 1.");
-            
         }
 
-        
-        if ($tipo_usuario == '2'){
-            
-        /*
-         * Si el usuario es desarrollador aplicara la validacion de las horas de soporte
-         */    
+
+        if ($tipo_usuario == '2') {
+
+            /*
+             * Si el usuario es desarrollador aplicara la validacion de las horas de soporte
+             */
             $requerimiento = (new \yii\db\Query())
-            ->select('
-                R.requerimiento_id,
-                R.requerimiento_titulo,
-                R.departamento_solicita,
-                R.estado,
-                R.sw_soporte,
-                SU.usuario_id,
-                SR.tiempo_desarrollo,
-                SU.horas_establecidas_soporte
-            ')
-            ->from('requerimientos R')
-            ->innerJoin('sprint_requerimientos SR', '"SR"."requerimiento_id" = "R"."requerimiento_id"')
-            ->innerJoin('sprint_usuarios SU', '"SU"."sprint_id" = "SR"."sprint_id" AND "SU"."usuario_id" = "SR"."usuario_asignado"')
-            ->where(['R.requerimiento_id' => $requerimiento_id])
-            ->andWhere(['R.sw_soporte' => '1'])->one();
+                    ->select('
+                        R.requerimiento_id,
+                        R.requerimiento_titulo,
+                        R.departamento_solicita,
+                        R.estado,
+                        R.sw_soporte,
+                        SU.usuario_id,
+                        SR.tiempo_desarrollo,
+                        SU.horas_establecidas_soporte
+                    ')
+                    ->from('requerimientos R')
+                    ->innerJoin('sprint_requerimientos SR', '"SR"."sprint_id" = ' . $sprint_id . ' AND "SR"."requerimiento_id" = "R"."requerimiento_id"')
+                    ->innerJoin('sprint_usuarios SU', '"SU"."sprint_id" = "SR"."sprint_id" AND "SU"."usuario_id" = "SR"."usuario_asignado"')
+                    ->where(['R.requerimiento_id' => $requerimiento_id])
+                    ->andWhere(['R.sw_soporte' => '1'])
+                    ->one();
 
-            
-            //echo '<pre>';
-            //var_dump($requerimiento_id); 
-            
+//            echo '<pre>';
+//            var_dump($requerimiento);
+//            exit;
 
-            if (!empty($requerimiento)){
-                
-               $valor_nuevo = 0;
-               $tarea = RequerimientosTareas::findOne($this->tarea_id);
-               
-               if (!empty($tarea)){
-                   
-                   
+            if (!empty($requerimiento)) {
+
+                $valor_nuevo = 0;
+                $tarea = RequerimientosTareas::findOne($this->tarea_id);
+
+                if (!empty($tarea)) {
+
+
                     $operacion = ($this->horas_desarrollo >= $tarea->horas_desarrollo) ? "SUMA" : "RESTA";
-                    
 
-                    if ($operacion == "SUMA"){
+
+                    if ($operacion == "SUMA") {
 
                         $valor_nuevo = $requerimiento['tiempo_desarrollo'] + ($this->horas_desarrollo - $tarea->horas_desarrollo);
-
-                    }else if ($operacion == "RESTA"){
+                    } else if ($operacion == "RESTA") {
 
                         $valor_nuevo = $requerimiento['tiempo_desarrollo'] - ($tarea->horas_desarrollo - $this->horas_desarrollo);
                     }
+                } else {
 
-               }else{
-                   
-                   $valor_nuevo = $requerimiento['tiempo_desarrollo'] + $this->horas_desarrollo; 
-               }
-               
-               
-               if ($requerimiento['horas_establecidas_soporte'] < $valor_nuevo){
+                    $valor_nuevo = $requerimiento['tiempo_desarrollo'] + $this->horas_desarrollo;
+                }
 
-                   $this->addError($attribute, "Horas de soporte excedidas");
-                   
-               }
 
+                if ($requerimiento['horas_establecidas_soporte'] < $valor_nuevo) {
+
+                    $this->addError($attribute, "Horas de soporte excedidas");
+                }
             }
-
         }
-        
-        
+
+
         return true;
-        
     }
-    
-    
+
 }
