@@ -236,15 +236,12 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
             <?php
 
                 $toolbar_tareas = array("content" => NULL); 
-                $action_template_tareas = ""; 
-
+                $action_template_tareas = "";
 
                 if(!empty($sprint_id)){
 
                     $sprint_estado = app\models\Sprints::getSprintEstado($sprint_id)->estado;
                     
-                    
-
                     if ($sprint_estado == '0'){
 
                         $toolbar_tareas = array(
@@ -277,15 +274,12 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
                         $action_template_tareas = "{update}{delete}"; 
 
                     }
-
                 }
-                
                 
                 //var_dump($sprint_estado);exit;
 
                 if( !$model->isNewRecord ){
-
-
+				
             ?>  
             <div class="row">
                 <div class="col-lg-12">
@@ -316,25 +310,27 @@ if ( !empty($sprint_id) && !empty($requerimiento_id) ){
                                 'template' => $action_template_tareas,
                                 'buttons' => [
                                     'update' => 
-                                    function ($url, $model, $key) {
-
+                                    function ($url, $model, $key) use ($sprint_id) {
+										
+										// echo "<pre>"; print_r($sprint_id); exit;
+										
                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '#', [
                                                     'class' => 'botones',
                                                     'title' => Yii::t('yii', 'Actualizar'),
                                                     'data-toggle' => 'modal',
                                                     'data-target' => '#modal',
-                                                    'data-url' => Url::to(['update-requerimientos-tareas', 'tarea_id' => $model->tarea_id, 'sprint_id' => $model->sprintRequerimientosTareas->sprint_id]),
+                                                    'data-url' => Url::to(['update-requerimientos-tareas', 'tarea_id' => $model->tarea_id, 'sprint_id' => $sprint_id]),
                                                     'data-pjax' => '0',
                                                     'data-opcion' => 'modal1-update'
                                         ]);
                                     },           
-                                    'delete' => function ($url, $model, $key) {
+                                    'delete' => function ($url, $model, $key)  use ($sprint_id) {
                                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', '#', [
                                             'title' => Yii::t('yii', 'Delete'),
                                             'aria-label' => Yii::t('yii', 'Delete'),
                                             'onclick' => "
                                                 if (confirm('Esta seguro de eliminar este registro?')) {
-                                                     $.ajax('".Url::to(['delete-requerimientos-tareas', 'tarea_id' => $model->tarea_id, 'sprint_id' => $model->sprintRequerimientosTareas->sprint_id])."', {
+                                                     $.ajax('".Url::to(['delete-requerimientos-tareas', 'tarea_id' => $model->tarea_id, 'sprint_id' => $sprint_id])."', {
                                                         type: 'POST'
                                                     }).done(function(data) {
                                                         $.pjax.reload({container: '#grid_tareas'});

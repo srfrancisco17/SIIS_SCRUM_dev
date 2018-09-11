@@ -6,23 +6,29 @@ use Yii;
 use app\models\Sprints;
 use app\models\SprintRequerimientosTareas;
 
-class HelpersFAOF
-{
+class HelpersFAOF {
 
-    public function actualizarTiempos($connection, $sprint_id, $requerimiento_id){
-        
-        $total_horas_requerimiento = $connection->createCommand("SELECT SUM(horas_desarrollo) FROM requerimientos_tareas WHERE requerimiento_id = ".$requerimiento_id)->queryScalar();
-        
-        
+    public function actualizarTiempos($connection, $sprint_id, $requerimiento_id) {
 
-        /*
-         * requerimientos - UPDATE
-         */
-        
-        $connection->createCommand()->update('requerimientos', ['tiempo_desarrollo' => $total_horas_requerimiento])->execute();
-        
-        if ( !empty($sprint_id) ){
-  
+
+        if (!empty($sprint_id)) {
+			
+			$total_horas_requerimiento = $connection->createCommand("
+				SELECT
+					SUM(RT.horas_desarrollo) AS horas_desarrollo
+				FROM
+					sprint_requerimientos_tareas AS SRT
+				INNER JOIN requerimientos_tareas AS RT ON
+				(
+					RT.tarea_id = SRT.tarea_id 
+				)
+				WHERE SRT.sprint_id = ".$sprint_id." AND RT.requerimiento_id = ".$requerimiento_id.";
+			")->queryScalar();
+
+			// var_dump($total_horas_requerimiento);exit;
+		
+			$connection->createCommand()->update('requerimientos', ['tiempo_desarrollo' => $total_horas_requerimiento], ['requerimiento_id' => $requerimiento_id])->execute();
+
             $update_sprint_requerimientos = "
                 UPDATE sprint_requerimientos
                 SET tiempo_desarrollo = subquery.total_horas,
@@ -34,20 +40,20 @@ class HelpersFAOF
                                         requerimientos_tareas AS RT
 
                                 INNER JOIN sprint_requerimientos_tareas AS SRT ON(
-                                        RT.tarea_id = SRT.tarea_id 
+                                        RT.tarea_id = SRT.tarea_id
                                         AND SRT.requerimiento_id = RT.requerimiento_id
                                 )
-                                WHERE SRT.sprint_id = ".$sprint_id." AND SRT.requerimiento_id = ".$requerimiento_id."
+                                WHERE SRT.sprint_id = " . $sprint_id . " AND SRT.requerimiento_id = " . $requerimiento_id . "
                       ) AS subquery
-                WHERE sprint_id = ".$sprint_id." AND requerimiento_id = ".$requerimiento_id.";
+                WHERE sprint_id = " . $sprint_id . " AND requerimiento_id = " . $requerimiento_id . ";
             ";
             /*
-            echo '<pre>';
-            var_dump($update_sprint_requerimientos);
-            exit;
-            */  
-            $update_sprints = " 
-                
+              echo '<pre>';
+              var_dump($update_sprint_requerimientos);
+              exit;
+             */
+            $update_sprints = "
+
                 UPDATE sprints
                     SET horas_desarrollo = subquery.total_horas
                 FROM(
@@ -56,27 +62,25 @@ class HelpersFAOF
                     FROM
                         sprint_requerimientos
                     WHERE
-                        sprint_id = ".$sprint_id."
+                        sprint_id = " . $sprint_id . "
                     ) AS subquery
-                WHERE sprint_id = ".$sprint_id.";
-         
+                WHERE sprint_id = " . $sprint_id . ";
+
             ";
-            
+
             /* Actualizar tiempos SPRINT_REQUERIMIENTOS */
             $connection->createCommand($update_sprint_requerimientos)->execute();
-            
+
             /* Actualizar tiempos SPRINTS */
             $connection->createCommand($update_sprints)->execute();
-            
         }
-        
+
         return true;
-        
     }
-    
-    public static function modalFormularios($titulo_modal){
-        
-        
+
+    public static function modalFormularios($titulo_modal) {
+
+
         Yii::$app->view->registerJs("
 
             $(document).on('click', '.link_modal', (function(b) {
@@ -86,10 +90,10 @@ class HelpersFAOF
 
                 if (opcion_modal == '1'){
 
-                    $(\"#titulo_modal\").text('Crear ".$titulo_modal."');
+                    $(\"#titulo_modal\").text('Crear " . $titulo_modal . "');
 
                 }else{
-                    $(\"#titulo_modal\").text('Actualizar ".$titulo_modal."');
+                    $(\"#titulo_modal\").text('Actualizar " . $titulo_modal . "');
                 }
 
                 $.get(
@@ -100,7 +104,7 @@ class HelpersFAOF
                     }
                 );
             }));
-            
+
         ");
 
         \yii\bootstrap\Modal::begin([
@@ -108,8 +112,7 @@ class HelpersFAOF
             'header' => '<h4 id="titulo_modal" class="modal-title"></h4>',
         ]);
         echo "<div class='well'></div>";
-        \yii\bootstrap\Modal::end();        
-  
-    }     
- 
+        \yii\bootstrap\Modal::end();
+    }
+
 }
