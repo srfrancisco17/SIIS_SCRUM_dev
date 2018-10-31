@@ -24,11 +24,11 @@ if($model->isNewRecord){
     
 	$model->fecha_requerimiento = date('Y-m-d');
 	
-	if (Yii::$app->user->identity->tipo_usuario == Usuarios::USUARIO_SCRUM_MASTER){
-		
-		$estado_field_requerimiento = FALSE;
-	}
+}
 
+if (Yii::$app->user->identity->tipo_usuario == Usuarios::USUARIO_SCRUM_MASTER){
+	
+	$estado_field_requerimiento = FALSE;
 }
 
 $this->registerCss("
