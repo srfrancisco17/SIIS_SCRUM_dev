@@ -20,10 +20,15 @@ date_default_timezone_set('America/Bogota');
 $estado_field_requerimiento = TRUE;
 
 
-if($model->isNewRecord || Yii::$app->user->identity->tipo_usuario == Usuarios::USUARIO_SCRUM_MASTER){
+if($model->isNewRecord){
     
-    $model->fecha_requerimiento = date('Y-m-d');
-    $estado_field_requerimiento = FALSE;
+	$model->fecha_requerimiento = date('Y-m-d');
+	
+	if (Yii::$app->user->identity->tipo_usuario == Usuarios::USUARIO_SCRUM_MASTER){
+		
+		$estado_field_requerimiento = FALSE;
+	}
+
 }
 
 $this->registerCss("
