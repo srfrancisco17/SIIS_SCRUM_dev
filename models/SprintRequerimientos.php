@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 use app\models\Usuarios;
 use app\models\Sprints;
 use app\models\Requerimientos;
+
 /**
  * This is the model class for table "sprint_requerimientos".
  *
@@ -237,5 +238,4 @@ class SprintRequerimientos extends \yii\db\ActiveRecord
         
     }
     */
-
 }
