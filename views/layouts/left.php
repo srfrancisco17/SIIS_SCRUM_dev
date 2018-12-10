@@ -59,6 +59,11 @@ use app\models\Usuarios;
                             'url' => ['requerimientos/index'],
                         ],
                         [
+                            'label' => 'Requerimientos Criterios',
+                            'icon' => 'check-square',
+                            'url' => ['requerimientos-criterios/index'],
+                        ],
+                        [
                             'label' => 'Sprints',
                             'icon' => 'undo',
                             'url' => ['sprints/index'],
