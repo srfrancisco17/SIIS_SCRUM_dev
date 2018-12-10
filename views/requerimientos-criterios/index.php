@@ -15,6 +15,9 @@ $this->registerJs("
 
 $ruta_save = Url::to(['requerimientos-criterios/save']);
 
+$this->registerCssFile(Yii::getAlias("@web")."/css/datatables.min.css");
+$this->registerJsFile(Yii::getAlias("@web")."/js/datatables.min.js", ["depends" => [\yii\web\JqueryAsset::className()]]);
+
 ?>
 <style> 
     .panel-default > .panel-heading {
@@ -23,16 +26,35 @@ $ruta_save = Url::to(['requerimientos-criterios/save']);
         border-color: #ddd;
     }
 </style>
+
 <div class="row">
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">Listado de requerimientos x criterios</div>
+			<div class="panel-heading">LISTADO DE REQUERIMIENTOS X CRITERIOS</div>
 			<div class="panel-body">
 			
-				<?php Pjax::begin(['id' => 'requerimientos_criterios']); ?>
+				<?php 
 				
-				
-				<table class="table table-striped table-bordered table-hover">
+					Pjax::begin(['id' => 'requerimientos_criterios']); 
+					
+					
+					$this->registerJs("
+
+						$( function(){
+							
+							var table = $('#table_requerimientos_criterios').DataTable( {
+								fixedHeader: true,
+								bSort: false,
+								bPaginate: false,
+								bInfo: false
+							} );
+							
+						} );
+					");
+					
+				?>
+			
+				<table id='table_requerimientos_criterios' class="table table-striped table-bordered table-hover">
 					<thead>
 						<tr>
 							<th style="width: 1%; text-align: center;">#</th>
@@ -41,19 +63,17 @@ $ruta_save = Url::to(['requerimientos-criterios/save']);
 							<th style="width: 10%; text-align: center;">FECHA</th>
 							<th style="width: 1%; text-align: center;">ESTADO</th>
 							
-							
 							<?php
 						
-							
 								foreach ($criterios as $indice => $criterio){
 									
-									echo "<th style='text-align: center;'><a href='#' data-toggle='tooltip' title='".$criterio['descripcion']."'>".$criterio['descripcion_abreviada']."(".$criterio['valor'].")</a></th>";
+									echo "<th style='text-align: center;'><a href='#' data-toggle='tooltip' data-placement='bottom' title='".$criterio['descripcion']."'>".$criterio['descripcion_abreviada']."(".$criterio['valor'].")</a></th>";
 									
 								}								
 							
 							?>
 							<th style="width: 1%; text-align: center;">X</th>
-							<th style="width: 5%;text-align: center;"><a href="#" data-toggle="tooltip" title="Peso ponderado">TOTAL</a></th>
+							<th style="width: 5%;text-align: center;"><a href="#" data-toggle="tooltip" data-placement="bottom" title="Peso ponderado">TOTAL</a></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -90,9 +110,7 @@ $ruta_save = Url::to(['requerimientos-criterios/save']);
 										
 										$option_uno = "selected='selected'";
 									}
-									
-									
-		
+	
 									echo "		<option ".$option_cero.">0</option>";
 									echo "		<option ".$option_uno.">1</option>";
 									
@@ -131,13 +149,8 @@ $ruta_save = Url::to(['requerimientos-criterios/save']);
 	function save_requerimientos_criterios(requerimiento_id){
 		
 		var criterios = {};
-		
-		
 		var valor_total = $("#valor_total_"+requerimiento_id).val();
 
-		
-		
-		
 		$(".requerimientos_criterios_"+requerimiento_id+"").each(function( index ) {
 			
 			select = $(this).attr('name').split('_');
@@ -166,14 +179,10 @@ $ruta_save = Url::to(['requerimientos-criterios/save']);
 				},
 				url:   "<?= $ruta_save ?>",
 				type:  'POST',
-				success:  function (response) {
-					
-					// console.log("success()");
-					
-				}
+				success:  function (response) {}
 			}).done(function(data) {
 				
-					console.log("done()");
+					// console.log("done()");
 					$.pjax.reload({container: '#requerimientos_criterios'});
 					
 					
@@ -185,25 +194,18 @@ $ruta_save = Url::to(['requerimientos-criterios/save']);
 	}
 	
 	function calcular_valor_total(requerimiento_id){
-	
-		// valor_total_829
 		
 		var valor_total = 0;
 		var flag = 0;
 
 		$(".requerimientos_criterios_"+requerimiento_id+"").each(function( index ) {
-			
-			// $(this).attr('id')
 
 			select_name = $(this).attr('name').split('_');
 			
 			var criterio_id = select_name[1];
 			var criterio_valor = select_name[2];
 			var value = $(this).val();
-			
-			
-			// console.log(value);
-
+		
 			if (value != ''){
 				
 				if (value == '1'){
