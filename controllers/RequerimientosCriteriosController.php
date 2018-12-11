@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 
 use app\models\Requerimientos;
 
+
+
 /**
  * RequerimientosCriteriosController implements the CRUD actions for RequerimientosCriterios model.
  */
@@ -38,6 +40,26 @@ class RequerimientosCriteriosController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		
 		$dbconn = Yii::$app->db;
+		
+		
+		$estados = $dbconn->createCommand("
+			SELECT
+				req_spr_id,
+				descripcion
+			FROM
+				estados_req_spr
+			WHERE sw_requerimiento = '1';
+		")
+		->queryAll();
+		
+		$estados_new = array();
+		
+		foreach ($estados as $estado){
+			
+			$estados_new[$estado['req_spr_id']."-".$estado['descripcion']] = $estado['descripcion'];
+			
+		}
+		
 		
 		
 		$criterios = $dbconn->createCommand("
@@ -69,7 +91,7 @@ class RequerimientosCriteriosController extends Controller
 				R.departamento_solicita,
 				R.observaciones,
 				R.fecha_requerimiento,
-				R.estado,
+				R.estado as estado_id,
 				R.tiempo_desarrollo,
 				R.sw_soporte,
 				R.requerimiento_funcionalidad,
@@ -125,7 +147,8 @@ class RequerimientosCriteriosController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
 			'requerimientos' => $requerimientos,
-			'criterios' => $criterios 
+			'criterios' => $criterios,
+			'estados_new' => $estados_new
         ]);
     }
 
