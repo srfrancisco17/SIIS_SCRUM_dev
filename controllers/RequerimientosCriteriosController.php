@@ -84,7 +84,7 @@ class RequerimientosCriteriosController extends Controller
 				ERS.req_spr_id = R.estado 
 			)
 			WHERE
-				R.estado IN ('0','1')
+				R.estado IN ('0','1','2','3')
 			ORDER BY
 				R.valor_total DESC NULLS LAST,
 				R.fecha_requerimiento ASC,
