@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
-use yii\helpers\ArrayHelper;
 
 use kartik\select2\Select2;
 
