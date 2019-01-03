@@ -80,7 +80,6 @@ class HelpersFAOF {
 
     public static function modalFormularios($titulo_modal) {
 
-
         Yii::$app->view->registerJs("
 
             $(document).on('click', '.link_modal', (function(b) {
@@ -114,5 +113,7 @@ class HelpersFAOF {
         echo "<div class='well'></div>";
         \yii\bootstrap\Modal::end();
     }
+	
+	
 
 }
