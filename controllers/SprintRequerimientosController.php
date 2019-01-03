@@ -515,8 +515,6 @@ class SprintRequerimientosController extends Controller {
         $mpdf->SetFooter('Pagina # {PAGENO}');
 
 
-
-
         $mpdf->WriteHTML($content1);
 
         // Two PAGE
@@ -574,63 +572,6 @@ class SprintRequerimientosController extends Controller {
         //echo '<pre>';print_r($datos2);exit;
 
         return $datos2;
-    }
-
-    public function verificarRequerimientoSoporte($sprint_id, $usuario_asignado, $connection) {
-
-
-        $obj_sprint = \app\models\Sprints::findOne($sprint_id);
-		
-        if ($obj_sprint->sw_generar_soportes == '1'){
-
-            $count_soporte = $connection->createCommand("
-                SELECT
-                    COUNT(*)
-                FROM
-                    sprint_requerimientos AS SR
-                INNER JOIN requerimientos AS R ON(
-                    R.requerimiento_id = SR.requerimiento_id
-                )
-                WHERE
-                    SR.sprint_id = " . $sprint_id . "
-                AND SR.usuario_asignado = " . $usuario_asignado . "
-                AND R.sw_soporte = '1'
-            ")->queryScalar();
-
-			// echo "<pre>"; var_dump($count_soporte === '0'); exit;
-
-            if ($count_soporte == '0') {
-
-
-                $model1 = new Requerimientos();
-
-                $model1->requerimiento_titulo = 'SOPORTE ' . $obj_sprint->sprint_alias;
-                $model1->usuario_solicita = 1;
-                $model1->fecha_requerimiento = date("Y-m-d");
-                $model1->estado = '2';
-                $model1->sw_soporte = '1';
-				
-				
-				
-
-                if ($model1->save(false)) {
-
-                    $model2 = new SprintRequerimientos();
-
-                    $model2->sprint_id = $sprint_id;
-                    $model2->requerimiento_id = $model1->requerimiento_id;
-                    $model2->usuario_asignado = $usuario_asignado;
-                    $model2->tiempo_desarrollo = 0;
-                    $model2->prioridad = 20;
-
-                    $model2->save();
-					
-					// echo "<pre>"; var_dump($model2->save()); exit;
-					
-					
-                }
-            }
-        }
     }
 
 }

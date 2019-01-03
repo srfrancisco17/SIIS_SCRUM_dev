@@ -110,6 +110,9 @@ class UsuariosController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		
+		$contrasena_old = $model->contrasena;
+		
 
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -117,7 +120,20 @@ class UsuariosController extends Controller
         }
         
         if ($model->load(Yii::$app->request->post())) {
-            
+			
+
+			
+			if ($contrasena_old != $model->contrasena){
+				
+				$model->contrasena =  Yii::$app->security->generatePasswordHash(Yii::$app->request->post('Usuarios')['contrasena']);
+			}
+			
+			// echo "<pre>"; 
+			// var_dump($contrasena_old); 
+			// var_dump($model->contrasena); 
+			// var_dump(Yii::$app->request->post('Usuarios')['contrasena']); 
+			// exit;
+
             if ($model->save()){
                 return $this->redirect(['index']);
             }

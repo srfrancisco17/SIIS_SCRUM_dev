@@ -151,29 +151,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php   
 
-/*
-    $dias_festivos = array(
-        '2017-07-20', 
-        '2017-08-07', 
-        '2017-08-21', 
-        '2017-10-16', 
-        '2017-11-06', 
-        '2017-11-13', 
-        '2017-12-08', 
-        '2017-12-25', 
-        '2018-01-01', 
-        '2018-01-08',
-        '2018-03-19',
-        '2018-03-25',
-        '2018-03-29',
-        '2018-03-30',
-        '2018-04-01',
-        '2018-05-01',
-        '2018-05-14',
-        '2018-07-20'
-    );
-    */
-
     function intervalo_dias($fecha_inicial, $fecha_final, $sw_control, $dias_festivos_p) {
         
             $dias = array('Mon'=>'Lun', 'Tue'=>'Mar', 'Wed'=>'Mie', 'Thu'=>'Jue', 'Fri'=>'Vie');
@@ -344,25 +321,29 @@ $this->params['breadcrumbs'][] = $this->title;
         $tiempo_terminado_todos = 0;
         $tiempo_total_todos = 0;
 
-
-
         $grafica = array();
 
-            foreach ($barChart as $value2) {
-                $grafica[] = array(
-                    $value2['nombres'].'-'.$value2['horas_establecidas'].'-'.$value2['tiempo_terminado'],
-                    (($value2['tiempo_terminado']*100)/$value2['horas_establecidas'])
-                ); 
+		foreach ($barChart as $value2) {
+			$grafica[] = array(
+				$value2['nombres'].'-'.$value2['horas_establecidas'].'-'.$value2['tiempo_terminado'],
+				(($value2['tiempo_terminado']*100)/$value2['horas_establecidas'])
+			); 
 
-                $tiempo_terminado_todos += $value2['tiempo_terminado'];
-                $tiempo_total_todos += $value2['horas_establecidas'];
+			$tiempo_terminado_todos += $value2['tiempo_terminado'];
+			$tiempo_total_todos += $value2['horas_establecidas'];
 
-            }
+		}
+		
+		if ($tiempo_total_todos > 0){
+			
+			$grafica2[] = array(
+				'Equipo Desarrollo'.'-'.$tiempo_total_todos.'-'.$tiempo_terminado_todos,
+				(($tiempo_terminado_todos*100)/$tiempo_total_todos)
+			);
+			
+		}
+		
 
-        $grafica2[] = array(
-            'Equipo Desarrollo'.'-'.$tiempo_total_todos.'-'.$tiempo_terminado_todos,
-            (($tiempo_terminado_todos*100)/$tiempo_total_todos)
-        );
 
         return json_encode($grafica);
     
