@@ -7,10 +7,21 @@ use kartik\widgets\ColorInput;
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
 /* @var $form yii\widgets\ActiveForm */
+
+
+$contrasena_template = '{label} <button type="button" onclick="changePass();" class="btn btn-danger btn-xs">cambiar</button>{input}{hint}{error}';
+$contrasena_disabled = true;
+
 if ($model->isNewRecord) {
     $model->tipo_documento = "CC";
     $model->estado = 1;
+	
+	$contrasena_template = '{label}{input}{hint}{error}';
+	$contrasena_disabled = false;
+	
 }
+
+
 ?>
 <?php $form = ActiveForm::begin(['enableAjaxValidation' => true]); ?>
 <div class="row">
@@ -53,7 +64,7 @@ if ($model->isNewRecord) {
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
-                        <?= $form->field($model, 'contrasena')->passwordInput(['maxlength' => true])->label('(*) Contraseña:') ?>
+                        <?= $form->field($model, 'contrasena', ['template' => $contrasena_template])->passwordInput(['maxlength' => true, 'disabled' => $contrasena_disabled])->label('(*) Contraseña:') ?>
                     </div>
                     <div class="col-lg-6">
                         <?= $form->field($model, 'departamento')->dropDownList($model->ListaDepartamentos, ['prompt' => 'Seleccione Uno'])->label('Departamento:'); ?>
@@ -89,3 +100,14 @@ if ($model->isNewRecord) {
     </div>
 </div>
 <?php ActiveForm::end(); ?>
+
+<script>
+
+	function changePass(){
+		
+		$("#usuarios-contrasena").prop("disabled", false); 
+		$("#usuarios-contrasena").val(""); 
+		
+	}
+
+</script>

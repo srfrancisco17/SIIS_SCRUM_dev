@@ -17,7 +17,7 @@ use yii\helpers\Url;
 use yii\widgets\Pjax;
 
 date_default_timezone_set('America/Bogota');
-$estado_field_requerimiento = TRUE;
+$estado_field_requerimiento = FALSE;
 
 
 if($model->isNewRecord){
@@ -26,10 +26,6 @@ if($model->isNewRecord){
 	
 }
 
-if (Yii::$app->user->identity->tipo_usuario == Usuarios::USUARIO_SCRUM_MASTER){
-	
-	$estado_field_requerimiento = FALSE;
-}
 
 $this->registerCss("
     .panel-default > .panel-heading-custom {
