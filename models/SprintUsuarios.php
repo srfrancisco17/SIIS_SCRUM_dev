@@ -89,40 +89,13 @@ class SprintUsuarios extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Usuarios::className(), ['usuario_id' => 'usuario_id']);
     }
-    
-    public function insertarSprintUsuarios($sprint_id, $usuario_id, $horas){
-        
-        
-        $obj_sprintUsuarios = SprintUsuarios::find()->where(['sprint_id' => $sprint_id])->andWhere(['usuario_id' => $usuario_id])->one();
-        
-        if (is_null($obj_sprintUsuarios)){
-            
-            $obj_sprintUsuarios = new SprintUsuarios();
-            
-        }
-        
-        $obj_sprintUsuarios->sprint_id = $sprint_id;
-        $obj_sprintUsuarios->usuario_id = $usuario_id;
-        $obj_sprintUsuarios->horas_establecidas = $horas;
-        $obj_sprintUsuarios->estado = '1';
-        $obj_sprintUsuarios->save();
-        
-        
-        /*
-         * Linea Comentada por varias razones la principal es que se debe mejor el funcionamiento al momento de 
-         * crear un requerimiento de soporte
-         */
-        //self::requerimiento_soporte($value, $id, $sprint_alias, $prioridad_id);
-        
-        return true;  
-        
-    } 
+
 
     public function eliminarSprintUsuarios($id, $key){
         
         $conexion = Yii::$app->db;
        
-           
+   
         $usuarios = explode(",",$key);
         foreach ($usuarios as $value) {
             

@@ -190,10 +190,11 @@ $this->params['breadcrumbs'][] = $this->title;
                            type: form.attr(\"method\"),
                            data: formData,
                            success: function (data) {
-                            $.pjax.reload({container:'#sprint-usuarios-form'});
+								// $.pjax.reload({container:'#sprint-usuarios-form'});
+								location.reload();
                            },
                            error: function () {
-                               alert(\"Error Al Insertar Desarrolladores\");
+                               alert('ERROR');
                            }
                        });
                 });
@@ -214,7 +215,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         form.serialize()
                     ).done(function(result) {
                         form.parent().html(result.message);
-                        $.pjax.reload({container:'#sprint-usuarios-form'}); 
+                        // $.pjax.reload({container:'#sprint-usuarios-form'}); 
+						location.reload();
 
                     });
 
@@ -248,9 +250,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'id' => 'activity-index-link2',
                 'class' => 'btn btn-app',
                 'data-toggle' => 'modal2',
-                'data-target' => '#modal2', //Aqui!!!
-                //'data-url' => Url::to(['listausuarios']),
-                //'data-url' => Url::to(['listausuarios', 'comite_id' => $comite_id ]),
+                'data-target' => '#modal2',
                 'data-pjax' => '0',
             ])
             ?>
@@ -265,13 +265,15 @@ $this->params['breadcrumbs'][] = $this->title;
         </style>
         <div class="col-lg-2">
             <?php
-            echo Html::a('<span class="badge bg-red">' . $sprintUsuariosDataProvider->getCount() . '</span><i class="fa fa-user-times"></i> Eliminar Desarrollador', '#', [
-                'id' => 'activity-index-link3',
-                'class' => 'btn btn-app',
-                'data-toggle' => 'modal3',
-                'data-target' => '#modal3', //Aqui!!!
-                'data-pjax' => '0',
-            ])
+			/*
+				echo Html::a('<span class="badge bg-red">' . $sprintUsuariosDataProvider->getCount() . '</span><i class="fa fa-user-times"></i> Eliminar Desarrollador', '#', [
+					'id' => 'activity-index-link3',
+					'class' => 'btn btn-app',
+					'data-toggle' => 'modal3',
+					'data-target' => '#modal3', //Aqui!!!
+					'data-pjax' => '0',
+				]);
+			*/
             ?>
         </div>
     </div>
@@ -315,9 +317,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                 [
                                     'attribute' => 'Establecer Horas',
-                                    'value' => function($model){
-                                        //return Html::input('number', 'horas_planificadas_'.$model->usuario_id, null, ['class' => 'form-control', 'id'=>'horas_planificadas_'.$model->usuario_id]);
-                                        return Html::input('number', 'horas_planificadas['.$model->usuario_id.']', null, ['class' => 'form-control', 'id'=>'horas_planificadas_'.$model->usuario_id]);
+                                    'value' => function($model){ // lista_usuarios
+                                        return Html::input('number', 'lista_usuarios['.$model->usuario_id.']', null, ['class' => 'form-control']);
                                     },
                                     'contentOptions' => ['style' => ' width:5px;'],        
                                     'format' => 'raw'
@@ -343,9 +344,11 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-<!-- Modal 3 -->
+	
+	
+<!-- 
     <div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <!--ASIGNAMOS UN ID A ESTE DIV -->
+ 
         <div class="modal-dialog" id="mdialTamanio">
             <div class="modal-content">
                 <div class="modal-header bg-red-gradient">
@@ -353,8 +356,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     <h4 class="modal-title" id="myModalLabel">Eliminar Desarrolladores</h4>
                 </div>
                 <div class="modal-body3">
-                    <?=
-                    GridView::widget([
+                    <?php
+					/*
+                    echo GridView::widget([
                         'id' => 'kv-grid3',
                         'dataProvider' => $sprintUsuariosDataProvider,
                         'filterModel' => FALSE,
@@ -376,7 +380,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                         ],
                         'pjax' => true,
-                    ])
+                    ]);
+					*/
                     ?>
                 </div>
                 <div class="modal-footer">
@@ -387,4 +392,5 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+-->
 

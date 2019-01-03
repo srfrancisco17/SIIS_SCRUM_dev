@@ -226,6 +226,8 @@ class SprintRequerimientosController extends Controller {
      * @return mixed
      */
     public function actionDelete($sprint_id, $requerimiento_id) {
+		
+		
         $this->findModel($sprint_id, $requerimiento_id)->delete();
 
         /*
@@ -267,36 +269,122 @@ class SprintRequerimientosController extends Controller {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+	
+	public function getNombreRequerimientoSoporte($usuario_id){
+
+		setlocale(LC_TIME, 'spanish');  
+		
+		return "SOP-".$usuario_id." ".strftime("%B",mktime(0, 0, 0, date('n'), 1, 2000))." ".date('Y'); 		
+		
+	}
 
     public function actionPeticion1() {
 
-
         $request = Yii::$app->request;
+
         $sprint_id = $request->post("sprint_id");
-        $horas_planificadas = $request->post("horas_planificadas");
-
-        $model = new \app\models\SprintUsuarios();
+        $lista_usuarios = $request->post("lista_usuarios");
 
 
-        /* Inicio de la transaccion */
-        $connection = \Yii::$app->db;
-        $transaction = $connection->beginTransaction();
+        $dbconn = Yii::$app->db;
+        $transaction = $dbconn->beginTransaction();
 
         try {
 
-            foreach ($horas_planificadas as $clave => $valor) {
+            foreach ($lista_usuarios as $usuario_id => $horas) {
 
-                if (!empty($sprint_id) && !empty($valor)) {
+                if (!empty($sprint_id) && !empty($usuario_id) && !empty($horas)) {
 
-                    $model->insertarSprintUsuarios($sprint_id, $clave, $valor);
-                    $this->verificarRequerimientoSoporte($sprint_id, $clave, $connection);
+
+					$exist_sprint_usuarios = $dbconn->createCommand("SELECT COUNT(*) FROM sprint_usuarios WHERE sprint_id = ".$sprint_id." AND usuario_id = ".$usuario_id.";")->queryScalar();
+
+
+					if ($exist_sprint_usuarios == '0'){
+							
+						$dbconn->createCommand()->insert('sprint_usuarios', [
+							'sprint_id' => $sprint_id,
+							'usuario_id' => $usuario_id,
+							'horas_establecidas' => $horas,
+							'estado' => '1'
+						])->execute();
+						
+					}else if ($exist_sprint_usuarios == '1'){
+						
+						
+						$dbconn->createCommand()->update('sprint_usuarios', [
+							'horas_establecidas' => $horas,
+							'estado' => '1'
+						], ['sprint_id' => $sprint_id, 'usuario_id' => $usuario_id])->execute();
+						
+					}
+					
+
+					$sw_generar_soportes = $dbconn->createCommand("SELECT sw_generar_soportes FROM sprints WHERE sprint_id = ".$sprint_id.";")->queryScalar();
+					
+					
+					if ($sw_generar_soportes == '1'){
+
+
+						$exist_req_soporte = $dbconn->createCommand("
+							SELECT
+								COUNT(*)
+							FROM
+								sprint_requerimientos AS SR
+							INNER JOIN requerimientos AS R ON(
+								R.requerimiento_id = SR.requerimiento_id
+							)
+							WHERE
+								SR.sprint_id = ".$sprint_id."
+							AND SR.usuario_asignado = ".$usuario_id."
+							AND R.sw_soporte = '1';
+						")->queryScalar();
+						
+						
+						if ($exist_req_soporte == '0'){
+							
+	
+							$dbconn->createCommand()->insert('requerimientos', [
+								'requerimiento_titulo' => $this->getNombreRequerimientoSoporte($usuario_id),
+								'usuario_solicita' => 1,
+								'fecha_requerimiento' => date('Y-m-d'),
+								'estado' => '2',
+								'sw_soporte' => '1'
+							])->execute();
+							
+							
+							$requerimiento_id = $dbconn->getLastInsertID();
+							
+							
+							if (!empty($requerimiento_id)){
+								
+								$dbconn->createCommand()->insert('sprint_requerimientos', [
+									'sprint_id' => $sprint_id,
+									'requerimiento_id' => $requerimiento_id,
+									'usuario_asignado' => $usuario_id,
+									'tiempo_desarrollo' => 0,
+									'prioridad' => 20
+								])->execute();
+								
+								
+							}
+
+						}
+					}
                 }
             }
 
             $transaction->commit();
+			
         } catch (\yii\db\Exception $e) {
+			
             $transaction->rollback();
+			return false;
         }
+		
+		
+		return true;
+
+		
     }
 
     public function actionPeticion2($id, $k) {
@@ -488,13 +576,12 @@ class SprintRequerimientosController extends Controller {
         return $datos2;
     }
 
-    protected function verificarRequerimientoSoporte($sprint_id, $usuario_asignado, $connection) {
+    public function verificarRequerimientoSoporte($sprint_id, $usuario_asignado, $connection) {
 
 
         $obj_sprint = \app\models\Sprints::findOne($sprint_id);
-
-
-        if ($obj_sprint->sw_generar_soportes == '1') {
+		
+        if ($obj_sprint->sw_generar_soportes == '1'){
 
             $count_soporte = $connection->createCommand("
                 SELECT
@@ -510,8 +597,9 @@ class SprintRequerimientosController extends Controller {
                 AND R.sw_soporte = '1'
             ")->queryScalar();
 
+			// echo "<pre>"; var_dump($count_soporte === '0'); exit;
 
-            if ($count_soporte === '0') {
+            if ($count_soporte == '0') {
 
 
                 $model1 = new Requerimientos();
@@ -521,6 +609,9 @@ class SprintRequerimientosController extends Controller {
                 $model1->fecha_requerimiento = date("Y-m-d");
                 $model1->estado = '2';
                 $model1->sw_soporte = '1';
+				
+				
+				
 
                 if ($model1->save(false)) {
 
@@ -533,6 +624,10 @@ class SprintRequerimientosController extends Controller {
                     $model2->prioridad = 20;
 
                     $model2->save();
+					
+					// echo "<pre>"; var_dump($model2->save()); exit;
+					
+					
                 }
             }
         }
